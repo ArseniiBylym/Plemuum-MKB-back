@@ -1,15 +1,6 @@
-import {Express, Request, Response} from "express";
-
-const loginController = require('./auth');
+import {Express} from "express";
+import {AuthController} from './auth/auth';
 
 module.exports.set = (express: Express) => {
-    loginController.set(express);
-
-    /* OTHER */
-    express.route('/')
-        .get((req: Request, res: Response) => {
-            res.json({
-                message: 'Hello World!'
-            })
-        })
+    new AuthController(express);
 };
