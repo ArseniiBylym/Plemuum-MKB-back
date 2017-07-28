@@ -1,7 +1,12 @@
-import {Config} from "./config";
+import { Config } from "./config";
 
-export class DevConfig implements Config {
-    public get port() {
+const devConfig: Config = {
+    get port() {
         return '5000';
+    },
+    get mongoUrl() {
+        return 'mongodb://localhost/test'
     }
 }
+
+export default devConfig 

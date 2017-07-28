@@ -1,6 +1,6 @@
-import {Express} from "express";
-import {AuthController} from './auth/auth';
+import { Express } from "express";
+import * as authController from './auth/auth';
 
 module.exports.set = (express: Express) => {
-    new AuthController(express);
+    authController.init(express);
 };

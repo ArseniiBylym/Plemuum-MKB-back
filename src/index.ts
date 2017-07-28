@@ -1,9 +1,9 @@
 import app from './App'
 import * as http from "http";
-import {ConfigManager} from "../config/config.manager"
+import * as configManager from "../config/config.manager"
 import {Config} from "../config/config";
 
-const config: Config = ConfigManager.getConfig();
+const config: Config = configManager.getConfig();
 const server: http.Server = http.createServer(app);
 
 server.listen(config.port);
