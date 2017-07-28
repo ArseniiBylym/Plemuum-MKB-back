@@ -23,6 +23,7 @@ UserSchema.plugin(require('mongoose-bcrypt'));
 UserSchema.path("password").select(false);
 */
 
+// TODO Understand this!
 interface UserModel extends User, mongoose.Document {
     verifyPasswordSync(rec_password: string): boolean
 }

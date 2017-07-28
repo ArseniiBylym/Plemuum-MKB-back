@@ -1,8 +1,7 @@
 import { expect } from 'chai';
 import * as request from 'request';
 import { RequestResponse } from 'request';
-import config from '../../../config/config'
-import { User } from '../../data/models/user.model'
+import config from '../../../config/config';
 
 const url = `http://localhost:${config.port}/user/save`;
 

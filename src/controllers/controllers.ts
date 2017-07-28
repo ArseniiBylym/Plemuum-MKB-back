@@ -1,8 +1,10 @@
 import { Express } from "express";
-import * as authController from './auth/auth';
-import * as userController from './user/user';
+import authController from './auth/auth';
+import userController from './user/user';
+import userDataController from '../data/datacontroller/user.datacontroller';
+import databaseManager from '../data/database/database.manager';
 
 module.exports.set = (express: Express) => {
-    authController.init(express);
-    userController.init(express);
+    authController.register(express);
+    userController(userDataController(databaseManager)).register(express);
 };

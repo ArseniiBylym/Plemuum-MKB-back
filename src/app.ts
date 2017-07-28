@@ -1,7 +1,7 @@
 import * as express from 'express'
 import { Express } from 'express'
 import config from '../config/config';
-import * as databaseManager from './data/database/database.manager';
+import databaseManager from './data/database/database.manager';
 
 const controllers = require('./controllers/controllers');
 

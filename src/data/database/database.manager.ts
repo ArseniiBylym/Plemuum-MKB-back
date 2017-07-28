@@ -1,6 +1,16 @@
 import * as mongoose from 'mongoose';
 
-let dbConnection: mongoose.Connection;
-const connect = (mongoUrl: string) => dbConnection = mongoose.createConnection(mongoUrl);
+export class DatabaseManager {
+    private dbConnection: mongoose.Connection;
+    constructor() { }
 
-export { dbConnection, connect }
+    public connect(mongoUrl: string) {
+        this.dbConnection = mongoose.createConnection(mongoUrl)
+    }
+
+    public getConnection(): mongoose.Connection {
+        return this.dbConnection;
+    }
+}
+
+export default new DatabaseManager();

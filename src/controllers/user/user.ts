@@ -1,9 +1,26 @@
 import { Express, Request, Response } from "express";
-import * as userDataController from "../../data/datacontroller/user.datacontroller"
 import { User } from "../../data/models/user.model";
+import { UserDataController } from "../../data/datacontroller/user.datacontroller";
 
-const init = (express: Express): void => {
-    express.route('/user/save').get((req: Request, res: Response) => {
+let instance: UserController;
+
+export class UserController {
+
+    private userDataController: UserDataController;
+
+    constructor(userDataController: UserDataController) {
+        this.userDataController = userDataController;
+    }
+
+    public register(express: Express) {
+        express.route('/user/save').get((req: Request, res: Response) => {
+            this.handleUserSave()
+                .then((result) => res.send(result))
+                .catch((error) => res.json({ error: error }));
+        });
+    }
+
+    public handleUserSave(): Promise<Object> {
         const random: number = Math.floor(Math.random() * (1000 - 0 + 1));
         const user: User = {
             firstName: "Kovacs",
@@ -14,17 +31,18 @@ const init = (express: Express): void => {
             orgIds: [],
             password: "asd123"
         }
+        return this.userDataController.saveUser(user)
+    }
 
-        userDataController.saveUser(user)
-            .then((user: User) => {
-                res.send(user);
-            })
-            .catch((error) => {
-                res.json({
-                    error: error
-                });
-            });
-    })
 }
 
-export { init };
+const factory = (userDataController: UserDataController) => {
+    if (instance) {
+        return instance;
+    } else {
+        return new UserController(userDataController);
+    }
+}
+
+
+export default factory;
