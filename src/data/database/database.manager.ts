@@ -1,8 +1,6 @@
 import * as mongoose from 'mongoose';
 
-module.exports = {
-    dbConnection: mongoose.Connection,
-    connect: function (mongoUrl: string) {
-        this.dbConnection = mongoose.createConnection(mongoUrl);
-    }
-}
+let dbConnection: mongoose.Connection;
+const connect = (mongoUrl: string) => dbConnection = mongoose.createConnection(mongoUrl);
+
+export { dbConnection, connect }

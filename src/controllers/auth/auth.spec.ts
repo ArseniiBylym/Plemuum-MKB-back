@@ -1,9 +1,8 @@
 import { expect } from 'chai';
 import * as request from 'request';
 import { RequestResponse } from 'request';
-import * as configManager from '../../../config/config.manager'
+import config from '../../../config/config'
 
-const config = configManager.getConfig();
 const url = `http://localhost:${config.port}/login`;
 
 describe("Login request tests", () => {

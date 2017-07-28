@@ -1,9 +1,7 @@
 import app from './App'
 import * as http from "http";
-import * as configManager from "../config/config.manager"
-import {Config} from "../config/config";
+import config from '../config/config';
 
-const config: Config = configManager.getConfig();
 const server: http.Server = http.createServer(app);
 
 server.listen(config.port);
