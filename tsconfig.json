@@ -1,6 +1,12 @@
 {
   "compilerOptions": {
     "typeRoots": ["node_modules/@types"],
+    "types": [
+      "mocha",
+      "node",
+      "chai",
+      "ts-mockito"
+    ],
     "outDir": "dist",
     "sourceMap": true,
     /* Basic Options */
