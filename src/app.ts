@@ -1,7 +1,7 @@
 import * as express from 'express'
 import { Express } from 'express'
 import config from '../config/config';
-import databaseManager from './data/database/database.manager';
+import * as DatabaseFactory from './data/database/database.factory';
 
 const controllers = require('./controllers/controllers');
 
@@ -10,7 +10,7 @@ class App {
 
     constructor() {
         this.express = express();
-        databaseManager.connect(config.mongoUrl);
+        DatabaseFactory.getDatabaseManager().connect(config.mongoUrl);
         controllers.set(this.express);
     }
 }

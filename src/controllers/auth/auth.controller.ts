@@ -1,6 +1,6 @@
 import { Express, Request, Response } from "express";
 
-class AuthController {
+export default class AuthController {
     constructor() {
     }
 
@@ -10,5 +10,3 @@ class AuthController {
         });
     }
 }
-
-export default new AuthController();

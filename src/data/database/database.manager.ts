@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 
-export class DatabaseManager {
+export default class DatabaseManager {
     private dbConnection: mongoose.Connection;
     constructor() { }
 
@@ -12,5 +12,3 @@ export class DatabaseManager {
         return this.dbConnection;
     }
 }
-
-export default new DatabaseManager();

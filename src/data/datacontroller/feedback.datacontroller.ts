@@ -2,11 +2,11 @@ import Feedback from "../models/feedback.model";
 import * as mongoose from "mongoose";
 import { FeedbackModel, getDatabaseModel } from "../database/schema/feedback.schema";
 import * as databaseManager from "../database/database.manager";
-import { DatabaseManager } from "../database/database.manager";
+import DatabaseManager from "../database/database.manager";
 
 let instance: FeedbackDataController;
 
-export class FeedbackDataController {
+export default class FeedbackDataController {
 
     private databaseManager: DatabaseManager;
 
@@ -26,13 +26,3 @@ export class FeedbackDataController {
         });
     }
 }
-
-const controllerFactory = (databaseManager: DatabaseManager) => {
-    if (instance) {
-        return instance;
-    } else {
-        return new FeedbackDataController(databaseManager);
-    }
-}
-
-export default controllerFactory;

@@ -1,13 +1,14 @@
 import { Express } from "express";
-import authController from './auth/auth';
-import userController from './user/user';
-import feedbackController from './feedback/feedback';
+import authController from './auth/auth.controller';
+import userController from './user/user.controller';
+import feedbackController from './feedback/feedback.controller';
 import userDataController from '../data/datacontroller/user.datacontroller';
 import feedbackDataController from '../data/datacontroller/feedback.datacontroller';
 import databaseManager from '../data/database/database.manager';
+import * as ControllerFactory from './controller.factory'
 
 module.exports.set = (express: Express) => {
-    authController.register(express);
-    feedbackController(feedbackDataController(databaseManager)).register(express);
-    userController(userDataController(databaseManager)).register(express);
+    ControllerFactory.getAuthController().register(express);
+    ControllerFactory.getFeedbackController().register(express);
+    ControllerFactory.getUserController().register(express);
 };

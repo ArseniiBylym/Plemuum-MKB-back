@@ -2,11 +2,9 @@
 import { Express, Request, Response } from "express";
 import Feedback from "../../data/models/feedback.model";
 import { TYPE } from "../../data/models/feedback.model";
-import { FeedbackDataController } from '../../data/datacontroller/feedback.datacontroller'
+import FeedbackDataController from '../../data/datacontroller/feedback.datacontroller'
 
-let instance: FeedbackController;
-
-class FeedbackController {
+export default class FeedbackController {
     private feedbackDataController: FeedbackDataController;
 
     constructor(feedbackDataController: FeedbackDataController) {
@@ -110,14 +108,3 @@ class FeedbackController {
         return this.feedbackDataController.saveFeedback(feedback)
     }
 }
-
-const factory = (userDataController: FeedbackDataController) => {
-    if (instance) {
-        return instance;
-    } else {
-        return new FeedbackController(userDataController);
-    }
-};
-
-
-export default factory;

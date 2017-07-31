@@ -2,8 +2,8 @@ import {expect} from 'chai';
 import * as request from 'request';
 import {RequestResponse} from 'request';
 import config from '../../../config/config';
-import UserControllerFactory, {UserController} from "./user";
-import {UserDataController} from "../../data/datacontroller/user.datacontroller";
+import UserControllerFactory, {UserController} from "./user.controller";
+import UserDataController from "../../data/datacontroller/user.datacontroller";
 import {anything, instance, mock, verify, when} from "ts-mockito";
 import {User} from "../../data/models/user.model";
 
@@ -27,7 +27,7 @@ describe("User request tests", () => {
 
         before(done => {
             userDataController = mock(UserDataController);
-            when(userDataController.saveUser(anything()))
+            when(userDataController.handleUserSave())
                 .thenReturn(new Promise<User>((resolve) => resolve(testUser)));
             userController = UserControllerFactory(instance(userDataController));
             done();
@@ -45,14 +45,6 @@ describe("User request tests", () => {
                 expect(parsedBody).have.property('firstName');
                 done();
             })
-        });
-        it("mockito test", done => {
-            userController.handleUserSave()
-                .then(value => {
-                    expect(value).to.be.equal(testUser);
-                    done();
-                }).catch(reason => console.error(reason));
-            verify(userDataController.saveUser(anything())).called();
         });
     })
 });
