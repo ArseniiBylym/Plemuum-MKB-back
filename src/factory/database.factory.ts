@@ -1,5 +1,5 @@
 
-import DatabaseManager from "./database.manager";
+import DatabaseManager from "../data/database/database.manager";
 
 let databaseManagerInstance: DatabaseManager;
 

@@ -1,9 +1,8 @@
 
-
-import FeedbackDataController from "./feedback.datacontroller";
-import DatabaseManager from '../database/database.manager';
-import UserDataController from "./user.datacontroller";
-import * as DatabaseFactory from '../database/database.factory';
+import FeedbackDataController from "../data/datacontroller/feedback.datacontroller";
+import DatabaseManager from '../data/database/database.manager';
+import UserDataController from "../data/datacontroller/user.datacontroller";
+import * as DatabaseFactory from './database.factory';
 
 let feedbackDataControllerInstance: FeedbackDataController;
 let userDataControllerInstance: UserDataController;

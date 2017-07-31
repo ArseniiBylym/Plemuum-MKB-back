@@ -7,8 +7,10 @@ import feedbackDataController from '../data/datacontroller/feedback.datacontroll
 import databaseManager from '../data/database/database.manager';
 import * as ControllerFactory from '../factory/controller.factory'
 
-module.exports.set = (express: Express) => {
+const set = (express: Express): void => {
     ControllerFactory.getAuthController().register(express);
     ControllerFactory.getFeedbackController().register(express);
     ControllerFactory.getUserController().register(express);
-};
+}
+
+export { set }
