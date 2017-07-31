@@ -13,16 +13,20 @@ export default class FeedbackDataController {
     constructor(databaseManager: DatabaseManager) {
         this.databaseManager = databaseManager;
     }
+
+    public getAllFeedback(userId: string): Promise<Feedback[]> {
+        return new Promise((resolve, reject) => {
+            const query: any = { $or: [{ senderId: userId }, { recipientId: userId }] };
+            const feedbackModel: mongoose.Model<FeedbackModel> = getDatabaseModel(this.databaseManager.getConnection());
+            feedbackModel.find(query, (error: Error, feedbacks: Feedback[]) => error ? reject(error) : resolve(feedbacks));
+        });
+    }
+
     public saveFeedback(feedback: Feedback): Promise<Feedback> {
         return new Promise((resolve, reject) => {
-            const feedbackModel: mongoose.Model<FeedbackModel> = getDatabaseModel(this.databaseManager.getConnection());
-            new feedbackModel(feedback).save((error: Error, feedback: Feedback) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    resolve(feedback);
-                }
-            });
+            const feedbackModel: mongoose.Model<FeedbackModel> =
+                getDatabaseModel(this.databaseManager.getConnection());
+            new feedbackModel(feedback).save((error: Error, feedback: Feedback) => error ? reject(error) : resolve(feedback));
         });
     }
 }

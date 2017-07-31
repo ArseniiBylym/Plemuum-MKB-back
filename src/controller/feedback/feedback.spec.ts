@@ -5,13 +5,13 @@ import config from '../../../config/config'
 
 const orgId = "orgID1234";
 const userId = "userID1234"
-
+const baseUrl = `http://localhost:${config.port}/api`;
 
 describe("Feedback request test", () => {
 
-    const url = `http://localhost:${config.port}/api/${orgId}/user/${userId}/feedbacks`;
+    describe("Fetch feedbacks", () => {
+        const url = `${baseUrl}/${orgId}/user/${userId}/feedbacks`;
 
-    describe("get feedbacks for user", () => {
         it("should return 200", done => {
             request.get(url, (error: any, response: RequestResponse) => {
                 expect(response.statusCode).to.equal(200);
@@ -19,19 +19,17 @@ describe("Feedback request test", () => {
             })
         })
 
-        it("response should contain userId and orgId", (done) => {
+        it("response should be an array", (done) => {
             request.get(url, (error: any, response: RequestResponse, body: any) => {
                 const parsedBody = JSON.parse(body);
-                expect(parsedBody).have.property("orgId");
-                expect(parsedBody).have.property("userId");
+                expect(parsedBody).to.be.an.instanceOf(Array);
                 done();
             })
         })
     });
 
-    describe("create a feedback for a user", () => {
-
-        const url = `http://localhost:${config.port}/api/${orgId}/feedback`;
+    describe("Create a feedback", () => {
+        const url = `${baseUrl}/${orgId}/feedback`;
 
         it("should return 200", done => {
             request.post(url, (error: any, response: RequestResponse) => {
@@ -51,10 +49,32 @@ describe("Feedback request test", () => {
                 expect(parsedBody).have.property("type");
                 expect(parsedBody).have.property("requestId");
                 expect(parsedBody).have.property("tags");
-
                 done();
             })
         });
-    })
+    });
+
+    describe("Fetch sent feedbacks", () => {
+        const url = `${baseUrl}/${orgId}/user/${userId}/feedbacks/sent`;
+
+        it("should return 200", done => {
+            request.get(url, (error: any, response: RequestResponse) => {
+                expect(response.statusCode).to.equal(200);
+                done();
+            })
+        })
+    });
+
+    describe("Fetch incoming feedbacks", () => {
+
+        const url = `${baseUrl}/${orgId}/user/${userId}/feedbacks/incoming`;
+
+        it("should return 200", done => {
+            request.get(url, (error: any, response: RequestResponse) => {
+                expect(response.statusCode).to.equal(200);
+                done();
+            })
+        })
+    });
 
 });

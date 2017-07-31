@@ -12,12 +12,9 @@ export default class FeedbackController {
     }
 
     public getFeedbacks(req: Request, res: Response, next: Function) {
-        res.json(
-            {
-                orgId: req.params.orgId,
-                userId: req.params.userId,
-            }
-        )
+        this.feedbackDataController.getAllFeedback(req.params.userId)
+            .then((result) => res.json(result))
+            .catch((error) => res.json({ error: error }));
     }
 
     public getSentFeedbacks(req: Request, res: Response, next: Function) {
@@ -30,12 +27,20 @@ export default class FeedbackController {
     }
 
     public postFeedback(req: Request, res: Response, next: Function) {
-        this.handleFeedbackSave()
+        this.saveFeedback()
             .then((result) => res.send(result))
             .catch((error) => res.json({ error: error }));
     }
 
-    public handleFeedbackSave(): Promise<Object> {
+    public getIncomingFeedbacks(req: Request, res: Response, next: Function) {
+        res.json(
+            {
+                message: "incoming feedbacks"
+            }
+        )
+    }
+
+    public saveFeedback(): Promise<Object> {
         const feedback: Feedback = {
             senderId: "sendedID",
             recipientId: "recipientId",
