@@ -22,21 +22,21 @@ const createUserController = (userDataController: UserDataController) => {
         userControllerInstance = new UserController(userDataController);
     }
     return userControllerInstance;
-}
+};
 
 const createAuthController = () => {
     if (!authController) {
         authController = new AuthController();
     }
     return authController;
-}
+};
 
 const createFeedbackController = (feedbackDataController: FeedbackDataController) => {
     if (!feedbackControllerInstance) {
         feedbackControllerInstance = new FeedbackController(feedbackDataController);
     }
     return feedbackControllerInstance;
-}
+};
 
 
 export { getUserController, getAuthController, getFeedbackController } 

@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "./node_modules/.bin/mocha -r ts-node/register src/**/**.spec.ts"
+    "test": "nyc  --reporter=lcov --reporter=text-lcov ./node_modules/.bin/mocha -r ts-node/register src/**/**.spec.ts"
   },
   "keywords": [],
   "author": "hipteam",
@@ -23,6 +23,7 @@
     "chai": "4.1.0",
     "mocha": "3.4.2",
     "nodemon": "1.11.0",
+    "nyc": "^11.1.0",
     "request": "2.81.0",
     "sinon": "2.4.1",
     "ts-mockito": "2.0.2",

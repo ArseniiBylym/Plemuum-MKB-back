@@ -1,5 +1,4 @@
-import { Express, Request, Response } from "express";
-import { User } from "../../data/models/user.model";
+import {Request, Response} from "express";
 import UserDataController from "../../data/datacontroller/user.datacontroller";
 
 export default class UserController {
@@ -10,9 +9,9 @@ export default class UserController {
         this.userDataController = userDataController;
     }
 
-    public handleSaveUserRequest(req: Request, res: Response, nex: Function) {
+    public handleSaveUserRequest(req: Request, res: Response, next: Function) {
         this.userDataController.handleUserSave()
             .then((result) => res.send(result))
-            .catch((error) => res.json({ error: error }));
+            .catch((error) => res.json({error: error}));
     }
 }

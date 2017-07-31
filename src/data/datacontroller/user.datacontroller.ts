@@ -24,7 +24,7 @@ export default class UserDataController extends BaseDataController<UserModel> {
         });
     }
 
-    public handleUserSave(): Promise<Object> {
+    public handleUserSave(): Promise<User> {
         const random: number = Math.floor(Math.random() * (1000 + 1));
         const user: User = {
             firstName: "Kovacs",
