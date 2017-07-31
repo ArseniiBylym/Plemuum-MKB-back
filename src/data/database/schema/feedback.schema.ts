@@ -1,15 +1,15 @@
 
-import * as mongoose from "mongoose";
+import { Schema, Model, Document, Connection } from 'mongoose';
 import Feedback from "../../models/feedback.model";
 import { TagSchema } from './tag.schema'
 
 const modelName = "Feedback";
 const databaseName = "feedback";
 
-interface FeedbackModel extends Feedback, mongoose.Document {
+interface FeedbackModel extends Feedback, Document {
 }
 
-const FeedbackSchema = new mongoose.Schema({
+const FeedbackSchema = new Schema({
     senderId: { required: true, type: String, index: true },
     recipientId: { required: true, type: String, index: true },
     context: { required: false, type: String },
@@ -23,9 +23,8 @@ const FeedbackSchema = new mongoose.Schema({
         timestamps: true,
     });
 
-const getDatabaseModel = (dbConnection: mongoose.Connection, dbName?: string): mongoose.Model<FeedbackModel> => {
-    dbConnection.useDb(databaseName);
-    return dbConnection.model<FeedbackModel>(modelName, FeedbackSchema);
+const getDatabaseModel = (dbConnection: Connection, dbName = "hipteamTest"): Model<FeedbackModel> => {
+    return dbConnection.useDb(dbName).model<FeedbackModel>(modelName, FeedbackSchema);
 }
 
 export { FeedbackModel, getDatabaseModel };

@@ -1,31 +1,27 @@
 import Feedback from "../models/feedback.model";
-import * as mongoose from "mongoose";
+import { Model, Query } from "mongoose";
 import { FeedbackModel, getDatabaseModel } from "../database/schema/feedback.schema";
 import * as databaseManager from "../database/database.manager";
 import DatabaseManager from "../database/database.manager";
+import BaseDataController from "./base.datacontroller";
 
-let instance: FeedbackDataController;
-
-export default class FeedbackDataController {
-
-    private databaseManager: DatabaseManager;
+export default class FeedbackDataController extends BaseDataController<FeedbackModel>{
 
     constructor(databaseManager: DatabaseManager) {
-        this.databaseManager = databaseManager;
+        super(databaseManager, getDatabaseModel);
     }
 
     public getAllFeedback(userId: string): Promise<Feedback[]> {
         return new Promise((resolve, reject) => {
-            const query: any = { $or: [{ senderId: userId }, { recipientId: userId }] };
-            const feedbackModel: mongoose.Model<FeedbackModel> = getDatabaseModel(this.databaseManager.getConnection());
+            const query = { $or: [{ senderId: userId }, { recipientId: userId }] };
+            const feedbackModel = getDatabaseModel(this.databaseManager.getConnection());
             feedbackModel.find(query, (error: Error, feedbacks: Feedback[]) => error ? reject(error) : resolve(feedbacks));
         });
     }
 
     public saveFeedback(feedback: Feedback): Promise<Feedback> {
         return new Promise((resolve, reject) => {
-            const feedbackModel: mongoose.Model<FeedbackModel> =
-                getDatabaseModel(this.databaseManager.getConnection());
+            const feedbackModel = getDatabaseModel(this.databaseManager.getConnection());
             new feedbackModel(feedback).save((error: Error, feedback: Feedback) => error ? reject(error) : resolve(feedback));
         });
     }

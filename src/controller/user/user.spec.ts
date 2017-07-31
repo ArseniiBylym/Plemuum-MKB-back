@@ -4,6 +4,7 @@ import { RequestResponse } from 'request';
 import config from '../../../config/config';
 import UserController from "./user.controller";
 import UserDataController from "../../data/datacontroller/user.datacontroller";
+import * as DataControllerFactory from '../../factory/datacontroller.factory';
 import { anything, instance, mock, verify, when } from "ts-mockito";
 import { User } from "../../data/models/user.model";
 
@@ -22,6 +23,15 @@ let userDataController: UserDataController;
 let userController: UserController;
 
 describe("User request tests", () => {
+
+    before((done) => {
+        DataControllerFactory.getUserDataController().clearData()
+            .then((state) => done())
+            .catch((error) => {
+                console.error(error);
+                done();
+            })
+    });
 
     describe('Basic test', () => {
 

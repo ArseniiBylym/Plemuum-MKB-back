@@ -2,9 +2,7 @@ import * as mongoose from 'mongoose';
 
 export default class DatabaseManager {
     private dbConnection: mongoose.Connection;
-    constructor() { }
-
-    public connect(mongoUrl: string) {
+    constructor(mongoUrl: string) {
         this.dbConnection = mongoose.createConnection(mongoUrl)
     }
 

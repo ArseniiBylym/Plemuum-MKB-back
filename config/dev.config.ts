@@ -5,7 +5,7 @@ const devConfig: Config = {
         return '5000';
     },
     get mongoUrl() {
-        return 'mongodb://localhost/test'
+        return 'mongodb://localhost'
     }
 }
 

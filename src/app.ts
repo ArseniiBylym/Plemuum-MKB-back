@@ -9,7 +9,6 @@ class App {
 
     constructor() {
         this.express = express();
-        DatabaseFactory.getDatabaseManager().connect(config.mongoUrl);
         Routes(this.express);
     }
 }

@@ -1,11 +1,11 @@
 
-import * as mongoose from "mongoose";
+import { Schema, Document, Connection, Model } from 'mongoose';
 import Tag from "../../models/tag.model";
 
-interface TagModel extends Tag, mongoose.Document {
+interface TagModel extends Tag, Document {
 }
 
-export let TagSchema = new mongoose.Schema({
+export let TagSchema = new Schema({
     title: { required: true, type: String, index: true },
     isActive: { required: true, type: Boolean, index: true },
     order: { required: true, type: Number, index: true }
@@ -14,11 +14,8 @@ export let TagSchema = new mongoose.Schema({
         timestamps: true,
     });
 
-const getDatabaseModel = (dbConnection: mongoose.Connection, dbName?: string): mongoose.Model<TagModel> => {
-    if (dbName) {
-        dbConnection.useDb(dbName);
-    }
-    return dbConnection.model<TagModel>("Tag", TagSchema);
+const getDatabaseModel = (dbConnection: Connection, dbName = "hipteamTest"): Model<TagModel> => {
+    return dbConnection.useDb(dbName).model<TagModel>("Tag", TagSchema);
 }
 
 export { TagModel, getDatabaseModel };

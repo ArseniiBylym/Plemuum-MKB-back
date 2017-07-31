@@ -2,12 +2,22 @@ import { expect } from 'chai';
 import * as request from 'request';
 import { RequestResponse } from 'request';
 import config from '../../../config/config'
+import * as DataControllerFactory from '../../factory/datacontroller.factory';
 
 const orgId = "orgID1234";
 const userId = "userID1234"
 const baseUrl = `http://localhost:${config.port}/api`;
 
 describe("Feedback request test", () => {
+
+    before((done) => {
+        DataControllerFactory.getFeedbackDataController().clearData()
+            .then((state) => done())
+            .catch((error) => {
+                console.error(error);
+                done();
+            })
+    });
 
     describe("Fetch feedbacks", () => {
         const url = `${baseUrl}/${orgId}/user/${userId}/feedbacks`;
