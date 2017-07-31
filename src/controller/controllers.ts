@@ -5,7 +5,7 @@ import feedbackController from './feedback/feedback.controller';
 import userDataController from '../data/datacontroller/user.datacontroller';
 import feedbackDataController from '../data/datacontroller/feedback.datacontroller';
 import databaseManager from '../data/database/database.manager';
-import * as ControllerFactory from './controller.factory'
+import * as ControllerFactory from '../factory/controller.factory'
 
 module.exports.set = (express: Express) => {
     ControllerFactory.getAuthController().register(express);

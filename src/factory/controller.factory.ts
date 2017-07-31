@@ -1,9 +1,9 @@
 import UserDataController from "../data/datacontroller/user.datacontroller";
-import { UserController } from "./user/user.controller";
+import { UserController } from "../controller/user/user.controller";
 import FeedbackDataController from "../data/datacontroller/feedback.datacontroller";
-import FeedbackController from "./feedback/feedback.controller";
-import AuthController from "./auth/auth.controller";
-import * as DataControllerFactory from '../data/datacontroller/datacontroller.factory'
+import FeedbackController from "../controller/feedback/feedback.controller";
+import AuthController from "../controller/auth/auth.controller";
+import * as DataControllerFactory from './datacontroller.factory'
 
 let userControllerInstance: UserController;
 let feedbackControllerInstance: FeedbackController;
