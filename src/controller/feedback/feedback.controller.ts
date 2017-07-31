@@ -3,6 +3,8 @@ import { Express, Request, Response } from "express";
 import Feedback from "../../data/models/feedback.model";
 import { TYPE } from "../../data/models/feedback.model";
 import FeedbackDataController from '../../data/datacontroller/feedback.datacontroller'
+import { Error } from 'mongoose';
+import * as ErrorHandler from '../../util/errorhandler';
 
 export default class FeedbackController {
     private feedbackDataController: FeedbackDataController;
@@ -27,9 +29,14 @@ export default class FeedbackController {
     }
 
     public postFeedback(req: Request, res: Response, next: Function) {
-        this.saveFeedback()
-            .then((result) => res.send(result))
-            .catch((error) => res.json({ error: error }));
+        const feedback: Feedback = req.body;
+        if (feedback) {
+            this.saveFeedback(req.body)
+                .then((result) => res.send(result))
+                .catch((error: Error) => res.status(400).json(ErrorHandler.getFriendlyErrorFromMongooseError(error)));
+        } else {
+            res.status(400).json({ error: "invalid request" });
+        }
     }
 
     public getIncomingFeedbacks(req: Request, res: Response, next: Function) {
@@ -40,22 +47,7 @@ export default class FeedbackController {
         )
     }
 
-    public saveFeedback(): Promise<Object> {
-        const feedback: Feedback = {
-            senderId: "sendedID",
-            recipientId: "recipientId",
-            context: "context",
-            message: "message",
-            creationDate: "creationDate",
-            privacy: ["ANONYMOUS"],
-            type: "CONSIDER",
-            requestId: "string",
-            tags: [{
-                title: "TAG title",
-                isActive: true,
-                order: 1
-            }]
-        };
+    public saveFeedback(feedback: Feedback): Promise<Object> {
         return this.feedbackDataController.saveFeedback(feedback)
     }
 }

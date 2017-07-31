@@ -40,16 +40,29 @@ describe("Feedback request test", () => {
 
     describe("Create a feedback", () => {
         const url = `${baseUrl}/${orgId}/feedback`;
+        const feedbackForm = {
+            form: {
+                senderId: 'senderId',
+                recipientId: 'recipientId',
+                context: 'context',
+                message: 'message',
+                creationDate: '2017.07.31.',
+                privacy: ['ANONYMOUS'],
+                type: 'CONSIDER',
+                requestId: '',
+                tags: []
+            }
+        }
 
         it("should return 200", done => {
-            request.post(url, (error: any, response: RequestResponse) => {
+            request.post(url, feedbackForm, (error: any, response: RequestResponse) => {
                 expect(response.statusCode).to.equal(200);
                 done();
             })
         })
 
         it("response should contain a feedback object", (done) => {
-            request.post(url, (error: any, response: RequestResponse, body: any) => {
+            request.post(url, feedbackForm, (error: any, response: RequestResponse, body: any) => {
                 const parsedBody = JSON.parse(body);
                 expect(parsedBody).have.property("senderId");
                 expect(parsedBody).have.property("recipientId");
@@ -63,6 +76,61 @@ describe("Feedback request test", () => {
             })
         });
     });
+
+    describe("Create a feedback without form", () => {
+        const url = `${baseUrl}/${orgId}/feedback`;
+        const feedbackForm = {}
+
+        it("should return 400 Bad Request", done => {
+            request.post(url, feedbackForm, (error: any, response: RequestResponse) => {
+                expect(response.statusCode).to.equal(400);
+                done();
+            })
+        })
+
+        it("response should contain an error object", (done) => {
+            request.post(url, feedbackForm, (error: any, response: RequestResponse, body: any) => {
+                const parsedBody = JSON.parse(body);
+                expect(parsedBody).have.property("errorName");
+                expect(parsedBody).have.property("message");
+                done();
+            })
+        });
+
+    })
+
+    describe("Create a feedback with invalid form", () => {
+        const url = `${baseUrl}/${orgId}/feedback`;
+        const feedbackForm = {
+            form: {
+                senderId: 'senderId',
+                recipientId: 'recipientId',
+                context: 'context',
+                creationDate: '2017.07.31.',
+                privacy: ['ANONYMOS'],
+                type: 'CONSIDER',
+                requestId: '',
+                tags: []
+            }
+        }
+
+        it("should return 400 Bad Request", done => {
+            request.post(url, feedbackForm, (error: any, response: RequestResponse) => {
+                expect(response.statusCode).to.equal(400);
+                done();
+            })
+        })
+
+        it("response should contain an error object", (done) => {
+            request.post(url, feedbackForm, (error: any, response: RequestResponse, body: any) => {
+                const parsedBody = JSON.parse(body);
+                expect(parsedBody).have.property("errorName");
+                expect(parsedBody).have.property("message");
+                done();
+            })
+        });
+
+    })
 
     describe("Fetch sent feedbacks", () => {
         const url = `${baseUrl}/${orgId}/user/${userId}/feedbacks/sent`;
