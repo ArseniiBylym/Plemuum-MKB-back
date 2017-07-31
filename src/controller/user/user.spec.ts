@@ -1,11 +1,11 @@
-import {expect} from 'chai';
+import { expect } from 'chai';
 import * as request from 'request';
-import {RequestResponse} from 'request';
+import { RequestResponse } from 'request';
 import config from '../../../config/config';
-import UserControllerFactory, {UserController} from "./user.controller";
+import UserController from "./user.controller";
 import UserDataController from "../../data/datacontroller/user.datacontroller";
-import {anything, instance, mock, verify, when} from "ts-mockito";
-import {User} from "../../data/models/user.model";
+import { anything, instance, mock, verify, when } from "ts-mockito";
+import { User } from "../../data/models/user.model";
 
 const url = `http://localhost:${config.port}/user/save`;
 const testUser: User = {
@@ -29,7 +29,7 @@ describe("User request tests", () => {
             userDataController = mock(UserDataController);
             when(userDataController.handleUserSave())
                 .thenReturn(new Promise<User>((resolve) => resolve(testUser)));
-            userController = UserControllerFactory(instance(userDataController));
+            userController = new UserController(instance(userDataController));
             done();
         });
 

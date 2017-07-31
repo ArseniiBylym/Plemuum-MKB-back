@@ -2,9 +2,7 @@ import { Express, Request, Response } from "express";
 import { User } from "../../data/models/user.model";
 import UserDataController from "../../data/datacontroller/user.datacontroller";
 
-let instance: UserController;
-
-export class UserController {
+export default class UserController {
 
     private userDataController: UserDataController;
 
@@ -12,20 +10,10 @@ export class UserController {
         this.userDataController = userDataController;
     }
 
-    public register(express: Express) {
-        express.route('/user/save').get((req: Request, res: Response) => this.userDataController.handleUserSave()
+    public handleSaveUserRequest(req: Request, res: Response, nex: Function) {
+        console.log("handleSaveUserRequest")
+        this.userDataController.handleUserSave()
             .then((result) => res.send(result))
-            .catch((error) => res.json({ error: error })));
+            .catch((error) => res.json({ error: error }));
     }
 }
-
-const factory = (userDataController: UserDataController) => {
-    if (instance) {
-        return instance;
-    } else {
-        return new UserController(userDataController);
-    }
-};
-
-
-export default factory;

@@ -18,7 +18,7 @@ const getDatabaseModel = (dbConnection: mongoose.Connection, dbName?: string): m
     if (dbName) {
         dbConnection.useDb(dbName);
     }
-    return dbConnection.model<TagModel>("Feedback", TagSchema);
+    return dbConnection.model<TagModel>("Tag", TagSchema);
 }
 
 export { TagModel, getDatabaseModel };

@@ -1,12 +1,9 @@
 import { Express, Request, Response } from "express";
 
 export default class AuthController {
-    constructor() {
-    }
+    constructor() { }
 
-    public register(express: Express) {
-        express.route('/login').get((req: Request, res: Response) => {
-            res.json({ message: 'Login' })
-        });
+    public saveUser(req: Request, res: Response, next: Function) {
+        res.json({ message: 'Login' })
     }
 }

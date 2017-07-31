@@ -3,6 +3,9 @@ import * as mongoose from "mongoose";
 import Feedback from "../../models/feedback.model";
 import { TagSchema } from './tag.schema'
 
+const modelName = "Feedback";
+const databaseName = "feedback";
+
 interface FeedbackModel extends Feedback, mongoose.Document {
 }
 
@@ -21,10 +24,8 @@ const FeedbackSchema = new mongoose.Schema({
     });
 
 const getDatabaseModel = (dbConnection: mongoose.Connection, dbName?: string): mongoose.Model<FeedbackModel> => {
-    if (dbName) {
-        dbConnection.useDb(dbName);
-    }
-    return dbConnection.model<FeedbackModel>("Feedback", FeedbackSchema);
+    dbConnection.useDb(databaseName);
+    return dbConnection.model<FeedbackModel>(modelName, FeedbackSchema);
 }
 
 export { FeedbackModel, getDatabaseModel };

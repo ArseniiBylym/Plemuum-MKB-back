@@ -2,7 +2,7 @@ import * as express from 'express'
 import { Express } from 'express'
 import config from '../config/config';
 import * as DatabaseFactory from './factory/database.factory';
-import * as Controllers from './controller/controllers'
+import Routes from './route/routes';
 
 class App {
     public express: Express;
@@ -10,7 +10,7 @@ class App {
     constructor() {
         this.express = express();
         DatabaseFactory.getDatabaseManager().connect(config.mongoUrl);
-        Controllers.set(this.express);
+        Routes(this.express);
     }
 }
 
