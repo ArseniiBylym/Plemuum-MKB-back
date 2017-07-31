@@ -14,8 +14,14 @@ export default class FeedbackDataController extends BaseDataController<FeedbackM
     public getAllFeedback(userId: string): Promise<Feedback[]> {
         return new Promise((resolve, reject) => {
             const query = { $or: [{ senderId: userId }, { recipientId: userId }] };
-            const feedbackModel = getDatabaseModel(this.databaseManager.getConnection());
-            feedbackModel.find(query, (error: Error, feedbacks: Feedback[]) => error ? reject(error) : resolve(feedbacks));
+            this.queryFeedbacks(query, reject, resolve);
+        });
+    }
+
+    public getSentFeedbacks(userId: string): Promise<Feedback[]> {
+        return new Promise((resolve, reject) => {
+            const query = { senderId: userId };
+            this.queryFeedbacks(query, reject, resolve);
         });
     }
 
@@ -24,5 +30,10 @@ export default class FeedbackDataController extends BaseDataController<FeedbackM
             const feedbackModel = getDatabaseModel(this.databaseManager.getConnection());
             new feedbackModel(feedback).save((error: Error, feedback: Feedback) => error ? reject(error) : resolve(feedback));
         });
+    }
+
+    private queryFeedbacks(query: any, reject: Function, resolve: Function) {
+        const feedbackModel = getDatabaseModel(this.databaseManager.getConnection());
+        feedbackModel.find(query, (error: Error, feedbacks: Feedback[]) => error ? reject(error) : resolve(feedbacks));
     }
 }

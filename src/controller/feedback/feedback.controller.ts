@@ -20,12 +20,9 @@ export default class FeedbackController {
     }
 
     public getSentFeedbacks(req: Request, res: Response, next: Function) {
-        res.json(
-            {
-                orgId: req.params.orgId,
-                userId: req.params.userId,
-            }
-        )
+        this.feedbackDataController.getSentFeedbacks(req.params.userId)
+            .then((result) => res.json(result))
+            .catch((error) => res.json({ error: error }));
     }
 
     public postFeedback(req: Request, res: Response, next: Function) {

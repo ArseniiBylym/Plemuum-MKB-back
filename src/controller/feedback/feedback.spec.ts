@@ -141,6 +141,14 @@ describe("Feedback request test", () => {
                 done();
             })
         })
+
+        it("response should be an array", (done) => {
+            request.get(url, (error: any, response: RequestResponse, body: any) => {
+                const parsedBody = JSON.parse(body);
+                expect(parsedBody).to.be.an.instanceOf(Array);
+                done();
+            })
+        })
     });
 
     describe("Fetch incoming feedbacks", () => {
