@@ -9,7 +9,7 @@ function getTestUser(firstName: string, lastName: string): User {
         email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}${Util.getRandomInt(1, 1000)}@email.com`,
         tokens: [],
         pictureUrl: "",
-        orgIds: [],
+        orgIds: ['hipteam', 'other'],
         password: "asd123"
     };
 }

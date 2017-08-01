@@ -69,8 +69,7 @@ describe("User request tests", () => {
         it('Response should return the organization id', done => {
             request.get(url, (error: any, response: RequestResponse, body: any) => {
                 const parsedBody = JSON.parse(body);
-                expect(parsedBody).have.property('orgId');
-                expect(parsedBody.orgId).to.be.equal(orgId);
+                expect(parsedBody).to.be.an.instanceOf(Array);
                 done();
             })
         })

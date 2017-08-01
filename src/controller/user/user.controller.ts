@@ -13,7 +13,8 @@ export default class UserController {
 
     //TODO implement this
     public showRegistrationForm(req: Request, res: Response,) {
-        res.render("newuser", {title: "Express", organizations: []});
+        res.render("newuser", {title: "Express", organizations: [
+            {dbName: 'hipteam', name: 'hipteam'}, {dbName: 'other', name: 'other'}]});
     }
 
     public createNewUser(req: Request, res: Response,) {
@@ -27,9 +28,10 @@ export default class UserController {
         }
     }
 
-    //TODO implement this
     public getOrganizationUsers(req: Request, res: Response,) {
-        res.send({orgId: req.params.orgId});
+        this.userDataController.getOrganizationUsers(req.params.orgId)
+            .then((result) => res.send(result))
+            .catch((error) => res.status(400).json(ErrorHandler.getFriendlyErrorFromMongooseError(error)));
     }
 
     //TODO implement this

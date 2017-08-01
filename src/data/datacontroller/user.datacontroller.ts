@@ -1,7 +1,6 @@
 import { User } from "../models/user.model";
 import { Model } from 'mongoose';
-import { UserModel, getDatabaseModel } from "../database/schema/user.schema";
-import * as databaseManager from "../database/database.manager";
+import { getDatabaseModel, UserModel } from "../database/schema/user.schema";
 import DatabaseManager from "../database/database.manager";
 import BaseDataController from "./base.datacontroller";
 
@@ -22,5 +21,13 @@ export default class UserDataController extends BaseDataController<UserModel> {
                 }
             });
         });
+    }
+
+    public getOrganizationUsers(orgId: any): Promise<User[]> {
+        return new Promise((resolve, reject) => {
+            const userModel = getDatabaseModel(this.databaseManager.getConnection());
+            const query: any = {orgData: {$elemMatch: {orgId: orgId}}};
+            userModel.find(query, (error: Error, users: User[]) => error ? reject(error) : resolve(users))
+        })
     }
 }
