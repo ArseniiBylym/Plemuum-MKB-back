@@ -23,18 +23,4 @@ export default class UserDataController extends BaseDataController<UserModel> {
             });
         });
     }
-
-    public handleUserSave(): Promise<User> {
-        const random: number = Math.floor(Math.random() * (1000 + 1));
-        const user: User = {
-            firstName: "Kovacs",
-            lastName: "Bela",
-            email: `bela.kovacs@${random}gmail.com`,
-            tokens: [],
-            pictureUrl: "",
-            orgIds: [],
-            password: "asd123"
-        };
-        return this.saveUser(user)
-    }
 }

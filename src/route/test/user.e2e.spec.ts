@@ -5,7 +5,8 @@ import config from '../../../config/config';
 import UserDataController from "../../data/datacontroller/user.datacontroller";
 import * as DataControllerFactory from '../../factory/datacontroller.factory';
 import UserController from "../../controller/user/user.controller";
-
+import * as TestObjectFactory from "../../util/testobject.factory"
+import * as modelValidator from "../../util/model.validator"
 
 let userDataController: UserDataController;
 let userController: UserController;
@@ -25,17 +26,22 @@ describe("User request tests", () => {
 
         const url = `http://localhost:${config.port}/api/register/user`;
 
-        it('POST: Should return 200 and an empty object', done => {
-            request.post(url, {}, (error: any, response: RequestResponse, body: any) => {
+        it('POST: Correct request status code should be 200', done => {
+            const userForm = {
+                form: TestObjectFactory.getJohnDoe()
+            };
+            request.post(url, userForm, (error: any, response: RequestResponse, body: any) => {
                 expect(response.statusCode).to.equal(200);
                 done();
             })
         });
 
-        it("POST: Should return a user object", done => {
-            request.post(url, (error: any, response: RequestResponse, body: any) => {
-                const parsedBody = JSON.parse(body);
-                expect(parsedBody).have.property('firstName');
+        it("POST: Correct request response should contain a user", done => {
+            const userForm = {
+                form: TestObjectFactory.getJohnDoe()
+            };
+            request.post(url, userForm, (error: any, response: RequestResponse, body: any) => {
+                modelValidator.validateUser(JSON.parse(body));
                 done();
             })
         });

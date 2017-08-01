@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import UserDataController from "../../data/datacontroller/user.datacontroller";
+import { User } from "../../data/models/user.model";
+import * as ErrorHandler from '../../util/errorhandler';
 
 export default class UserController {
 
@@ -15,9 +17,14 @@ export default class UserController {
     }
 
     public createNewUser(req: Request, res: Response,) {
-        this.userDataController.handleUserSave()
-            .then((result) => res.send(result))
-            .catch((error) => res.json({error: error}));
+        const user: User = req.body;
+        if (user) {
+            this.userDataController.saveUser(user)
+                .then((result) => res.send(result))
+                .catch((error) => res.status(400).json(ErrorHandler.getFriendlyErrorFromMongooseError(error)));
+        } else {
+            res.status(400).json({error: "invalid input"});
+        }
     }
 
     //TODO implement this
