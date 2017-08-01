@@ -11,6 +11,12 @@ import * as modelValidator from "../../util/model.validator"
 let userDataController: UserDataController;
 let userController: UserController;
 
+function getUserForm() {
+    return {
+        form: TestObjectFactory.getJohnDoe()
+    }
+}
+
 describe("User request tests", () => {
 
     before((done) => {
@@ -27,20 +33,14 @@ describe("User request tests", () => {
         const url = `http://localhost:${config.port}/api/register/user`;
 
         it('POST: Correct request status code should be 200', done => {
-            const userForm = {
-                form: TestObjectFactory.getJohnDoe()
-            };
-            request.post(url, userForm, (error: any, response: RequestResponse, body: any) => {
+            request.post(url, getUserForm(), (error: any, response: RequestResponse, body: any) => {
                 expect(response.statusCode).to.equal(200);
                 done();
             })
         });
 
         it("POST: Correct request response should contain a user", done => {
-            const userForm = {
-                form: TestObjectFactory.getJohnDoe()
-            };
-            request.post(url, userForm, (error: any, response: RequestResponse, body: any) => {
+            request.post(url, getUserForm(), (error: any, response: RequestResponse, body: any) => {
                 modelValidator.validateUser(JSON.parse(body));
                 done();
             })

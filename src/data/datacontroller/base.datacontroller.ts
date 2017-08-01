@@ -5,7 +5,7 @@ import DatabaseManager from "../database/database.manager";
 export default class BaseDataController<T extends Document> {
 
     protected databaseManager: DatabaseManager;
-    protected getDatabaseModel: Function;
+    public getDatabaseModel: Function;
 
     constructor(databaseManager: DatabaseManager, getDatabaseModel: Function) {
         this.databaseManager = databaseManager;
