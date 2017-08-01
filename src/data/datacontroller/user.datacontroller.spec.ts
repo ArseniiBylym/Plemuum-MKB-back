@@ -2,8 +2,8 @@ import UserDataController from "./user.datacontroller";
 import DatabaseManager from "../database/database.manager";
 import * as DatabaseFactory from "../../factory/database.factory";
 import * as TestObjectFactory from "../../util/testobject.factory";
-import { User } from "../models/user.model";
-import { expect, should, assert } from 'chai';
+import {User} from "../models/user.model";
+import {assert, expect, should} from 'chai';
 import * as asserts from "assert";
 
 describe("UserDataController tests", () => {
@@ -60,6 +60,9 @@ describe("UserDataController tests", () => {
                     asserts.fail(reason);
                     done();
                 })
+        }).catch(reason => {
+            asserts.fail(reason);
+            done();
         });
     })
 });
