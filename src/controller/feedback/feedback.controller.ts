@@ -11,19 +11,19 @@ export default class FeedbackController {
         this.feedbackDataController = feedbackDataController;
     }
 
-    public getFeedbacks(req: Request, res: Response, next: Function) {
+    public getFeedbacks(req: Request, res: Response,) {
         this.feedbackDataController.getAllFeedback(req.params.userId)
             .then((result) => res.json(result))
             .catch((error) => res.json({error: error}));
     }
 
-    public getSentFeedbacks(req: Request, res: Response, next: Function) {
+    public getSentFeedbacks(req: Request, res: Response,) {
         this.feedbackDataController.getSentFeedbacks(req.params.userId)
             .then((result) => res.json(result))
             .catch((error) => res.json({error: error}));
     }
 
-    public postFeedback(req: Request, res: Response, next: Function) {
+    public postFeedback(req: Request, res: Response,) {
         const feedback: Feedback = req.body;
         if (feedback) {
             this.feedbackDataController.saveFeedback(req.body)
@@ -34,7 +34,7 @@ export default class FeedbackController {
         }
     }
 
-    public getIncomingFeedbacks(req: Request, res: Response, next: Function) {
+    public getIncomingFeedbacks(req: Request, res: Response,) {
         this.feedbackDataController.getIncomingFeedbacks(req.params.userId)
             .then((result) => res.json(result))
             .catch((error) => res.json({error: error}));

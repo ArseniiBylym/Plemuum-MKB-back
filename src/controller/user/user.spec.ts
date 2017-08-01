@@ -8,7 +8,6 @@ describe("UserController handleSaveUserRequest", () => {
     const mockDataController = mock(UserDataController);
     const mockResult: any = {};
     const mockRequest: any = {};
-    const mockNext: any = {};
 
     it("Happy case: should call response send", (done) => {
         const mockResponse: any = {
@@ -18,7 +17,7 @@ describe("UserController handleSaveUserRequest", () => {
             new Promise<any>((resolve) => resolve(mockResult))
         );
         userController = new UserController(instance(mockDataController));
-        userController.handleSaveUserRequest(mockRequest, mockResponse, mockNext);
+        userController.createNewUser(mockRequest, mockResponse);
     });
 
     it("Sad case: should call response json", (done) => {
@@ -29,6 +28,6 @@ describe("UserController handleSaveUserRequest", () => {
             new Promise<any>((resolve, reject) => reject(mockResult))
         );
         userController = new UserController(instance(mockDataController));
-        userController.handleSaveUserRequest(mockRequest, mockResponse, mockNext);
+        userController.createNewUser(mockRequest, mockResponse);
     })
 });
