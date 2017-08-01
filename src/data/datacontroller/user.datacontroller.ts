@@ -30,4 +30,12 @@ export default class UserDataController extends BaseDataController<UserModel> {
             userModel.find(query, (error: Error, users: User[]) => error ? reject(error) : resolve(users))
         })
     }
+
+    getUserById(orgId: string, userId: string): Promise<User> {
+        return new Promise((resolve, reject) => {
+            const userModel = getDatabaseModel(this.databaseManager.getConnection());
+            const query: any = {$and: [{orgIds: {$in: [orgId]}}, {_id: userId}]};
+            userModel.findOne(query, (error: Error, user: User) => error ? reject(error) : resolve(user))
+        })
+    }
 }

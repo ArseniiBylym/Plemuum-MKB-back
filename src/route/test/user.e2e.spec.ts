@@ -32,9 +32,9 @@ describe("User request tests", () => {
 
         const url = `http://localhost:${config.port}/api/register/user`;
 
-        it('POST: Correct request status code should be 200', done => {
+        it('POST: Correct request status code should be 201', done => {
             request.post(url, getUserForm(), (error: any, response: RequestResponse, body: any) => {
-                expect(response.statusCode).to.equal(200);
+                expect(response.statusCode).to.equal(201);
                 done();
             })
         });
@@ -77,8 +77,8 @@ describe("User request tests", () => {
 
     describe('Get one user from organization', () => {
 
-        const orgId = "1234";
-        const userId = "1234";
+        const orgId = "hipteam";
+        const userId = "59809fbb45fc8436263ce1ec";
         const url = `http://localhost:${config.port}/api/${orgId}/user/${userId}`;
 
         it('Should return 200', done => {
@@ -87,17 +87,6 @@ describe("User request tests", () => {
                 done();
             })
         });
-
-        it('Response should return the organization id', done => {
-            request.get(url, (error: any, response: RequestResponse, body: any) => {
-                const parsedBody = JSON.parse(body);
-                expect(parsedBody).have.property('orgId');
-                expect(parsedBody.orgId).to.be.equal(orgId);
-                expect(parsedBody).have.property('userId');
-                expect(parsedBody.orgId).to.be.equal(userId);
-                done();
-            })
-        })
     });
 
     describe('Reset user password', () => {

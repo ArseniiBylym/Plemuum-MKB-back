@@ -24,10 +24,11 @@ describe("FeedbackController unit tests", () => {
 
             /* If done was called, then the test passed, otherwise timeout */
             const mockResponse: any = {
-                json: (result: any) => {
+                send: (result: any) => {
                     expect(result).to.be.equal(mockResult);
                     done();
-                }
+                },
+                status: (statusCode: number) => mockResponse
             };
 
             feedbackController = new FeedbackController(instance(feedbackDataController));
@@ -45,7 +46,8 @@ describe("FeedbackController unit tests", () => {
             const mockResponse: any = {
                 json: (error: any) => {
                     done();
-                }
+                },
+                status: (statusCode: number) => mockResponse
             };
 
             feedbackController = new FeedbackController(instance(feedbackDataController));
@@ -65,10 +67,11 @@ describe("FeedbackController unit tests", () => {
 
             /* If done was called, then the test passed, otherwise timeout */
             const mockResponse: any = {
-                json: (result: any) => {
+                send: (result: any) => {
                     expect(result).to.be.equal(mockResult);
                     done();
-                }
+                },
+                status: (statusCode: number) => mockResponse
             };
 
             feedbackController = new FeedbackController(instance(feedbackDataController));
@@ -86,7 +89,8 @@ describe("FeedbackController unit tests", () => {
             const mockResponse: any = {
                 json: (error: any) => {
                     done();
-                }
+                },
+                status: (statusCode: number) => mockResponse
             };
 
             feedbackController = new FeedbackController(instance(feedbackDataController));
@@ -106,10 +110,11 @@ describe("FeedbackController unit tests", () => {
 
             /* If done was called, then the test passed, otherwise timeout */
             const mockResponse: any = {
-                json: (result: any) => {
+                send: (result: any) => {
                     expect(result).to.be.equal(mockResult);
                     done();
-                }
+                },
+                status: (statusCode: number) => mockResponse
             };
 
             feedbackController = new FeedbackController(instance(feedbackDataController));
@@ -126,9 +131,10 @@ describe("FeedbackController unit tests", () => {
             /* If done was called, then the test passed, otherwise timeout */
             const mockResponse: any = {
                 json: (error: any) => {
-                    expect(error).have.property("error");
+                    should().exist(error);
                     done();
-                }
+                },
+                status: (statusCode: number) => mockResponse
             };
 
             feedbackController = new FeedbackController(instance(feedbackDataController));
@@ -159,6 +165,7 @@ describe("FeedbackController unit tests", () => {
                     should().equal(result, mockResult);
                     done();
                 },
+                status: (statusCode: number) => mockResponse
             };
 
             feedbackController = new FeedbackController(instance(feedbackDataController));
