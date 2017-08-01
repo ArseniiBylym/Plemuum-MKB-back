@@ -26,7 +26,7 @@ export default class FeedbackController {
     public postFeedback(req: Request, res: Response, next: Function) {
         const feedback: Feedback = req.body;
         if (feedback) {
-            this.saveFeedback(req.body)
+            this.feedbackDataController.saveFeedback(req.body)
                 .then((result) => res.send(result))
                 .catch((error: Error) => res.status(400).json(ErrorHandler.getFriendlyErrorFromMongooseError(error)));
         } else {
@@ -38,9 +38,5 @@ export default class FeedbackController {
         this.feedbackDataController.getIncomingFeedbacks(req.params.userId)
             .then((result) => res.json(result))
             .catch((error) => res.json({error: error}));
-    }
-
-    public saveFeedback(feedback: Feedback): Promise<Object> {
-        return this.feedbackDataController.saveFeedback(feedback)
     }
 }
