@@ -1,2 +1,7 @@
 .idea
 node_modules
+*.map
+dist
+.nyc_output
+coverage
+apidocs

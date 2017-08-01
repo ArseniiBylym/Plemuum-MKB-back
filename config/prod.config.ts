@@ -5,7 +5,7 @@ const prodConfig: Config = {
         return '1234';
     },
     get mongoUrl() {
-        return 'mongodb://localhost/test'
+        return 'mongodb://localhost'
     }
 }
 

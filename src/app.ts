@@ -1,18 +1,16 @@
 import * as express from 'express'
 import { Express } from 'express'
 import config from '../config/config';
-import databaseManager from './data/database/database.manager';
+import * as DatabaseFactory from './factory/database.factory';
+import Routes from './route/routes';
+import * as bodyParser from "body-parser";
 
-const controllers = require('./controllers/controllers');
-
-class App {
-    public express: Express;
-
-    constructor() {
-        this.express = express();
-        databaseManager.connect(config.mongoUrl);
-        controllers.set(this.express);
-    }
+const app = (): Express => {
+    const app = express();
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({ extended: false }));
+    Routes(app);
+    return app;
 }
 
-export default new App().express
+export default app();
