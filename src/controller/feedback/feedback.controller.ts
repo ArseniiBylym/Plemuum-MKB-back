@@ -1,7 +1,5 @@
-
-import { Express, Request, Response } from "express";
+import { Request, Response } from "express";
 import Feedback from "../../data/models/feedback.model";
-import { TYPE } from "../../data/models/feedback.model";
 import FeedbackDataController from '../../data/datacontroller/feedback.datacontroller'
 import { Error } from 'mongoose';
 import * as ErrorHandler from '../../util/errorhandler';
@@ -16,13 +14,13 @@ export default class FeedbackController {
     public getFeedbacks(req: Request, res: Response, next: Function) {
         this.feedbackDataController.getAllFeedback(req.params.userId)
             .then((result) => res.json(result))
-            .catch((error) => res.json({ error: error }));
+            .catch((error) => res.json({error: error}));
     }
 
     public getSentFeedbacks(req: Request, res: Response, next: Function) {
         this.feedbackDataController.getSentFeedbacks(req.params.userId)
             .then((result) => res.json(result))
-            .catch((error) => res.json({ error: error }));
+            .catch((error) => res.json({error: error}));
     }
 
     public postFeedback(req: Request, res: Response, next: Function) {
@@ -32,16 +30,14 @@ export default class FeedbackController {
                 .then((result) => res.send(result))
                 .catch((error: Error) => res.status(400).json(ErrorHandler.getFriendlyErrorFromMongooseError(error)));
         } else {
-            res.status(400).json({ error: "invalid request" });
+            res.status(400).json({error: "invalid request"});
         }
     }
 
     public getIncomingFeedbacks(req: Request, res: Response, next: Function) {
-        res.json(
-            {
-                message: "incoming feedbacks"
-            }
-        )
+        this.feedbackDataController.getIncomingFeedbacks(req.params.userId)
+            .then((result) => res.json(result))
+            .catch((error) => res.json({error: error}));
     }
 
     public saveFeedback(feedback: Feedback): Promise<Object> {

@@ -2,6 +2,20 @@
 import { Express } from 'express';
 import FeedbackController from '../controller/feedback/feedback.controller';
 
+/**
+ * @apiDefine feedback_list_data
+ * @apiSuccess (Success 200) {Object[]} feedbacks List of user feedbacks
+ * @apiSuccess (Success 200) {String} feedbacks.senderId ID of the sender user
+ * @apiSuccess (Success 200) {String} feedbacks.recipientId ID of the recipient user
+ * @apiSuccess (Success 200) {String} feedbacks.context Context of the feedback
+ * @apiSuccess (Success 200) {String} feedbacks.message Feedback message
+ * @apiSuccess (Success 200) {String[]} [feedbacks.privacy] Optional privacy flags. Accepted values: PRIVATE / ANONYMOUS
+ * @apiSuccess (Success 200) {String} feedbacks.type Type of the feedback. Accepted values: CONSIDER / CONTINUE
+ * @apiSuccess (Success 200) {String} feedbacks.createdAt Date of creation
+ * @apiSuccess (Success 200) {String} feedbacks.updatedAt Date of update
+ * @apiSuccess (Success 200) {String} [feedbacks.requestId] Associated request, if applicable
+ * @apiSuccess (Success 200) {Tag[]} tags [tag] Associated tags of feedback
+ */
 export default (express: Express, feedbackController: FeedbackController) => {
     /**
     * @api {GET} /api/:orgId/user/:userId/feedbacks Get user feedbacks

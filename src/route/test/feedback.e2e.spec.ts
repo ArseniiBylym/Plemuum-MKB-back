@@ -1,6 +1,6 @@
-import {expect} from 'chai';
+import { expect } from 'chai';
 import * as request from 'request';
-import {RequestResponse} from 'request';
+import { RequestResponse } from 'request';
 import config from '../../../config/config'
 import * as DataControllerFactory from '../../factory/datacontroller.factory';
 
@@ -158,6 +158,14 @@ describe("Feedback request test", () => {
         it("should return 200", done => {
             request.get(url, (error: any, response: RequestResponse) => {
                 expect(response.statusCode).to.equal(200);
+                done();
+            })
+        });
+
+        it("response should be an array", (done) => {
+            request.get(url, (error: any, response: RequestResponse, body: any) => {
+                const parsedBody = JSON.parse(body);
+                expect(parsedBody).to.be.an.instanceOf(Array);
                 done();
             })
         })

@@ -24,6 +24,13 @@ export default class FeedbackDataController extends BaseDataController<FeedbackM
         });
     }
 
+    public getIncomingFeedbacks(userId: string): Promise<Feedback[]> {
+        return new Promise((resolve, reject) => {
+            const query = {recipientId: userId};
+            this.queryFeedbacks(query, reject, resolve);
+        });
+    }
+
     public saveFeedback(feedback: Feedback): Promise<Feedback> {
         return new Promise((resolve, reject) => {
             const feedbackModel = getDatabaseModel(this.databaseManager.getConnection());
