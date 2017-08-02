@@ -1,13 +1,11 @@
 import { expect } from 'chai';
-import * as request from 'request';
-import { RequestResponse } from 'request';
-import config from '../../../config/config'
+import * as request from 'supertest';
 import * as DataControllerFactory from '../../factory/datacontroller.factory';
 import * as TestObjectFactory from "../../util/testobject.factory"
+import app from '../../app';
 
 const orgId = "orgID1234";
 const userId = "userID1234";
-const baseUrl = `http://localhost:${config.port}/api`;
 
 describe("Feedback request test", () => {
 
@@ -21,144 +19,111 @@ describe("Feedback request test", () => {
     });
 
     describe("Fetch feedbacks", () => {
-        const url = `${baseUrl}/${orgId}/user/${userId}/feedbacks`;
+        const url = `/api/${orgId}/user/${userId}/feedbacks`;
 
-        it("should return 200", done => {
-            request.get(url, (error: any, response: RequestResponse) => {
-                expect(response.statusCode).to.equal(200);
-                done();
-            })
-        });
-
-        it("response should be an array", (done) => {
-            request.get(url, (error: any, response: RequestResponse, body: any) => {
-                const parsedBody = JSON.parse(body);
-                expect(parsedBody).to.be.an.instanceOf(Array);
-                done();
-            })
+        it("response should be an array and return 200", (done) => {
+            request(app)
+                .get(url)
+                .expect(200)
+                .then(response => {
+                    expect(response.body).to.be.an.instanceOf(Array);
+                    done();
+                });
         })
     });
 
     describe("Create a feedback", () => {
-        const url = `${baseUrl}/${orgId}/feedback`;
-        const feedbackForm = {
-            form: TestObjectFactory.getTestFeedback()
-        };
+        const url = `/api/${orgId}/feedback`;
 
-        it("should return 200", done => {
-            request.post(url, feedbackForm, (error: any, response: RequestResponse) => {
-                expect(response.statusCode).to.equal(200);
-                done();
-            })
-        });
-
-        it("response should contain a feedback object", (done) => {
-            request.post(url, feedbackForm, (error: any, response: RequestResponse, body: any) => {
-                const parsedBody = JSON.parse(body);
-                expect(parsedBody).have.property("senderId");
-                expect(parsedBody).have.property("recipientId");
-                expect(parsedBody).have.property("context");
-                expect(parsedBody).have.property("message");
-                expect(parsedBody).have.property("privacy");
-                expect(parsedBody).have.property("type");
-                expect(parsedBody).have.property("requestId");
-                expect(parsedBody).have.property("tags");
-                done();
-            })
+        it("response should contain a feedback object and return 200", (done) => {
+            request(app)
+                .post(url)
+                .send(TestObjectFactory.getTestFeedback())
+                .expect(200)
+                .then(response => {
+                    expect(response.body).have.property("senderId");
+                    expect(response.body).have.property("recipientId");
+                    expect(response.body).have.property("context");
+                    expect(response.body).have.property("message");
+                    expect(response.body).have.property("privacy");
+                    expect(response.body).have.property("type");
+                    expect(response.body).have.property("requestId");
+                    expect(response.body).have.property("tags");
+                    done();
+                });
         });
     });
 
     describe("Create a feedback without form", () => {
-        const url = `${baseUrl}/${orgId}/feedback`;
+        const url = `/api/${orgId}/feedback`;
         const feedbackForm = {};
 
-        it("should return 400 Bad Request", done => {
-            request.post(url, feedbackForm, (error: any, response: RequestResponse) => {
-                expect(response.statusCode).to.equal(400);
-                done();
-            })
-        });
-
-        it("response should contain an error object", (done) => {
-            request.post(url, feedbackForm, (error: any, response: RequestResponse, body: any) => {
-                const parsedBody = JSON.parse(body);
-                expect(parsedBody).have.property("errorName");
-                expect(parsedBody).have.property("message");
-                done();
-            })
+        it("response should contain an error object and return 400", (done) => {
+            request(app)
+                .post(url)
+                .send(feedbackForm)
+                .expect(400)
+                .then(response => {
+                    expect(response.body).have.property("errorName");
+                    expect(response.body).have.property("message");
+                    done();
+                });
         });
 
     });
 
     describe("Create a feedback with invalid form", () => {
-        const url = `${baseUrl}/${orgId}/feedback`;
+        const url = `/api/${orgId}/feedback`;
         const feedbackForm = {
-            form: {
-                senderId: 'senderId',
-                recipientId: 'recipientId',
-                context: 'context',
-                creationDate: '2017.07.31.',
-                privacy: ['ANONYMOS'],
-                type: 'CONSIDER',
-                requestId: '',
-                tags: []
-            }
+            senderId: 'senderId',
+            recipientId: 'recipientId',
+            context: 'context',
+            creationDate: '2017.07.31.',
+            privacy: ['ANONYMOS'],
+            type: 'CONSIDER',
+            requestId: '',
+            tags: []
         };
 
-        it("should return 400 Bad Request", done => {
-            request.post(url, feedbackForm, (error: any, response: RequestResponse) => {
-                expect(response.statusCode).to.equal(400);
-                done();
-            })
-        });
-
-        it("response should contain an error object", (done) => {
-            request.post(url, feedbackForm, (error: any, response: RequestResponse, body: any) => {
-                const parsedBody = JSON.parse(body);
-                expect(parsedBody).have.property("errorName");
-                expect(parsedBody).have.property("message");
-                done();
-            })
+        it("response should contain an error object and return 400", (done) => {
+            request(app)
+                .post(url)
+                .send(feedbackForm)
+                .expect(400)
+                .then(response => {
+                    expect(response.body).have.property("errorName");
+                    expect(response.body).have.property("message");
+                    done();
+                });
         });
 
     });
 
-    describe("Fetch sent feedbacks", () => {
-        const url = `${baseUrl}/${orgId}/user/${userId}/feedbacks/sent`;
-
-        it("should return 200", done => {
-            request.get(url, (error: any, response: RequestResponse) => {
-                expect(response.statusCode).to.equal(200);
-                done();
-            })
-        });
+    describe("Fetch sent feedbacks and return 200", () => {
+        const url = `/api/${orgId}/user/${userId}/feedbacks/sent`;
 
         it("response should be an array", (done) => {
-            request.get(url, (error: any, response: RequestResponse, body: any) => {
-                const parsedBody = JSON.parse(body);
-                expect(parsedBody).to.be.an.instanceOf(Array);
-                done();
-            })
+            request(app)
+                .get(url)
+                .expect(200)
+                .then(response => {
+                    expect(response.body).to.be.an.instanceOf(Array);
+                    done();
+                });
         })
     });
 
-    describe("Fetch incoming feedbacks", () => {
-
-        const url = `${baseUrl}/${orgId}/user/${userId}/feedbacks/incoming`;
-
-        it("should return 200", done => {
-            request.get(url, (error: any, response: RequestResponse) => {
-                expect(response.statusCode).to.equal(200);
-                done();
-            })
-        });
+    describe("Fetch incoming feedbacks and return 200", () => {
+        const url = `/api/${orgId}/user/${userId}/feedbacks/incoming`;
 
         it("response should be an array", (done) => {
-            request.get(url, (error: any, response: RequestResponse, body: any) => {
-                const parsedBody = JSON.parse(body);
-                expect(parsedBody).to.be.an.instanceOf(Array);
-                done();
-            })
+            request(app)
+                .get(url)
+                .expect(200)
+                .then(response => {
+                    expect(response.body).to.be.an.instanceOf(Array);
+                    done();
+                });
         })
     });
 

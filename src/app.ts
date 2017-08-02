@@ -10,11 +10,6 @@ const app = (): Express => {
     app.set("view engine", "jade");
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended: true}));
-    app.use((req: Request, res: Response, next: Function) => {
-        console.log("Request: ", req);
-        console.log("Body: ", req.body);
-        next();
-    });
     Routes(app);
     return app;
 };

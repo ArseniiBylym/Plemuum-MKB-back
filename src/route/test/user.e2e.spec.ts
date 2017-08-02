@@ -1,7 +1,6 @@
+import app from '../../app';
 import { expect } from 'chai';
-import * as request from 'request';
-import { RequestResponse } from 'request';
-import config from '../../../config/config';
+import * as request from 'supertest';
 import UserDataController from "../../data/datacontroller/user.datacontroller";
 import * as DataControllerFactory from '../../factory/datacontroller.factory';
 import UserController from "../../controller/user/user.controller";
@@ -30,110 +29,89 @@ describe("User request tests", () => {
 
     describe('Create new user', () => {
 
-        const url = `http://localhost:${config.port}/api/register/user`;
+        const url = `/api/register/user`;
 
-        it('POST: Correct request status code should be 201', done => {
-            request.post(url, getUserForm(), (error: any, response: RequestResponse, body: any) => {
-                expect(response.statusCode).to.equal(201);
-                done();
-            })
-        });
-
-        it("POST: Correct request response should contain a user", done => {
-            request.post(url, getUserForm(), (error: any, response: RequestResponse, body: any) => {
-                modelValidator.validateUser(JSON.parse(body));
-                done();
-            })
+        it("POST: Correct request response should contain a user and return 201", done => {
+            request(app)
+                .post(url)
+                .send(TestObjectFactory.getRegisterJohnDoe())
+                .expect(201)
+                .then(response => {
+                    modelValidator.validateUser(response.body);
+                    done();
+                })
+                .catch(reason => done(reason));
         });
 
         it('GET: Should return 200', done => {
-            request.get(url, (error: any, response: RequestResponse, body: any) => {
-                expect(response.statusCode).to.equal(200);
-                done();
-            })
-        })
-    });
-
-    describe('Get all users from organization', () => {
-
-        const orgId = "1234";
-        const url = `http://localhost:${config.port}/api/${orgId}/users`;
-
-        it('Should return 200', done => {
-            request.get(url, (error: any, response: RequestResponse, body: any) => {
-                expect(response.statusCode).to.equal(200);
-                done();
-            })
+            request(app)
+                .get(url)
+                .expect(200, done);
         });
+    });
+    describe('Get all users from organization', () => {
+        const orgId = "1234";
+        const url = `/api/${orgId}/users`;
 
-        it('Response should return the organization id', done => {
-            request.get(url, (error: any, response: RequestResponse, body: any) => {
-                const parsedBody = JSON.parse(body);
-                expect(parsedBody).to.be.an.instanceOf(Array);
-                done();
-            })
+        it('Response should return the organization id and return 200', done => {
+            request(app)
+                .get(url)
+                .expect(200)
+                .then(response => {
+                    expect(response.body).to.be.an.instanceOf(Array);
+                    done();
+                });
         })
     });
-
     describe('Get one user from organization', () => {
-
         const orgId = "hipteam";
         const userId = "59809fbb45fc8436263ce1ec";
-        const url = `http://localhost:${config.port}/api/${orgId}/user/${userId}`;
+        const url = `/api/${orgId}/user/${userId}`;
 
         it('Should return 200', done => {
-            request.get(url, (error: any, response: RequestResponse, body: any) => {
-                expect(response.statusCode).to.equal(200);
-                done();
-            })
+            request(app)
+                .get(url)
+                .expect(200, done);
         });
     });
 
     describe('Reset user password', () => {
-
-        const url = `http://localhost:${config.port}/api/resetPassword`;
+        const url = `/api/resetPassword`;
 
         it('Should return 200', done => {
-            request.post(url, (error: any, response: RequestResponse, body: any) => {
-                expect(response.statusCode).to.equal(200);
-                done();
-            })
+            request(app)
+                .post(url)
+                .expect(200, done);
         });
     });
 
     describe('Set password', () => {
-
-        const url = `http://localhost:${config.port}/api/setPassword`;
+        const url = `/api/setPassword`;
 
         it('Should return 200', done => {
-            request.post(url, (error: any, response: RequestResponse, body: any) => {
-                expect(response.statusCode).to.equal(200);
-                done();
-            })
+            request(app)
+                .post(url)
+                .expect(200, done);
         });
     });
 
     describe('Change password', () => {
-
-        const url = `http://localhost:${config.port}/api/user/password`;
+        const url = `/api/user/password`;
 
         it('Should return 200', done => {
-            request.post(url, (error: any, response: RequestResponse, body: any) => {
-                expect(response.statusCode).to.equal(200);
-                done();
-            })
+            request(app)
+                .post(url)
+                .expect(200, done);
         });
     });
 
     describe('Change user picture', () => {
-
-        const url = `http://localhost:${config.port}/api/profile/setpicture`;
+        const url = `/api/profile/setpicture`;
 
         it('Should return 200', done => {
-            request.post(url, (error: any, response: RequestResponse, body: any) => {
-                expect(response.statusCode).to.equal(200);
-                done();
-            })
+            request(app)
+                .post(url)
+                .expect(200, done);
         });
     })
 });
