@@ -13,7 +13,7 @@ let userController: UserController;
 
 function getUserForm() {
     return {
-        form: TestObjectFactory.getJohnDoe()
+        form: TestObjectFactory.getRegisterJohnDoe()
     }
 }
 

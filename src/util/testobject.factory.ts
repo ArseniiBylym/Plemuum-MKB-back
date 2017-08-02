@@ -14,6 +14,16 @@ function getTestUser(firstName: string, lastName: string): User {
     };
 }
 
+function getRegisterTestUser(firstName: string, lastName: string) {
+    return {
+        firstName: firstName,
+        lastName: lastName,
+        email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}${Util.getRandomInt(1, 1000)}@email.com`,
+        pictureUrl: "",
+        password: "asd123"
+    };
+}
+
 function getTestUserWithOrganizations(firstName: string, lastName: string, organizationIds: string[]): User {
     return {
         firstName: firstName,
@@ -26,9 +36,12 @@ function getTestUserWithOrganizations(firstName: string, lastName: string, organ
     };
 }
 
-
 function getJohnDoe(): User {
     return getTestUser("John", "Doe");
+}
+
+function getRegisterJohnDoe() {
+    return getRegisterTestUser("John", "Doe");
 }
 
 function getTestFeedback(): Feedback {
@@ -45,4 +58,4 @@ function getTestFeedback(): Feedback {
     }
 }
 
-export { getTestUser, getJohnDoe, getTestFeedback, getTestUserWithOrganizations }
+export { getTestUser, getJohnDoe, getTestFeedback, getTestUserWithOrganizations, getRegisterTestUser, getRegisterJohnDoe }
