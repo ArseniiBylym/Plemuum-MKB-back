@@ -1,0 +1,25 @@
+doctype html
+html(lang='en')
+    head
+        meta(charset='UTF-8')
+        title Register Organization
+    body
+        form(action='/api/organization', method='post')
+            fieldset
+                label(for='name') Organization name:
+                input#firstName(type='text', name='name', placeholder='Enter organization name')
+                br
+                br
+                label(for='todoSentenceNumber') Number of sentences on todos:
+                input#lastName(type='number', name='todoSentenceNumber', placeholder='Enter number of sentences used in todos')
+                br
+                br
+                label(for='dbName') Database name:
+                input#email(type='text', name='dbName', placeholder='Database name')
+                br
+                br
+                label(for='compasseGenerationTime') Time of generation compass todos:
+                input#email(type='number', name='compasseGenerationTime', placeholder='Generation time in ms')
+                br
+                br
+                input(type='submit', value='Create Organization')

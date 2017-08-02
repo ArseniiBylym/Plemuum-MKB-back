@@ -23,8 +23,8 @@ export default (app: Express, tagController: TagController) => {
      * @apiUse tag_list_data
      */
     app.route("/api/:orgId/tag")
-        .get(tagController.showNewTagForm)
-        .post(tagController.addNewTag);
+        .get(tagController.showNewTagForm.bind(tagController))
+        .post(tagController.addNewTag.bind(tagController));
 
 
     /**
@@ -37,6 +37,6 @@ export default (app: Express, tagController: TagController) => {
      * @apiUse tag_list_data
      */
     app.route("/api/:orgId/tags")
-        .get(tagController.getTags);
+        .get(tagController.getTags.bind(tagController));
 
 }

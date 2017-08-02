@@ -5,11 +5,13 @@ import FeedbackController from "../controller/feedback/feedback.controller";
 import AuthController from "../controller/auth/auth.controller";
 import * as DataControllerFactory from './datacontroller.factory'
 import TagController from "../controller/tag/tag.controller";
+import OrganizationController from "../controller/organization/organization.controller";
 
 let userController: UserController;
 let feedbackController: FeedbackController;
 let authController: AuthController;
 let tagController: TagController;
+let organizationController: OrganizationController;
 
 /* #########################     PUBLIC      ########################## */
 
@@ -17,6 +19,7 @@ let getUserController = (): UserController => createUserController(DataControlle
 let getAuthController = (): AuthController => createAuthController();
 let getFeedbackController = (): FeedbackController => createFeedbackController(DataControllerFactory.getFeedbackDataController());
 let getTagController = (): TagController => createTagController();
+let getOrganizationController = (): OrganizationController => createOrganizationController();
 
 /* #########################     PRIVATE      ########################## */
 
@@ -47,6 +50,11 @@ function createTagController() {
     }
     return tagController;
 }
+function createOrganizationController() {
+    if (!organizationController) {
+        organizationController = new OrganizationController();
+    }
+    return organizationController;
+}
 
-
-export { getUserController, getAuthController, getFeedbackController, getTagController }
+export { getUserController, getAuthController, getFeedbackController, getTagController, getOrganizationController }
