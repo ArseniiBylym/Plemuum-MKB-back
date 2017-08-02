@@ -4,6 +4,7 @@ import DatabaseManager from "../database/database.manager";
 
 export default class BaseDataController<T extends Document> {
 
+    public static COMMON = "common";
     protected databaseManager: DatabaseManager;
     public getDatabaseModel: Function;
 
@@ -12,9 +13,9 @@ export default class BaseDataController<T extends Document> {
         this.getDatabaseModel = getDatabaseModel;
     }
 
-    public clearData(): Promise<any> {
+    public clearData(dbName?: string): Promise<any> {
         return new Promise((resolve, reject) => {
-            const userModel: Model<T> = this.getDatabaseModel(this.databaseManager.getConnection());
+            const userModel: Model<T> = this.getDatabaseModel(this.databaseManager.getConnection(), dbName);
             userModel.remove({}, (error: any) => error ? reject(error) : resolve())
         })
     }

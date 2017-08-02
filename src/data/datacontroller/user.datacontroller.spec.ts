@@ -2,9 +2,10 @@ import UserDataController from "./user.datacontroller";
 import DatabaseManager from "../database/database.manager";
 import * as DatabaseFactory from "../../factory/database.factory";
 import * as TestObjectFactory from "../../util/testobject.factory";
-import {User} from "../models/user.model";
-import {assert, expect, should} from 'chai';
+import { User } from "../models/user.model";
+import { assert, expect, should } from 'chai';
 import * as asserts from "assert";
+import BaseDataController from "./base.datacontroller";
 
 describe("UserDataController tests", () => {
 
@@ -13,7 +14,7 @@ describe("UserDataController tests", () => {
 
     beforeEach(done => {
         userDataController = new UserDataController(databaseManager);
-        userDataController.clearData()
+        userDataController.clearData(BaseDataController.COMMON)
             .then(() => done())
             .catch((error) => {
                 console.error(error);
@@ -25,7 +26,7 @@ describe("UserDataController tests", () => {
         const testUser = TestObjectFactory.getJohnDoe();
         userDataController.saveUser(testUser)
             .then((value: any) => {
-                const userModel = userDataController.getDatabaseModel(databaseManager.getConnection());
+                const userModel = userDataController.getDatabaseModel(databaseManager.getConnection(), BaseDataController.COMMON);
                 userModel.findById(value._id, (error: Error, user: User) => {
                     should().exist(user);
                     done();
