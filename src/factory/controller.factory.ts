@@ -4,39 +4,49 @@ import FeedbackDataController from "../data/datacontroller/feedback.datacontroll
 import FeedbackController from "../controller/feedback/feedback.controller";
 import AuthController from "../controller/auth/auth.controller";
 import * as DataControllerFactory from './datacontroller.factory'
+import TagController from "../controller/tag/tag.controller";
 
-let userControllerInstance: UserController;
-let feedbackControllerInstance: FeedbackController;
+let userController: UserController;
+let feedbackController: FeedbackController;
 let authController: AuthController;
+let tagController: TagController;
 
 /* #########################     PUBLIC      ########################## */
 
-const getUserController = (): UserController => createUserController(DataControllerFactory.getUserDataController());
-const getAuthController = (): AuthController => createAuthController();
-const getFeedbackController = (): FeedbackController => createFeedbackController(DataControllerFactory.getFeedbackDataController());
+let getUserController = (): UserController => createUserController(DataControllerFactory.getUserDataController());
+let getAuthController = (): AuthController => createAuthController();
+let getFeedbackController = (): FeedbackController => createFeedbackController(DataControllerFactory.getFeedbackDataController());
+let getTagController = (): TagController => createTagController();
 
 /* #########################     PRIVATE      ########################## */
 
-const createUserController = (userDataController: UserDataController) => {
-    if (!userControllerInstance) {
-        userControllerInstance = new UserController(userDataController);
+function createUserController(userDataController: UserDataController) {
+    if (!userController) {
+        userController = new UserController(userDataController);
     }
-    return userControllerInstance;
-};
+    return userController;
+}
 
-const createAuthController = () => {
+function createAuthController() {
     if (!authController) {
         authController = new AuthController();
     }
     return authController;
-};
+}
 
-const createFeedbackController = (feedbackDataController: FeedbackDataController) => {
-    if (!feedbackControllerInstance) {
-        feedbackControllerInstance = new FeedbackController(feedbackDataController);
+function createFeedbackController(feedbackDataController: FeedbackDataController) {
+    if (!feedbackController) {
+        feedbackController = new FeedbackController(feedbackDataController);
     }
-    return feedbackControllerInstance;
-};
+    return feedbackController;
+}
+
+function createTagController() {
+    if (!tagController) {
+        tagController = new TagController();
+    }
+    return tagController;
+}
 
 
-export { getUserController, getAuthController, getFeedbackController } 
+export { getUserController, getAuthController, getFeedbackController, getTagController }

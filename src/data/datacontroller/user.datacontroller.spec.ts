@@ -32,7 +32,7 @@ describe("UserDataController tests", () => {
                 });
             })
             .catch(reason => {
-                done();
+                done(reason);
             });
     });
 

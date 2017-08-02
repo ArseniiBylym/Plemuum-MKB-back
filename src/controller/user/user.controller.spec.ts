@@ -1,7 +1,7 @@
 import UserController from "./user.controller";
 import UserDataController from "../../data/datacontroller/user.datacontroller";
 import * as TestObjectFactory from "../../util/testobject.factory"
-import { anything, instance, mock, when } from "ts-mockito";
+import { anything, instance, mock, verify, when } from "ts-mockito";
 import { User } from "../../data/models/user.model";
 import { expect, should } from 'chai';
 
@@ -29,6 +29,7 @@ describe("UserController handleSaveUserRequest", () => {
         );
         userController = new UserController(instance(mockDataController));
         userController.createNewUser(mockRequest, mockResponse);
+        verify(mockDataController.saveUser(anything())).called();
     });
 
     it("Sad case: should call response json", (done) => {
@@ -47,5 +48,6 @@ describe("UserController handleSaveUserRequest", () => {
         );
         userController = new UserController(instance(mockDataController));
         userController.createNewUser(mockRequest, mockResponse);
+        verify(mockDataController.saveUser(anything())).called();
     })
 });
