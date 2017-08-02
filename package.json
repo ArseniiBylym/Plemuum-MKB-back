@@ -6,7 +6,21 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "./node_modules/.bin/mocha -r ts-node/register src/**/**.spec.ts"
+    "test": "nyc --reporter=html ./node_modules/.bin/mocha -r ts-node/register src/**/**.spec.ts"
+  },
+  "nyc": {
+    "extension": [
+      ".ts",
+      ".tsx"
+    ],
+    "exclude": [
+      "config",
+      "**/*.d.ts",
+      "**/*.spec.ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ]
   },
   "keywords": [],
   "author": "hipteam",
@@ -27,6 +41,7 @@
     "nyc": "11.1.0",
     "request": "2.81.0",
     "sinon": "2.4.1",
+    "source-map-support": "0.4.15",
     "supertest": "3.0.0",
     "ts-mockito": "2.0.2",
     "ts-node": "3.3.0",
