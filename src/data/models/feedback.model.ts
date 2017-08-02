@@ -1,9 +1,8 @@
-
 import Tag from './tag.model';
 
 export type TYPE = "CONSIDER" | "CONTINUE"
 
-export default interface Feedback {
+interface Feedback {
     senderId: string;
     recipientId: string;
     context: string;
@@ -14,3 +13,5 @@ export default interface Feedback {
     requestId: string;
     tags: Tag[];
 }
+
+export default Feedback

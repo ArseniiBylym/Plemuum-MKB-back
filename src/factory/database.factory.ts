@@ -9,6 +9,6 @@ const getDatabaseManager = (): DatabaseManager => {
         databaseManagerInstance = new DatabaseManager(config.mongoUrl);
     }
     return databaseManagerInstance;
-}
+};
 
 export { getDatabaseManager }

@@ -1,9 +1,10 @@
-import { Express, Request, Response } from "express";
+import { Request, Response } from "express";
 
 export default class AuthController {
-    constructor() { }
+    constructor() {
+    }
 
-    public saveUser(req: Request, res: Response, next: Function) {
-        res.json({ message: 'Login' })
+    public login(req: Request, res: Response, next: Function) {
+        res.json({message: 'Login'})
     }
 }

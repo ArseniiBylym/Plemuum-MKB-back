@@ -6,7 +6,6 @@ import FeedbackController from "./feedback.controller";
 describe("FeedbackController unit tests", () => {
 
     let feedbackController: FeedbackController;
-    let mockNext: any = {};
     const mockRequest: any = {
         params: {
             userId: "userId"
@@ -25,14 +24,15 @@ describe("FeedbackController unit tests", () => {
 
             /* If done was called, then the test passed, otherwise timeout */
             const mockResponse: any = {
-                json: (result: any) => {
+                send: (result: any) => {
                     expect(result).to.be.equal(mockResult);
                     done();
-                }
+                },
+                status: (statusCode: number) => mockResponse
             };
 
             feedbackController = new FeedbackController(instance(feedbackDataController));
-            feedbackController.getFeedbacks(mockRequest, mockResponse, mockNext);
+            feedbackController.getFeedbacks(mockRequest, mockResponse);
             verify(feedbackDataController.getAllFeedback(anyString())).called();
         });
 
@@ -46,11 +46,12 @@ describe("FeedbackController unit tests", () => {
             const mockResponse: any = {
                 json: (error: any) => {
                     done();
-                }
+                },
+                status: (statusCode: number) => mockResponse
             };
 
             feedbackController = new FeedbackController(instance(feedbackDataController));
-            feedbackController.getFeedbacks(mockRequest, mockResponse, mockNext);
+            feedbackController.getFeedbacks(mockRequest, mockResponse);
             verify(feedbackDataController.getAllFeedback(anyString())).called();
         })
 
@@ -66,14 +67,15 @@ describe("FeedbackController unit tests", () => {
 
             /* If done was called, then the test passed, otherwise timeout */
             const mockResponse: any = {
-                json: (result: any) => {
+                send: (result: any) => {
                     expect(result).to.be.equal(mockResult);
                     done();
-                }
+                },
+                status: (statusCode: number) => mockResponse
             };
 
             feedbackController = new FeedbackController(instance(feedbackDataController));
-            feedbackController.getSentFeedbacks(mockRequest, mockResponse, mockNext);
+            feedbackController.getSentFeedbacks(mockRequest, mockResponse);
             verify(feedbackDataController.getSentFeedbacks(anyString())).called();
         });
 
@@ -87,11 +89,12 @@ describe("FeedbackController unit tests", () => {
             const mockResponse: any = {
                 json: (error: any) => {
                     done();
-                }
+                },
+                status: (statusCode: number) => mockResponse
             };
 
             feedbackController = new FeedbackController(instance(feedbackDataController));
-            feedbackController.getSentFeedbacks(mockRequest, mockResponse, mockNext);
+            feedbackController.getSentFeedbacks(mockRequest, mockResponse);
             verify(feedbackDataController.getSentFeedbacks(anyString())).called();
         })
 
@@ -107,14 +110,15 @@ describe("FeedbackController unit tests", () => {
 
             /* If done was called, then the test passed, otherwise timeout */
             const mockResponse: any = {
-                json: (result: any) => {
+                send: (result: any) => {
                     expect(result).to.be.equal(mockResult);
                     done();
-                }
+                },
+                status: (statusCode: number) => mockResponse
             };
 
             feedbackController = new FeedbackController(instance(feedbackDataController));
-            feedbackController.getIncomingFeedbacks(mockRequest, mockResponse, mockNext);
+            feedbackController.getIncomingFeedbacks(mockRequest, mockResponse);
             verify(feedbackDataController.getIncomingFeedbacks(anyString())).called();
         });
 
@@ -127,13 +131,14 @@ describe("FeedbackController unit tests", () => {
             /* If done was called, then the test passed, otherwise timeout */
             const mockResponse: any = {
                 json: (error: any) => {
-                    expect(error).have.property("error");
+                    should().exist(error);
                     done();
-                }
+                },
+                status: (statusCode: number) => mockResponse
             };
 
             feedbackController = new FeedbackController(instance(feedbackDataController));
-            feedbackController.getIncomingFeedbacks(mockRequest, mockResponse, mockNext);
+            feedbackController.getIncomingFeedbacks(mockRequest, mockResponse);
             verify(feedbackDataController.getIncomingFeedbacks(anyString())).called();
         })
 
@@ -160,10 +165,11 @@ describe("FeedbackController unit tests", () => {
                     should().equal(result, mockResult);
                     done();
                 },
+                status: (statusCode: number) => mockResponse
             };
 
             feedbackController = new FeedbackController(instance(feedbackDataController));
-            feedbackController.postFeedback(mockRequest, mockResponse, mockNext);
+            feedbackController.postFeedback(mockRequest, mockResponse);
             verify(feedbackDataController.saveFeedback(anything())).called();
         });
 
@@ -186,7 +192,7 @@ describe("FeedbackController unit tests", () => {
             };
 
             feedbackController = new FeedbackController(instance(feedbackDataController));
-            feedbackController.postFeedback(mockRequest, mockResponse, mockNext);
+            feedbackController.postFeedback(mockRequest, mockResponse);
             verify(feedbackDataController.saveFeedback(anything())).called();
         });
 
@@ -209,7 +215,7 @@ describe("FeedbackController unit tests", () => {
             };
 
             feedbackController = new FeedbackController(instance(feedbackDataController));
-            feedbackController.postFeedback(emptyMockRequest, mockResponse, mockNext);
+            feedbackController.postFeedback(emptyMockRequest, mockResponse);
             verify(feedbackDataController.saveFeedback(anything())).called();
         })
 

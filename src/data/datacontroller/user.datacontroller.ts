@@ -1,7 +1,6 @@
 import { User } from "../models/user.model";
 import { Model } from 'mongoose';
-import { UserModel, getDatabaseModel } from "../database/schema/user.schema";
-import * as databaseManager from "../database/database.manager";
+import { getDatabaseModel, UserModel } from "../database/schema/user.schema";
 import DatabaseManager from "../database/database.manager";
 import BaseDataController from "./base.datacontroller";
 
@@ -24,17 +23,19 @@ export default class UserDataController extends BaseDataController<UserModel> {
         });
     }
 
-    public handleUserSave(): Promise<User> {
-        const random: number = Math.floor(Math.random() * (1000 + 1));
-        const user: User = {
-            firstName: "Kovacs",
-            lastName: "Bela",
-            email: `bela.kovacs@${random}gmail.com`,
-            tokens: [],
-            pictureUrl: "",
-            orgIds: [],
-            password: "asd123"
-        };
-        return this.saveUser(user)
+    public getOrganizationUsers(orgId: any): Promise<User[]> {
+        return new Promise((resolve, reject) => {
+            const userModel = getDatabaseModel(this.databaseManager.getConnection());
+            const query: any = {orgIds: {$in: [orgId]}};
+            userModel.find(query, (error: Error, users: User[]) => error ? reject(error) : resolve(users))
+        })
+    }
+
+    getUserById(orgId: string, userId: string): Promise<User> {
+        return new Promise((resolve, reject) => {
+            const userModel = getDatabaseModel(this.databaseManager.getConnection());
+            const query: any = {$and: [{orgIds: {$in: [orgId]}}, {_id: userId}]};
+            userModel.findOne(query, (error: Error, user: User) => error ? reject(error) : resolve(user))
+        })
     }
 }

@@ -3,6 +3,7 @@ import * as request from 'request';
 import { RequestResponse } from 'request';
 import config from '../../../config/config'
 import * as DataControllerFactory from '../../factory/datacontroller.factory';
+import * as TestObjectFactory from "../../util/testobject.factory"
 
 const orgId = "orgID1234";
 const userId = "userID1234";
@@ -41,17 +42,7 @@ describe("Feedback request test", () => {
     describe("Create a feedback", () => {
         const url = `${baseUrl}/${orgId}/feedback`;
         const feedbackForm = {
-            form: {
-                senderId: 'senderId',
-                recipientId: 'recipientId',
-                context: 'context',
-                message: 'message',
-                creationDate: '2017.07.31.',
-                privacy: ['ANONYMOUS'],
-                type: 'CONSIDER',
-                requestId: '',
-                tags: []
-            }
+            form: TestObjectFactory.getTestFeedback()
         };
 
         it("should return 200", done => {
