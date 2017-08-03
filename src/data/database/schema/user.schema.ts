@@ -32,7 +32,7 @@ interface UserModel extends User, Document {
     verifyPasswordSync(rec_password: string): boolean
 }
 
-const getDatabaseModel = (dbConnection: Connection, dbName = "hipteamTest"): Model<UserModel> => {
+const getDatabaseModel = (dbConnection: Connection, dbName = "default"): Model<UserModel> => {
     return dbConnection.useDb(dbName).model<UserModel>("User", UserSchema);
 };
 

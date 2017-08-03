@@ -4,7 +4,7 @@ import * as DataControllerFactory from '../../factory/datacontroller.factory';
 import * as TestObjectFactory from "../../util/testobject.factory"
 import app from '../../app';
 
-const orgId = "orgID1234";
+const orgId = "hipteam";
 const userId = "userID1234";
 
 describe("Feedback request test", () => {

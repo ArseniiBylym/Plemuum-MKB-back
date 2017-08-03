@@ -4,6 +4,7 @@ import FeedbackRoute from './feedback.route';
 import AuthRoute from './auth.route';
 import TagRoute from './tag.route';
 import OrganizationRoute from './organization.route';
+import RequestRoute from './request.route';
 import * as ControllerFactory from '../factory/controller.factory'
 
 export default (express: Express) => {
@@ -13,4 +14,5 @@ export default (express: Express) => {
     TagRoute(express, ControllerFactory.getTagController());
     TagRoute(express, ControllerFactory.getTagController());
     OrganizationRoute(express, ControllerFactory.getOrganizationController());
+    RequestRoute(express, ControllerFactory.getRequestController());
 }

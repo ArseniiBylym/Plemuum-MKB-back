@@ -23,7 +23,7 @@ const FeedbackSchema = new Schema({
         timestamps: true,
     });
 
-const getDatabaseModel = (dbConnection: Connection, dbName = "hipteamTest"): Model<FeedbackModel> => {
+const getDatabaseModel = (dbConnection: Connection, dbName = "default"): Model<FeedbackModel> => {
     return dbConnection.useDb(dbName).model<FeedbackModel>(modelName, FeedbackSchema);
 }
 
