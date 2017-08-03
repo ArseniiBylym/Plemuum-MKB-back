@@ -16,7 +16,7 @@ import FeedbackController from '../controller/feedback/feedback.controller';
  * @apiSuccess (Success 200) {String} [feedbacks.requestId] Associated request, if applicable
  * @apiSuccess (Success 200) {Tag[]} tags [tag] Associated tags of feedback
  */
-export default (express: Express, feedbackController: FeedbackController) => {
+export default (app: Express, feedbackController: FeedbackController) => {
     /**
     * @api {GET} /api/:orgId/user/:userId/feedbacks Get user feedbacks
     * @apiName getFeedbacks
@@ -28,7 +28,7 @@ export default (express: Express, feedbackController: FeedbackController) => {
     *
     * @apiUse feedback_list_data
     */
-    express.route("/api/:orgId/user/:userId/feedbacks")
+    app.route("/api/:orgId/user/:userId/feedbacks")
         .get(feedbackController.getFeedbacks.bind(feedbackController));
 
     /**
@@ -42,7 +42,7 @@ export default (express: Express, feedbackController: FeedbackController) => {
      *
      * @apiUse feedback_list_data
     */
-    express.route("/api/:orgId/user/:userId/feedbacks/sent")
+    app.route("/api/:orgId/user/:userId/feedbacks/sent")
         .get(feedbackController.getSentFeedbacks.bind(feedbackController));
 
     /**
@@ -56,7 +56,7 @@ export default (express: Express, feedbackController: FeedbackController) => {
      *
      * @apiUse feedback_list_data
     */
-    express.route("/api/:orgId/user/:userId/feedbacks/incoming")
+    app.route("/api/:orgId/user/:userId/feedbacks/incoming")
         .get(feedbackController.getIncomingFeedbacks.bind(feedbackController));
 
     /**
@@ -77,6 +77,6 @@ export default (express: Express, feedbackController: FeedbackController) => {
     *
     * @apiUse feedback_list_data
     */
-    express.route("/api/:orgId/feedback")
+    app.route("/api/:orgId/feedback")
         .post(feedbackController.postFeedback.bind(feedbackController));
 }

@@ -22,7 +22,7 @@ export default class FeedbackController extends BaseController {
     public postFeedback(req: Request, res: Response,) {
         const feedback: Feedback = req.body;
         if (feedback) {
-            this.callController(this.feedbackDataController.saveFeedback(feedback), res, 200, 400)
+            this.callController(this.feedbackDataController.saveFeedback(req.params.orgId, feedback), res, 200, 400)
         } else {
             res.status(400).json({error: "invalid request"});
         }

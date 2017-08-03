@@ -10,7 +10,7 @@ const userId = "userID1234";
 describe("Feedback request test", () => {
 
     before((done) => {
-        DataControllerFactory.getFeedbackDataController().clearData()
+        DataControllerFactory.getFeedbackDataController().clearData(orgId)
             .then((state) => done())
             .catch((error) => {
                 console.error(error);

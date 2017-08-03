@@ -148,13 +148,14 @@ describe("FeedbackController unit tests", () => {
 
         it("Happy case: it should postFeedback from FeedbackDataController then call res.send", done => {
 
-            when(feedbackDataController.saveFeedback(anything())).thenReturn(
+            when(feedbackDataController.saveFeedback(anyString(), anything())).thenReturn(
                 new Promise<any>((resolve, reject) => resolve(mockResult))
             );
 
             const mockRequest: any = {
                 params: {
-                    userId: "userId"
+                    userId: "userId",
+                    orgId: "hipteam"
                 },
                 body: {data: "data"}
             };
@@ -170,12 +171,12 @@ describe("FeedbackController unit tests", () => {
 
             feedbackController = new FeedbackController(instance(feedbackDataController));
             feedbackController.postFeedback(mockRequest, mockResponse);
-            verify(feedbackDataController.saveFeedback(anything())).called();
+            verify(feedbackDataController.saveFeedback(anyString(), anything())).called();
         });
 
         it("Sad case: it should postFeedback from FeedbackDataController then call res.json", done => {
 
-            when(feedbackDataController.saveFeedback(anything())).thenReturn(
+            when(feedbackDataController.saveFeedback(anyString(), anything())).thenReturn(
                 new Promise<any>((resolve, reject) => reject({}))
             );
 
@@ -193,7 +194,7 @@ describe("FeedbackController unit tests", () => {
 
             feedbackController = new FeedbackController(instance(feedbackDataController));
             feedbackController.postFeedback(mockRequest, mockResponse);
-            verify(feedbackDataController.saveFeedback(anything())).called();
+            verify(feedbackDataController.saveFeedback(anything(), anything())).called();
         });
 
         it("Sad case: instant error when body is empty", done => {
@@ -216,7 +217,7 @@ describe("FeedbackController unit tests", () => {
 
             feedbackController = new FeedbackController(instance(feedbackDataController));
             feedbackController.postFeedback(emptyMockRequest, mockResponse);
-            verify(feedbackDataController.saveFeedback(anything())).called();
+            verify(feedbackDataController.saveFeedback(anything(), anything())).called();
         })
 
     });
