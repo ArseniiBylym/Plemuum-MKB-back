@@ -3,7 +3,7 @@ import { anyString, anything, instance, mock, verify, when } from "ts-mockito";
 import FeedbackDataController from "../../data/datacontroller/feedback.datacontroller";
 import FeedbackController from "./feedback.controller";
 
-describe("FeedbackController unit tests", () => {
+suite("FeedbackController unit tests", () => {
 
     let feedbackController: FeedbackController;
     const mockRequest: any = {
@@ -14,9 +14,9 @@ describe("FeedbackController unit tests", () => {
     const feedbackDataController: FeedbackDataController = mock(FeedbackDataController);
     const mockResult: any = {result: "result"};
 
-    describe("getFeedbacks", () => {
+    suite("getFeedbacks", () => {
 
-        it("Happy case: it should getAllFeedback from FeedbackDataController then call res.json", done => {
+        test("Happy case: test should getAllFeedback from FeedbackDataController then call res.json", done => {
 
             when(feedbackDataController.getAllFeedback(anyString())).thenReturn(
                 new Promise<any>((resolve, reject) => resolve(mockResult))
@@ -36,7 +36,7 @@ describe("FeedbackController unit tests", () => {
             verify(feedbackDataController.getAllFeedback(anyString())).called();
         });
 
-        it("Sad case: it should getAllFeedback from FeedbackDataController then call res.json", done => {
+        test("Sad case: test should getAllFeedback from FeedbackDataController then call res.json", done => {
 
             when(feedbackDataController.getAllFeedback(anyString())).thenReturn(
                 new Promise<any>((resolve, reject) => reject({}))
@@ -57,9 +57,9 @@ describe("FeedbackController unit tests", () => {
 
     });
 
-    describe("getSentFeedbacks", () => {
+    suite("getSentFeedbacks", () => {
 
-        it("Happy case: it should getSentFeedbacks from FeedbackDataController then call res.json", done => {
+        test("Happy case: test should getSentFeedbacks from FeedbackDataController then call res.json", done => {
 
             when(feedbackDataController.getSentFeedbacks(anyString())).thenReturn(
                 new Promise<any>((resolve, reject) => resolve(mockResult))
@@ -79,7 +79,7 @@ describe("FeedbackController unit tests", () => {
             verify(feedbackDataController.getSentFeedbacks(anyString())).called();
         });
 
-        it("Sad case: it should getSentFeedbacks from FeedbackDataController then call res.json", done => {
+        test("Sad case: test should getSentFeedbacks from FeedbackDataController then call res.json", done => {
 
             when(feedbackDataController.getSentFeedbacks(anyString())).thenReturn(
                 new Promise<any>((resolve, reject) => reject({}))
@@ -100,9 +100,9 @@ describe("FeedbackController unit tests", () => {
 
     });
 
-    describe("getIncomingFeedbacks", () => {
+    suite("getIncomingFeedbacks", () => {
 
-        it("Happy case: it should getIncomingFeedbacks from FeedbackDataController then call res.json", done => {
+        test("Happy case: test should getIncomingFeedbacks from FeedbackDataController then call res.json", done => {
 
             when(feedbackDataController.getIncomingFeedbacks(anyString())).thenReturn(
                 new Promise<any>((resolve, reject) => resolve(mockResult))
@@ -122,7 +122,7 @@ describe("FeedbackController unit tests", () => {
             verify(feedbackDataController.getIncomingFeedbacks(anyString())).called();
         });
 
-        it("Sad case: it should getIncomingFeedbacks from FeedbackDataController then call res.json", done => {
+        test("Sad case: test should getIncomingFeedbacks from FeedbackDataController then call res.json", done => {
 
             when(feedbackDataController.getIncomingFeedbacks(anyString())).thenReturn(
                 new Promise<any>((resolve, reject) => reject({}))
@@ -144,9 +144,9 @@ describe("FeedbackController unit tests", () => {
 
     });
 
-    describe("postFeedback", () => {
+    suite("postFeedback", () => {
 
-        it("Happy case: it should postFeedback from FeedbackDataController then call res.send", done => {
+        test("Happy case: test should postFeedback from FeedbackDataController then call res.send", done => {
 
             when(feedbackDataController.saveFeedback(anyString(), anything())).thenReturn(
                 new Promise<any>((resolve, reject) => resolve(mockResult))
@@ -174,7 +174,7 @@ describe("FeedbackController unit tests", () => {
             verify(feedbackDataController.saveFeedback(anyString(), anything())).called();
         });
 
-        it("Sad case: it should postFeedback from FeedbackDataController then call res.json", done => {
+        test("Sad case: test should postFeedback from FeedbackDataController then call res.json", done => {
 
             when(feedbackDataController.saveFeedback(anyString(), anything())).thenReturn(
                 new Promise<any>((resolve, reject) => reject({}))
@@ -197,7 +197,7 @@ describe("FeedbackController unit tests", () => {
             verify(feedbackDataController.saveFeedback(anything(), anything())).called();
         });
 
-        it("Sad case: instant error when body is empty", done => {
+        test("Sad case: instant error when body is empty", done => {
 
             const emptyMockRequest: any = {
                 body: undefined

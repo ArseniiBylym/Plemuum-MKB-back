@@ -7,7 +7,7 @@ import app from '../../app';
 const orgId = "hipteam";
 const userId = "userID1234";
 
-describe("Feedback request test", () => {
+suite("Feedback request test", () => {
 
     before((done) => {
         DataControllerFactory.getFeedbackDataController().clearData(orgId)
@@ -18,10 +18,10 @@ describe("Feedback request test", () => {
             })
     });
 
-    describe("Fetch feedbacks", () => {
+    suite("Fetch feedbacks", () => {
         const url = `/api/${orgId}/user/${userId}/feedbacks`;
 
-        it("response should be an array and return 200", (done) => {
+        test("response should be an array and return 200", (done) => {
             request(app)
                 .get(url)
                 .expect(200)
@@ -32,10 +32,10 @@ describe("Feedback request test", () => {
         })
     });
 
-    describe("Create a feedback", () => {
+    suite("Create a feedback", () => {
         const url = `/api/${orgId}/feedback`;
 
-        it("response should contain a feedback object and return 200", (done) => {
+        test("response should contain a feedback object and return 200", (done) => {
             request(app)
                 .post(url)
                 .send(TestObjectFactory.getTestFeedback())
@@ -54,11 +54,11 @@ describe("Feedback request test", () => {
         });
     });
 
-    describe("Create a feedback without form", () => {
+    suite("Create a feedback without form", () => {
         const url = `/api/${orgId}/feedback`;
         const feedbackForm = {};
 
-        it("response should contain an error object and return 400", (done) => {
+        test("response should contain an error object and return 400", (done) => {
             request(app)
                 .post(url)
                 .send(feedbackForm)
@@ -72,7 +72,7 @@ describe("Feedback request test", () => {
 
     });
 
-    describe("Create a feedback with invalid form", () => {
+    suite("Create a feedback with invalid form", () => {
         const url = `/api/${orgId}/feedback`;
         const feedbackForm = {
             senderId: 'senderId',
@@ -85,7 +85,7 @@ describe("Feedback request test", () => {
             tags: []
         };
 
-        it("response should contain an error object and return 400", (done) => {
+        test("response should contain an error object and return 400", (done) => {
             request(app)
                 .post(url)
                 .send(feedbackForm)
@@ -99,10 +99,10 @@ describe("Feedback request test", () => {
 
     });
 
-    describe("Fetch sent feedbacks and return 200", () => {
+    suite("Fetch sent feedbacks and return 200", () => {
         const url = `/api/${orgId}/user/${userId}/feedbacks/sent`;
 
-        it("response should be an array", (done) => {
+        test("response should be an array", (done) => {
             request(app)
                 .get(url)
                 .expect(200)
@@ -113,10 +113,10 @@ describe("Feedback request test", () => {
         })
     });
 
-    describe("Fetch incoming feedbacks and return 200", () => {
+    suite("Fetch incoming feedbacks and return 200", () => {
         const url = `/api/${orgId}/user/${userId}/feedbacks/incoming`;
 
-        it("response should be an array", (done) => {
+        test("response should be an array", (done) => {
             request(app)
                 .get(url)
                 .expect(200)

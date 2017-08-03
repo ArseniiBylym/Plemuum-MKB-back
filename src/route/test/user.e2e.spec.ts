@@ -16,7 +16,7 @@ function getUserForm() {
     }
 }
 
-describe("User request tests", () => {
+suite("User request tests", () => {
 
     before((done) => {
         DataControllerFactory.getUserDataController().clearData()
@@ -27,11 +27,11 @@ describe("User request tests", () => {
             })
     });
 
-    describe('Create new user', () => {
+    suite('Create new user', () => {
 
         const url = `/api/register/user`;
 
-        it("POST: Correct request response should contain a user and return 201", done => {
+        test("POST: Correct request response should contain a user and return 201", done => {
             request(app)
                 .post(url)
                 .send(TestObjectFactory.getRegisterJohnDoe())
@@ -43,17 +43,17 @@ describe("User request tests", () => {
                 .catch(reason => done(reason));
         });
 
-        it('GET: Should return 200', done => {
+        test('GET: Should return 200', done => {
             request(app)
                 .get(url)
                 .expect(200, done);
         });
     });
-    describe('Get all users from organization', () => {
+    suite('Get all users from organization', () => {
         const orgId = "1234";
         const url = `/api/${orgId}/users`;
 
-        it('Response should return the organization id and return 200', done => {
+        test('Response should return the organization id and return 200', done => {
             request(app)
                 .get(url)
                 .expect(200)
@@ -63,52 +63,52 @@ describe("User request tests", () => {
                 });
         })
     });
-    describe('Get one user from organization', () => {
+    suite('Get one user from organization', () => {
         const orgId = "hipteam";
         const userId = "59809fbb45fc8436263ce1ec";
         const url = `/api/${orgId}/user/${userId}`;
 
-        it('Should return 200', done => {
+        test('Should return 200', done => {
             request(app)
                 .get(url)
                 .expect(200, done);
         });
     });
 
-    describe('Reset user password', () => {
+    suite('Reset user password', () => {
         const url = `/api/resetPassword`;
 
-        it('Should return 200', done => {
+        test('Should return 200', done => {
             request(app)
                 .post(url)
                 .expect(200, done);
         });
     });
 
-    describe('Set password', () => {
+    suite('Set password', () => {
         const url = `/api/setPassword`;
 
-        it('Should return 200', done => {
+        test('Should return 200', done => {
             request(app)
                 .post(url)
                 .expect(200, done);
         });
     });
 
-    describe('Change password', () => {
+    suite('Change password', () => {
         const url = `/api/user/password`;
 
-        it('Should return 200', done => {
+        test('Should return 200', done => {
             request(app)
                 .post(url)
                 .expect(200, done);
         });
     });
 
-    describe('Change user picture', () => {
+    suite('Change user picture', () => {
         const url = `/api/profile/setpicture`;
 
-        it('Should return 200', done => {
+        test('Should return 200', done => {
             request(app)
                 .post(url)
                 .expect(200, done);

@@ -5,9 +5,9 @@ const orgId = "hipteam";
 const userId = "5982d890157abf05724b9b7a";
 const requestId = "requestId";
 
-describe("Request entity related request tests", () => {
+suite("Request entity related request tests", () => {
 
-    describe("Create new request", () => {
+    suite("Create new request", () => {
 
         const url = `/api/${orgId}/request`;
 
