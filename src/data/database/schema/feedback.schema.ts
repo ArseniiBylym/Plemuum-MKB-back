@@ -25,6 +25,6 @@ const FeedbackSchema = new Schema({
 
 const getDatabaseModel = (dbConnection: Connection, dbName = "default"): Model<FeedbackModel> => {
     return dbConnection.useDb(dbName).model<FeedbackModel>(modelName, FeedbackSchema);
-}
+};
 
 export { FeedbackModel, getDatabaseModel };

@@ -7,6 +7,7 @@ import * as DataControllerFactory from './datacontroller.factory'
 import TagController from "../controller/tag/tag.controller";
 import OrganizationController from "../controller/organization/organization.controller";
 import RequestController from "../controller/request/request.controller";
+import RequestDataController from "../data/datacontroller/request.datacontroller";
 
 let userController: UserController;
 let feedbackController: FeedbackController;
@@ -22,7 +23,7 @@ let getAuthController = (): AuthController => createAuthController();
 let getFeedbackController = (): FeedbackController => createFeedbackController(DataControllerFactory.getFeedbackDataController());
 let getTagController = (): TagController => createTagController();
 let getOrganizationController = (): OrganizationController => createOrganizationController();
-let getRequestController = (): RequestController => createRequestController();
+let getRequestController = (): RequestController => createRequestController(DataControllerFactory.getRequestDataController());
 
 /* #########################     PRIVATE      ########################## */
 
@@ -61,9 +62,9 @@ function createOrganizationController() {
     return organizationController;
 }
 
-function createRequestController() {
+function createRequestController(requestDataController: RequestDataController) {
     if (!requestController) {
-        requestController = new RequestController();
+        requestController = new RequestController(requestDataController);
     }
     return requestController;
 }

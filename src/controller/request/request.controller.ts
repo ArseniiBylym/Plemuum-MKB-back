@@ -1,10 +1,24 @@
 import { Request, Response } from "express";
+import RequestDatacontroller from "../../data/datacontroller/request.datacontroller";
+import BaseController from "../base.controller";
 
-export default class RequestController {
+export default class RequestController extends BaseController {
+
+    public requestDataController: RequestDatacontroller;
+
+    constructor(requestDataController: RequestDatacontroller) {
+        super();
+        this.requestDataController = requestDataController;
+    }
 
     // TODO Implement this
     public createRequest(req: Request, res: Response, next: Function) {
-        res.send({});
+        const request = req.body;
+        if (request) {
+            this.callController(this.requestDataController.saveNewRequest(req.params.orgId, request), res, 200, 400);
+        } else {
+            res.status(400).json({error: "invalid request"});
+        }
     }
 
     // TODO Implement this

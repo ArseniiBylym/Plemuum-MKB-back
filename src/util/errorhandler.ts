@@ -6,6 +6,6 @@ const getFriendlyErrorFromMongooseError = (error: Error) => {
         errorName: error.name,
         message: error.message,
     }
-}
+};
 
 export { getFriendlyErrorFromMongooseError };
