@@ -1,13 +1,13 @@
-import UserDataController from "./user.datacontroller";
-import DatabaseManager from "../database/database.manager";
+import UserDataController from "../../data/datacontroller/user.datacontroller";
+import DatabaseManager from "../../data/database/database.manager";
 import * as DatabaseFactory from "../../factory/database.factory";
 import * as TestObjectFactory from "../../util/testobject.factory";
-import { User } from "../models/user.model";
+import { User } from "../../data/models/user.model";
 import { assert, expect, should } from 'chai';
 import * as asserts from "assert";
-import BaseDataController from "./base.datacontroller";
+import BaseDataController from "../../data/datacontroller/base.datacontroller";
 
-describe("UserDataController tests", () => {
+suite("UserDataController tests", () => {
 
     let userDataController: UserDataController;
     const databaseManager: DatabaseManager = DatabaseFactory.getDatabaseManager();
@@ -22,7 +22,7 @@ describe("UserDataController tests", () => {
             })
     });
 
-    it("New user should be in DB", done => {
+    test("New user should be in DB", done => {
         const testUser = TestObjectFactory.getJohnDoe();
         userDataController.saveUser(testUser)
             .then((value: any) => {
@@ -37,7 +37,7 @@ describe("UserDataController tests", () => {
             });
     });
 
-    it("Get users from organization", (done) => {
+    test("Get users from organization", (done) => {
         const testUsers: User[] = [
             TestObjectFactory.getTestUserWithOrganizations("John", "Doe", ['hipteam']),
             TestObjectFactory.getTestUserWithOrganizations("John", "Doe", ['hipteam', 'other']),

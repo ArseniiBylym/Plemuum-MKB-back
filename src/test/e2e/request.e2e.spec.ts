@@ -58,17 +58,21 @@ suite("Request entity related request tests", () => {
         })
     });
 
-    describe("Get all request for user", () => {
+    suite("Get all request for user", () => {
         const url = `/api/${orgId}/user/${userId}/requests`;
 
         test("Should be able to get all request for user", done => {
             request(app)
                 .get(url)
-                .expect(200, done);
+                .expect(200)
+                .then(response => {
+                    expect(response.body).to.be.an.instanceOf(Array);
+                    done();
+                });
         })
     });
 
-    describe("Get user's sent requests", () => {
+    suite("Get user's sent requests", () => {
         const url = `/api/${orgId}/user/${userId}/requests/sender`;
 
         test("Should be able to get user's sent requests", done => {
@@ -78,7 +82,7 @@ suite("Request entity related request tests", () => {
         })
     });
 
-    describe("Get user's received requests", () => {
+    suite("Get user's received requests", () => {
         const url = `/api/${orgId}/user/${userId}/requests/recipient`;
 
         test("Should be able to get user's received requests", done => {
@@ -88,7 +92,7 @@ suite("Request entity related request tests", () => {
         })
     });
 
-    describe("Get a single request", () => {
+    suite("Get a single request", () => {
         const url = `/api/${orgId}/user/${userId}/requests/${requestId}`;
 
         test("Should be able to get a single request", done => {
@@ -98,7 +102,7 @@ suite("Request entity related request tests", () => {
         })
     });
 
-    describe("Get the recipients of a request", () => {
+    suite("Get the recipients of a request", () => {
         const url = `/api/${orgId}/user/${userId}/requests/${requestId}/recipients`;
 
         test("Should be able to get the recipients of a request", done => {

@@ -1,18 +1,18 @@
-import UserController from "./user.controller";
+import UserController from "../../controller/user.controller";
 import UserDataController from "../../data/datacontroller/user.datacontroller";
 import * as TestObjectFactory from "../../util/testobject.factory"
 import { anything, instance, mock, verify, when } from "ts-mockito";
 import { User } from "../../data/models/user.model";
 import { expect, should } from 'chai';
 
-describe("UserController handleSaveUserRequest", () => {
+suite("UserController handleSaveUserRequest", () => {
 
     let userController: UserController;
     const mockDataController = mock(UserDataController);
     const mockResult: any = {};
     const mockRequest: any = {};
 
-    it("Happy case: should call response send", (done) => {
+    test("Happy case: should call response send", (done) => {
         const mockUser: User = TestObjectFactory.getJohnDoe();
         const mockRequest: any = {
             body: mockUser
@@ -32,7 +32,7 @@ describe("UserController handleSaveUserRequest", () => {
         verify(mockDataController.saveUser(anything())).called();
     });
 
-    it("Sad case: should call response json", (done) => {
+    test("Sad case: should call response json", (done) => {
         const mockResponse: any = {
             json: (error: any) => {
                 expect(error).have.property("error");

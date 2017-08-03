@@ -1,4 +1,4 @@
-import BaseController from "../base.controller";
+import BaseController from "./base.controller";
 import { Request, Response } from "express";
 
 export default class TagController extends BaseController {

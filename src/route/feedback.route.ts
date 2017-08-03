@@ -1,6 +1,6 @@
 
 import { Express } from 'express';
-import FeedbackController from '../controller/feedback/feedback.controller';
+import FeedbackController from '../controller/feedback.controller';
 
 /**
  * @apiDefine feedback_list_data

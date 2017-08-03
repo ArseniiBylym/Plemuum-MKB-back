@@ -1,4 +1,4 @@
-import RequestController from "../controller/request/request.controller";
+import RequestController from "../controller/request.controller";
 import { Express } from "express";
 
 /**

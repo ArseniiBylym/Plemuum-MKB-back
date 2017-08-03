@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import UserDataController from "../../data/datacontroller/user.datacontroller";
-import { User } from "../../data/models/user.model";
-import BaseController from "../base.controller";
+import UserDataController from "../data/datacontroller/user.datacontroller";
+import { User } from "../data/models/user.model";
+import BaseController from "./base.controller";
 
 
 export default class UserController extends BaseController {

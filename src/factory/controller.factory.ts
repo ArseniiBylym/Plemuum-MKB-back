@@ -1,12 +1,12 @@
 import UserDataController from "../data/datacontroller/user.datacontroller";
-import UserController from "../controller/user/user.controller";
+import UserController from "../controller/user.controller";
 import FeedbackDataController from "../data/datacontroller/feedback.datacontroller";
-import FeedbackController from "../controller/feedback/feedback.controller";
-import AuthController from "../controller/auth/auth.controller";
+import FeedbackController from "../controller/feedback.controller";
+import AuthController from "../controller/auth.controller";
 import * as DataControllerFactory from './datacontroller.factory'
-import TagController from "../controller/tag/tag.controller";
-import OrganizationController from "../controller/organization/organization.controller";
-import RequestController from "../controller/request/request.controller";
+import TagController from "../controller/tag.controller";
+import OrganizationController from "../controller/organization.controller";
+import RequestController from "../controller/request.controller";
 import RequestDataController from "../data/datacontroller/request.datacontroller";
 
 let userController: UserController;

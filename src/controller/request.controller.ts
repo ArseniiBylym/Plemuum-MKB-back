@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import RequestDatacontroller from "../../data/datacontroller/request.datacontroller";
-import BaseController from "../base.controller";
+import RequestDatacontroller from "../data/datacontroller/request.datacontroller";
+import BaseController from "./base.controller";
 
 export default class RequestController extends BaseController {
 
@@ -11,7 +11,6 @@ export default class RequestController extends BaseController {
         this.requestDataController = requestDataController;
     }
 
-    // TODO Implement this
     public createRequest(req: Request, res: Response, next: Function) {
         const request = req.body;
         if (request) {
@@ -33,7 +32,7 @@ export default class RequestController extends BaseController {
 
     // TODO Implement this
     public getRequests(req: Request, res: Response, next: Function) {
-        res.send({});
+        this.callController(this.requestDataController.getAllRequests(req.params.orgId, req.params.userId), res, 200, 400);
     }
 
     // TODO Implement this

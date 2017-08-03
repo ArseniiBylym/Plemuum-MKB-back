@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import * as request from 'supertest';
 import UserDataController from "../../data/datacontroller/user.datacontroller";
 import * as DataControllerFactory from '../../factory/datacontroller.factory';
-import UserController from "../../controller/user/user.controller";
+import UserController from "../../controller/user.controller";
 import * as TestObjectFactory from "../../util/testobject.factory"
 import * as modelValidator from "../../util/model.validator"
 

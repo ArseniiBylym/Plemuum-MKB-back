@@ -1,4 +1,4 @@
-import TagController from "../controller/tag/tag.controller";
+import TagController from "../controller/tag.controller";
 import { Express } from "express";
 
 /**

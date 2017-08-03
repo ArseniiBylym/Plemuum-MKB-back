@@ -1,5 +1,5 @@
 import { Express } from "express";
-import OrganizationController from "../controller/organization/organization.controller";
+import OrganizationController from "../controller/organization.controller";
 
 export default (app: Express, organizationController: OrganizationController) => {
     /**

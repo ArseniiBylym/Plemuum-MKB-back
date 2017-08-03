@@ -1,7 +1,7 @@
 import { expect, should } from 'chai';
 import { anyString, anything, instance, mock, verify, when } from "ts-mockito";
 import FeedbackDataController from "../../data/datacontroller/feedback.datacontroller";
-import FeedbackController from "./feedback.controller";
+import FeedbackController from "../../controller/feedback.controller";
 
 suite("FeedbackController unit tests", () => {
 
