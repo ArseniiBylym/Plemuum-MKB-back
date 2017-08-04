@@ -47,7 +47,9 @@ export default class RequestController extends BaseController {
 
     // TODO Implement this
     public getRecipientUsersFromRequest(req: Request, res: Response, next: Function) {
-        res.send([]);
+        this.callController(
+            this.requestDataController.getRecipientUsersFromRequest(req.params.orgId, req.params.userId, req.params.requestId),
+            res, 200, 400);
     }
 
 }

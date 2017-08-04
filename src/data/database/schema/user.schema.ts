@@ -32,8 +32,8 @@ interface UserModel extends User, Document {
     verifyPasswordSync(rec_password: string): boolean
 }
 
-const getUserModel = (dbConnection: Connection, dbName = "default"): Model<UserModel> => {
-    return dbConnection.useDb(dbName).model<UserModel>("User", UserSchema);
+const getUserModel = (dbConnection: Connection): Model<UserModel> => {
+    return dbConnection.useDb("common").model<UserModel>("User", UserSchema);
 };
 
 export { UserModel, getUserModel };

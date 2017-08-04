@@ -67,6 +67,7 @@ suite("Request entity related request tests", () => {
                 .expect(200)
                 .then(response => {
                     expect(response.body).to.be.an.instanceOf(Array);
+                    assert(response.body.length >= 1, "Check if there's at least one element in the response array");
                     response.body.forEach((requestObj: Request) => {
                         modelValidator.validateRequest(requestObj);
                     });
@@ -84,6 +85,7 @@ suite("Request entity related request tests", () => {
                 .expect(200)
                 .then(response => {
                     expect(response.body).to.be.an.instanceOf(Array);
+                    assert(response.body.length >= 1, "Check if there's at least one element in the response array");
                     response.body.forEach((requestObj: Request) => {
                         modelValidator.validateRequest(requestObj);
                         assert(requestObj.senderId === userId, 'senderId should be the same as the userId')
@@ -102,6 +104,7 @@ suite("Request entity related request tests", () => {
                 .expect(200)
                 .then(response => {
                     expect(response.body).to.be.an.instanceOf(Array);
+                    assert(response.body.length >= 1, "Check if there's at least one element in the response array");
                     response.body.forEach((requestObj: Request) => {
                         modelValidator.validateRequest(requestObj);
                         assert(requestObj.recipientId.indexOf(userId) !== -1, 'senderId should be the same as the userId')
@@ -135,6 +138,7 @@ suite("Request entity related request tests", () => {
                 .expect(200)
                 .then(response => {
                     expect(response.body).to.be.an.instanceOf(Array);
+                    assert(response.body.length >= 1, "Check if there's at least one element in the response array");
                     response.body.forEach((user: User) => {
                         modelValidator.validateUser(user);
                     });

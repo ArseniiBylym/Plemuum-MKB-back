@@ -53,6 +53,7 @@ suite("User request tests", () => {
                 .expect(200)
                 .then(response => {
                     expect(response.body).to.be.an.instanceOf(Array);
+                    assert(response.body.length >= 1, "Check if there's at least one element in the response array");
                     done();
                 });
         })

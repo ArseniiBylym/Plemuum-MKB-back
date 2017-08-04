@@ -29,6 +29,7 @@ suite("Feedback request test", () => {
                 .expect(200)
                 .then(response => {
                     expect(response.body).to.be.an.instanceOf(Array);
+                    assert(response.body.length >= 1, "Check if there's at least one element in the response array");
                     done();
                 });
         })
@@ -101,6 +102,7 @@ suite("Feedback request test", () => {
                 .expect(200)
                 .then(response => {
                     expect(response.body).to.be.an.instanceOf(Array);
+                    assert(response.body.length >= 1, "Check if there's at least one element in the response array");
                     response.body.forEach((feedback: Feedback) => {
                         assert(feedback.senderId === userId, 'senderId should be the same as the userId')
                     });
@@ -118,6 +120,7 @@ suite("Feedback request test", () => {
                 .expect(200)
                 .then(response => {
                     expect(response.body).to.be.an.instanceOf(Array);
+                    assert(response.body.length >= 1, "Check if there's at least one element in the response array");
                     response.body.forEach((feedback: Feedback) => {
                         assert(feedback.recipientId === userId, 'recipientId should be the same as the userId')
                     });

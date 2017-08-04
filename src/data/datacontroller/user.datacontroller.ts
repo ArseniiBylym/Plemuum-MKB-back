@@ -12,14 +12,14 @@ export default class UserDataController extends BaseDataController<UserModel> {
 
     public saveUser(user: User): Promise<User> {
         return new Promise((resolve, reject) => {
-            const userModel = getUserModel(this.databaseManager.getConnection(), BaseDataController.COMMON);
+            const userModel = getUserModel(this.databaseManager.getConnection());
             new userModel(user).save((error: Error, user: User) => error ? reject(error) : resolve(user));
         });
     }
 
     public getOrganizationUsers(orgId: any): Promise<User[]> {
         return new Promise((resolve, reject) => {
-            const userModel = getUserModel(this.databaseManager.getConnection(), BaseDataController.COMMON);
+            const userModel = getUserModel(this.databaseManager.getConnection());
             const query: any = {orgIds: {$in: [orgId]}};
             userModel.find(query, (error: Error, users: User[]) => error ? reject(error) : resolve(users))
         })
@@ -27,7 +27,7 @@ export default class UserDataController extends BaseDataController<UserModel> {
 
     getUserById(orgId: string, userId: string): Promise<User> {
         return new Promise((resolve, reject) => {
-            const userModel = getUserModel(this.databaseManager.getConnection(), BaseDataController.COMMON);
+            const userModel = getUserModel(this.databaseManager.getConnection());
             const query: any = {$and: [{orgIds: {$in: [orgId]}}, {_id: userId}]};
             userModel.findOne(query, (error: Error, user: User) => error ? reject(error) : resolve(user))
         })
