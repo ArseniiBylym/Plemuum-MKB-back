@@ -31,6 +31,13 @@ export default class RequestDataController extends BaseDataController<RequestMod
         });
     }
 
+    public getRecipientRequests(organizationId: string, userId: string): Promise<Request[]> {
+        return new Promise((resolve, reject) => {
+            const query = {recipientId: {$in: [userId]}};
+            this.queryRequests(organizationId, query, reject, resolve);
+        });
+    }
+
     private queryRequests(dbName: string, query: any, reject: Function, resolve: Function) {
         const feedbackModel = getRequestModel(this.databaseManager.getConnection(), dbName);
         feedbackModel.find(query, (error: Error, feedbacks: Request[]) => error ? reject(error) : resolve(feedbacks));

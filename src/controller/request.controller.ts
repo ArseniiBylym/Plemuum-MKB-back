@@ -14,19 +14,21 @@ export default class RequestController extends BaseController {
     public createRequest(req: Request, res: Response, next: Function) {
         const request = req.body;
         if (request) {
-            this.callController(this.requestDataController.saveNewRequest(req.params.orgId, request), res, 200, 400);
+            this.callController(
+                this.requestDataController.saveNewRequest(req.params.orgId, request), res, 200, 400);
         } else {
             res.status(400).json({error: "invalid request"});
         }
     }
 
     public getSenderRequests(req: Request, res: Response, next: Function) {
-        this.callController(this.requestDataController.getSenderRequests(req.params.orgId, req.params.userId), res, 200, 400);
+        this.callController(
+            this.requestDataController.getSenderRequests(req.params.orgId, req.params.userId), res, 200, 400);
     }
 
-    // TODO Implement this
     public getRecipientRequests(req: Request, res: Response, next: Function) {
-        res.send([]);
+        this.callController(
+            this.requestDataController.getRecipientRequests(req.params.orgId, req.params.userId), res, 200, 400);
     }
 
     // TODO Implement this
