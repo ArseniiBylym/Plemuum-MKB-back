@@ -18,16 +18,22 @@ let UserSchema = new Schema({
     lastName: {required: true, type: String, index: true},
     email: {required: true, type: String, index: {unique: true}},
     orgIds: [String],
+    password: {required: true, type: String},
     pictureUrl: {required: false, type: String},
     tokens: [TokenSchema],
+
 }, {versionKey: false, collection: USER_COLLECTION});
 
-/*
-UserSchema.plugin(require('mongoose-bcrypt'));
 UserSchema.path("password").select(false);
-*/
 
-// TODO Understand this!
+if (process.env.NODE_ENV == "prod") {
+    UserSchema.plugin(require('mongoose-bcrypt'));
+} else {
+    UserSchema.method("verifyPasswordSync", function (password: string): boolean {
+        return password === 'asd1234';
+    });
+}
+
 interface UserModel extends User, Document {
     verifyPasswordSync(rec_password: string): boolean
 }

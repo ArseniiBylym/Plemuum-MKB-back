@@ -10,10 +10,14 @@ export default class UserDataController extends BaseDataController<UserModel> {
         super(databaseManager, getUserModel);
     }
 
-    public saveUser(user: User): Promise<User> {
+    public saveUser(user: User): Promise<any> {
         return new Promise((resolve, reject) => {
             const userModel = getUserModel(this.databaseManager.getConnection());
-            new userModel(user).save((error: Error, user: User) => error ? reject(error) : resolve(user));
+            new userModel(user).save((error: Error, savedUser: any) => {
+                userModel.findById(savedUser._id, (error, user: any) => {
+                    error ? reject(error) : resolve(user);
+                });
+            });
         });
     }
 
