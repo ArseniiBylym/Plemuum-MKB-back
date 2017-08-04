@@ -1,12 +1,14 @@
 import * as request from 'supertest';
 import app from "../../app";
 import * as DataControllerFactory from '../../factory/datacontroller.factory';
-import { expect } from 'chai';
+import { assert, expect } from 'chai';
 import * as modelValidator from "../../util/model.validator"
+import Request from "../../data/models/request.model";
+import { User } from "../../data/models/user.model";
 
 const orgId = "hipteam";
-const userId = "5982d890157abf05724b9b7a";
-const requestId = "requestId";
+const userId = "5984342227cd340363dc84bd";
+const requestId = "59844c1cd0b5d006da3c961e";
 
 suite("Request entity related request tests", () => {
 
@@ -65,52 +67,78 @@ suite("Request entity related request tests", () => {
                 .expect(200)
                 .then(response => {
                     expect(response.body).to.be.an.instanceOf(Array);
+                    response.body.forEach((requestObj: Request) => {
+                        modelValidator.validateRequest(requestObj);
+                    });
                     done();
                 });
         })
     });
 
-    // TODO Finish this
     suite("Get user's sent requests", () => {
         const url = `/api/${orgId}/user/${userId}/requests/sender`;
 
         test("Should be able to get user's sent requests", done => {
             request(app)
                 .get(url)
-                .expect(200, done);
+                .expect(200)
+                .then(response => {
+                    expect(response.body).to.be.an.instanceOf(Array);
+                    response.body.forEach((requestObj: Request) => {
+                        modelValidator.validateRequest(requestObj);
+                        assert(requestObj.senderId === userId, 'senderId should be the same as the userId')
+                    });
+                    done();
+                });
         })
     });
 
-    // TODO Finish this
     suite("Get user's received requests", () => {
         const url = `/api/${orgId}/user/${userId}/requests/recipient`;
 
         test("Should be able to get user's received requests", done => {
             request(app)
                 .get(url)
-                .expect(200, done);
+                .expect(200)
+                .then(response => {
+                    expect(response.body).to.be.an.instanceOf(Array);
+                    response.body.forEach((requestObj: Request) => {
+                        modelValidator.validateRequest(requestObj);
+                        assert(requestObj.recipientId.indexOf(userId) !== -1, 'senderId should be the same as the userId')
+                    });
+                    done();
+                });
         })
     });
 
-    // TODO Finish this
     suite("Get a single request", () => {
         const url = `/api/${orgId}/user/${userId}/requests/${requestId}`;
 
         test("Should be able to get a single request", done => {
             request(app)
                 .get(url)
-                .expect(200, done);
+                .expect(200)
+                .then(response => {
+                    modelValidator.validateRequest(response.body);
+                    done();
+                });
         })
     });
 
-    // TODO Finish this
     suite("Get the recipients of a request", () => {
         const url = `/api/${orgId}/user/${userId}/requests/${requestId}/recipients`;
 
         test("Should be able to get the recipients of a request", done => {
             request(app)
                 .get(url)
-                .expect(200, done);
+                .expect(200)
+                .then(response => {
+                    expect(response.body).to.be.an.instanceOf(Array);
+                    response.body.forEach((user: User) => {
+                        modelValidator.validateUser(user);
+                    });
+                    done();
+                });
         })
     });
 });

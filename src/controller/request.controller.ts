@@ -22,12 +22,12 @@ export default class RequestController extends BaseController {
 
     // TODO Implement this
     public getSenderRequests(req: Request, res: Response, next: Function) {
-        res.send({});
+        res.send([]);
     }
 
     // TODO Implement this
     public getRecipientRequests(req: Request, res: Response, next: Function) {
-        res.send({});
+        res.send([]);
     }
 
     // TODO Implement this
@@ -37,12 +37,17 @@ export default class RequestController extends BaseController {
 
     // TODO Implement this
     public getRequest(req: Request, res: Response, next: Function) {
-        res.send({});
+        const request = {
+            senderId: "5984342227cd340363dc84aa",
+            requestMessage: "Mock test request message",
+            recipientId: []
+        };
+        res.send(request);
     }
 
     // TODO Implement this
     public getRecipientUsersFromRequest(req: Request, res: Response, next: Function) {
-        res.send({});
+        res.send([]);
     }
 
 }
