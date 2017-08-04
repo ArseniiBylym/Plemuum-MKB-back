@@ -20,9 +20,8 @@ export default class RequestController extends BaseController {
         }
     }
 
-    // TODO Implement this
     public getSenderRequests(req: Request, res: Response, next: Function) {
-        res.send([]);
+        this.callController(this.requestDataController.getSenderRequests(req.params.orgId, req.params.userId), res, 200, 400);
     }
 
     // TODO Implement this

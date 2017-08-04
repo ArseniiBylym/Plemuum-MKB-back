@@ -2,6 +2,7 @@ import BaseDataController from "./base.datacontroller";
 import { getRequestModel, RequestModel } from "../database/schema/request.schema";
 import DatabaseManager from "../database/database.manager";
 import { Model } from 'mongoose';
+import Request from "../models/request.model";
 
 export default class RequestDataController extends BaseDataController<RequestModel> {
 
@@ -18,10 +19,21 @@ export default class RequestDataController extends BaseDataController<RequestMod
 
     public getAllRequests(organizationId: string, userId: string): Promise<Request[]> {
         return new Promise<Request[]>((resolve, reject) => {
-            const newRequest: Model<RequestModel> = getRequestModel(this.databaseManager.getConnection(), organizationId);
             const query: any = {$or: [{senderId: userId}, {recipientId: {$in: [userId]}}]};
-            newRequest.find(query, (error: Error, requests: Request[]) => error ? reject(error) : resolve(requests));
+            this.queryRequests(organizationId, query, reject, resolve);
         });
+    }
+
+    public getSenderRequests(organizationId: string, userId: string): Promise<Request[]> {
+        return new Promise((resolve, reject) => {
+            const query = {senderId: userId};
+            this.queryRequests(organizationId, query, reject, resolve);
+        });
+    }
+
+    private queryRequests(dbName: string, query: any, reject: Function, resolve: Function) {
+        const feedbackModel = getRequestModel(this.databaseManager.getConnection(), dbName);
+        feedbackModel.find(query, (error: Error, feedbacks: Request[]) => error ? reject(error) : resolve(feedbacks));
     }
 
 }
