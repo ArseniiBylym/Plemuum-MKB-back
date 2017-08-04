@@ -15,6 +15,7 @@
     ],
     "exclude": [
       "config",
+      "src/test",
       "**/*.d.ts",
       "**/*.spec.ts"
     ],

@@ -78,5 +78,4 @@ function generateFeedbacks(users: any[]): Promise<any> {
         })
 }
 
-
 export { generateUsers, generateFeedbacks, saveInJsonFile }
