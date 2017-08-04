@@ -7,8 +7,8 @@ import Request from "../../data/models/request.model";
 import { User } from "../../data/models/user.model";
 
 const orgId = "hipteam";
-const userId = "5984342227cd340363dc84bd";
-const requestId = "59844c1cd0b5d006da3c961e";
+const userId = "5984342227cd340363dc84ac";
+const requestId = "59844c1cd0b5d006da3c9620";
 
 suite("Request entity related request tests", () => {
 
@@ -120,6 +120,7 @@ suite("Request entity related request tests", () => {
                 .expect(200)
                 .then(response => {
                     modelValidator.validateRequest(response.body);
+                    assert(response.body._id === requestId, "request's id should match with the url param id");
                     done();
                 });
         })
