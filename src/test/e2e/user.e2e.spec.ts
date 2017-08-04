@@ -1,26 +1,20 @@
 import app from '../../app';
-import { expect } from 'chai';
+import { assert, expect } from 'chai';
 import * as request from 'supertest';
 import UserDataController from "../../data/datacontroller/user.datacontroller";
-import * as DataControllerFactory from '../../factory/datacontroller.factory';
 import UserController from "../../controller/user.controller";
 import * as TestObjectFactory from "../../util/testobject.factory"
 import * as modelValidator from "../../util/model.validator"
+import { fixtureLoader } from "../mock/fixture.loader"
 
 let userDataController: UserDataController;
 let userController: UserController;
 
-function getUserForm() {
-    return {
-        form: TestObjectFactory.getRegisterJohnDoe()
-    }
-}
-
 suite("User request tests", () => {
 
     before((done) => {
-        DataControllerFactory.getUserDataController().clearData()
-            .then((state) => done())
+        fixtureLoader()
+            .then(value => done())
             .catch((error) => {
                 console.error(error);
                 done();
@@ -50,10 +44,10 @@ suite("User request tests", () => {
         });
     });
     suite('Get all users from organization', () => {
-        const orgId = "1234";
+        const orgId = "hipteam";
         const url = `/api/${orgId}/users`;
 
-        test('Response should return the organization id and return 200', done => {
+        test('Response should return an array of users and status 200', done => {
             request(app)
                 .get(url)
                 .expect(200)
@@ -65,16 +59,28 @@ suite("User request tests", () => {
     });
     suite('Get one user from organization', () => {
         const orgId = "hipteam";
-        const userId = "59809fbb45fc8436263ce1ec";
+        const userId = "5984342227cd340363dc84ab";
         const url = `/api/${orgId}/user/${userId}`;
 
         test('Should return 200', done => {
             request(app)
                 .get(url)
-                .expect(200, done);
+                .expect(200)
+                .then(response => {
+                    const user = response.body;
+
+                    modelValidator.validateUser(user);
+
+                    expect(user._id).to.be.equal(userId);
+                    expect(user.firstName).to.be.equal('samantha');
+                    expect(user.lastName).to.be.equal('clark');
+
+                    done();
+                });
         });
     });
 
+    // TODO Finish this
     suite('Reset user password', () => {
         const url = `/api/resetPassword`;
 
@@ -85,6 +91,7 @@ suite("User request tests", () => {
         });
     });
 
+    // TODO Finish this
     suite('Set password', () => {
         const url = `/api/setPassword`;
 
@@ -95,6 +102,7 @@ suite("User request tests", () => {
         });
     });
 
+    // TODO Finish this
     suite('Change password', () => {
         const url = `/api/user/password`;
 
@@ -105,6 +113,7 @@ suite("User request tests", () => {
         });
     });
 
+    // TODO Finish this
     suite('Change user picture', () => {
         const url = `/api/profile/setpicture`;
 

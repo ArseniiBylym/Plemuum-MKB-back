@@ -14,8 +14,8 @@ export let TagSchema = new Schema({
         timestamps: true,
     });
 
-const getDatabaseModel = (dbConnection: Connection, dbName = "default"): Model<TagModel> => {
+const getTagModel = (dbConnection: Connection, dbName = "default"): Model<TagModel> => {
     return dbConnection.useDb(dbName).model<TagModel>("Tag", TagSchema);
-}
+};
 
-export { TagModel, getDatabaseModel };
+export { TagModel, getTagModel };

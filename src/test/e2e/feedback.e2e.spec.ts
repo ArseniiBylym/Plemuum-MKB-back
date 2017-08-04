@@ -1,17 +1,19 @@
-import { expect } from 'chai';
+import { assert, expect } from 'chai';
 import * as request from 'supertest';
-import * as DataControllerFactory from '../../factory/datacontroller.factory';
 import * as TestObjectFactory from "../../util/testobject.factory"
 import app from '../../app';
+import { fixtureLoader } from "../mock/fixture.loader";
+import * as modelValidator from "../../util/model.validator"
+import Feedback from "../../data/models/feedback.model";
 
 const orgId = "hipteam";
-const userId = "userID1234";
+const userId = "5984342227cd340363dc84c2";
 
 suite("Feedback request test", () => {
 
     before((done) => {
-        DataControllerFactory.getFeedbackDataController().clearData(orgId)
-            .then((state) => done())
+        fixtureLoader()
+            .then(value => done())
             .catch((error) => {
                 console.error(error);
                 done();
@@ -41,14 +43,7 @@ suite("Feedback request test", () => {
                 .send(TestObjectFactory.getTestFeedback())
                 .expect(200)
                 .then(response => {
-                    expect(response.body).have.property("senderId");
-                    expect(response.body).have.property("recipientId");
-                    expect(response.body).have.property("context");
-                    expect(response.body).have.property("message");
-                    expect(response.body).have.property("privacy");
-                    expect(response.body).have.property("type");
-                    expect(response.body).have.property("requestId");
-                    expect(response.body).have.property("tags");
+                    modelValidator.validateFeedback(response.body);
                     done();
                 });
         });
@@ -64,8 +59,7 @@ suite("Feedback request test", () => {
                 .send(feedbackForm)
                 .expect(400)
                 .then(response => {
-                    expect(response.body).have.property("errorName");
-                    expect(response.body).have.property("message");
+                    modelValidator.validateError(response.body);
                     done();
                 });
         });
@@ -91,8 +85,7 @@ suite("Feedback request test", () => {
                 .send(feedbackForm)
                 .expect(400)
                 .then(response => {
-                    expect(response.body).have.property("errorName");
-                    expect(response.body).have.property("message");
+                    modelValidator.validateError(response.body);
                     done();
                 });
         });
@@ -108,6 +101,9 @@ suite("Feedback request test", () => {
                 .expect(200)
                 .then(response => {
                     expect(response.body).to.be.an.instanceOf(Array);
+                    response.body.forEach((feedback: Feedback) => {
+                        assert(feedback.senderId === userId, 'senderId should be the same as the userId')
+                    });
                     done();
                 });
         })
@@ -122,6 +118,9 @@ suite("Feedback request test", () => {
                 .expect(200)
                 .then(response => {
                     expect(response.body).to.be.an.instanceOf(Array);
+                    response.body.forEach((feedback: Feedback) => {
+                        assert(feedback.recipientId === userId, 'recipientId should be the same as the userId')
+                    });
                     done();
                 });
         })

@@ -2,6 +2,7 @@ import * as request from 'supertest';
 import app from "../../app";
 import * as DataControllerFactory from '../../factory/datacontroller.factory';
 import { expect } from 'chai';
+import * as modelValidator from "../../util/model.validator"
 
 const orgId = "hipteam";
 const userId = "5982d890157abf05724b9b7a";
@@ -33,9 +34,7 @@ suite("Request entity related request tests", () => {
                 .send(requestForm)
                 .expect(200)
                 .then(response => {
-                    expect(response.body).have.property("senderId");
-                    expect(response.body).have.property("recipientId");
-                    expect(response.body).have.property("requestMessage");
+                    modelValidator.validateRequest(response.body);
                     done();
                 });
         });
@@ -50,8 +49,7 @@ suite("Request entity related request tests", () => {
                 .send(incorrectRequestForm)
                 .expect(400)
                 .then(response => {
-                    expect(response.body).have.property("errorName");
-                    expect(response.body).have.property("message");
+                    modelValidator.validateError(response.body);
                     done();
                 });
 
@@ -72,6 +70,7 @@ suite("Request entity related request tests", () => {
         })
     });
 
+    // TODO Finish this
     suite("Get user's sent requests", () => {
         const url = `/api/${orgId}/user/${userId}/requests/sender`;
 
@@ -82,6 +81,7 @@ suite("Request entity related request tests", () => {
         })
     });
 
+    // TODO Finish this
     suite("Get user's received requests", () => {
         const url = `/api/${orgId}/user/${userId}/requests/recipient`;
 
@@ -92,6 +92,7 @@ suite("Request entity related request tests", () => {
         })
     });
 
+    // TODO Finish this
     suite("Get a single request", () => {
         const url = `/api/${orgId}/user/${userId}/requests/${requestId}`;
 
@@ -102,6 +103,7 @@ suite("Request entity related request tests", () => {
         })
     });
 
+    // TODO Finish this
     suite("Get the recipients of a request", () => {
         const url = `/api/${orgId}/user/${userId}/requests/${requestId}/recipients`;
 

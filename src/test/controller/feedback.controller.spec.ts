@@ -8,7 +8,8 @@ suite("FeedbackController unit tests", () => {
     let feedbackController: FeedbackController;
     const mockRequest: any = {
         params: {
-            userId: "userId"
+            userId: "userId",
+            orgId: "orgId"
         }
     };
     const feedbackDataController: FeedbackDataController = mock(FeedbackDataController);
@@ -18,7 +19,7 @@ suite("FeedbackController unit tests", () => {
 
         test("Happy case: test should getAllFeedback from FeedbackDataController then call res.json", done => {
 
-            when(feedbackDataController.getAllFeedback(anyString())).thenReturn(
+            when(feedbackDataController.getAllFeedback(anyString(), anyString())).thenReturn(
                 new Promise<any>((resolve, reject) => resolve(mockResult))
             );
 
@@ -33,12 +34,12 @@ suite("FeedbackController unit tests", () => {
 
             feedbackController = new FeedbackController(instance(feedbackDataController));
             feedbackController.getFeedbacks(mockRequest, mockResponse);
-            verify(feedbackDataController.getAllFeedback(anyString())).called();
+            verify(feedbackDataController.getAllFeedback(anyString(), anyString())).called();
         });
 
         test("Sad case: test should getAllFeedback from FeedbackDataController then call res.json", done => {
 
-            when(feedbackDataController.getAllFeedback(anyString())).thenReturn(
+            when(feedbackDataController.getAllFeedback(anyString(), anyString())).thenReturn(
                 new Promise<any>((resolve, reject) => reject({}))
             );
 
@@ -52,7 +53,7 @@ suite("FeedbackController unit tests", () => {
 
             feedbackController = new FeedbackController(instance(feedbackDataController));
             feedbackController.getFeedbacks(mockRequest, mockResponse);
-            verify(feedbackDataController.getAllFeedback(anyString())).called();
+            verify(feedbackDataController.getAllFeedback(anyString(), anyString())).called();
         })
 
     });
@@ -61,7 +62,7 @@ suite("FeedbackController unit tests", () => {
 
         test("Happy case: test should getSentFeedbacks from FeedbackDataController then call res.json", done => {
 
-            when(feedbackDataController.getSentFeedbacks(anyString())).thenReturn(
+            when(feedbackDataController.getSentFeedbacks(anyString(), anyString())).thenReturn(
                 new Promise<any>((resolve, reject) => resolve(mockResult))
             );
 
@@ -76,12 +77,12 @@ suite("FeedbackController unit tests", () => {
 
             feedbackController = new FeedbackController(instance(feedbackDataController));
             feedbackController.getSentFeedbacks(mockRequest, mockResponse);
-            verify(feedbackDataController.getSentFeedbacks(anyString())).called();
+            verify(feedbackDataController.getSentFeedbacks(anyString(), anyString())).called();
         });
 
         test("Sad case: test should getSentFeedbacks from FeedbackDataController then call res.json", done => {
 
-            when(feedbackDataController.getSentFeedbacks(anyString())).thenReturn(
+            when(feedbackDataController.getSentFeedbacks(anyString(), anyString())).thenReturn(
                 new Promise<any>((resolve, reject) => reject({}))
             );
 
@@ -95,7 +96,7 @@ suite("FeedbackController unit tests", () => {
 
             feedbackController = new FeedbackController(instance(feedbackDataController));
             feedbackController.getSentFeedbacks(mockRequest, mockResponse);
-            verify(feedbackDataController.getSentFeedbacks(anyString())).called();
+            verify(feedbackDataController.getSentFeedbacks(anyString(), anyString())).called();
         })
 
     });
@@ -104,7 +105,7 @@ suite("FeedbackController unit tests", () => {
 
         test("Happy case: test should getIncomingFeedbacks from FeedbackDataController then call res.json", done => {
 
-            when(feedbackDataController.getIncomingFeedbacks(anyString())).thenReturn(
+            when(feedbackDataController.getIncomingFeedbacks(anyString(), anyString())).thenReturn(
                 new Promise<any>((resolve, reject) => resolve(mockResult))
             );
 
@@ -119,12 +120,12 @@ suite("FeedbackController unit tests", () => {
 
             feedbackController = new FeedbackController(instance(feedbackDataController));
             feedbackController.getIncomingFeedbacks(mockRequest, mockResponse);
-            verify(feedbackDataController.getIncomingFeedbacks(anyString())).called();
+            verify(feedbackDataController.getIncomingFeedbacks(anyString(), anyString())).called();
         });
 
         test("Sad case: test should getIncomingFeedbacks from FeedbackDataController then call res.json", done => {
 
-            when(feedbackDataController.getIncomingFeedbacks(anyString())).thenReturn(
+            when(feedbackDataController.getIncomingFeedbacks(anyString(), anyString())).thenReturn(
                 new Promise<any>((resolve, reject) => reject({}))
             );
 
@@ -139,7 +140,7 @@ suite("FeedbackController unit tests", () => {
 
             feedbackController = new FeedbackController(instance(feedbackDataController));
             feedbackController.getIncomingFeedbacks(mockRequest, mockResponse);
-            verify(feedbackDataController.getIncomingFeedbacks(anyString())).called();
+            verify(feedbackDataController.getIncomingFeedbacks(anyString(), anyString())).called();
         })
 
     });

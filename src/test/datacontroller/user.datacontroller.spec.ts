@@ -6,6 +6,7 @@ import { User } from "../../data/models/user.model";
 import { assert, expect, should } from 'chai';
 import * as asserts from "assert";
 import BaseDataController from "../../data/datacontroller/base.datacontroller";
+import { fixtureLoader } from "../mock/fixture.loader";
 
 suite("UserDataController tests", () => {
 
@@ -14,8 +15,8 @@ suite("UserDataController tests", () => {
 
     beforeEach(done => {
         userDataController = new UserDataController(databaseManager);
-        userDataController.clearData(BaseDataController.COMMON)
-            .then(() => done())
+        fixtureLoader()
+            .then(value => done())
             .catch((error) => {
                 console.error(error);
                 done();
@@ -54,7 +55,7 @@ suite("UserDataController tests", () => {
             userDataController.getOrganizationUsers("hipteam")
                 .then(users => {
                     expect(users).to.be.an.instanceOf(Array);
-                    assert.lengthOf(users, 2);
+                    assert.lengthOf(users, 32);
                     done();
                 })
                 .catch(reason => {

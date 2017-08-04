@@ -12,11 +12,11 @@ export default class FeedbackController extends BaseController {
     }
 
     public getFeedbacks(req: Request, res: Response,) {
-        this.callController(this.feedbackDataController.getAllFeedback(req.params.userId), res, 200, 400);
+        this.callController(this.feedbackDataController.getAllFeedback(req.params.orgId, req.params.userId), res, 200, 400);
     }
 
     public getSentFeedbacks(req: Request, res: Response,) {
-        this.callController(this.feedbackDataController.getSentFeedbacks(req.params.userId), res, 200, 400);
+        this.callController(this.feedbackDataController.getSentFeedbacks(req.params.orgId, req.params.userId), res, 200, 400);
     }
 
     public postFeedback(req: Request, res: Response,) {
@@ -29,6 +29,6 @@ export default class FeedbackController extends BaseController {
     }
 
     public getIncomingFeedbacks(req: Request, res: Response,) {
-        this.callController(this.feedbackDataController.getIncomingFeedbacks(req.params.userId), res, 200, 400);
+        this.callController(this.feedbackDataController.getIncomingFeedbacks(req.params.orgId, req.params.userId), res, 200, 400);
     }
 }
