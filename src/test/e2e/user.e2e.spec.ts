@@ -50,6 +50,7 @@ suite("User request tests", () => {
         test('Response should return an array of users and status 200', done => {
             request(app)
                 .get(url)
+                .query({ email: 'sheryl.grant@example.com', password: 'asd1234' })
                 .expect(200)
                 .then(response => {
                     expect(response.body).to.be.an.instanceOf(Array);
@@ -69,13 +70,8 @@ suite("User request tests", () => {
                 .expect(200)
                 .then(response => {
                     const user = response.body;
-
                     modelValidator.validateUser(user);
-
                     expect(user._id).to.be.equal(userId);
-                    expect(user.firstName).to.be.equal('samantha');
-                    expect(user.lastName).to.be.equal('clark');
-
                     done();
                 });
         });

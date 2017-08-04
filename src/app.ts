@@ -4,6 +4,7 @@ import Routes from './route/routes';
 import * as bodyParser from "body-parser";
 import * as path from "path";
 import * as logger from 'morgan';
+import passportInit from "./auth/passport.manager";
 
 const app = (): Express => {
     const app = express();
@@ -14,6 +15,7 @@ const app = (): Express => {
     }
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended: true}));
+    app.use(passportInit());
     Routes(app);
     return app;
 };

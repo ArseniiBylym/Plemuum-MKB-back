@@ -8,7 +8,7 @@ import { User } from "../../data/models/user.model";
 
 function fixtureLoader(): Promise<any> {
     let promises: Promise<any>[] = [];
-    const userModel = getUserModel(DatabaseFactory.getDatabaseManager().getConnection(), 'common');
+    const userModel = getUserModel(DatabaseFactory.getDatabaseManager().getConnection());
     const feedbackModel = getFeedbackModel(DatabaseFactory.getDatabaseManager().getConnection(), 'hipteam');
     const requestModel = getRequestModel(DatabaseFactory.getDatabaseManager().getConnection(), 'hipteam');
 

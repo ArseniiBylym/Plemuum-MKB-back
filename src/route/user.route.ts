@@ -1,5 +1,6 @@
 import { Express } from 'express';
 import UserController from "../controller/user.controller";
+import * as passport from 'passport';
 
 
 /**
@@ -46,7 +47,7 @@ export default (app: Express, userController: UserController) => {
      * @apiUse user_list_data
      */
     app.route("/api/:orgId/users")
-        .get(userController.getOrganizationUsers.bind(userController));
+        .get(passport.authenticate('local', { session: false }), userController.getOrganizationUsers.bind(userController));
 
     /**
      * @api {GET} /api/:orgId/user/:userid Get a specific user from an organization
