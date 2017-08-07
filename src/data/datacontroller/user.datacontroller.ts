@@ -36,4 +36,29 @@ export default class UserDataController extends BaseDataController<UserModel> {
             userModel.findOne(query, (error: Error, user: User) => error ? reject(error) : resolve(user))
         })
     }
+
+    getUserByToken(token: string): Promise<User> {
+        return new Promise((resolve, reject) => {
+            const userModel = getUserModel(this.databaseManager.getConnection());
+            const query: any = {'tokens.token': token};
+            userModel.findOne(query, (error: Error, user: User) => error ? reject(error) : resolve(user))
+        });
+    }
+
+    getUserByEmail(email: string): Promise<User> {
+        return new Promise((resolve, reject) => {
+            const userModel = getUserModel(this.databaseManager.getConnection());
+            userModel.findOne({email: email}, {password: 1}, (error: Error, user: UserModel) =>
+                error ? reject(error) : resolve(user))
+        });
+    }
+
+    getCurrentToken(user: UserModel, token: string): any {
+        return new Promise((resolve, reject) => {
+            const userModel = getUserModel(this.databaseManager.getConnection());
+            return user.tokens.find((element) => {
+                return element.token === token;
+            });
+        });
+    }
 }

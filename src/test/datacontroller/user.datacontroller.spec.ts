@@ -8,7 +8,7 @@ import * as asserts from "assert";
 import BaseDataController from "../../data/datacontroller/base.datacontroller";
 import { fixtureLoader } from "../mock/fixture.loader";
 
-suite("UserDataController tests", () => {
+ suite("UserDataController tests", () => {
 
     let userDataController: UserDataController;
     const databaseManager: DatabaseManager = DatabaseFactory.getDatabaseManager();

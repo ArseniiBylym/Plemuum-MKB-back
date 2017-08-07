@@ -8,6 +8,7 @@ import TagController from "../controller/tag.controller";
 import OrganizationController from "../controller/organization.controller";
 import RequestController from "../controller/request.controller";
 import RequestDataController from "../data/datacontroller/request.datacontroller";
+import SessionController from "../controller/session.controller";
 
 let userController: UserController;
 let feedbackController: FeedbackController;
@@ -15,6 +16,7 @@ let authController: AuthController;
 let tagController: TagController;
 let organizationController: OrganizationController;
 let requestController: RequestController;
+let sessionController: SessionController;
 
 /* #########################     PUBLIC      ########################## */
 
@@ -24,6 +26,7 @@ let getFeedbackController = (): FeedbackController => createFeedbackController(D
 let getTagController = (): TagController => createTagController();
 let getOrganizationController = (): OrganizationController => createOrganizationController();
 let getRequestController = (): RequestController => createRequestController(DataControllerFactory.getRequestDataController());
+let getSessionController = (): SessionController => createSessionController();
 
 /* #########################     PRIVATE      ########################## */
 
@@ -69,7 +72,14 @@ function createRequestController(requestDataController: RequestDataController) {
     return requestController;
 }
 
+function createSessionController() {
+    if (!sessionController) {
+        sessionController = new SessionController();
+    }
+    return sessionController;
+}
+
 export {
     getUserController, getAuthController, getFeedbackController, getTagController, getOrganizationController,
-    getRequestController
+    getRequestController, getSessionController
 }
