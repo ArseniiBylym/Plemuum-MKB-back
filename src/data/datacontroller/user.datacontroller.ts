@@ -3,6 +3,7 @@ import { Model } from 'mongoose';
 import { getUserModel, UserModel } from "../database/schema/user.schema";
 import DatabaseManager from "../database/database.manager";
 import BaseDataController from "./base.datacontroller";
+import { TokenObject } from "../../auth/token.manager";
 
 export default class UserDataController extends BaseDataController<UserModel> {
 
@@ -37,6 +38,11 @@ export default class UserDataController extends BaseDataController<UserModel> {
         })
     }
 
+    getUserByIdWithoutOrgId(userId: string): Promise<Object> {
+        const userModel = getUserModel(this.databaseManager.getConnection());
+        return userModel.findOne(userId).lean().exec();
+    }
+
     getUserByToken(token: string): Promise<User> {
         return new Promise((resolve, reject) => {
             const userModel = getUserModel(this.databaseManager.getConnection());
@@ -60,5 +66,21 @@ export default class UserDataController extends BaseDataController<UserModel> {
                 return element.token === token;
             });
         });
+    }
+
+    updateUserToken(userId: string, tokenObj: TokenObject, userAgent: string) {
+        const userModel = getUserModel(this.databaseManager.getConnection());
+        const query = {
+            $push: {
+                tokens: {
+                    userId: userId,
+                    token: tokenObj.token,
+                    token_expiry: tokenObj.tokenExpiry,
+                    issued_at: new Date(),
+                    client_type: userAgent
+                }
+            }
+        };
+        return userModel.findByIdAndUpdate(userId, query, {"new": true}).exec();
     }
 }

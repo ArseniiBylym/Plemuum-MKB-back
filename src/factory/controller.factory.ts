@@ -26,7 +26,7 @@ let getFeedbackController = (): FeedbackController => createFeedbackController(D
 let getTagController = (): TagController => createTagController();
 let getOrganizationController = (): OrganizationController => createOrganizationController();
 let getRequestController = (): RequestController => createRequestController(DataControllerFactory.getRequestDataController());
-let getSessionController = (): SessionController => createSessionController();
+let getSessionController = (): SessionController => createSessionController(DataControllerFactory.getUserDataController());
 
 /* #########################     PRIVATE      ########################## */
 
@@ -72,9 +72,9 @@ function createRequestController(requestDataController: RequestDataController) {
     return requestController;
 }
 
-function createSessionController() {
+function createSessionController(userDataController: UserDataController) {
     if (!sessionController) {
-        sessionController = new SessionController();
+        sessionController = new SessionController(userDataController);
     }
     return sessionController;
 }

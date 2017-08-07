@@ -4,7 +4,7 @@ import app from "../../app";
 import * as responseValidator from "../../util/model.validator";
 
 // TODO Finish this
-suite.only("Session request tests", () => {
+suite("Session request tests", () => {
     before((done) => {
         fixtureLoader()
             .then(value => done())

@@ -38,6 +38,10 @@ interface UserModel extends User, Document {
     verifyPasswordSync(rec_password: string): boolean
 }
 
+interface Token extends User, Document {
+    verifyPasswordSync(rec_password: string): boolean
+}
+
 const getUserModel = (dbConnection: Connection): Model<UserModel> => {
     return dbConnection.useDb("common").model<UserModel>("User", UserSchema);
 };

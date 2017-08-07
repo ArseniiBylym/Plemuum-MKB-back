@@ -1,9 +1,9 @@
 import BaseController from "./base.controller";
-import * as crypto from 'crypto';
+import * as tokenManager from "../auth/token.manager";
+import { TokenObject } from "../auth/token.manager";
 import { Request, Response } from "express";
 import { User } from "../data/models/user.model";
-import { getUserModel, UserModel } from "../data/database/schema/user.schema";
-import { getDatabaseManager } from "../factory/database.factory";
+import { UserModel } from "../data/database/schema/user.schema";
 import UserDataController from "../data/datacontroller/user.datacontroller";
 
 export default class SessionController extends BaseController {
@@ -15,50 +15,27 @@ export default class SessionController extends BaseController {
         this.userDataController = userDataController;
     }
 
-    // TODO Refactor this
-    public login(req: Request, res: Response, next: Function) {
-        const device = (<any> req).device;
-        const userAgent = req.header('User-Agent');
-        const token = crypto.randomBytes(64).toString('hex');
-        const token_expiry = new Date();
-        token_expiry.setDate(token_expiry.getDate() + Number(7));
-
-        const user = getUserModel(getDatabaseManager().getConnection());
-
-        user.findOne(req.user._id).lean().exec((err: any, userToLog: User) => {
-            if (err) {
-                res.json({error: err});
-            } else {
-                const query = {
-                    $push: {
-                        tokens: {
-                            userId: req.user._id,
-                            token: token,
-                            token_expiry: token_expiry,
-                            issued_at: new Date(),
-                            client_type: userAgent
-                        }
-                    }
-                };
-                user.findByIdAndUpdate(req.user._id, query, {"new": true}, (err: Error, updatedUser: UserModel) => {
-                    if (err) {
-                        res.json({error: err});
-                    } else {
-                        const tokens = updatedUser.tokens;
-                        const currentToken: any = tokens.find((element) => element.token === token);
-                        const result = {
-                            _id: updatedUser._id,
-                            token: currentToken.token,
-                            token_expiry: currentToken.token_expiry,
-                            orgIds: updatedUser.orgIds
-                        };
-
-                        (<any> req)._renewToken = currentToken;
-                        res.json(result);
-                    }
+    public login(req: any, res: Response, next: Function) {
+        const tokenObj: TokenObject = tokenManager.generateNewTokenObject();
+        this.userDataController.getUserByIdWithoutOrgId(req.user._id)
+            .then((userToLog: User) =>
+                this.userDataController.updateUserToken(
+                    req.user._id,
+                    tokenObj,
+                    req.header('User-Agent')
+                ))
+            .then((updatedUser: UserModel) => {
+                const currentToken: any = updatedUser.tokens.find((token) => token.token === tokenObj.token);
+                res.send({
+                    _id: updatedUser._id,
+                    token: currentToken.token,
+                    token_expiry: currentToken.token_expiry,
+                    orgIds: updatedUser.orgIds
                 });
-            }
-        });
+            })
+            .catch((err: any) => {
+                res.send({error: err});
+            });
     }
 
     // TODO Implement this
