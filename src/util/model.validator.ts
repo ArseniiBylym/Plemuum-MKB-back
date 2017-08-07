@@ -33,4 +33,11 @@ function validateRequest(request: any) {
     expect(request).have.property("requestMessage");
 }
 
-export { validateUser, validateFeedback, validateError, validateRequest }
+function validateLoginResponse(loginResponse: any) {
+    expect(loginResponse).have.property("_id");
+    expect(loginResponse).have.property("token");
+    expect(loginResponse).have.property("token_expiry");
+    expect(loginResponse).have.property("orgIds");
+}
+
+export { validateUser, validateFeedback, validateError, validateRequest, validateLoginResponse }

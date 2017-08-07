@@ -7,6 +7,7 @@ import * as logger from 'morgan';
 import passportInit from "./auth/passport.manager";
 
 const app = (): Express => {
+    const deviceChecker = require('express-device');
     const app = express();
     app.set("views", path.join(__dirname, "./view"));
     app.set("view engine", "jade");
@@ -16,6 +17,7 @@ const app = (): Express => {
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended: true}));
     app.use(passportInit());
+    app.use(deviceChecker.capture());
     Routes(app);
     return app;
 };

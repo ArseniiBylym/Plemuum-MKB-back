@@ -1,6 +1,7 @@
 import { fixtureLoader } from "../mock/fixture.loader";
 import * as request from "supertest";
 import app from "../../app";
+import * as responseValidator from "../../util/model.validator";
 
 // TODO Finish this
 suite.only("Session request tests", () => {
@@ -21,7 +22,11 @@ suite.only("Session request tests", () => {
             request(app)
                 .post(url)
                 .query({email: 'sheryl.grant@example.com', password: 'asd1234'})
-                .expect(200, done);
+                .expect(200)
+                .then(response => {
+                    responseValidator.validateLoginResponse(response.body);
+                    done();
+                });
         });
 
         test("Login with invalid credentials, should get 401", done => {
