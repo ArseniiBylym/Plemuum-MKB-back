@@ -1,10 +1,10 @@
 import * as request from 'supertest';
 import app from "../../app";
-import * as DataControllerFactory from '../../factory/datacontroller.factory';
 import { assert, expect } from 'chai';
 import * as modelValidator from "../../util/model.validator"
 import Request from "../../data/models/request.model";
 import { User } from "../../data/models/user.model";
+import { fixtureLoader } from "../mock/fixture.loader";
 
 const orgId = "hipteam";
 const userId = "5984342227cd340363dc84ac";
@@ -13,8 +13,8 @@ const requestId = "59844c1cd0b5d006da3c9620";
 suite("Request entity related request tests", () => {
 
     before((done) => {
-        DataControllerFactory.getRequestDataController().clearData(orgId)
-            .then((state) => done())
+        fixtureLoader()
+            .then(value => done())
             .catch((error) => {
                 console.error(error);
                 done();
@@ -54,7 +54,6 @@ suite("Request entity related request tests", () => {
                     modelValidator.validateError(response.body);
                     done();
                 });
-
         })
     });
 
@@ -97,7 +96,6 @@ suite("Request entity related request tests", () => {
 
     suite("Get user's received requests", () => {
         const url = `/api/${orgId}/user/${userId}/requests/recipient`;
-
         test("Should be able to get user's received requests", done => {
             request(app)
                 .get(url)
@@ -116,7 +114,6 @@ suite("Request entity related request tests", () => {
 
     suite("Get a single request", () => {
         const url = `/api/${orgId}/user/${userId}/requests/${requestId}`;
-
         test("Should be able to get a single request", done => {
             request(app)
                 .get(url)
@@ -131,7 +128,6 @@ suite("Request entity related request tests", () => {
 
     suite("Get the recipients of a request", () => {
         const url = `/api/${orgId}/user/${userId}/requests/${requestId}/recipients`;
-
         test("Should be able to get the recipients of a request", done => {
             request(app)
                 .get(url)

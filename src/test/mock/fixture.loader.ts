@@ -5,6 +5,20 @@ import * as DatabaseFactory from "../../factory/database.factory";
 import Feedback from "../../data/models/feedback.model";
 import * as fs from "fs";
 import { User } from "../../data/models/user.model";
+import * as ControllerFactory from '../../factory/controller.factory';
+
+const testUser = {
+    "firstName": "sheryl",
+    "lastName": "grant",
+    "email": "sheryl.grant@example.com",
+    "password": "asd1234",
+    "pictureUrl": "https://randomuser.me/api/portraits/women/85.jpg",
+    "_id": "5984342227cd340363dc84af",
+    "tokens": [],
+    "orgIds": [
+        "hipteam"
+    ]
+};
 
 function fixtureLoader(): Promise<any> {
     let promises: Promise<any>[] = [];
@@ -46,7 +60,23 @@ function fixtureLoader(): Promise<any> {
                 promises.push(new requestModel(request).save());
             });
             return Promise.all(promises);
-        });
+        })
 }
 
-export { fixtureLoader }
+/* Returns a token for tests */
+function authenticate(testUser: any): Promise<string> {
+    const sessionController = ControllerFactory.getSessionController();
+    const request = {
+        user: {_id: testUser._id},
+        header: () => {
+        },
+    };
+    const response: any = {
+        send: () => {
+        }
+    };
+    return sessionController.login(request, response, () => {
+    });
+}
+
+export { fixtureLoader, authenticate, testUser }

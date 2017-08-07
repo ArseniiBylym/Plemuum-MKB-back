@@ -12,7 +12,7 @@ let userController: UserController;
 
 suite("User request tests", () => {
 
-    before((done) => {
+    beforeEach((done) => {
         fixtureLoader()
             .then(value => done())
             .catch((error) => {

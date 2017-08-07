@@ -40,14 +40,13 @@ export default class UserDataController extends BaseDataController<UserModel> {
 
     getUserByIdWithoutOrgId(userId: string): Promise<Object> {
         const userModel = getUserModel(this.databaseManager.getConnection());
-        return userModel.findOne(userId).lean().exec();
+        return userModel.findById(userId).lean().exec();
     }
 
-    getUserByToken(token: string): Promise<User> {
+    getUserByToken(token: string): Promise<any> {
         return new Promise((resolve, reject) => {
             const userModel = getUserModel(this.databaseManager.getConnection());
-            const query: any = {'tokens.token': token};
-            userModel.findOne(query, (error: Error, user: User) => error ? reject(error) : resolve(user))
+            userModel.findOne({'tokens.token': token}, (error: Error, user) => error ? reject(error) : resolve(user))
         });
     }
 
@@ -60,11 +59,9 @@ export default class UserDataController extends BaseDataController<UserModel> {
     }
 
     getCurrentToken(user: UserModel, token: string): any {
-        return new Promise((resolve, reject) => {
-            const userModel = getUserModel(this.databaseManager.getConnection());
-            return user.tokens.find((element) => {
-                return element.token === token;
-            });
+        const userModel = getUserModel(this.databaseManager.getConnection());
+        return user.tokens.find((element) => {
+            return element.token === token;
         });
     }
 

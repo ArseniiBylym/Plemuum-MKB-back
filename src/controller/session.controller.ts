@@ -15,9 +15,9 @@ export default class SessionController extends BaseController {
         this.userDataController = userDataController;
     }
 
-    public login(req: any, res: Response, next: Function) {
+    public login(req: any, res: Response, next: Function): Promise<string> {
         const tokenObj: TokenObject = tokenManager.generateNewTokenObject();
-        this.userDataController.getUserByIdWithoutOrgId(req.user._id)
+        return this.userDataController.getUserByIdWithoutOrgId(req.user._id)
             .then((userToLog: User) =>
                 this.userDataController.updateUserToken(
                     req.user._id,
@@ -32,6 +32,7 @@ export default class SessionController extends BaseController {
                     token_expiry: currentToken.token_expiry,
                     orgIds: updatedUser.orgIds
                 });
+                return currentToken.token
             })
             .catch((err: any) => {
                 res.send({error: err});
