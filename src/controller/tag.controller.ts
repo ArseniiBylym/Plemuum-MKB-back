@@ -31,9 +31,10 @@ export default class TagController extends BaseController {
             .catch(err => res.status(400).send({error: err}));
     }
 
-    // TODO Implement this
     public getTags(req: Request, res: Response, next: Function) {
-        res.send([]);
+        this.tagDataController.getTags(req.params.orgId)
+            .then(tags => res.send(tags))
+            .catch(error => res.status(400).send(error))
     }
 
 }

@@ -1,6 +1,6 @@
 import * as request from 'supertest';
 import app from "../../app";
-import { expect } from 'chai';
+import { assert, expect } from 'chai';
 import { authenticate, fixtureLoader, testUser } from "../mock/fixture.loader";
 import * as modelValidator from "../../util/model.validator";
 
@@ -61,6 +61,8 @@ suite("Tag request tests", () => {
                         .expect(200)
                         .then(response => {
                             expect(response.body).to.be.an.instanceOf(Array);
+                            assert(response.body.length > 0);
+                            modelValidator.validateTagResponse(response.body[0]);
                             done();
                         });
                 });
