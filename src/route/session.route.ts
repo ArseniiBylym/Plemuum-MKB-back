@@ -39,7 +39,9 @@ export default (app: Express, sessionController: SessionController) => {
      */
     app.route('/api/session')
         .post(passport.authenticate('local', {session: false}), sessionController.login.bind(sessionController))
-        .delete(passport.authenticate('bearer', { session: false }), sessionController.logout.bind(sessionController));
+        .delete(passport.authenticate('bearer', {
+            session: false
+        }), sessionController.logout.bind(sessionController));
 
     /**
      * @api {POST} /api/session/validtoken
@@ -52,5 +54,5 @@ export default (app: Express, sessionController: SessionController) => {
      * @apiSuccess (Success 200) validToken Boolean
      */
     app.route("/api/session/validtoken")
-        .post(sessionController.checkToken.bind(sessionController))
+        .post(sessionController.checkToken.bind(sessionController));
 }

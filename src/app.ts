@@ -16,8 +16,8 @@ const app = (): Express => {
     }
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended: true}));
-    app.use(passportInit());
     app.use(deviceChecker.capture());
+    app.use(passportInit());
     Routes(app);
     return app;
 };

@@ -2,6 +2,7 @@ import { authenticate, fixtureLoader, testUser } from "../mock/fixture.loader";
 import * as request from "supertest";
 import app from "../../app";
 import * as responseValidator from "../../util/model.validator";
+import { expect } from 'chai';
 
 // TODO Finish this
 suite("Session request tests", () => {
@@ -46,10 +47,29 @@ suite("Session request tests", () => {
                         .set('Authorization', `Bearer ${token}`)
                         .expect(200)
                         .then(response => {
+                            expect(response.body).to.haveOwnProperty('message');
+                            expect(response.body.message).to.be.string("User Logged out successfully!");
                             done();
                         });
                 })
-        })
+        });
+
+        test("Should get 401 if the token is invalid for logout", done => {
+            authenticate(testUser)
+                .then(token => {
+                    request(app)
+                        .delete(url)
+                        .set('Authorization', `Bearer asd123`)
+                        .expect(401, done)
+                })
+        });
+
+        test("Should get 401 if there's no token in the header", done => {
+            request(app)
+                .delete(url)
+                .expect(401)
+                .end(done)
+        });
     });
 
     suite("Check token request", () => {

@@ -39,9 +39,31 @@ export default class SessionController extends BaseController {
             });
     }
 
-    // TODO Implement this
-    public logout(req: Request, res: Response, next: Function) {
-        res.send({})
+    public logout(req: any, res: Response, next: Function) {
+        const authHeader = req.get('authorization');
+        if (authHeader) {
+            const token = authHeader.replace('bearer ', '');
+            const tokens = req.user.tokens;
+            let pastDate = new Date();
+            pastDate.setDate(pastDate.getDate() - 30);
+            let currentTokenIndex = tokens.findIndex((element: any) => {
+                return element.token === token;
+            });
+            tokens[currentTokenIndex] = {
+                ...tokens[currentTokenIndex],
+                token_expiry: pastDate
+            };
+
+            this.userDataController.changeTokens(req.user._id, tokens)
+                .then(result =>
+                    res.send(result
+                        ? {message: "User Logged out successfully!"}
+                        : {message: "User could not be logged out. Try again!"})
+                )
+                .catch(err => res.status(404).json({error: "User not found"}));
+        } else {
+            res.status(400).send("Bad Request");
+        }
     }
 
     // TODO Implement this

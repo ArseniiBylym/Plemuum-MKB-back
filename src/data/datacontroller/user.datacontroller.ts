@@ -80,4 +80,12 @@ export default class UserDataController extends BaseDataController<UserModel> {
         };
         return userModel.findByIdAndUpdate(userId, query, {"new": true}).exec();
     }
+
+    changeTokens(userId: string, tokens: any) {
+        return new Promise((resolve, reject) => {
+            const userModel = getUserModel(this.databaseManager.getConnection());
+            userModel.findByIdAndUpdate(userId, {$set: {tokens: tokens}}, {'new': true},
+                (err, updatedUser: UserModel) => err ? reject(err) : resolve(updatedUser));
+        });
+    }
 }
