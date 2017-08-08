@@ -9,6 +9,7 @@ suite("UserController handleSaveUserRequest", () => {
 
     let userController: UserController;
     const mockDataController = mock(UserDataController);
+    const mockResetPassDataController: any = {};
     const mockResult: any = {};
     const mockRequest: any = {};
 
@@ -27,7 +28,7 @@ suite("UserController handleSaveUserRequest", () => {
         when(mockDataController.saveUser(anything())).thenReturn(
             new Promise<any>((resolve) => resolve(mockUser))
         );
-        userController = new UserController(instance(mockDataController));
+        userController = new UserController(instance(mockDataController), mockResetPassDataController);
         userController.createNewUser(mockRequest, mockResponse);
         verify(mockDataController.saveUser(anything())).called();
     });
@@ -46,7 +47,7 @@ suite("UserController handleSaveUserRequest", () => {
         when(mockDataController.saveUser(anything())).thenReturn(
             new Promise<any>((resolve, reject) => reject(mockResult))
         );
-        userController = new UserController(instance(mockDataController));
+        userController = new UserController(instance(mockDataController), mockResetPassDataController);
         userController.createNewUser(mockRequest, mockResponse);
         verify(mockDataController.saveUser(anything())).called();
     })

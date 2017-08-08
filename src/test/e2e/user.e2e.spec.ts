@@ -92,7 +92,12 @@ suite("User request tests", () => {
         test('Should return 200', done => {
             request(app)
                 .post(url)
-                .expect(200, done);
+                .send({email: testUser.email})
+                .expect(200)
+                .then(response => {
+                    console.log(response.body);
+                    done();
+                });
         });
     });
 

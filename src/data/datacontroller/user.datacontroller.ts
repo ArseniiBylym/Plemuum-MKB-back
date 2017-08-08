@@ -53,7 +53,7 @@ export default class UserDataController extends BaseDataController<UserModel> {
     getUserByEmail(email: string): Promise<User> {
         return new Promise((resolve, reject) => {
             const userModel = getUserModel(this.databaseManager.getConnection());
-            userModel.findOne({email: email}, {password: 1}, (error: Error, user: UserModel) =>
+            userModel.findOne({email: email}, (error: Error, user: UserModel) =>
                 error ? reject(error) : resolve(user))
         });
     }

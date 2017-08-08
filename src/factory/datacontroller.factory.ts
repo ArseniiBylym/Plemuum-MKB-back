@@ -4,11 +4,13 @@ import UserDataController from "../data/datacontroller/user.datacontroller";
 import * as DatabaseFactory from './database.factory';
 import RequestDataController from "../data/datacontroller/request.datacontroller";
 import TagDataController from "../data/datacontroller/tag.datacontroller";
+import ResetPasswordDataController from "../data/datacontroller/resetpassword.datacontroller";
 
 let feedbackDataControllerInstance: FeedbackDataController;
 let userDataControllerInstance: UserDataController;
 let requestDataController: RequestDataController;
 let tagDataController: TagDataController;
+let resetPasswordDataController: ResetPasswordDataController;
 
 /* #########################     PUBLIC      ########################## */
 
@@ -16,6 +18,7 @@ let getFeedbackDataController = (): FeedbackDataController => createFeedbackData
 let getUserDataController = (): UserDataController => createUserDataController(DatabaseFactory.getDatabaseManager());
 let getRequestDataController = (): RequestDataController => createRequestDataController(DatabaseFactory.getDatabaseManager());
 let getTagDataController = (): TagDataController => createTagDataController(DatabaseFactory.getDatabaseManager());
+let getResetPasswordDataController = (): ResetPasswordDataController => createResetPasswordDataController(DatabaseFactory.getDatabaseManager());
 
 /* #########################     PRIVATE      ########################## */
 
@@ -45,5 +48,17 @@ const createTagDataController = (databaseManager: DatabaseManager): TagDataContr
     }
     return tagDataController;
 };
+const createResetPasswordDataController = (databaseManager: DatabaseManager): ResetPasswordDataController => {
+    if (!resetPasswordDataController) {
+        resetPasswordDataController = new ResetPasswordDataController(databaseManager);
+    }
+    return resetPasswordDataController;
+};
 
-export { getFeedbackDataController, getUserDataController, getRequestDataController, getTagDataController }
+export {
+    getFeedbackDataController,
+    getUserDataController,
+    getRequestDataController,
+    getTagDataController,
+    getResetPasswordDataController
+}
