@@ -58,4 +58,11 @@ function getTestFeedback(): Feedback {
     }
 }
 
-export { getTestUser, getJohnDoe, getTestFeedback, getTestUserWithOrganizations, getRegisterTestUser, getRegisterJohnDoe }
+export {
+    getTestUser,
+    getJohnDoe,
+    getTestFeedback,
+    getTestUserWithOrganizations,
+    getRegisterTestUser,
+    getRegisterJohnDoe,
+}

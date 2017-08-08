@@ -8,6 +8,7 @@ import OrganizationController from "../controller/organization.controller";
 import RequestController from "../controller/request.controller";
 import RequestDataController from "../data/datacontroller/request.datacontroller";
 import SessionController from "../controller/session.controller";
+import TagDataController from "../data/datacontroller/tag.datacontroller";
 
 let userController: UserController;
 let feedbackController: FeedbackController;
@@ -20,7 +21,7 @@ let sessionController: SessionController;
 
 let getUserController = (): UserController => createUserController(DataControllerFactory.getUserDataController());
 let getFeedbackController = (): FeedbackController => createFeedbackController(DataControllerFactory.getFeedbackDataController());
-let getTagController = (): TagController => createTagController();
+let getTagController = (): TagController => createTagController(DataControllerFactory.getTagDataController());
 let getOrganizationController = (): OrganizationController => createOrganizationController();
 let getRequestController = (): RequestController => createRequestController(DataControllerFactory.getRequestDataController());
 let getSessionController = (): SessionController => createSessionController(DataControllerFactory.getUserDataController());
@@ -41,9 +42,9 @@ function createFeedbackController(feedbackDataController: FeedbackDataController
     return feedbackController;
 }
 
-function createTagController() {
+function createTagController(tagDataController: TagDataController) {
     if (!tagController) {
-        tagController = new TagController();
+        tagController = new TagController(tagDataController);
     }
     return tagController;
 }

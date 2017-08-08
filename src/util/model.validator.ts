@@ -40,4 +40,10 @@ function validateLoginResponse(loginResponse: any) {
     expect(loginResponse).have.property("orgIds");
 }
 
-export { validateUser, validateFeedback, validateError, validateRequest, validateLoginResponse }
+function validateTagResponse(tagResponse: any) {
+    expect(tagResponse).to.haveOwnProperty("title");
+    expect(tagResponse).to.haveOwnProperty("isActive");
+    expect(tagResponse).to.haveOwnProperty("order");
+}
+
+export { validateUser, validateFeedback, validateError, validateRequest, validateLoginResponse, validateTagResponse }

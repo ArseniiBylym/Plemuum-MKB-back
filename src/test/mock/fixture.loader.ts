@@ -1,6 +1,7 @@
 import { getUserModel } from "../../data/database/schema/user.schema"
 import { getFeedbackModel } from "../../data/database/schema/feedback.schema"
 import { getRequestModel } from "../../data/database/schema/request.schema"
+import { getTagModel, TagModel } from "../../data/database/schema/tag.schema"
 import * as DatabaseFactory from "../../factory/database.factory";
 import Feedback from "../../data/models/feedback.model";
 import * as fs from "fs";
@@ -25,6 +26,7 @@ function fixtureLoader(): Promise<any> {
     const userModel = getUserModel(DatabaseFactory.getDatabaseManager().getConnection());
     const feedbackModel = getFeedbackModel(DatabaseFactory.getDatabaseManager().getConnection(), 'hipteam');
     const requestModel = getRequestModel(DatabaseFactory.getDatabaseManager().getConnection(), 'hipteam');
+    const tagModel = getTagModel(DatabaseFactory.getDatabaseManager().getConnection(), 'hipteam');
 
     promises.push(new Promise((resolve, reject) => {
         userModel.remove({}, () => {
@@ -41,12 +43,18 @@ function fixtureLoader(): Promise<any> {
             resolve();
         })
     }));
+    promises.push(new Promise((resolve, reject) => {
+        tagModel.remove({}, () => {
+            resolve();
+        })
+    }));
 
     return Promise.all(promises)
         .then(value => {
             const users = JSON.parse(fs.readFileSync('src/test/mock/json/users.json', 'utf8'));
             const feedbacks = JSON.parse(fs.readFileSync('src/test/mock/json/feedbacks.json', 'utf8'));
             const requests = JSON.parse(fs.readFileSync('src/test/mock/json/requests.json', 'utf8'));
+            const tags = JSON.parse(fs.readFileSync('src/test/mock/json/tags.json', 'utf8'));
 
             promises = [];
 
@@ -58,6 +66,9 @@ function fixtureLoader(): Promise<any> {
             });
             requests.forEach((request: Request) => {
                 promises.push(new requestModel(request).save());
+            });
+            tags.forEach((tag: any) => {
+                promises.push(new tagModel(tag).save());
             });
             return Promise.all(promises);
         })
