@@ -1,5 +1,6 @@
 import TagController from "../controller/tag.controller";
 import { Express } from "express";
+import * as passport from "passport";
 
 /**
  * @apiDefine tag_list_data
@@ -37,6 +38,6 @@ export default (app: Express, tagController: TagController) => {
      * @apiUse tag_list_data
      */
     app.route("/api/:orgId/tags")
-        .get(tagController.getTags.bind(tagController));
+        .get(passport.authenticate('bearer', { session: false}), tagController.getTags.bind(tagController));
 
 }

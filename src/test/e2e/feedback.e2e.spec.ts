@@ -2,7 +2,7 @@ import { assert, expect } from 'chai';
 import * as request from 'supertest';
 import * as TestObjectFactory from "../../util/testobject.factory"
 import app from '../../app';
-import { fixtureLoader } from "../mock/fixture.loader";
+import { authenticate, fixtureLoader, testUser } from "../mock/fixture.loader";
 import * as modelValidator from "../../util/model.validator"
 import Feedback from "../../data/models/feedback.model";
 
@@ -24,13 +24,17 @@ suite("Feedback request test", () => {
         const url = `/api/${orgId}/user/${userId}/feedbacks`;
 
         test("response should be an array and return 200", (done) => {
-            request(app)
-                .get(url)
-                .expect(200)
-                .then(response => {
-                    expect(response.body).to.be.an.instanceOf(Array);
-                    assert(response.body.length >= 1, "Check if there's at least one element in the response array");
-                    done();
+            authenticate(testUser)
+                .then(token => {
+                    request(app)
+                        .get(url)
+                        .set('Authorization', `Bearer ${token}`)
+                        .expect(200)
+                        .then(response => {
+                            expect(response.body).to.be.an.instanceOf(Array);
+                            assert(response.body.length >= 1, "Check if there's at least one element in the response array");
+                            done();
+                        });
                 });
         })
     });
@@ -39,13 +43,17 @@ suite("Feedback request test", () => {
         const url = `/api/${orgId}/feedback`;
 
         test("response should contain a feedback object and return 200", (done) => {
-            request(app)
-                .post(url)
-                .send(TestObjectFactory.getTestFeedback())
-                .expect(200)
-                .then(response => {
-                    modelValidator.validateFeedback(response.body);
-                    done();
+            authenticate(testUser)
+                .then(token => {
+                    request(app)
+                        .post(url)
+                        .set('Authorization', `Bearer ${token}`)
+                        .send(TestObjectFactory.getTestFeedback())
+                        .expect(200)
+                        .then(response => {
+                            modelValidator.validateFeedback(response.body);
+                            done();
+                        });
                 });
         });
     });
@@ -55,13 +63,17 @@ suite("Feedback request test", () => {
         const feedbackForm = {};
 
         test("response should contain an error object and return 400", (done) => {
-            request(app)
-                .post(url)
-                .send(feedbackForm)
-                .expect(400)
-                .then(response => {
-                    modelValidator.validateError(response.body);
-                    done();
+            authenticate(testUser)
+                .then(token => {
+                    request(app)
+                        .post(url)
+                        .set('Authorization', `Bearer ${token}`)
+                        .send(feedbackForm)
+                        .expect(400)
+                        .then(response => {
+                            modelValidator.validateError(response.body);
+                            done();
+                        });
                 });
         });
 
@@ -81,13 +93,17 @@ suite("Feedback request test", () => {
         };
 
         test("response should contain an error object and return 400", (done) => {
-            request(app)
-                .post(url)
-                .send(feedbackForm)
-                .expect(400)
-                .then(response => {
-                    modelValidator.validateError(response.body);
-                    done();
+            authenticate(testUser)
+                .then(token => {
+                    request(app)
+                        .post(url)
+                        .set('Authorization', `Bearer ${token}`)
+                        .send(feedbackForm)
+                        .expect(400)
+                        .then(response => {
+                            modelValidator.validateError(response.body);
+                            done();
+                        });
                 });
         });
 
@@ -97,16 +113,20 @@ suite("Feedback request test", () => {
         const url = `/api/${orgId}/user/${userId}/feedbacks/sent`;
 
         test("response should be an array", (done) => {
-            request(app)
-                .get(url)
-                .expect(200)
-                .then(response => {
-                    expect(response.body).to.be.an.instanceOf(Array);
-                    assert(response.body.length >= 1, "Check if there's at least one element in the response array");
-                    response.body.forEach((feedback: Feedback) => {
-                        assert(feedback.senderId === userId, 'senderId should be the same as the userId')
-                    });
-                    done();
+            authenticate(testUser)
+                .then(token => {
+                    request(app)
+                        .get(url)
+                        .set('Authorization', `Bearer ${token}`)
+                        .expect(200)
+                        .then(response => {
+                            expect(response.body).to.be.an.instanceOf(Array);
+                            assert(response.body.length >= 1, "Check if there's at least one element in the response array");
+                            response.body.forEach((feedback: Feedback) => {
+                                assert(feedback.senderId === userId, 'senderId should be the same as the userId')
+                            });
+                            done();
+                        });
                 });
         })
     });
@@ -115,16 +135,20 @@ suite("Feedback request test", () => {
         const url = `/api/${orgId}/user/${userId}/feedbacks/incoming`;
 
         test("response should be an array", (done) => {
-            request(app)
-                .get(url)
-                .expect(200)
-                .then(response => {
-                    expect(response.body).to.be.an.instanceOf(Array);
-                    assert(response.body.length >= 1, "Check if there's at least one element in the response array");
-                    response.body.forEach((feedback: Feedback) => {
-                        assert(feedback.recipientId === userId, 'recipientId should be the same as the userId')
-                    });
-                    done();
+            authenticate(testUser)
+                .then(token => {
+                    request(app)
+                        .get(url)
+                        .set('Authorization', `Bearer ${token}`)
+                        .expect(200)
+                        .then(response => {
+                            expect(response.body).to.be.an.instanceOf(Array);
+                            assert(response.body.length >= 1, "Check if there's at least one element in the response array");
+                            response.body.forEach((feedback: Feedback) => {
+                                assert(feedback.recipientId === userId, 'recipientId should be the same as the userId')
+                            });
+                            done();
+                        });
                 });
         })
     });

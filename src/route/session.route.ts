@@ -39,9 +39,7 @@ export default (app: Express, sessionController: SessionController) => {
      */
     app.route('/api/session')
         .post(passport.authenticate('local', {session: false}), sessionController.login.bind(sessionController))
-        .delete(passport.authenticate('bearer', {
-            session: false
-        }), sessionController.logout.bind(sessionController));
+        .delete(passport.authenticate('bearer', {session: false}), sessionController.logout.bind(sessionController));
 
     /**
      * @api {POST} /api/session/validtoken

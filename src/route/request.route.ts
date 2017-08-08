@@ -1,5 +1,6 @@
 import RequestController from "../controller/request.controller";
 import { Express } from "express";
+import * as passport from 'passport';
 
 /**
  * @apiDefine request_list_data
@@ -27,7 +28,7 @@ export default (app: Express, requestController: RequestController) => {
      * @apiUse request_list_data
      */
     app.route("/api/:orgId/request")
-        .post(requestController.createRequest.bind(requestController));
+        .post(passport.authenticate('bearer', {session: false}), requestController.createRequest.bind(requestController));
 
     /**
      * @api {GET} /api/:orgId/user/:userId/requests Get user requests
@@ -42,7 +43,7 @@ export default (app: Express, requestController: RequestController) => {
      * @apiUse request_list_data
      */
     app.route("/api/:orgId/user/:userId/requests")
-        .get(requestController.getRequests.bind(requestController));
+        .get(passport.authenticate('bearer', {session: false}), requestController.getRequests.bind(requestController));
 
     /**
      * @api {GET} /api/:orgId/user/:userId/requests/sender Get user's sent requests
@@ -56,7 +57,7 @@ export default (app: Express, requestController: RequestController) => {
      * @apiUse request_list_data
      */
     app.route("/api/:orgId/user/:userId/requests/sender")
-        .get(requestController.getSenderRequests.bind(requestController));
+        .get(passport.authenticate('bearer', {session: false}), requestController.getSenderRequests.bind(requestController));
 
     /**
      * @api {GET} /api/:orgId/user/:userId/requests/recipient Get user's received requests
@@ -71,7 +72,7 @@ export default (app: Express, requestController: RequestController) => {
      * @apiUse request_list_data
      */
     app.route("/api/:orgId/user/:userId/requests/recipient")
-        .get(requestController.getRecipientRequests.bind(requestController));
+        .get(passport.authenticate('bearer', {session: false}), requestController.getRecipientRequests.bind(requestController));
 
     /**
      * @api {GET} /api/:orgId/user/:userId/requests/:requestId Get a specific request
@@ -87,7 +88,7 @@ export default (app: Express, requestController: RequestController) => {
      * @apiSuccess (Success 200) {String} requestMessage Request message
      */
     app.route("/api/:orgId/user/:userId/requests/:requestId")
-        .get(requestController.getRequest.bind(requestController));
+        .get(passport.authenticate('bearer', {session: false}), requestController.getRequest.bind(requestController));
 
     /**
      * @api {GET} /api/:orgId/user/:userId/requests/:requestId/recipients Get the recipients of a request
@@ -101,6 +102,6 @@ export default (app: Express, requestController: RequestController) => {
      * @apiUse flat_user_list_data
      */
     app.route("/api/:orgId/user/:userId/requests/:requestId/recipients")
-        .get(requestController.getRecipientUsersFromRequest.bind(requestController));
+        .get(passport.authenticate('bearer', {session: false}), requestController.getRecipientUsersFromRequest.bind(requestController));
 
 }

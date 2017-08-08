@@ -4,7 +4,7 @@ import { assert, expect } from 'chai';
 import * as modelValidator from "../../util/model.validator"
 import Request from "../../data/models/request.model";
 import { User } from "../../data/models/user.model";
-import { fixtureLoader } from "../mock/fixture.loader";
+import { authenticate, fixtureLoader, testUser } from "../mock/fixture.loader";
 
 const orgId = "hipteam";
 const userId = "5984342227cd340363dc84ac";
@@ -31,13 +31,17 @@ suite("Request entity related request tests", () => {
                 requestMessage: 'Message'
             };
 
-            request(app)
-                .post(url)
-                .send(requestForm)
-                .expect(200)
-                .then(response => {
-                    modelValidator.validateRequest(response.body);
-                    done();
+            authenticate(testUser)
+                .then(token => {
+                    request(app)
+                        .post(url)
+                        .set('Authorization', `Bearer ${token}`)
+                        .send(requestForm)
+                        .expect(200)
+                        .then(response => {
+                            modelValidator.validateRequest(response.body);
+                            done();
+                        });
                 });
         });
 
@@ -46,13 +50,17 @@ suite("Request entity related request tests", () => {
                 senderId: "sender",
                 requestMessage: 'Message'
             };
-            request(app)
-                .post(url)
-                .send(incorrectRequestForm)
-                .expect(400)
-                .then(response => {
-                    modelValidator.validateError(response.body);
-                    done();
+            authenticate(testUser)
+                .then(token => {
+                    request(app)
+                        .post(url)
+                        .set('Authorization', `Bearer ${token}`)
+                        .send(incorrectRequestForm)
+                        .expect(400)
+                        .then(response => {
+                            modelValidator.validateError(response.body);
+                            done();
+                        });
                 });
         })
     });
@@ -61,16 +69,20 @@ suite("Request entity related request tests", () => {
         const url = `/api/${orgId}/user/${userId}/requests`;
 
         test("Should be able to get all request for user", done => {
-            request(app)
-                .get(url)
-                .expect(200)
-                .then(response => {
-                    expect(response.body).to.be.an.instanceOf(Array);
-                    assert(response.body.length >= 1, "Check if there's at least one element in the response array");
-                    response.body.forEach((requestObj: Request) => {
-                        modelValidator.validateRequest(requestObj);
-                    });
-                    done();
+            authenticate(testUser)
+                .then(token => {
+                    request(app)
+                        .get(url)
+                        .set('Authorization', `Bearer ${token}`)
+                        .expect(200)
+                        .then(response => {
+                            expect(response.body).to.be.an.instanceOf(Array);
+                            assert(response.body.length >= 1, "Check if there's at least one element in the response array");
+                            response.body.forEach((requestObj: Request) => {
+                                modelValidator.validateRequest(requestObj);
+                            });
+                            done();
+                        });
                 });
         })
     });
@@ -79,17 +91,21 @@ suite("Request entity related request tests", () => {
         const url = `/api/${orgId}/user/${userId}/requests/sender`;
 
         test("Should be able to get user's sent requests", done => {
-            request(app)
-                .get(url)
-                .expect(200)
-                .then(response => {
-                    expect(response.body).to.be.an.instanceOf(Array);
-                    assert(response.body.length >= 1, "Check if there's at least one element in the response array");
-                    response.body.forEach((requestObj: Request) => {
-                        modelValidator.validateRequest(requestObj);
-                        assert(requestObj.senderId === userId, 'senderId should be the same as the userId')
-                    });
-                    done();
+            authenticate(testUser)
+                .then(token => {
+                    request(app)
+                        .get(url)
+                        .set('Authorization', `Bearer ${token}`)
+                        .expect(200)
+                        .then(response => {
+                            expect(response.body).to.be.an.instanceOf(Array);
+                            assert(response.body.length >= 1, "Check if there's at least one element in the response array");
+                            response.body.forEach((requestObj: Request) => {
+                                modelValidator.validateRequest(requestObj);
+                                assert(requestObj.senderId === userId, 'senderId should be the same as the userId')
+                            });
+                            done();
+                        });
                 });
         })
     });
@@ -97,17 +113,21 @@ suite("Request entity related request tests", () => {
     suite("Get user's received requests", () => {
         const url = `/api/${orgId}/user/${userId}/requests/recipient`;
         test("Should be able to get user's received requests", done => {
-            request(app)
-                .get(url)
-                .expect(200)
-                .then(response => {
-                    expect(response.body).to.be.an.instanceOf(Array);
-                    assert(response.body.length >= 1, "Check if there's at least one element in the response array");
-                    response.body.forEach((requestObj: Request) => {
-                        modelValidator.validateRequest(requestObj);
-                        assert(requestObj.recipientId.indexOf(userId) !== -1, 'senderId should be the same as the userId')
-                    });
-                    done();
+            authenticate(testUser)
+                .then(token => {
+                    request(app)
+                        .get(url)
+                        .set('Authorization', `Bearer ${token}`)
+                        .expect(200)
+                        .then(response => {
+                            expect(response.body).to.be.an.instanceOf(Array);
+                            assert(response.body.length >= 1, "Check if there's at least one element in the response array");
+                            response.body.forEach((requestObj: Request) => {
+                                modelValidator.validateRequest(requestObj);
+                                assert(requestObj.recipientId.indexOf(userId) !== -1, 'senderId should be the same as the userId')
+                            });
+                            done();
+                        });
                 });
         })
     });
@@ -115,13 +135,17 @@ suite("Request entity related request tests", () => {
     suite("Get a single request", () => {
         const url = `/api/${orgId}/user/${userId}/requests/${requestId}`;
         test("Should be able to get a single request", done => {
-            request(app)
-                .get(url)
-                .expect(200)
-                .then(response => {
-                    modelValidator.validateRequest(response.body);
-                    assert(response.body._id === requestId, "request's id should match with the url param id");
-                    done();
+            authenticate(testUser)
+                .then(token => {
+                    request(app)
+                        .get(url)
+                        .set('Authorization', `Bearer ${token}`)
+                        .expect(200)
+                        .then(response => {
+                            modelValidator.validateRequest(response.body);
+                            assert(response.body._id === requestId, "request's id should match with the url param id");
+                            done();
+                        });
                 });
         })
     });
@@ -129,16 +153,20 @@ suite("Request entity related request tests", () => {
     suite("Get the recipients of a request", () => {
         const url = `/api/${orgId}/user/${userId}/requests/${requestId}/recipients`;
         test("Should be able to get the recipients of a request", done => {
-            request(app)
-                .get(url)
-                .expect(200)
-                .then(response => {
-                    expect(response.body).to.be.an.instanceOf(Array);
-                    assert(response.body.length >= 1, "Check if there's at least one element in the response array");
-                    response.body.forEach((user: User) => {
-                        modelValidator.validateUser(user);
-                    });
-                    done();
+            authenticate(testUser)
+                .then(token => {
+                    request(app)
+                        .get(url)
+                        .set('Authorization', `Bearer ${token}`)
+                        .expect(200)
+                        .then(response => {
+                            expect(response.body).to.be.an.instanceOf(Array);
+                            assert(response.body.length >= 1, "Check if there's at least one element in the response array");
+                            response.body.forEach((user: User) => {
+                                modelValidator.validateUser(user);
+                            });
+                            done();
+                        });
                 });
         })
     });

@@ -5,7 +5,7 @@ import UserDataController from "../../data/datacontroller/user.datacontroller";
 import UserController from "../../controller/user.controller";
 import * as TestObjectFactory from "../../util/testobject.factory"
 import * as modelValidator from "../../util/model.validator"
-import { fixtureLoader } from "../mock/fixture.loader"
+import { authenticate, fixtureLoader, testUser } from "../mock/fixture.loader"
 
 let userDataController: UserDataController;
 let userController: UserController;
@@ -48,14 +48,18 @@ suite("User request tests", () => {
         const url = `/api/${orgId}/users`;
 
         test('Response should return an array of users and status 200', done => {
-            request(app)
-                .get(url)
-                .query({ email: 'sheryl.grant@example.com', password: 'asd1234' })
-                .expect(200)
-                .then(response => {
-                    expect(response.body).to.be.an.instanceOf(Array);
-                    assert(response.body.length >= 1, "Check if there's at least one element in the response array");
-                    done();
+            authenticate(testUser)
+                .then(token => {
+                    request(app)
+                        .get(url)
+                        .set('Authorization', `Bearer ${token}`)
+                        .query({email: 'sheryl.grant@example.com', password: 'asd1234'})
+                        .expect(200)
+                        .then(response => {
+                            expect(response.body).to.be.an.instanceOf(Array);
+                            assert(response.body.length >= 1, "Check if there's at least one element in the response array");
+                            done();
+                        });
                 });
         })
     });
@@ -65,14 +69,18 @@ suite("User request tests", () => {
         const url = `/api/${orgId}/user/${userId}`;
 
         test('Should return 200', done => {
-            request(app)
-                .get(url)
-                .expect(200)
-                .then(response => {
-                    const user = response.body;
-                    modelValidator.validateUser(user);
-                    expect(user._id).to.be.equal(userId);
-                    done();
+            authenticate(testUser)
+                .then(token => {
+                    request(app)
+                        .get(url)
+                        .set('Authorization', `Bearer ${token}`)
+                        .expect(200)
+                        .then(response => {
+                            const user = response.body;
+                            modelValidator.validateUser(user);
+                            expect(user._id).to.be.equal(userId);
+                            done();
+                        });
                 });
         });
     });
@@ -115,9 +123,13 @@ suite("User request tests", () => {
         const url = `/api/profile/setpicture`;
 
         test('Should return 200', done => {
-            request(app)
-                .post(url)
-                .expect(200, done);
+            authenticate(testUser)
+                .then(token => {
+                    request(app)
+                        .post(url)
+                        .set('Authorization', `Bearer ${token}`)
+                        .expect(200, done);
+                })
         });
     })
 });

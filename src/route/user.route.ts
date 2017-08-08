@@ -47,7 +47,7 @@ export default (app: Express, userController: UserController) => {
      * @apiUse user_list_data
      */
     app.route("/api/:orgId/users")
-        .get(passport.authenticate('local', { session: false }), userController.getOrganizationUsers.bind(userController));
+        .get(passport.authenticate('bearer', {session: false}), userController.getOrganizationUsers.bind(userController));
 
     /**
      * @api {GET} /api/:orgId/user/:userid Get a specific user from an organization
@@ -65,7 +65,7 @@ export default (app: Express, userController: UserController) => {
      * @apiSuccess (Success 200) {String} pictureUrl URL for the user profile picture
      */
     app.route("/api/:orgId/user/:userId")
-        .get(userController.getUserByIdFromOrganization.bind(userController));
+        .get(passport.authenticate('bearer', {session: false}),userController.getUserByIdFromOrganization.bind(userController));
 
     /**
      * @api {POST} /api/resetPassword Reset user's password
@@ -141,5 +141,5 @@ export default (app: Express, userController: UserController) => {
      * @apiSuccess (Success 200) {String} orgData.pictureUrl URL for the user profile picture
      */
     app.route("/api/profile/setpicture")
-        .post(userController.setPicture.bind(userController));
+        .post(passport.authenticate('bearer', {session: false}),userController.setPicture.bind(userController));
 }
