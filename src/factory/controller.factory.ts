@@ -2,7 +2,6 @@ import UserDataController from "../data/datacontroller/user.datacontroller";
 import UserController from "../controller/user.controller";
 import FeedbackDataController from "../data/datacontroller/feedback.datacontroller";
 import FeedbackController from "../controller/feedback.controller";
-import AuthController from "../controller/auth.controller";
 import * as DataControllerFactory from './datacontroller.factory'
 import TagController from "../controller/tag.controller";
 import OrganizationController from "../controller/organization.controller";
@@ -12,7 +11,6 @@ import SessionController from "../controller/session.controller";
 
 let userController: UserController;
 let feedbackController: FeedbackController;
-let authController: AuthController;
 let tagController: TagController;
 let organizationController: OrganizationController;
 let requestController: RequestController;
@@ -21,7 +19,6 @@ let sessionController: SessionController;
 /* #########################     PUBLIC      ########################## */
 
 let getUserController = (): UserController => createUserController(DataControllerFactory.getUserDataController());
-let getAuthController = (): AuthController => createAuthController();
 let getFeedbackController = (): FeedbackController => createFeedbackController(DataControllerFactory.getFeedbackDataController());
 let getTagController = (): TagController => createTagController();
 let getOrganizationController = (): OrganizationController => createOrganizationController();
@@ -35,13 +32,6 @@ function createUserController(userDataController: UserDataController) {
         userController = new UserController(userDataController);
     }
     return userController;
-}
-
-function createAuthController() {
-    if (!authController) {
-        authController = new AuthController();
-    }
-    return authController;
 }
 
 function createFeedbackController(feedbackDataController: FeedbackDataController) {
@@ -80,6 +70,6 @@ function createSessionController(userDataController: UserDataController) {
 }
 
 export {
-    getUserController, getAuthController, getFeedbackController, getTagController, getOrganizationController,
+    getUserController, getFeedbackController, getTagController, getOrganizationController,
     getRequestController, getSessionController
 }
