@@ -7,6 +7,7 @@ import { User } from "../../data/models/user.model";
 import { authenticate, fixtureLoader, testUser } from "../mock/fixture.loader";
 import { getDatabaseManager } from "../../factory/database.factory";
 import config from "../../../config/config";
+import { bearerAuthHeader } from "../header.helper";
 
 const orgId = "hipteam";
 const userId = "5984342227cd340363dc84ac";
@@ -44,7 +45,7 @@ suite("Request entity related request tests", () => {
                 .then(token => {
                     request(app)
                         .post(url)
-                        .set('Authorization', `Bearer ${token}`)
+                        .set(bearerAuthHeader(token))
                         .send(requestForm)
                         .expect(200)
                         .then(response => {
@@ -63,7 +64,7 @@ suite("Request entity related request tests", () => {
                 .then(token => {
                     request(app)
                         .post(url)
-                        .set('Authorization', `Bearer ${token}`)
+                        .set(bearerAuthHeader(token))
                         .send(incorrectRequestForm)
                         .expect(400)
                         .then(response => {
@@ -82,7 +83,7 @@ suite("Request entity related request tests", () => {
                 .then(token => {
                     request(app)
                         .get(url)
-                        .set('Authorization', `Bearer ${token}`)
+                        .set(bearerAuthHeader(token))
                         .expect(200)
                         .then(response => {
                             expect(response.body).to.be.an.instanceOf(Array);
@@ -104,7 +105,7 @@ suite("Request entity related request tests", () => {
                 .then(token => {
                     request(app)
                         .get(url)
-                        .set('Authorization', `Bearer ${token}`)
+                        .set(bearerAuthHeader(token))
                         .expect(200)
                         .then(response => {
                             expect(response.body).to.be.an.instanceOf(Array);
@@ -126,7 +127,7 @@ suite("Request entity related request tests", () => {
                 .then(token => {
                     request(app)
                         .get(url)
-                        .set('Authorization', `Bearer ${token}`)
+                        .set(bearerAuthHeader(token))
                         .expect(200)
                         .then(response => {
                             expect(response.body).to.be.an.instanceOf(Array);
@@ -148,7 +149,7 @@ suite("Request entity related request tests", () => {
                 .then(token => {
                     request(app)
                         .get(url)
-                        .set('Authorization', `Bearer ${token}`)
+                        .set(bearerAuthHeader(token))
                         .expect(200)
                         .then(response => {
                             modelValidator.validateRequest(response.body);
@@ -166,7 +167,7 @@ suite("Request entity related request tests", () => {
                 .then(token => {
                     request(app)
                         .get(url)
-                        .set('Authorization', `Bearer ${token}`)
+                        .set(bearerAuthHeader(token))
                         .expect(200)
                         .then(response => {
                             expect(response.body).to.be.an.instanceOf(Array);

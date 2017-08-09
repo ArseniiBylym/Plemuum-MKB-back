@@ -33,8 +33,8 @@ export default (app: Express, userController: UserController) => {
      * @apiSuccess (Success 200) {Object[]} tokens Empty list of tokens
      */
     app.route("/api/register/user")
-        .get(userController.showRegistrationForm.bind(userController))
-        .post(userController.createNewUser.bind(userController));
+        .get(passport.authenticate('basic', {session: false}), userController.showRegistrationForm.bind(userController))
+        .post(passport.authenticate('basic', {session: false}), userController.createNewUser.bind(userController));
 
     /**
      * @api {GET} /api/:orgId/users List users of organization
@@ -65,7 +65,7 @@ export default (app: Express, userController: UserController) => {
      * @apiSuccess (Success 200) {String} pictureUrl URL for the user profile picture
      */
     app.route("/api/:orgId/user/:userId")
-        .get(passport.authenticate('bearer', {session: false}),userController.getUserByIdFromOrganization.bind(userController));
+        .get(passport.authenticate('bearer', {session: false}), userController.getUserByIdFromOrganization.bind(userController));
 
     /**
      * @api {POST} /api/resetPassword Reset user's password
@@ -141,5 +141,5 @@ export default (app: Express, userController: UserController) => {
      * @apiSuccess (Success 200) {String} orgData.pictureUrl URL for the user profile picture
      */
     app.route("/api/profile/setpicture")
-        .post(passport.authenticate('bearer', {session: false}),userController.setPicture.bind(userController));
+        .post(passport.authenticate('bearer', {session: false}), userController.setPicture.bind(userController));
 }

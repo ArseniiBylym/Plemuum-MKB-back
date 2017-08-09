@@ -8,6 +8,7 @@ import * as modelValidator from "../../util/model.validator"
 import { authenticate, fixtureLoader, testUser } from "../mock/fixture.loader"
 import { getDatabaseManager } from "../../factory/database.factory";
 import config from "../../../config/config";
+import { basicAuthHeader, bearerAuthHeader } from "../header.helper";
 
 let userDataController: UserDataController;
 let userController: UserController;
@@ -37,6 +38,7 @@ suite("User request tests", () => {
         test("POST: Correct request response should contain a user and return 201", done => {
             request(app)
                 .post(url)
+                .set(basicAuthHeader)
                 .send(TestObjectFactory.getRegisterJohnDoe())
                 .expect(201)
                 .then(response => {
@@ -49,6 +51,7 @@ suite("User request tests", () => {
         test('GET: Should return 200', done => {
             request(app)
                 .get(url)
+                .set(basicAuthHeader)
                 .expect(200, done);
         });
     });
@@ -61,7 +64,7 @@ suite("User request tests", () => {
                 .then(token => {
                     request(app)
                         .get(url)
-                        .set('Authorization', `Bearer ${token}`)
+                        .set(bearerAuthHeader(token))
                         .query({email: 'sheryl.grant@example.com', password: 'asd1234'})
                         .expect(200)
                         .then(response => {
@@ -82,7 +85,7 @@ suite("User request tests", () => {
                 .then(token => {
                     request(app)
                         .get(url)
-                        .set('Authorization', `Bearer ${token}`)
+                        .set(bearerAuthHeader(token))
                         .expect(200)
                         .then(response => {
                             const user = response.body;
@@ -141,7 +144,7 @@ suite("User request tests", () => {
                 .then(token => {
                     request(app)
                         .post(url)
-                        .set('Authorization', `Bearer ${token}`)
+                        .set(bearerAuthHeader(token))
                         .expect(200, done);
                 })
         });

@@ -1,5 +1,6 @@
 import { Express } from "express";
 import OrganizationController from "../controller/organization.controller";
+import * as passport from 'passport';
 
 export default (app: Express, organizationController: OrganizationController) => {
     /**
@@ -23,6 +24,6 @@ export default (app: Express, organizationController: OrganizationController) =>
      * @apiError {Error} CouldNotAddDB The database could not be created due to not allowed characters or Database already exists.
      */
     app.route('/api/organization')
-        .get(organizationController.showCreateOrganizationForm.bind(organizationController))
-        .post(organizationController.createOrganization.bind(organizationController));
+        .get(passport.authenticate('basic', {session: false}), organizationController.showCreateOrganizationForm.bind(organizationController))
+        .post(passport.authenticate('basic', {session: false}), organizationController.createOrganization.bind(organizationController));
 }

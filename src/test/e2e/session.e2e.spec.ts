@@ -5,6 +5,7 @@ import * as responseValidator from "../../util/model.validator";
 import { expect } from 'chai';
 import { getDatabaseManager } from "../../factory/database.factory";
 import config from "../../../config/config";
+import { bearerAuthHeader } from "../header.helper";
 
 // TODO Finish this
 suite("Session request tests", () => {
@@ -53,7 +54,7 @@ suite("Session request tests", () => {
                 .then(token => {
                     request(app)
                         .delete(url)
-                        .set('Authorization', `Bearer ${token}`)
+                        .set(bearerAuthHeader(token))
                         .expect(200)
                         .then(response => {
                             expect(response.body).to.haveOwnProperty('message');

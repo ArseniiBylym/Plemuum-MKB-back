@@ -5,6 +5,7 @@ import { authenticate, fixtureLoader, testUser } from "../mock/fixture.loader";
 import * as modelValidator from "../../util/model.validator";
 import { getDatabaseManager } from "../../factory/database.factory";
 import config from "../../../config/config";
+import { basicAuthHeader, bearerAuthHeader } from "../header.helper";
 
 suite("Tag request tests", () => {
 
@@ -31,12 +32,14 @@ suite("Tag request tests", () => {
         test("GET: should return 200", done => {
             request(app)
                 .get(url)
+                .set(basicAuthHeader)
                 .expect(200, done);
         });
 
         test("POST: should return 201", done => {
             request(app)
                 .post(url)
+                .set(basicAuthHeader)
                 .send({title: "TestTagTitle"})
                 .expect(201)
                 .then(response => {
@@ -48,6 +51,7 @@ suite("Tag request tests", () => {
         test("POST: should not be able to post a tag with an already existing title", done => {
             request(app)
                 .post(url)
+                .set(basicAuthHeader)
                 .send({title: "TestTitle"})
                 .expect(400)
                 .then(response => {
@@ -66,7 +70,7 @@ suite("Tag request tests", () => {
                 .then(token => {
                     request(app)
                         .get(url)
-                        .set('Authorization', `Bearer ${token}`)
+                        .set(bearerAuthHeader(token))
                         .expect(200)
                         .then(response => {
                             expect(response.body).to.be.an.instanceOf(Array);

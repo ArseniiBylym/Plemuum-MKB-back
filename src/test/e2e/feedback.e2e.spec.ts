@@ -7,6 +7,7 @@ import * as modelValidator from "../../util/model.validator"
 import Feedback from "../../data/models/feedback.model";
 import { getDatabaseManager } from "../../factory/database.factory";
 import config from "../../../config/config";
+import { bearerAuthHeader } from "../header.helper";
 
 const orgId = "hipteam";
 const userId = "5984342227cd340363dc84c2";
@@ -37,7 +38,7 @@ suite("Feedback request test", () => {
                 .then(token => {
                     request(app)
                         .get(url)
-                        .set('Authorization', `Bearer ${token}`)
+                        .set(bearerAuthHeader(token))
                         .expect(200)
                         .then(response => {
                             expect(response.body).to.be.an.instanceOf(Array);
@@ -56,7 +57,7 @@ suite("Feedback request test", () => {
                 .then(token => {
                     request(app)
                         .post(url)
-                        .set('Authorization', `Bearer ${token}`)
+                        .set(bearerAuthHeader(token))
                         .send(TestObjectFactory.getTestFeedback())
                         .expect(200)
                         .then(response => {
@@ -76,7 +77,7 @@ suite("Feedback request test", () => {
                 .then(token => {
                     request(app)
                         .post(url)
-                        .set('Authorization', `Bearer ${token}`)
+                        .set(bearerAuthHeader(token))
                         .send(feedbackForm)
                         .expect(400)
                         .then(response => {
@@ -106,7 +107,7 @@ suite("Feedback request test", () => {
                 .then(token => {
                     request(app)
                         .post(url)
-                        .set('Authorization', `Bearer ${token}`)
+                        .set(bearerAuthHeader(token))
                         .send(feedbackForm)
                         .expect(400)
                         .then(response => {
@@ -126,7 +127,7 @@ suite("Feedback request test", () => {
                 .then(token => {
                     request(app)
                         .get(url)
-                        .set('Authorization', `Bearer ${token}`)
+                        .set(bearerAuthHeader(token))
                         .expect(200)
                         .then(response => {
                             expect(response.body).to.be.an.instanceOf(Array);
@@ -148,7 +149,7 @@ suite("Feedback request test", () => {
                 .then(token => {
                     request(app)
                         .get(url)
-                        .set('Authorization', `Bearer ${token}`)
+                        .set(bearerAuthHeader(token))
                         .expect(200)
                         .then(response => {
                             expect(response.body).to.be.an.instanceOf(Array);

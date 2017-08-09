@@ -2,9 +2,11 @@ import * as passport from 'passport';
 import { Handler, Request } from 'express';
 import * as localStrategy from 'passport-local';
 import * as bearerStrategy from 'passport-http-bearer';
+import * as basicStrategy from 'passport-http'
 import * as DataControllerFactory from '../factory/datacontroller.factory';
 import UserDataController from "../data/datacontroller/user.datacontroller";
 import { UserModel } from "../data/database/schema/user.schema";
+import config from "../../config/config";
 
 const userDataController: UserDataController = DataControllerFactory.getUserDataController();
 
@@ -24,6 +26,8 @@ function passportInit(): Handler {
         }, bearerTokenAuth
     ));
 
+    passport.use(new basicStrategy.BasicStrategy(basicAuth));
+
     return passport.initialize();
 }
 
@@ -36,9 +40,7 @@ function localAuth(email: string, password: string, done: Function): void {
                     ? done(null, false)
                     : done(null, user);
         })
-        .catch(err => {
-            return done(err);
-        });
+        .catch(err => done(err));
 }
 
 function bearerTokenAuth(req: Request, token: any, done: Function) {
@@ -57,9 +59,13 @@ function bearerTokenAuth(req: Request, token: any, done: Function) {
             }
             return done(null, user);
         })
-        .catch((err) => {
-            done(err);
-        });
+        .catch((err) => done(err));
+}
+
+function basicAuth(userid: string, password: string, done: Function) {
+    return userid == "admin" && password == config.adminPwd
+        ? done(null, true)
+        : done(null, false);
 }
 
 export default passportInit

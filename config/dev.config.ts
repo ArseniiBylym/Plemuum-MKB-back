@@ -6,7 +6,10 @@ const devConfig: Config = {
     },
     get mongoUrl() {
         return 'mongodb://localhost'
+    },
+    get adminPwd() {
+        return 'incline diadem passed hoop'
     }
-}
+};
 
 export default devConfig 

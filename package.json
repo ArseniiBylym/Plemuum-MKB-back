@@ -57,6 +57,7 @@
     "@types/mongoose": "4.7.19",
     "@types/morgan": "1.7.32",
     "@types/passport": "0.3.3",
+    "@types/passport-http": "^0.3.2",
     "@types/passport-http-bearer": "1.0.30",
     "@types/passport-local": "1.0.30",
     "apidoc": "0.17.6",
@@ -70,6 +71,7 @@
     "mongoose-bcrypt": "1.5.0",
     "morgan": "1.8.2",
     "passport": "0.3.2",
+    "passport-http": "0.3.0",
     "passport-http-bearer": "1.0.1",
     "passport-local": "1.0.0"
   }

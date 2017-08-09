@@ -6,7 +6,10 @@ const prodConfig: Config = {
     },
     get mongoUrl() {
         return 'mongodb://localhost'
+    },
+    get adminPwd() {
+        return <string> process.env.ADMIN_PASSWORD
     }
-}
+};
 
 export default prodConfig 
