@@ -16,53 +16,38 @@ let organizationDataController: OrganizationDataController;
 
 /* #########################     PUBLIC      ########################## */
 
-let getFeedbackDataController = (): FeedbackDataController => createFeedbackDataController(DatabaseFactory.getDatabaseManager());
-let getUserDataController = (): UserDataController => createUserDataController(DatabaseFactory.getDatabaseManager());
-let getRequestDataController = (): RequestDataController => createRequestDataController(DatabaseFactory.getDatabaseManager());
-let getTagDataController = (): TagDataController => createTagDataController(DatabaseFactory.getDatabaseManager());
-let getResetPasswordDataController = (): ResetPasswordDataController => createResetPasswordDataController(DatabaseFactory.getDatabaseManager());
-let getOrganizationDataController = (): OrganizationDataController => createOrganizationDataController(DatabaseFactory.getDatabaseManager());
+let getFeedbackDataController = (): FeedbackDataController => createDataController(
+    feedbackDataControllerInstance,
+    (databaseManager: DatabaseManager) => new FeedbackDataController(databaseManager));
+
+let getUserDataController = (): UserDataController => createDataController(
+    userDataControllerInstance,
+    (databaseManager: DatabaseManager) => new UserDataController(databaseManager));
+
+let getRequestDataController = (): RequestDataController => createDataController(
+    requestDataController,
+    (databaseManager: DatabaseManager) => new RequestDataController(databaseManager));
+
+let getTagDataController = (): TagDataController => createDataController(
+    tagDataController,
+    (databaseManager: DatabaseManager) => new TagDataController(databaseManager));
+
+let getResetPasswordDataController = (): ResetPasswordDataController => createDataController(
+    resetPasswordDataController,
+    (databaseManager: DatabaseManager) => new ResetPasswordDataController(databaseManager));
+
+let getOrganizationDataController = (): OrganizationDataController => createDataController(
+    organizationDataController,
+    (databaseManager: DatabaseManager) => new OrganizationDataController(databaseManager));
 
 /* #########################     PRIVATE      ########################## */
 
-const createFeedbackDataController = (databaseManager: DatabaseManager): FeedbackDataController => {
-    if (!feedbackDataControllerInstance) {
-        feedbackDataControllerInstance = new FeedbackDataController(databaseManager);
+function createDataController(instance: any, constructorFunc: Function) {
+    if (!instance) {
+        instance = constructorFunc(DatabaseFactory.getDatabaseManager());
     }
-    return feedbackDataControllerInstance;
-};
-
-const createUserDataController = (databaseManager: DatabaseManager): UserDataController => {
-    if (!userDataControllerInstance) {
-        userDataControllerInstance = new UserDataController(databaseManager);
-    }
-    return userDataControllerInstance;
-};
-
-const createRequestDataController = (databaseManager: DatabaseManager): RequestDataController => {
-    if (!requestDataController) {
-        requestDataController = new RequestDataController(databaseManager);
-    }
-    return requestDataController;
-};
-const createTagDataController = (databaseManager: DatabaseManager): TagDataController => {
-    if (!tagDataController) {
-        tagDataController = new TagDataController(databaseManager);
-    }
-    return tagDataController;
-};
-const createResetPasswordDataController = (databaseManager: DatabaseManager): ResetPasswordDataController => {
-    if (!resetPasswordDataController) {
-        resetPasswordDataController = new ResetPasswordDataController(databaseManager);
-    }
-    return resetPasswordDataController;
-};
-const createOrganizationDataController = (databaseManager: DatabaseManager): OrganizationDataController => {
-    if (!organizationDataController) {
-        organizationDataController = new OrganizationDataController(databaseManager);
-    }
-    return organizationDataController;
-};
+    return instance;
+}
 
 export {
     getFeedbackDataController,

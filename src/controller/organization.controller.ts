@@ -25,7 +25,6 @@ export default class OrganizationController {
             .catch(reason => res.status(400).send({error: reason.message}));
     }
 
-    // TODO implement this
     public showCreateOrganizationForm(req: Request, res: Response, next: Function) {
         res.render("newOrganization", {title: "Add new organization"});
     }

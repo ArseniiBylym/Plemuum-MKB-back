@@ -1,16 +1,17 @@
-import UserDataController from "../data/datacontroller/user.datacontroller";
 import UserController from "../controller/user.controller";
-import FeedbackDataController from "../data/datacontroller/feedback.datacontroller";
 import FeedbackController from "../controller/feedback.controller";
-import * as DataControllerFactory from './datacontroller.factory'
 import TagController from "../controller/tag.controller";
 import OrganizationController from "../controller/organization.controller";
 import RequestController from "../controller/request.controller";
-import RequestDataController from "../data/datacontroller/request.datacontroller";
 import SessionController from "../controller/session.controller";
-import TagDataController from "../data/datacontroller/tag.datacontroller";
-import ResetPasswordDataController from "../data/datacontroller/resetpassword.datacontroller";
-import OrganizationDataController from "../data/datacontroller/organization.datacontroller";
+import {
+    getFeedbackDataController,
+    getOrganizationDataController,
+    getRequestDataController,
+    getResetPasswordDataController,
+    getTagDataController,
+    getUserDataController
+} from "./datacontroller.factory";
 
 let userController: UserController;
 let feedbackController: FeedbackController;
@@ -21,56 +22,39 @@ let sessionController: SessionController;
 
 /* #########################     PUBLIC      ########################## */
 
-let getUserController = (): UserController => createUserController(
-    DataControllerFactory.getUserDataController(), DataControllerFactory.getResetPasswordDataController());
-let getFeedbackController = (): FeedbackController => createFeedbackController(DataControllerFactory.getFeedbackDataController());
-let getTagController = (): TagController => createTagController(DataControllerFactory.getTagDataController());
-let getOrganizationController = (): OrganizationController => createOrganizationController(DataControllerFactory.getOrganizationDataController());
-let getRequestController = (): RequestController => createRequestController(DataControllerFactory.getRequestDataController());
-let getSessionController = (): SessionController => createSessionController(DataControllerFactory.getUserDataController());
+const getUserController = (): UserController => createController(userController,
+    (userDataController: any, resetPasswordDataController: any) =>
+        new UserController(userDataController, resetPasswordDataController),
+    getUserDataController(),
+    getResetPasswordDataController());
+
+const getFeedbackController = (): FeedbackController => createController(userController,
+    (feedbackDataController: any) => new FeedbackController(feedbackDataController),
+    getFeedbackDataController());
+
+const getTagController = (): TagController => createController(userController,
+    (tagDataController: any) => new TagController(tagDataController),
+    getTagDataController());
+
+const getOrganizationController = (): OrganizationController => createController(userController,
+    (organizationDataController: any) => new OrganizationController(organizationDataController),
+    getOrganizationDataController());
+
+const getRequestController = (): RequestController => createController(userController,
+    (requestDataController: any) => new RequestController(requestDataController),
+    getRequestDataController());
+
+const getSessionController = (): SessionController => createController(userController,
+    (userDataController: any) => new SessionController(userDataController),
+    getUserDataController());
 
 /* #########################     PRIVATE      ########################## */
 
-function createUserController(userDataController: UserDataController, resetPasswordDataController: ResetPasswordDataController) {
-    if (!userController) {
-        userController = new UserController(userDataController, resetPasswordDataController);
+function createController(instance: any, constructorFunc: Function, ...dependencies: any[]) {
+    if (!instance) {
+        instance = constructorFunc(...dependencies);
     }
-    return userController;
-}
-
-function createFeedbackController(feedbackDataController: FeedbackDataController) {
-    if (!feedbackController) {
-        feedbackController = new FeedbackController(feedbackDataController);
-    }
-    return feedbackController;
-}
-
-function createTagController(tagDataController: TagDataController) {
-    if (!tagController) {
-        tagController = new TagController(tagDataController);
-    }
-    return tagController;
-}
-
-function createOrganizationController(organizationDataController: OrganizationDataController) {
-    if (!organizationController) {
-        organizationController = new OrganizationController(organizationDataController);
-    }
-    return organizationController;
-}
-
-function createRequestController(requestDataController: RequestDataController) {
-    if (!requestController) {
-        requestController = new RequestController(requestDataController);
-    }
-    return requestController;
-}
-
-function createSessionController(userDataController: UserDataController) {
-    if (!sessionController) {
-        sessionController = new SessionController(userDataController);
-    }
-    return sessionController;
+    return instance;
 }
 
 export {
