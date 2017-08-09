@@ -1,4 +1,4 @@
-import { authenticate, fixtureLoader, testUser } from "../mock/fixture.loader";
+import { authenticate, fixtureLoader, resetPassword, testUser } from "../mock/fixture.loader";
 import * as request from "supertest";
 import app from "../../app";
 import * as responseValidator from "../../util/model.validator";
@@ -7,10 +7,7 @@ import { getDatabaseManager } from "../../factory/database.factory";
 import config from "../../../config/config";
 import { bearerAuthHeader } from "../header.helper";
 
-// TODO Finish this
 suite("Session request tests", () => {
-
-    let testToken: string;
 
     before((done) => {
         getDatabaseManager().openConnection(config.mongoUrl)
@@ -84,10 +81,20 @@ suite("Session request tests", () => {
 
     suite("Check token request", () => {
         const url = "/api/session/validtoken";
+        let token: string;
         test("Should be able to check if a token is valid", done => {
-            request(app)
-                .post(url)
-                .expect(200, done);
+            resetPassword(testUser.email)
+                .then(token =>
+                    request(app)
+                        .post(url)
+                        .send({token: token})
+                        .expect(200)
+                        .then((response) => {
+                            expect(response.body).to.haveOwnProperty("validToken");
+                            expect(response.body).to.haveOwnProperty("reseted");
+                            done();
+                        })
+                );
         });
     })
 

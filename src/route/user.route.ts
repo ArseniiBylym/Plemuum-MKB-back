@@ -33,7 +33,7 @@ export default (app: Express, userController: UserController) => {
      * @apiSuccess (Success 200) {Object[]} tokens Empty list of tokens
      */
     app.route("/api/register/user")
-        .get(passport.authenticate('basic', {session: false}), userController.showRegistrationForm.bind(userController))
+        .get(passport.authenticate('basic', {session: false}), UserController.showRegistrationForm.bind(userController))
         .post(passport.authenticate('basic', {session: false}), userController.createNewUser.bind(userController));
 
     /**
@@ -94,7 +94,7 @@ export default (app: Express, userController: UserController) => {
      */
 
     app.route("/api/setPassword")
-        .post(userController.setPassword.bind(userController));
+        .post(UserController.setPassword.bind(userController));
 
     /**
      * @api {POST} /api/user/password Change user password
@@ -119,7 +119,7 @@ export default (app: Express, userController: UserController) => {
      * @apiSuccess (Success 200) {String} orgData.pictureUrl URL for the user profile picture
      */
     app.route("/api/user/password")
-        .post(userController.changePassword.bind(userController));
+        .post(UserController.changePassword.bind(userController));
 
     /**
      * @api {POST} /api/profile/setpicture Change the user profile picture
@@ -141,5 +141,5 @@ export default (app: Express, userController: UserController) => {
      * @apiSuccess (Success 200) {String} orgData.pictureUrl URL for the user profile picture
      */
     app.route("/api/profile/setpicture")
-        .post(passport.authenticate('bearer', {session: false}), userController.setPicture.bind(userController));
+        .post(passport.authenticate('bearer', {session: false}), UserController.setPicture.bind(userController));
 }

@@ -17,9 +17,9 @@ export default class SessionController extends BaseController {
 
     public login(req: any, res: Response, next: Function): Promise<string> {
         const tokenObj: TokenObject = tokenManager.generateNewTokenObject();
-        return this.userDataController.getUserByIdWithoutOrgId(req.user._id)
+        return UserDataController.getUserByIdWithoutOrgId(req.user._id)
             .then((userToLog: User) =>
-                this.userDataController.updateUserToken(
+                UserDataController.updateUserToken(
                     req.user._id,
                     tokenObj,
                     req.header('User-Agent')
@@ -44,9 +44,9 @@ export default class SessionController extends BaseController {
         if (authHeader) {
             const token = authHeader.replace('bearer ', '');
             const tokens = req.user.tokens;
-            let pastDate = new Date();
+            const pastDate = new Date();
             pastDate.setDate(pastDate.getDate() - 30);
-            let currentTokenIndex = tokens.findIndex((element: any) => {
+            const currentTokenIndex = tokens.findIndex((element: any) => {
                 return element.token === token;
             });
             tokens[currentTokenIndex] = {
@@ -66,8 +66,16 @@ export default class SessionController extends BaseController {
         }
     }
 
-    // TODO Implement this
     public checkToken(req: Request, res: Response, next: Function) {
-        res.send({})
+        this.userDataController.getResetToken(req.body.token)
+            .then((resetToken) => {
+                const now = new Date();
+                let valid: Object = {validToken: true, reseted: false};
+                if (resetToken.token_expiry < now || resetToken.reseted) {
+                    valid = {validToken: false, reseted: resetToken.reseted};
+                }
+                res.send(valid);
+            })
+            .catch(reason => res.status(400).json({error: "Something went wrong!"}));
     }
 }

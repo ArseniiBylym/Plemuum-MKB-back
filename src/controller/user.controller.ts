@@ -17,7 +17,7 @@ export default class UserController extends BaseController {
         this.resetPasswordDataController = resetPasswordDataController;
     }
 
-    public showRegistrationForm(req: Request, res: Response,) {
+    public static showRegistrationForm(req: Request, res: Response,) {
         res.render("newuser", {
             title: "Express", organizations: [
                 {dbName: 'hipteam', name: 'hipteam'}, {dbName: 'other', name: 'other'}]
@@ -41,15 +41,12 @@ export default class UserController extends BaseController {
         this.callController(this.userDataController.getUserById(req.params.orgId, req.params.userId), res, 200, 400);
     }
 
-    public resetPassword(req: Request, res: Response,) {
-        let data = req.body;
-        let email = data.email;
+    public resetPassword(req: Request, res: Response, next: Function) {
         let user: UserModel;
-
-        this.userDataController.getUserByEmail(data.email)
+        return this.userDataController.getUserByEmail(req.body.email)
             .then((u: UserModel) => {
                 user = u;
-                const {token, token_expiry} = this.generateToken(1);
+                const {token, token_expiry} = UserController.generateToken(1);
                 const data = {userId: String(user["_id"]), token: token, token_expiry: token_expiry, reseted: false};
                 return this.resetPasswordDataController.saveResetPassword(data)
             })
@@ -57,27 +54,28 @@ export default class UserController extends BaseController {
                 const link = req.header('Origin') + "/set_new_password?token=" + resetPassword.token + "&email="
                     + user.email + (req.query.welcome ? "&welcome=true" : ""); //TODO header is undefined, do not forget to check why
                 //sendResetEmail(user.email, link); //TODO implement email notification
-                res.json({email: user.email, link: link});
+                res.send({email: user.email, link: link});
+                return resetPassword.token;
             })
             .catch(err => res.status(400).send({error: err}));
     }
 
     //TODO implement this
-    public setPassword(req: Request, res: Response,) {
+    public static setPassword(req: Request, res: Response,) {
         res.json({msg: "set password"});
     }
 
     //TODO implement this
-    public changePassword(req: Request, res: Response,) {
+    public static changePassword(req: Request, res: Response,) {
         res.json({msg: "change password"});
     }
 
     //TODO implement this
-    public setPicture(req: Request, res: Response,) {
+    public static setPicture(req: Request, res: Response,) {
         res.json({msg: "set picture"});
     }
 
-    private generateToken(days: number) {
+    private static generateToken(days: number) {
         let token = crypto.randomBytes(64).toString('hex');
         let token_expiry = new Date();
         let token_duration = process.env.TOKEN_DURATION;

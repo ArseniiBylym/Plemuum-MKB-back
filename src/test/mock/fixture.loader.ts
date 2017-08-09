@@ -6,6 +6,7 @@ import * as fs from "fs";
 import * as ControllerFactory from '../../factory/controller.factory';
 import { Model } from "mongoose";
 import { OrganizationCollection } from "../../data/database/schema/organization.schema";
+import { ResetPasswordCollection } from "../../data/database/schema/resetpassword.schema";
 
 const testUser = {
     "firstName": "sheryl",
@@ -28,6 +29,7 @@ function fixtureLoader(): Promise<any> {
         {model: RequestCollection('hipteam'), mockFile: 'requests'},
         {model: TagCollection('hipteam'), mockFile: 'tags'},
         {model: OrganizationCollection(), mockFile: "organizations"},
+        {model: ResetPasswordCollection(), mockFile: null},
     ];
 
     /* Clear each collection */
@@ -62,4 +64,23 @@ function authenticate(testUser: any): Promise<string> {
     });
 }
 
-export { fixtureLoader, authenticate, testUser }
+function resetPassword(testUserEmail: string): Promise<any> {
+    const userController = ControllerFactory.getUserController();
+    const request: any = {
+        body: {email: testUserEmail},
+        header: () => {
+        },
+        query: {}
+    };
+    const response: any = {
+        send: () => {
+        },
+        status: () => {
+        }
+    };
+
+    return userController.resetPassword(request, response, () => {
+    });
+}
+
+export { fixtureLoader, authenticate, resetPassword, testUser }
