@@ -1,5 +1,6 @@
 import { Connection, Document, Model, Schema } from 'mongoose';
 import ResetPassword from "../../models/resetpassword.model";
+import { getDatabaseManager } from "../../../factory/database.factory";
 
 interface ResetPasswordModel extends ResetPassword, Document {
 }
@@ -15,8 +16,8 @@ let ResetPasswordSchema: Schema = new Schema({
 });
 
 
-const getResetPasswordModel = (dbConnection: Connection): Model<ResetPasswordModel> => {
-    return dbConnection.useDb('common').model<ResetPasswordModel>("ResetPassword", ResetPasswordSchema);
+const ResetPasswordCollection = (): Model<ResetPasswordModel> => {
+    return getDatabaseManager().getConnection().useDb('common').model<ResetPasswordModel>("ResetPassword", ResetPasswordSchema);
 };
 
-export { ResetPasswordModel, getResetPasswordModel };
+export { ResetPasswordModel, ResetPasswordCollection };

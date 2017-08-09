@@ -1,18 +1,17 @@
-import { getResetPasswordModel, ResetPasswordModel } from "../database/schema/resetpassword.schema";
+import { ResetPasswordCollection, ResetPasswordModel } from "../database/schema/resetpassword.schema";
 import BaseDataController from "./base.datacontroller";
 import ResetPassword from "../models/resetpassword.model";
 import DatabaseManager from "../database/database.manager";
-import { getDatabaseManager } from "../../factory/database.factory";
 
 export default class ResetPasswordDataController extends BaseDataController<ResetPasswordModel> {
 
     constructor(databaseManager: DatabaseManager) {
-        super(databaseManager, getResetPasswordModel);
+        super(databaseManager, ResetPasswordCollection);
     }
 
     public saveResetPassword(resetPwd: ResetPassword): Promise<ResetPassword> {
         return new Promise((resolve, reject) => {
-            const resetPasswordModel = getResetPasswordModel(getDatabaseManager().getConnection());
+            const resetPasswordModel = ResetPasswordCollection();
             new resetPasswordModel(resetPwd).save((error, resetPwd) => error ? reject(error) : resolve(resetPwd));
         });
     }

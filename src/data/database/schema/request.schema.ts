@@ -1,4 +1,5 @@
 import { Connection, Document, Model, Schema } from 'mongoose';
+import { getDatabaseManager } from "../../../factory/database.factory";
 
 interface RequestModel extends Request, Document {
     getRecipientId(): string[]
@@ -17,8 +18,8 @@ RequestSchema.methods.getRecipientId = function (): [string] {
     return this.recipientId;
 };
 
-const getRequestModel = (dbConnection: Connection, dbName = "default"): Model<RequestModel> => {
-    return dbConnection.useDb(dbName).model<RequestModel>("Request", RequestSchema);
+const RequestCollection = (dbName = "common"): Model<RequestModel> => {
+    return getDatabaseManager().getConnection().useDb(dbName).model<RequestModel>("Request", RequestSchema);
 };
 
-export { RequestModel, getRequestModel };
+export { RequestModel, RequestCollection };

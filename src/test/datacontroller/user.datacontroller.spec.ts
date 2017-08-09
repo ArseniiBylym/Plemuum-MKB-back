@@ -5,10 +5,9 @@ import * as TestObjectFactory from "../../util/testobject.factory";
 import { User } from "../../data/models/user.model";
 import { assert, expect, should } from 'chai';
 import * as asserts from "assert";
-import BaseDataController from "../../data/datacontroller/base.datacontroller";
 import { fixtureLoader } from "../mock/fixture.loader";
 
- suite("UserDataController tests", () => {
+suite("UserDataController tests", () => {
 
     let userDataController: UserDataController;
     const databaseManager: DatabaseManager = DatabaseFactory.getDatabaseManager();
@@ -27,7 +26,7 @@ import { fixtureLoader } from "../mock/fixture.loader";
         const testUser = TestObjectFactory.getJohnDoe();
         userDataController.saveUser(testUser)
             .then((value: any) => {
-                const userModel = userDataController.getDatabaseModel(databaseManager.getConnection(), BaseDataController.COMMON);
+                const userModel = userDataController.getDatabaseModel();
                 userModel.findById(value._id, (error: Error, user: User) => {
                     should().exist(user);
                     done();

@@ -1,8 +1,7 @@
-import { getUserModel } from "../../data/database/schema/user.schema"
-import { getFeedbackModel } from "../../data/database/schema/feedback.schema"
-import { getRequestModel } from "../../data/database/schema/request.schema"
-import { getTagModel, TagModel } from "../../data/database/schema/tag.schema"
-import * as DatabaseFactory from "../../factory/database.factory";
+import { UserCollection } from "../../data/database/schema/user.schema"
+import { FeedbackCollection } from "../../data/database/schema/feedback.schema"
+import { RequestCollection } from "../../data/database/schema/request.schema"
+import { TagCollection } from "../../data/database/schema/tag.schema"
 import Feedback from "../../data/models/feedback.model";
 import * as fs from "fs";
 import { User } from "../../data/models/user.model";
@@ -23,10 +22,10 @@ const testUser = {
 
 function fixtureLoader(): Promise<any> {
     let promises: Promise<any>[] = [];
-    const userModel = getUserModel(DatabaseFactory.getDatabaseManager().getConnection());
-    const feedbackModel = getFeedbackModel(DatabaseFactory.getDatabaseManager().getConnection(), 'hipteam');
-    const requestModel = getRequestModel(DatabaseFactory.getDatabaseManager().getConnection(), 'hipteam');
-    const tagModel = getTagModel(DatabaseFactory.getDatabaseManager().getConnection(), 'hipteam');
+    const userModel = UserCollection();
+    const feedbackModel = FeedbackCollection('hipteam');
+    const requestModel = RequestCollection('hipteam');
+    const tagModel = TagCollection('hipteam');
 
     promises.push(new Promise((resolve, reject) => {
         userModel.remove({}, () => {

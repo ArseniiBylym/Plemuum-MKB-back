@@ -1,5 +1,4 @@
-
-import { Model, Document } from 'mongoose';
+import { Document, Model } from 'mongoose';
 import DatabaseManager from "../database/database.manager";
 
 export default class BaseDataController<T extends Document> {
@@ -11,12 +10,5 @@ export default class BaseDataController<T extends Document> {
     constructor(databaseManager: DatabaseManager, getDatabaseModel: Function) {
         this.databaseManager = databaseManager;
         this.getDatabaseModel = getDatabaseModel;
-    }
-
-    public clearData(dbName?: string): Promise<any> {
-        return new Promise((resolve, reject) => {
-            const userModel: Model<T> = this.getDatabaseModel(this.databaseManager.getConnection(), dbName);
-            userModel.remove({}, (error: any) => error ? reject(error) : resolve())
-        })
     }
 }

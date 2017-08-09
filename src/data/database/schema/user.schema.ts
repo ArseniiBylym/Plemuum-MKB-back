@@ -1,5 +1,6 @@
 import { Connection, Document, Model, Schema } from "mongoose";
 import { User } from "../../models/user.model";
+import { getDatabaseManager } from "../../../factory/database.factory"
 
 
 const USER_COLLECTION = "users";
@@ -42,8 +43,8 @@ interface Token extends User, Document {
     verifyPasswordSync(rec_password: string): boolean
 }
 
-const getUserModel = (dbConnection: Connection): Model<UserModel> => {
-    return dbConnection.useDb("common").model<UserModel>("User", UserSchema);
+const UserCollection = (): Model<UserModel> => {
+    return getDatabaseManager().getConnection().useDb("common").model<UserModel>("User", UserSchema);
 };
 
-export { UserModel, getUserModel };
+export { UserModel, UserCollection };
