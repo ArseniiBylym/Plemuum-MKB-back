@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose';
+import { Document, Model, Schema } from 'mongoose';
 
 export default class DatabaseManager {
     private dbConnection: mongoose.Connection;
@@ -34,10 +35,6 @@ export default class DatabaseManager {
         });
     }
 
-    public getConnection(): mongoose.Connection {
-        return this.dbConnection;
-    }
-
     public closeConnection(): Promise<any> {
         return new Promise((resolve, reject) => {
                 if (this.dbConnection) {
@@ -50,5 +47,9 @@ export default class DatabaseManager {
                 }
             }
         );
+    }
+
+    public createCollection<T extends Document>(dbName: string, modelName: string, schema: Schema): Model<T> {
+        return this.dbConnection.useDb(dbName).model<T>(modelName, schema);
     }
 }

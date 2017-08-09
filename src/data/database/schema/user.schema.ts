@@ -39,12 +39,11 @@ interface UserModel extends User, Document {
     verifyPasswordSync(rec_password: string): boolean
 }
 
-interface Token extends User, Document {
+interface TokenModel extends User, Document {
     verifyPasswordSync(rec_password: string): boolean
 }
 
-const UserCollection = (): Model<UserModel> => {
-    return getDatabaseManager().getConnection().useDb("common").model<UserModel>("User", UserSchema);
-};
+const UserCollection = (): Model<UserModel> => getDatabaseManager().createCollection<UserModel>(
+    "common", "User", UserSchema);
 
 export { UserModel, UserCollection };

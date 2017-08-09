@@ -18,8 +18,7 @@ RequestSchema.methods.getRecipientId = function (): [string] {
     return this.recipientId;
 };
 
-const RequestCollection = (dbName: string): Model<RequestModel> => {
-    return getDatabaseManager().getConnection().useDb(dbName).model<RequestModel>("Request", RequestSchema);
-};
+const RequestCollection = (dbName: string): Model<RequestModel> => getDatabaseManager().createCollection<RequestModel>(
+        dbName, "Request", RequestSchema);
 
 export { RequestModel, RequestCollection };

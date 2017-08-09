@@ -16,8 +16,7 @@ let ResetPasswordSchema: Schema = new Schema({
 });
 
 
-const ResetPasswordCollection = (): Model<ResetPasswordModel> => {
-    return getDatabaseManager().getConnection().useDb('common').model<ResetPasswordModel>("ResetPassword", ResetPasswordSchema);
-};
+const ResetPasswordCollection = () => getDatabaseManager().createCollection<ResetPasswordModel>(
+    "common", "ResetPassword", ResetPasswordSchema);
 
 export { ResetPasswordModel, ResetPasswordCollection };

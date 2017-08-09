@@ -6,6 +6,7 @@ import BaseDataController from "./base.datacontroller";
 import { TokenObject } from "../../auth/token.manager";
 import ResetPassword from "../models/resetpassword.model";
 import { ResetPasswordCollection } from "../database/schema/resetpassword.schema";
+import * as crypto from 'crypto';
 
 export default class UserDataController extends BaseDataController<UserModel> {
 
@@ -88,5 +89,13 @@ export default class UserDataController extends BaseDataController<UserModel> {
             .lean().exec((err, resetedPwd: ResetPassword) => err ? reject(err) : resolve(resetedPwd)
             )
         );
+    }
+
+    public static generateToken(days: number) {
+        let token = crypto.randomBytes(64).toString('hex');
+        let token_expiry = new Date();
+        let token_duration = process.env.TOKEN_DURATION;
+        token_expiry.setDate(token_expiry.getDate() + days.valueOf());
+        return {token, token_expiry}
     }
 }

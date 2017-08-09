@@ -16,8 +16,7 @@ export let OrganizationSchema = new Schema({
 });
 
 
-const OrganizationCollection = (): Model<OrganizationModel> => {
-    return getDatabaseManager().getConnection().useDb("common").model<OrganizationModel>("Organization", OrganizationSchema);
-};
+const OrganizationCollection = (): Model<OrganizationModel> => getDatabaseManager().createCollection<OrganizationModel>(
+        "common", "Organization", OrganizationSchema);
 
 export { OrganizationModel, OrganizationCollection };

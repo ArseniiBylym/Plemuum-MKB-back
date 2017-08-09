@@ -3,9 +3,6 @@ import Feedback from "../../models/feedback.model";
 import { TagSchema } from './tag.schema'
 import { getDatabaseManager } from "../../../factory/database.factory";
 
-const modelName = "Feedback";
-const databaseName = "feedback";
-
 interface FeedbackModel extends Feedback, Document {
 }
 
@@ -23,8 +20,8 @@ const FeedbackSchema = new Schema({
     timestamps: true,
 });
 
-const FeedbackCollection = (dbName: string): Model<FeedbackModel> => {
-    return getDatabaseManager().getConnection().useDb(dbName).model<FeedbackModel>(modelName, FeedbackSchema);
-};
+const FeedbackCollection = (dbName: string) => getDatabaseManager().createCollection<FeedbackModel>(
+    dbName, "Feedback", FeedbackSchema);
+
 
 export { FeedbackModel, FeedbackCollection };
