@@ -46,4 +46,20 @@ function validateTagResponse(tagResponse: any) {
     expect(tagResponse).to.haveOwnProperty("order");
 }
 
-export { validateUser, validateFeedback, validateError, validateRequest, validateLoginResponse, validateTagResponse }
+function validateOrganization(organizationResponse: any) {
+    expect(organizationResponse).to.haveOwnProperty("_id");
+    expect(organizationResponse).to.haveOwnProperty("name");
+    expect(organizationResponse).to.haveOwnProperty("dbName");
+    expect(organizationResponse).to.haveOwnProperty("todoSentenceNumber");
+    expect(organizationResponse).to.haveOwnProperty("compasseGenerationTime");
+}
+
+export {
+    validateUser,
+    validateFeedback,
+    validateError,
+    validateRequest,
+    validateLoginResponse,
+    validateTagResponse,
+    validateOrganization
+}

@@ -107,7 +107,6 @@ suite("User request tests", () => {
                 .send({email: testUser.email})
                 .expect(200)
                 .then(response => {
-                    console.log(response.body);
                     done();
                 });
         });

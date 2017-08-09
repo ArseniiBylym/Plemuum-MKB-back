@@ -6,7 +6,6 @@ import * as crypto from 'crypto';
 import ResetPasswordDataController from "../data/datacontroller/resetpassword.datacontroller";
 import { UserModel } from "../data/database/schema/user.schema";
 
-
 export default class UserController extends BaseController {
 
     private userDataController: UserDataController;

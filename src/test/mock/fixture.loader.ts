@@ -2,10 +2,10 @@ import { UserCollection } from "../../data/database/schema/user.schema"
 import { FeedbackCollection } from "../../data/database/schema/feedback.schema"
 import { RequestCollection } from "../../data/database/schema/request.schema"
 import { TagCollection } from "../../data/database/schema/tag.schema"
-import Feedback from "../../data/models/feedback.model";
 import * as fs from "fs";
-import { User } from "../../data/models/user.model";
 import * as ControllerFactory from '../../factory/controller.factory';
+import { Model } from "mongoose";
+import { OrganizationCollection } from "../../data/database/schema/organization.schema";
 
 const testUser = {
     "firstName": "sheryl",
@@ -22,55 +22,28 @@ const testUser = {
 
 function fixtureLoader(): Promise<any> {
     let promises: Promise<any>[] = [];
-    const userModel = UserCollection();
-    const feedbackModel = FeedbackCollection('hipteam');
-    const requestModel = RequestCollection('hipteam');
-    const tagModel = TagCollection('hipteam');
+    let collections: any[] = [
+        {model: UserCollection(), mockFile: 'users'},
+        {model: FeedbackCollection('hipteam'), mockFile: 'feedbacks'},
+        {model: RequestCollection('hipteam'), mockFile: 'requests'},
+        {model: TagCollection('hipteam'), mockFile: 'tags'},
+        {model: OrganizationCollection(), mockFile: "organizations"},
+    ];
 
-    promises.push(new Promise((resolve, reject) => {
-        userModel.remove({}, () => {
-            resolve();
-        })
-    }));
-    promises.push(new Promise((resolve, reject) => {
-        feedbackModel.remove({}, () => {
-            resolve();
-        })
-    }));
-    promises.push(new Promise((resolve, reject) => {
-        requestModel.remove({}, () => {
-            resolve();
-        })
-    }));
-    promises.push(new Promise((resolve, reject) => {
-        tagModel.remove({}, () => {
-            resolve();
-        })
-    }));
+    /* Clear each collection */
+    collections.forEach((collection) => promises.push(
+        new Promise((resolve, reject) => collection.model.remove({}, () => resolve()))));
 
-    return Promise.all(promises)
-        .then(value => {
-            const users = JSON.parse(fs.readFileSync('src/test/mock/json/users.json', 'utf8'));
-            const feedbacks = JSON.parse(fs.readFileSync('src/test/mock/json/feedbacks.json', 'utf8'));
-            const requests = JSON.parse(fs.readFileSync('src/test/mock/json/requests.json', 'utf8'));
-            const tags = JSON.parse(fs.readFileSync('src/test/mock/json/tags.json', 'utf8'));
-
-            promises = [];
-
-            users.forEach((user: User) => {
-                promises.push(new userModel(user).save());
-            });
-            feedbacks.forEach((feedback: Feedback) => {
-                promises.push(new feedbackModel(feedback).save());
-            });
-            requests.forEach((request: Request) => {
-                promises.push(new requestModel(request).save());
-            });
-            tags.forEach((tag: any) => {
-                promises.push(new tagModel(tag).save());
-            });
-            return Promise.all(promises);
-        })
+    return Promise.all(promises).then(() => {
+        /* Read mock data from file and fill up the collections */
+        collections.forEach((collection) => {
+            if (collection.mockFile) {
+                const mocks = JSON.parse(fs.readFileSync(`src/test/mock/json/${collection.mockFile}.json`, 'utf8'));
+                mocks.forEach((mock: any) => promises.push(new collection.model(mock).save()));
+            }
+        });
+        return Promise.all(promises);
+    })
 }
 
 /* Returns a token for tests */

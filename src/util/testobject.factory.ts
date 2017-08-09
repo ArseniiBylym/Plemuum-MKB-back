@@ -58,6 +58,15 @@ function getTestFeedback(): Feedback {
     }
 }
 
+function getTestOrganization() {
+    return {
+        name: "TestOrg",
+        dbName: "testorg",
+        todoSentenceNumber: 3,
+        compasseGenerationTime: 3,
+    }
+}
+
 export {
     getTestUser,
     getJohnDoe,
@@ -65,4 +74,5 @@ export {
     getTestUserWithOrganizations,
     getRegisterTestUser,
     getRegisterJohnDoe,
+    getTestOrganization
 }

@@ -14,7 +14,7 @@ export let TagSchema = new Schema({
 interface TagModel extends Tag, Document {
 }
 
-const TagCollection = (dbName = "common"): Model<TagModel> => {
+const TagCollection = (dbName: string): Model<TagModel> => {
     return getDatabaseManager().getConnection().useDb(dbName).model<TagModel>("Tag", TagSchema);
 };
 

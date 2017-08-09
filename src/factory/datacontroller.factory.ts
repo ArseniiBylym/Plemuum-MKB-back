@@ -5,12 +5,14 @@ import * as DatabaseFactory from './database.factory';
 import RequestDataController from "../data/datacontroller/request.datacontroller";
 import TagDataController from "../data/datacontroller/tag.datacontroller";
 import ResetPasswordDataController from "../data/datacontroller/resetpassword.datacontroller";
+import OrganizationDataController from "../data/datacontroller/organization.datacontroller";
 
 let feedbackDataControllerInstance: FeedbackDataController;
 let userDataControllerInstance: UserDataController;
 let requestDataController: RequestDataController;
 let tagDataController: TagDataController;
 let resetPasswordDataController: ResetPasswordDataController;
+let organizationDataController: OrganizationDataController;
 
 /* #########################     PUBLIC      ########################## */
 
@@ -19,6 +21,7 @@ let getUserDataController = (): UserDataController => createUserDataController(D
 let getRequestDataController = (): RequestDataController => createRequestDataController(DatabaseFactory.getDatabaseManager());
 let getTagDataController = (): TagDataController => createTagDataController(DatabaseFactory.getDatabaseManager());
 let getResetPasswordDataController = (): ResetPasswordDataController => createResetPasswordDataController(DatabaseFactory.getDatabaseManager());
+let getOrganizationDataController = (): OrganizationDataController => createOrganizationDataController(DatabaseFactory.getDatabaseManager());
 
 /* #########################     PRIVATE      ########################## */
 
@@ -54,11 +57,18 @@ const createResetPasswordDataController = (databaseManager: DatabaseManager): Re
     }
     return resetPasswordDataController;
 };
+const createOrganizationDataController = (databaseManager: DatabaseManager): OrganizationDataController => {
+    if (!organizationDataController) {
+        organizationDataController = new OrganizationDataController(databaseManager);
+    }
+    return organizationDataController;
+};
 
 export {
     getFeedbackDataController,
     getUserDataController,
     getRequestDataController,
     getTagDataController,
-    getResetPasswordDataController
+    getResetPasswordDataController,
+    getOrganizationDataController
 }
