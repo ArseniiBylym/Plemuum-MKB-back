@@ -3,6 +3,8 @@ import * as request from "supertest";
 import app from "../../app";
 import * as responseValidator from "../../util/model.validator";
 import { expect } from 'chai';
+import { getDatabaseManager } from "../../factory/database.factory";
+import config from "../../../config/config";
 
 // TODO Finish this
 suite("Session request tests", () => {
@@ -10,12 +12,19 @@ suite("Session request tests", () => {
     let testToken: string;
 
     before((done) => {
-        fixtureLoader()
+        getDatabaseManager().openConnection(config.mongoUrl)
+            .then(() => fixtureLoader())
             .then(() => done())
             .catch((error) => {
                 console.error(error);
                 done();
             })
+    });
+
+    after(done => {
+        getDatabaseManager().closeConnection()
+            .then(() => done())
+            .catch(() => done());
     });
 
     suite("Login/Logout tests", () => {

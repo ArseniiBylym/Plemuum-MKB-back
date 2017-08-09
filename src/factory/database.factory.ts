@@ -6,7 +6,7 @@ let databaseManagerInstance: DatabaseManager;
 
 const getDatabaseManager = (): DatabaseManager => {
     if (!databaseManagerInstance) {
-        databaseManagerInstance = new DatabaseManager(config.mongoUrl);
+        databaseManagerInstance = new DatabaseManager();
     }
     return databaseManagerInstance;
 };

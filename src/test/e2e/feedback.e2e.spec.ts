@@ -5,6 +5,8 @@ import app from '../../app';
 import { authenticate, fixtureLoader, testUser } from "../mock/fixture.loader";
 import * as modelValidator from "../../util/model.validator"
 import Feedback from "../../data/models/feedback.model";
+import { getDatabaseManager } from "../../factory/database.factory";
+import config from "../../../config/config";
 
 const orgId = "hipteam";
 const userId = "5984342227cd340363dc84c2";
@@ -12,12 +14,19 @@ const userId = "5984342227cd340363dc84c2";
 suite("Feedback request test", () => {
 
     before((done) => {
-        fixtureLoader()
+        getDatabaseManager().openConnection(config.mongoUrl)
+            .then(() => fixtureLoader())
             .then(value => done())
             .catch((error) => {
                 console.error(error);
                 done();
             })
+    });
+
+    after(done => {
+        getDatabaseManager().closeConnection()
+            .then(() => done())
+            .catch(() => done());
     });
 
     suite("Fetch feedbacks", () => {

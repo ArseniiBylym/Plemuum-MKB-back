@@ -3,16 +3,25 @@ import app from "../../app";
 import { assert, expect } from 'chai';
 import { authenticate, fixtureLoader, testUser } from "../mock/fixture.loader";
 import * as modelValidator from "../../util/model.validator";
+import { getDatabaseManager } from "../../factory/database.factory";
+import config from "../../../config/config";
 
 suite("Tag request tests", () => {
 
     before((done) => {
-        fixtureLoader()
+        getDatabaseManager().openConnection(config.mongoUrl)
+            .then(() => fixtureLoader())
             .then(value => done())
             .catch((error) => {
                 console.error(error);
                 done();
             })
+    });
+
+    after(done => {
+        getDatabaseManager().closeConnection()
+            .then(() => done())
+            .catch(() => done());
     });
 
     suite("New Tag", () => {

@@ -5,6 +5,8 @@ import * as modelValidator from "../../util/model.validator"
 import Request from "../../data/models/request.model";
 import { User } from "../../data/models/user.model";
 import { authenticate, fixtureLoader, testUser } from "../mock/fixture.loader";
+import { getDatabaseManager } from "../../factory/database.factory";
+import config from "../../../config/config";
 
 const orgId = "hipteam";
 const userId = "5984342227cd340363dc84ac";
@@ -13,12 +15,19 @@ const requestId = "59844c1cd0b5d006da3c9620";
 suite("Request entity related request tests", () => {
 
     before((done) => {
-        fixtureLoader()
+        getDatabaseManager().openConnection(config.mongoUrl)
+            .then(() => fixtureLoader())
             .then(value => done())
             .catch((error) => {
                 console.error(error);
                 done();
             })
+    });
+
+    after(done => {
+        getDatabaseManager().closeConnection()
+            .then(() => done())
+            .catch(() => done());
     });
 
     suite("Create new request", () => {

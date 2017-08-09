@@ -6,19 +6,28 @@ import UserController from "../../controller/user.controller";
 import * as TestObjectFactory from "../../util/testobject.factory"
 import * as modelValidator from "../../util/model.validator"
 import { authenticate, fixtureLoader, testUser } from "../mock/fixture.loader"
+import { getDatabaseManager } from "../../factory/database.factory";
+import config from "../../../config/config";
 
 let userDataController: UserDataController;
 let userController: UserController;
 
 suite("User request tests", () => {
 
-    beforeEach((done) => {
-        fixtureLoader()
+    before((done) => {
+        getDatabaseManager().openConnection(config.mongoUrl)
+            .then(() => fixtureLoader())
             .then(value => done())
             .catch((error) => {
                 console.error(error);
                 done();
             })
+    });
+
+    after(done => {
+        getDatabaseManager().closeConnection()
+            .then(() => done())
+            .catch(() => done());
     });
 
     suite('Create new user', () => {
