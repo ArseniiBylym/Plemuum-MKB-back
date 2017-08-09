@@ -22,37 +22,30 @@ let sessionController: SessionController;
 
 /* #########################     PUBLIC      ########################## */
 
-const getUserController = (): UserController => createController(userController,
-    (userDataController: any, resetPasswordDataController: any) =>
-        new UserController(userDataController, resetPasswordDataController),
+const getUserController = (): UserController => getController(userController, UserController,
     getUserDataController(),
     getResetPasswordDataController());
 
-const getFeedbackController = (): FeedbackController => createController(userController,
-    (feedbackDataController: any) => new FeedbackController(feedbackDataController),
+const getFeedbackController = (): FeedbackController => getController(feedbackController, FeedbackController,
     getFeedbackDataController());
 
-const getTagController = (): TagController => createController(userController,
-    (tagDataController: any) => new TagController(tagDataController),
+const getTagController = (): TagController => getController(tagController, TagController,
     getTagDataController());
 
-const getOrganizationController = (): OrganizationController => createController(userController,
-    (organizationDataController: any) => new OrganizationController(organizationDataController),
+const getOrganizationController = (): OrganizationController => getController(organizationController, OrganizationController,
     getOrganizationDataController());
 
-const getRequestController = (): RequestController => createController(userController,
-    (requestDataController: any) => new RequestController(requestDataController),
+const getRequestController = (): RequestController => getController(requestController, RequestController,
     getRequestDataController());
 
-const getSessionController = (): SessionController => createController(userController,
-    (userDataController: any) => new SessionController(userDataController),
+const getSessionController = (): SessionController => getController(sessionController, SessionController,
     getUserDataController());
 
 /* #########################     PRIVATE      ########################## */
 
-function createController(instance: any, constructorFunc: Function, ...dependencies: any[]) {
+function getController(instance: any, controller: any, ...dependencies: any[]) {
     if (!instance) {
-        instance = constructorFunc(...dependencies);
+        instance = new controller(...dependencies);
     }
     return instance;
 }

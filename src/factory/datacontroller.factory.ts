@@ -1,5 +1,4 @@
 import FeedbackDataController from "../data/datacontroller/feedback.datacontroller";
-import DatabaseManager from '../data/database/database.manager';
 import UserDataController from "../data/datacontroller/user.datacontroller";
 import * as DatabaseFactory from './database.factory';
 import RequestDataController from "../data/datacontroller/request.datacontroller";
@@ -16,35 +15,29 @@ let organizationDataController: OrganizationDataController;
 
 /* #########################     PUBLIC      ########################## */
 
-let getFeedbackDataController = (): FeedbackDataController => createDataController(
-    feedbackDataControllerInstance,
-    (databaseManager: DatabaseManager) => new FeedbackDataController(databaseManager));
+const getFeedbackDataController = (): FeedbackDataController =>
+    getDataController(feedbackDataControllerInstance, FeedbackDataController);
 
-let getUserDataController = (): UserDataController => createDataController(
-    userDataControllerInstance,
-    (databaseManager: DatabaseManager) => new UserDataController(databaseManager));
+const getUserDataController = (): UserDataController =>
+    getDataController(userDataControllerInstance, UserDataController);
 
-let getRequestDataController = (): RequestDataController => createDataController(
-    requestDataController,
-    (databaseManager: DatabaseManager) => new RequestDataController(databaseManager));
+const getRequestDataController = (): RequestDataController =>
+    getDataController(requestDataController, RequestDataController);
 
-let getTagDataController = (): TagDataController => createDataController(
-    tagDataController,
-    (databaseManager: DatabaseManager) => new TagDataController(databaseManager));
+const getTagDataController = (): TagDataController =>
+    getDataController(tagDataController, TagDataController);
 
-let getResetPasswordDataController = (): ResetPasswordDataController => createDataController(
-    resetPasswordDataController,
-    (databaseManager: DatabaseManager) => new ResetPasswordDataController(databaseManager));
+const getResetPasswordDataController = (): ResetPasswordDataController =>
+    getDataController(resetPasswordDataController, ResetPasswordDataController);
 
-let getOrganizationDataController = (): OrganizationDataController => createDataController(
-    organizationDataController,
-    (databaseManager: DatabaseManager) => new OrganizationDataController(databaseManager));
+const getOrganizationDataController = (): OrganizationDataController =>
+    getDataController(organizationDataController, OrganizationDataController);
 
 /* #########################     PRIVATE      ########################## */
 
-function createDataController(instance: any, constructorFunc: Function) {
+function getDataController(instance: any, dataController: any) {
     if (!instance) {
-        instance = constructorFunc(DatabaseFactory.getDatabaseManager());
+        instance = new dataController(DatabaseFactory.getDatabaseManager());
     }
     return instance;
 }
