@@ -10,7 +10,7 @@ const app = (): Express => {
     const deviceChecker = require('express-device');
     const app = express();
     app.set("views", path.join(__dirname, "./view"));
-    app.set("view engine", "jade");
+    app.set("view engine", "ejs");
     if (process.env.NODE_ENV == "dev") {
         app.use(logger("dev"));
     }

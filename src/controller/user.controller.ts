@@ -17,7 +17,7 @@ export default class UserController extends BaseController {
     }
 
     public static showRegistrationForm(req: Request, res: Response,) {
-        res.render("newuser", {
+        res.render("newUser", {
             title: "Express", organizations: [
                 {dbName: 'hipteam', name: 'hipteam'}, {dbName: 'other', name: 'other'}]
         });
