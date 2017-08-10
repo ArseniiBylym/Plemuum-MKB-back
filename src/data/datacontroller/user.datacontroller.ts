@@ -91,6 +91,12 @@ export default class UserDataController extends BaseDataController<UserModel> {
         );
     }
 
+    public changeUserPassword(email: string, newPassword: string): Promise<any> {
+        return new Promise((resolve, reject) => UserCollection().findOneAndUpdate({email: email}, {password: newPassword},
+            (err: any, updatedUser: UserModel) => err ? reject(err) : resolve(updatedUser))
+        );
+    }
+
     public static generateToken(days: number) {
         let token = crypto.randomBytes(64).toString('hex');
         let token_expiry = new Date();

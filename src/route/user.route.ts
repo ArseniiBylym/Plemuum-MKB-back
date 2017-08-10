@@ -119,7 +119,7 @@ export default (app: Express, userController: UserController) => {
      * @apiSuccess (Success 200) {String} orgData.pictureUrl URL for the user profile picture
      */
     app.route("/api/user/password")
-        .post(UserController.changePassword.bind(userController));
+        .post(userController.changePassword.bind(userController));
 
     /**
      * @api {POST} /api/profile/setpicture Change the user profile picture

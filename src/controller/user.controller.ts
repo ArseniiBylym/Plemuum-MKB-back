@@ -74,9 +74,22 @@ export default class UserController extends BaseController {
         res.json({msg: "set password"});
     }
 
-    //TODO implement this
-    public static changePassword(req: Request, res: Response,) {
-        res.json({msg: "change password"});
+    public changePassword(req: Request, res: Response,) {
+        if (req.body.newPassword != req.body.passwordAgain) {
+            res.status(400).json({error: "Passwords do not match"})
+        } else {
+            this.userDataController.changeUserPassword(req.body.email, req.body.newPassword)
+                .then((updatedUser: UserModel) => {
+                    if (!updatedUser) {
+                        res.status(404).json({error: "User not found"})
+                    } else {
+                        res.json(updatedUser);
+                    }
+                })
+                .catch((error) => {
+                    res.json({error: error});
+                });
+        }
     }
 
     //TODO implement this
