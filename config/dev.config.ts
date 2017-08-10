@@ -9,7 +9,17 @@ const devConfig: Config = {
     },
     get adminPwd() {
         return 'incline diadem passed hoop'
+    },
+    get plenuumBotEmail() {
+        return "bot@plenuum.com"
+    },
+    get plenuumBotPass() {
+        return "Cocobongo1"
+    },
+    get debugMode() {
+        return true;
     }
 };
 
-export default devConfig 
+export default devConfig
+

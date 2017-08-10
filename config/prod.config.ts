@@ -9,7 +9,19 @@ const prodConfig: Config = {
     },
     get adminPwd() {
         return <string> process.env.ADMIN_PASSWORD
+    },
+    get plenuumBotEmail() {
+        return <string> process.env.PLENUUMBOTEMAIL
+    },
+    get plenuumBotPass() {
+        return <string> process.env.PLENUUMBOTPASS
+    },
+    get debugMode() {
+        return false;
     }
 };
 
-export default prodConfig 
+export default prodConfig
+
+
+

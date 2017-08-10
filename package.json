@@ -71,6 +71,7 @@
     "mongoose": "4.11.4",
     "mongoose-bcrypt": "1.5.0",
     "morgan": "1.8.2",
+    "nodemailer": "4.0.1",
     "passport": "0.3.2",
     "passport-http": "0.3.0",
     "passport-http-bearer": "1.0.1",
