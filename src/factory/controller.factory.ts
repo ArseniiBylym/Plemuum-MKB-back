@@ -12,6 +12,7 @@ import {
     getTagDataController,
     getUserDataController
 } from "./datacontroller.factory";
+import EmailService from "../email/mail.service";
 
 let userController: UserController;
 let feedbackController: FeedbackController;
@@ -24,7 +25,8 @@ let sessionController: SessionController;
 
 const getUserController = (): UserController => getController(userController, UserController,
     getUserDataController(),
-    getResetPasswordDataController());
+    getResetPasswordDataController(),
+    new EmailService());
 
 const getFeedbackController = (): FeedbackController => getController(feedbackController, FeedbackController,
     getFeedbackDataController());

@@ -4,16 +4,20 @@ import { User } from "../data/models/user.model";
 import BaseController from "./base.controller";
 import ResetPasswordDataController from "../data/datacontroller/resetpassword.datacontroller";
 import { UserModel } from "../data/database/schema/user.schema";
+import EmailService from "../email/mail.service";
 
 export default class UserController extends BaseController {
 
     private userDataController: UserDataController;
     private resetPasswordDataController: ResetPasswordDataController;
+    private emailService: EmailService;
 
-    constructor(userDataController: UserDataController, resetPasswordDataController: ResetPasswordDataController) {
+    constructor(userDataController: UserDataController, resetPasswordDataController: ResetPasswordDataController,
+                emailService: EmailService) {
         super();
         this.userDataController = userDataController;
         this.resetPasswordDataController = resetPasswordDataController;
+        this.emailService = emailService;
     }
 
     public static showRegistrationForm(req: Request, res: Response,) {
@@ -42,6 +46,8 @@ export default class UserController extends BaseController {
 
     public resetPassword(req: Request, res: Response, next: Function) {
         let user: UserModel;
+        let resetPasswordToken: any;
+        let response: any;
         return this.userDataController.getUserByEmail(req.body.email)
             .then((u: UserModel) => {
                 user = u;
@@ -52,9 +58,13 @@ export default class UserController extends BaseController {
             .then(resetPassword => {
                 const link = req.header('Origin') + "/set_new_password?token=" + resetPassword.token + "&email="
                     + user.email + (req.query.welcome ? "&welcome=true" : ""); //TODO header is undefined, do not forget to check why
-                //sendResetEmail(user.email, link); //TODO implement email notification
-                res.send({email: user.email, link: link});
-                return resetPassword.token;
+                resetPasswordToken = resetPassword.token;
+                response = {email: user.email, link: link};
+                return this.emailService.sendResetEmail(user.email, link);
+            })
+            .then(() => {
+                res.send(response);
+                return resetPasswordToken;
             })
             .catch(err => res.status(400).send({error: err}));
     }
