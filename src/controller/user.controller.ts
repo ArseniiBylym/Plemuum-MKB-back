@@ -25,9 +25,6 @@ export default class UserController extends BaseController {
         this.resetPasswordDataController = resetPasswordDataController;
         this.emailService = emailService;
         this.fileTransferService = fileTransferService;
-
-        this.form = new formidable.IncomingForm();
-        this.form.keepExtensions = true;
     }
 
     public static showRegistrationForm(req: Request, res: Response,) {
@@ -47,7 +44,6 @@ export default class UserController extends BaseController {
     }
 
     public getOrganizationUsers(req: any, res: Response,) {
-        console.log(req.session);
         this.callController(this.userDataController.getOrganizationUsers(req.params.orgId), res, 200, 400);
     }
 
@@ -98,12 +94,13 @@ export default class UserController extends BaseController {
         }
     }
 
-
     public setPicture(req: any, res: Response,) {
+        this.form = new formidable.IncomingForm();
+        this.form.keepExtensions = true;
         this.form.parse(req, (parseError: any, fields: any, files: any) => {
             if (!parseError) {
-                this.fileTransferService.sendFile(files.avatar, testUser._id) // TODO get real user id
-                    .then((pictureUrl) => this.userDataController.setUserPic(testUser._id, pictureUrl))
+                this.fileTransferService.sendFile(files.avatar, req.user._id)
+                    .then((pictureUrl) => this.userDataController.setUserPic(req.user._id, pictureUrl))
                     .then((result) => res.send(result))
                     .catch((err) => res.status(500).send({error: err}));
             } else {

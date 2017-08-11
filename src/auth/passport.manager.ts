@@ -1,16 +1,16 @@
 import * as passport from 'passport';
-import { Express, Handler, Request } from 'express';
+import { Handler, Request } from 'express';
 import * as localStrategy from 'passport-local';
 import * as bearerStrategy from 'passport-http-bearer';
 import * as basicStrategy from 'passport-http'
 import * as DataControllerFactory from '../factory/datacontroller.factory';
 import UserDataController from "../data/datacontroller/user.datacontroller";
-import { UserModel } from "../data/database/schema/user.schema";
+import { UserCollection, UserModel } from "../data/database/schema/user.schema";
 import config from "../../config/config";
 
 const userDataController: UserDataController = DataControllerFactory.getUserDataController();
 
-function passportInit(): Handler {
+function passportInit() {
 
     /* LOCAL STRATEGY USING EMAIL + PASSWORD */
     passport.use(new localStrategy.Strategy({
@@ -28,7 +28,15 @@ function passportInit(): Handler {
 
     passport.use(new basicStrategy.BasicStrategy(basicAuth));
 
-    return passport.initialize();
+    passport.serializeUser((user: UserModel, done: Function) => {
+        done(null, user._id);
+    });
+
+    passport.deserializeUser((id: string, done: Function) => {
+        UserCollection().findById(id, (err, user) => {
+            done(err, user)
+        });
+    });
 }
 
 function localAuth(email: string, password: string, done: Function): void {

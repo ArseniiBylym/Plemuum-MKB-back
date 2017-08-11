@@ -25,9 +25,13 @@ export default class FileTransferService {
             destination: `plenuum/userPictures/${userId.valueOf()}`,
             public: true
         };
+        let uploadedFile: any;
         return bucket.upload(picture.path, bucketOptions)
-            .then((file: any[]) => fs.unlink(picture.path)
-                .then(() => config.firebaseConfig.baseUrl.concat(file[0].name))
+            .then((file: any[]) => {
+                    uploadedFile = file[0];
+                    return fs.unlink(picture.path);
+                }
             )
+            .then(() => config.firebaseConfig.baseUrl.concat(uploadedFile.name))
     }
 }
