@@ -18,6 +18,14 @@ const prodConfig: Config = {
     },
     get debugMode() {
         return false;
+    },
+    get firebaseConfig() {
+        return {
+            projectId: 'plenuum',
+            keyFileName: 'Plenuum-8eba73778480.json',
+            bucketName: 'plenuum.appspot.com',
+            baseUrl: 'http://storage.googleapis.com/plenuum.appspot.com/'
+        };
     }
 };
 

@@ -1,3 +1,5 @@
+import FirebaseConfig from "./firebase.config";
+
 export interface Config {
     port: string;
     mongoUrl: string;
@@ -5,4 +7,5 @@ export interface Config {
     plenuumBotEmail: string;
     plenuumBotPass: string;
     debugMode: boolean;
+    firebaseConfig: FirebaseConfig;
 }

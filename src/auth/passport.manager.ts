@@ -1,5 +1,5 @@
 import * as passport from 'passport';
-import { Handler, Request } from 'express';
+import { Express, Handler, Request } from 'express';
 import * as localStrategy from 'passport-local';
 import * as bearerStrategy from 'passport-http-bearer';
 import * as basicStrategy from 'passport-http'

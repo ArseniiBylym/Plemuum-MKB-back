@@ -13,6 +13,7 @@ import {
     getUserDataController
 } from "./datacontroller.factory";
 import EmailService from "../email/mail.service";
+import FileTransferService from "../files/filetransfer.service";
 
 let userController: UserController;
 let feedbackController: FeedbackController;
@@ -26,7 +27,8 @@ let sessionController: SessionController;
 const getUserController = (): UserController => getController(userController, UserController,
     getUserDataController(),
     getResetPasswordDataController(),
-    new EmailService());
+    new EmailService(),
+    new FileTransferService());
 
 const getFeedbackController = (): FeedbackController => getController(feedbackController, FeedbackController,
     getFeedbackDataController());

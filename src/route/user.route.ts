@@ -141,5 +141,7 @@ export default (app: Express, userController: UserController) => {
      * @apiSuccess (Success 200) {String} orgData.pictureUrl URL for the user profile picture
      */
     app.route("/api/profile/setpicture")
-        .post(passport.authenticate('bearer', {session: false}), UserController.setPicture.bind(userController));
+       // .post(passport.authenticate('bearer', {session: false}), UserController.setPicture.bind(userController));
+        .get(userController.showPictureUploadPage.bind(userController))
+        .post(passport.authenticate('bearer', {session: false}), userController.setPicture.bind(userController));
 }

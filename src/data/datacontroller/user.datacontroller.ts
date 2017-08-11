@@ -104,4 +104,12 @@ export default class UserDataController extends BaseDataController<UserModel> {
         token_expiry.setDate(token_expiry.getDate() + days.valueOf());
         return {token, token_expiry}
     }
+
+    public setUserPic(userId: string, pictureUrl: string): Promise<UserModel> {
+        return new Promise((resolve, reject) => {
+            UserCollection().findByIdAndUpdate(userId, {pictureUrl: pictureUrl},
+                {"new": true, "select": "_is firstName lastName email orgData"}).lean().exec(
+                (err: Error, user: UserModel) => err ? reject(err) : resolve(user));
+        });
+    };
 }

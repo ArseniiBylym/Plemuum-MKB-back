@@ -1,4 +1,5 @@
-import * as express from 'express'
+import * as express from 'express';
+import * as passport from 'passport';
 import { Express } from 'express'
 import Routes from './route/routes';
 import * as bodyParser from "body-parser";
@@ -18,6 +19,8 @@ const app = (): Express => {
     app.use(bodyParser.urlencoded({extended: true}));
     app.use(deviceChecker.capture());
     app.use(passportInit());
+    app.use(passport.session());
+
     Routes(app);
 
     return app;

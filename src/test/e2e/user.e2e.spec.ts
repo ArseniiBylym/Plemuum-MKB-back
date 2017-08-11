@@ -65,7 +65,6 @@ suite("User request tests", () => {
                     request(app)
                         .get(url)
                         .set(bearerAuthHeader(token))
-                        .query({email: 'sheryl.grant@example.com', password: 'asd1234'})
                         .expect(200)
                         .then(response => {
                             expect(response.body).to.be.an.instanceOf(Array);
@@ -134,7 +133,7 @@ suite("User request tests", () => {
     });
 
     // TODO Finish this
-    suite('Change user picture', () => {
+    suite.skip('Change user picture', () => {
         const url = `/api/profile/setpicture`;
 
         test('Should return 200', done => {

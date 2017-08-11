@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload file (TEST)</title>
+</head>
+<body>
+<form action="/api/profile/setpicture" enctype="multipart/form-data" method="post">
+
+    <label for="fileField">File upload</label><br>
+    <input type="file" required accept="image/*" id="fileField" name="avatar"><br>
+
+    <button type="submit">Upload</button>
+</form>
+</body>
+</html>

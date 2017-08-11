@@ -5,19 +5,29 @@ import BaseController from "./base.controller";
 import ResetPasswordDataController from "../data/datacontroller/resetpassword.datacontroller";
 import { UserModel } from "../data/database/schema/user.schema";
 import EmailService from "../email/mail.service";
+import FileTransfer from "../files/filetransfer.service";
+import { testUser } from "../test/mock/fixture.loader";
+
+const formidable = require('formidable');
 
 export default class UserController extends BaseController {
 
     private userDataController: UserDataController;
     private resetPasswordDataController: ResetPasswordDataController;
     private emailService: EmailService;
+    private fileTransferService: FileTransfer;
+    private form: any;
 
     constructor(userDataController: UserDataController, resetPasswordDataController: ResetPasswordDataController,
-                emailService: EmailService) {
+                emailService: EmailService, fileTransferService: FileTransfer) {
         super();
         this.userDataController = userDataController;
         this.resetPasswordDataController = resetPasswordDataController;
         this.emailService = emailService;
+        this.fileTransferService = fileTransferService;
+
+        this.form = new formidable.IncomingForm();
+        this.form.keepExtensions = true;
     }
 
     public static showRegistrationForm(req: Request, res: Response,) {
@@ -36,7 +46,8 @@ export default class UserController extends BaseController {
         }
     }
 
-    public getOrganizationUsers(req: Request, res: Response,) {
+    public getOrganizationUsers(req: any, res: Response,) {
+        console.log(req.session);
         this.callController(this.userDataController.getOrganizationUsers(req.params.orgId), res, 200, 400);
     }
 
@@ -79,21 +90,29 @@ export default class UserController extends BaseController {
             res.status(400).json({error: "Passwords do not match"})
         } else {
             this.userDataController.changeUserPassword(req.body.email, req.body.newPassword)
-                .then((updatedUser: UserModel) => {
-                    if (!updatedUser) {
-                        res.status(404).json({error: "User not found"})
-                    } else {
-                        res.json(updatedUser);
-                    }
-                })
-                .catch((error) => {
-                    res.json({error: error});
-                });
+                .then((updatedUser: UserModel) => res
+                    .status(!updatedUser ? 404 : 200)
+                    .send(!updatedUser ? {error: "User not found"} : updatedUser)
+                )
+                .catch((error) => res.json({error: error}));
         }
     }
 
-    //TODO implement this
-    public static setPicture(req: Request, res: Response,) {
-        res.json({msg: "set picture"});
+
+    public setPicture(req: any, res: Response,) {
+        this.form.parse(req, (parseError: any, fields: any, files: any) => {
+            if (!parseError) {
+                this.fileTransferService.sendFile(files.avatar, testUser._id) // TODO get real user id
+                    .then((pictureUrl) => this.userDataController.setUserPic(testUser._id, pictureUrl))
+                    .then((result) => res.send(result))
+                    .catch((err) => res.status(500).send({error: err}));
+            } else {
+                res.status(400).send({error: "Profile picture could not be set"});
+            }
+        });
+    }
+
+    public showPictureUploadPage(req: Request, res: Response,) {
+        res.render("fileUploadTest", {});
     }
 }
