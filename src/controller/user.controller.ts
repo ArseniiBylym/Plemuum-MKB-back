@@ -6,7 +6,6 @@ import ResetPasswordDataController from "../data/datacontroller/resetpassword.da
 import { UserModel } from "../data/database/schema/user.schema";
 import EmailService from "../email/mail.service";
 import FileTransfer from "../files/filetransfer.service";
-import { testUser } from "../test/mock/fixture.loader";
 
 const formidable = require('formidable');
 
