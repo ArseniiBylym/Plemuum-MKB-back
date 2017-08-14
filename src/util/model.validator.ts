@@ -5,7 +5,7 @@ function validateUser(user: any) {
     expect(user).have.property('firstName');
     expect(user).have.property('lastName');
     expect(user).have.property('email');
-    expect(user).have.property('tokens');
+    expect(user).not.have.property('token');
     expect(user).have.property('pictureUrl');
     expect(user).have.property('orgIds');
     expect(user).not.have.property('password');

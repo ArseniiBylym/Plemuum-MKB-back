@@ -44,9 +44,7 @@ export default class UserDataController extends BaseDataController<UserModel> {
     }
 
     public getUserByToken(token: string): Promise<any> {
-        return new Promise((resolve, reject) => {
-            UserCollection().findOne({'tokens.token': token}, (error: Error, user) => error ? reject(error) : resolve(user))
-        });
+        return UserCollection().findOne({'token.token': token}).lean().exec();
     }
 
     public getUserByEmail(email: string): Promise<User> {
@@ -56,25 +54,16 @@ export default class UserDataController extends BaseDataController<UserModel> {
         });
     }
 
-    public getCurrentToken(user: UserModel, token: string): any {
-        return user.tokens.find((element) => {
-            return element.token === token;
-        });
-    }
-
-    public static updateUserToken(userId: string, tokenObj: TokenObject, userAgent: string) {
+    public static updateUserToken(userId: string, tokenObj: TokenObject) {
         const query = {
-            $push: {
-                tokens: {
-                    userId: userId,
-                    token: tokenObj.token,
-                    token_expiry: tokenObj.tokenExpiry,
-                    issued_at: new Date(),
-                    client_type: userAgent
-                }
+            token: {
+                userId: userId,
+                token: tokenObj.token,
+                token_expiry: tokenObj.tokenExpiry,
+                issued_at: new Date(),
             }
         };
-        return UserCollection().findByIdAndUpdate(userId, query, {"new": true}).exec();
+        return UserCollection().findByIdAndUpdate(userId, query, {"new": true}).lean().exec();
     }
 
     public changeTokens(userId: string, tokens: any) {

@@ -11,7 +11,7 @@ export interface User {
     lastName: string;
     email: string;
     password: string;
-    tokens: Token[];
+    token: Token;
     pictureUrl: string;
     orgIds: string[]
 }

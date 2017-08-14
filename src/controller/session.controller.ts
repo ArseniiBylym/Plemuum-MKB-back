@@ -21,11 +21,10 @@ export default class SessionController extends BaseController {
             .then((userToLog: User) =>
                 UserDataController.updateUserToken(
                     req.user._id,
-                    tokenObj,
-                    req.header('User-Agent')
+                    tokenObj
                 ))
             .then((updatedUser: UserModel) => {
-                const currentToken: any = updatedUser.tokens.find((token) => token.token === tokenObj.token);
+                const currentToken: any = updatedUser.token;
                 res.send({
                     _id: updatedUser._id,
                     token: currentToken.token,
@@ -43,18 +42,10 @@ export default class SessionController extends BaseController {
         const authHeader = req.get('authorization');
         if (authHeader) {
             const token = authHeader.replace('bearer ', '');
-            const tokens = req.user.tokens;
             const pastDate = new Date();
             pastDate.setDate(pastDate.getDate() - 30);
-            const currentTokenIndex = tokens.findIndex((element: any) => {
-                return element.token === token;
-            });
-            tokens[currentTokenIndex] = {
-                ...tokens[currentTokenIndex],
-                token_expiry: pastDate
-            };
 
-            this.userDataController.changeTokens(req.user._id, tokens)
+            this.userDataController.changeTokens(req.user._id, req.user.token)
                 .then(result =>
                     res.send(result
                         ? {message: "User Logged out successfully!"}

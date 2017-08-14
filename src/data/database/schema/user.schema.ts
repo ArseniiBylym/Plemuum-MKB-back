@@ -10,7 +10,6 @@ const TokenSchema = new Schema({
     userId: {required: true, type: String},
     token: {required: true, type: String},
     token_expiry: {required: true, type: Date},
-    client_type: {required: true, type: String},
     issued_at: {required: true, type: Date}
 }, {_id: false, collection: TOKEN_COLLECTION});
 
@@ -21,7 +20,7 @@ let UserSchema = new Schema({
     orgIds: [String],
     password: {required: true, type: String},
     pictureUrl: {required: false, type: String},
-    tokens: [TokenSchema],
+    token: TokenSchema,
 
 }, {versionKey: false, collection: USER_COLLECTION});
 

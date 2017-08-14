@@ -57,7 +57,7 @@ function bearerTokenAuth(req: Request, token: any, done: Function) {
             if (!user) {
                 return done(null, false);
             }
-            const currentToken = userDataController.getCurrentToken(user, token);
+            const currentToken = user.token;
             if (!currentToken.token_expiry) {
                 return done(null, false);
             }
