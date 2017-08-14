@@ -142,6 +142,6 @@ export default (app: Express, userController: UserController) => {
      */
     app.route("/api/profile/setpicture")
        // .post(passport.authenticate('bearer', {session: false}), UserController.setPicture.bind(userController));
-        .get(userController.showPictureUploadPage.bind(userController))
+        .get(UserController.showPictureUploadPage.bind(userController))
         .post(passport.authenticate('bearer', {session: false}), userController.setPicture.bind(userController));
 }

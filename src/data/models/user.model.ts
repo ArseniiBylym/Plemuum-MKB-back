@@ -2,7 +2,6 @@ export interface Token {
   userId: string;
   token: string;
   token_expiry: Date;
-  client_type: string;
   issued_at: Date;
 }
 

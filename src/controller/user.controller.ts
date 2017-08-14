@@ -33,6 +33,10 @@ export default class UserController extends BaseController {
         });
     }
 
+    public static showPictureUploadPage(req: Request, res: Response,) {
+        res.render("fileUploadTest", {});
+    }
+
     public createNewUser(req: Request, res: Response,) {
         const user: User = req.body;
         if (user) {
@@ -106,9 +110,5 @@ export default class UserController extends BaseController {
                 res.status(400).send({error: "Profile picture could not be set"});
             }
         });
-    }
-
-    public showPictureUploadPage(req: Request, res: Response,) {
-        res.render("fileUploadTest", {});
     }
 }
