@@ -5,7 +5,7 @@ import UserDataController from "../../data/datacontroller/user.datacontroller";
 import UserController from "../../controller/user.controller";
 import * as TestObjectFactory from "../../util/testobject.factory"
 import * as modelValidator from "../../util/model.validator"
-import { authenticate, fixtureLoader, testUser } from "../mock/fixture.loader"
+import { authenticate, fixtureLoader, resetPassword, testUser } from "../mock/fixture.loader"
 import { getDatabaseManager } from "../../factory/database.factory";
 import config from "../../../config/config";
 import { basicAuthHeader, bearerAuthHeader } from "../header.helper";
@@ -110,9 +110,17 @@ suite("User request tests", () => {
         const url = `/api/setPassword`;
 
         test('Should send mail properly, return 200', done => {
-            request(app)
-                .post(url)
-                .expect(200, done);
+            resetPassword(testUser.email)
+                .then(token => {
+                    request(app)
+                        .post(url)
+                        .send({token: token, newPassword: "newPass"})
+                        .expect(200)
+                        .then((response) => {
+                            expect(response.body).to.haveOwnProperty("successMessage");
+                            done();
+                        });
+                });
         });
     });
 
@@ -126,13 +134,11 @@ suite("User request tests", () => {
                     email: testUser.email,
                     password: testUser.password,
                     newPassword: "321dsa",
-                    passwordAgain: "321dsa"
                 })
                 .expect(200, done);
         });
     });
 
-    // TODO Finish this
     suite.skip('Change user picture', () => {
         const url = `/api/profile/setpicture`;
 

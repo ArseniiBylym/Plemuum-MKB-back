@@ -15,4 +15,14 @@ function generateNewTokenObject(): TokenObject {
     }
 }
 
-export { generateNewTokenObject, TokenObject }
+function generateNewTokensForResetPassword() {
+    const tokenExpiry = new Date();
+    const tokenExpired = new Date();
+
+    tokenExpiry.setMinutes(tokenExpiry.getMinutes() + 60);
+    tokenExpired.setDate(tokenExpired.getDate() - 1);
+
+    return {tokenExpiry, tokenExpired}
+}
+
+export { generateNewTokenObject, generateNewTokensForResetPassword,  TokenObject }

@@ -6,6 +6,7 @@ import ResetPasswordDataController from "../data/datacontroller/resetpassword.da
 import { UserModel } from "../data/database/schema/user.schema";
 import EmailService from "../email/mail.service";
 import FileTransfer from "../files/filetransfer.service";
+import { generateNewTokensForResetPassword } from "../auth/token.manager";
 
 const formidable = require('formidable');
 
@@ -79,22 +80,47 @@ export default class UserController extends BaseController {
             .catch(err => res.status(400).send({error: err}));
     }
 
-    //TODO implement this
-    public static setPassword(req: Request, res: Response,) {
-        res.json({msg: "set password"});
+    public setPassword(req: Request, res: Response,) {
+        const data = req.body;
+        const token = data.token;
+
+        this.resetPasswordDataController.getResetPasswordByToken(token)
+            .then((resetedPassword: any) => {
+                return new Promise((resolve, reject) => {
+                    if (resetedPassword.token_expiry <= new Date()) {
+                        reject("Token expired");
+                        return;
+                    }
+                    const {tokenExpiry, tokenExpired} = generateNewTokensForResetPassword();
+                    this.resetPasswordDataController.updateResetPassword(resetedPassword._id, tokenExpired)
+                        .then((result) => resolve(result))
+                        .catch((err) => reject("Something went wrong, it was not possible to change your " +
+                            "password. Please start the process again!"))
+                });
+            })
+            .then((resetedPassword: any) =>
+                this.userDataController.changeUserPasswordByUserId(resetedPassword.userId, data.newPassword))
+            .then((updatedUser) => {
+                if (!updatedUser) {
+                    res.status(404).json({error: "User not found"});
+                } else {
+                    res.json({
+                        successMessage: "Your password was successfully changed. You can now go to Plenuum " +
+                        "web app and log with new password"
+                    });
+                }
+            })
+            .catch((err: any) => res.json({error: err}));
     }
 
     public changePassword(req: Request, res: Response,) {
-        if (req.body.newPassword != req.body.passwordAgain) {
-            res.status(400).json({error: "Passwords do not match"})
-        } else {
-            this.userDataController.changeUserPassword(req.body.email, req.body.newPassword)
-                .then((updatedUser: UserModel) => res
-                    .status(!updatedUser ? 404 : 200)
-                    .send(!updatedUser ? {error: "User not found"} : updatedUser)
-                )
-                .catch((error) => res.json({error: error}));
-        }
+        this.userDataController.changeUserPassword(req.body.email, req.body.newPassword)
+            .then((updatedUser: UserModel) => res
+                .status(!updatedUser ? 404 : 200)
+                .send(!updatedUser ? {error: "User not found"} : updatedUser)
+            )
+            .catch((error) => res.json({error: error}));
+
     }
 
     public setPicture(req: any, res: Response,) {

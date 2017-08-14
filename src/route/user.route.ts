@@ -86,15 +86,14 @@ export default (app: Express, userController: UserController) => {
      * @api {POST} /api/setPassword Set new password to user
      * @apiName setPassword
      * @apiGroup User
-     * @apiDescription Set the new password chosen by user to its account and generates a new token.
+     * @apiDescription Set the new password chosen by user to its account.
      *
      * @apiParam {String} token The new token for reset password
      * @apiParam {String} newPassword The new password for the user account
-     * @apiParam {String} passwordAgain The confirmation of password
      */
 
     app.route("/api/setPassword")
-        .post(UserController.setPassword.bind(userController));
+        .post(userController.setPassword.bind(userController));
 
     /**
      * @api {POST} /api/user/password Change user password
@@ -107,7 +106,6 @@ export default (app: Express, userController: UserController) => {
      * @apiParam {String} email User's email
      * @apiParam {String} password User's password
      * @apiParam {String} newPassword The new desired password
-     * @apiParam {String} passwordAgain THe confirmation of user new desired password
      *
      * @apiSuccess (Success 200) {String} _id User id
      * @apiSuccess (Success 200) {String} firstName First name of user

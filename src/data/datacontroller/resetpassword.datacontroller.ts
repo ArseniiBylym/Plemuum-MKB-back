@@ -16,4 +16,13 @@ export default class ResetPasswordDataController extends BaseDataController<Rese
         });
     }
 
+    public getResetPasswordByToken(token: string): Promise<any> {
+        return ResetPasswordCollection().findOne({token: token}).lean().exec();
+    }
+
+    public updateResetPassword(id: string, tokenExpired: Date, ): Promise<any> {
+        return ResetPasswordCollection().findByIdAndUpdate(id, {$set: {reseted: true, token_expiry: tokenExpired}},
+            {"new": true}).lean().exec();
+    }
+
 }
