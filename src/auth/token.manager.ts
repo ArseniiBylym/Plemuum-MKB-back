@@ -8,8 +8,7 @@ interface TokenObject {
 function generateNewTokenObject(): TokenObject {
     const token = crypto.randomBytes(64).toString('hex');
     const tokenExpiry = new Date();
-    tokenExpiry.setDate(tokenExpiry.getDate() + Number(7));
-
+    tokenExpiry.setDate(tokenExpiry.getDate() + 7);
     return {
         token: token,
         tokenExpiry: tokenExpiry

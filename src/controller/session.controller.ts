@@ -16,13 +16,18 @@ export default class SessionController extends BaseController {
     }
 
     public login(req: any, res: Response, next: Function): Promise<string> {
-        const tokenObj: TokenObject = tokenManager.generateNewTokenObject();
+        let tokenObj: TokenObject = tokenManager.generateNewTokenObject();
         return UserDataController.getUserByIdWithoutOrgId(req.user._id)
-            .then((userToLog: User) =>
-                UserDataController.updateUserToken(
-                    req.user._id,
-                    tokenObj
-                ))
+            .then((user: User) => {
+                const now = new Date();
+                if (user && user.token && user.token.token_expiry > now) {
+                    tokenObj = {
+                        token: user.token.token,
+                        tokenExpiry: tokenObj.tokenExpiry
+                    };
+                }
+                return UserDataController.updateUserToken(req.user._id, tokenObj)
+            })
             .then((updatedUser: UserModel) => {
                 const currentToken: any = updatedUser.token;
                 res.send({
