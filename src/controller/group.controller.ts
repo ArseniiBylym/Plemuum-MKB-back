@@ -20,4 +20,9 @@ export default class GroupController {
             .catch((err) => res.status(400).send({error: err}));
     }
 
+    public getUserGroups(req: any, res: any, next: Function) {
+        this.groupDataController.getUserGroups(req.params.orgId, req.params.userId)
+            .then((groups) => res.status(200).send(groups))
+            .catch((err) => res.status(400).send({error: err}));
+    }
 }

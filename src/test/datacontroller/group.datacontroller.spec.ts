@@ -2,13 +2,12 @@ import GroupDataController from "../../data/datacontroller/group.datacontroller"
 import { getDatabaseManager } from "../../factory/database.factory";
 import { getTestGroup } from "../../util/testobject.factory";
 import { GroupCollection } from "../../data/database/schema/group.schema";
-import { fixtureLoader } from "../mock/fixture.loader";
+import { fixtureLoader, testUser } from "../mock/fixture.loader";
 import config from "../../../config/config";
 import { expect, should } from 'chai';
 import { validateGroup } from "../../util/model.validator";
-import { verify } from "ts-mockito";
 
-suite("Group datacontroller", () => {
+suite.only("Group datacontroller", () => {
 
     before((done) => {
         getDatabaseManager().openConnection(config.mongoUrl)
@@ -51,6 +50,21 @@ suite("Group datacontroller", () => {
                     should().exist(group);
                     validateGroup(group);
                     expect(group._id.toString()).to.be.equal(groupID);
+                    done();
+                })
+        })
+    });
+
+    suite("Get all groups a user participates in", () => {
+        test("Should get an array of group objects", done => {
+            const orgID = "hipteam";
+            groupDataController.getUserGroups(orgID, testUser._id)
+                .then((groups) => {
+                    should().exist(groups);
+                    expect(groups).length(3);
+                    groups.forEach((group: any) => {
+                        validateGroup(group);
+                    });
                     done();
                 })
         })

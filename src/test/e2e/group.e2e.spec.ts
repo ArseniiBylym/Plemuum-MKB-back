@@ -7,10 +7,9 @@ import { basicAuthHeader, bearerAuthHeader } from "../header.helper";
 import { fail } from "assert";
 import { validateGroup } from "../../util/model.validator";
 import { getTestGroup } from "../../util/testobject.factory";
-import { should, expect } from 'chai';
+import { expect, should } from 'chai';
 
-
-suite("Group request test", () => {
+suite.only("Group request test", () => {
 
     before((done) => {
         getDatabaseManager().openConnection(config.mongoUrl)
@@ -54,7 +53,7 @@ suite("Group request test", () => {
         authenticate(testUser)
             .then((token) => {
                 request(app)
-                    .post(url)
+                    .get(url)
                     .send(getTestGroup())
                     .set(bearerAuthHeader(token))
                     .expect(200)
@@ -62,6 +61,31 @@ suite("Group request test", () => {
                         should().exist(response.body);
                         validateGroup(response.body);
                         expect(response.body._id.toString()).to.be.equal(groupID);
+                        done();
+                    })
+                    .catch((err) => {
+                        fail(err);
+                        done();
+                    });
+            })
+    });
+
+    test("Should be able to get all groups a user participates in", done => {
+
+        const userID = "5984342227cd340363dc84af";
+        const url = `/api/${orgId}/groups/user/${userID}`;
+
+        authenticate(testUser)
+            .then((token) => {
+                request(app)
+                    .get(url)
+                    .send(getTestGroup())
+                    .set(bearerAuthHeader(token))
+                    .expect(200)
+                    .then(response => {
+                        should().exist(response.body);
+                        expect(response.body).to.be.an.instanceof(Array);
+                        response.body.forEach((group: any) => validateGroup(group));
                         done();
                     })
                     .catch((err) => {

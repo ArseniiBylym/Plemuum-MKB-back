@@ -31,5 +31,8 @@ export default (app: Express, groupController: GroupController) => {
 
 
     app.route('/api/:orgId/groups/:groupId')
-        .post(passport.authenticate('bearer', {session: false}), groupController.getGroupById.bind(groupController));
+        .get(passport.authenticate('bearer', {session: false}), groupController.getGroupById.bind(groupController));
+
+    app.route('/api/:orgId/groups/user/:userId')
+        .get(passport.authenticate('bearer', {session: false}), groupController.getUserGroups.bind(groupController));
 }

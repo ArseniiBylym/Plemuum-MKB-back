@@ -17,4 +17,8 @@ export default class GroupDataController extends BaseDataController<GroupModel> 
         return GroupCollection(orgId).findById(groupId).lean().exec();
     }
 
+    public getUserGroups(orgId: string, userId: string): Promise<any> {
+        return GroupCollection(orgId).find({users: {$in: [userId]}}).lean().exec();
+    }
+
 }
