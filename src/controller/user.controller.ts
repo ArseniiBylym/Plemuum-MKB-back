@@ -37,6 +37,9 @@ export default class UserController extends BaseController {
     public static showPictureUploadPage(req: Request, res: Response,) {
         res.render("fileUploadTest", {});
     }
+    public static showSetPasswordForm(req: Request, res: Response,) {
+        res.render("setPassword", {token: "toke"});
+    }
 
     public createNewUser(req: Request, res: Response,) {
         const user: User = req.body;
@@ -63,12 +66,12 @@ export default class UserController extends BaseController {
             .then((u: UserModel) => {
                 user = u;
                 const {token, token_expiry} = UserDataController.generateToken(1);
-                const data = {userId: String(user["_id"]), token: token, token_expiry: token_expiry, reseted: false};
+                const data = {userId: String(user._id), token: token, token_expiry: token_expiry, reseted: false};
                 return this.resetPasswordDataController.saveResetPassword(data)
             })
             .then(resetPassword => {
                 const link = req.header('Origin') + "/set_new_password?token=" + resetPassword.token + "&email="
-                    + user.email + (req.query.welcome ? "&welcome=true" : ""); //TODO header is undefined, do not forget to check why
+                    + user.email + (req.query.welcome ? "&welcome=true" : "");
                 resetPasswordToken = resetPassword.token;
                 response = {email: user.email, link: link};
                 return this.emailService.sendResetEmail(user.email, link);
@@ -77,7 +80,7 @@ export default class UserController extends BaseController {
                 res.send(response);
                 return resetPasswordToken;
             })
-            .catch(err => res.status(400).send({error: err}));
+            .catch(err => res.send({error: err}));
     }
 
     public setPassword(req: Request, res: Response,) {

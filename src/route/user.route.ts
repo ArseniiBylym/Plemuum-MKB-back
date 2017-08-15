@@ -86,14 +86,15 @@ export default (app: Express, userController: UserController) => {
      * @api {POST} /api/setPassword Set new password to user
      * @apiName setPassword
      * @apiGroup User
-     * @apiDescription Set the new password chosen by user to its account.
+     * @apiDescription Set the new password chosen by user to its account and generates a new token.
      *
      * @apiParam {String} token The new token for reset password
      * @apiParam {String} newPassword The new password for the user account
      */
 
     app.route("/api/setPassword")
-        .post(userController.setPassword.bind(userController));
+        .post(userController.setPassword.bind(userController))
+        .get(UserController.showSetPasswordForm.bind(userController));
 
     /**
      * @api {POST} /api/user/password Change user password
@@ -139,7 +140,6 @@ export default (app: Express, userController: UserController) => {
      * @apiSuccess (Success 200) {String} orgData.pictureUrl URL for the user profile picture
      */
     app.route("/api/profile/setpicture")
-       // .post(passport.authenticate('bearer', {session: false}), UserController.setPicture.bind(userController));
         .get(UserController.showPictureUploadPage.bind(userController))
         .post(passport.authenticate('bearer', {session: false}), userController.setPicture.bind(userController));
 }

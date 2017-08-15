@@ -2,12 +2,11 @@ import { User } from "../data/models/user.model";
 import * as Util from "./util";
 import { default as Feedback } from "../data/models/feedback.model";
 
-function getTestUser(firstName: string, lastName: string): User {
+function getTestUser(firstName: string, lastName: string): any {
     return {
         firstName: firstName,
         lastName: lastName,
         email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}${Util.getRandomInt(1, 1000)}@email.com`,
-        tokens: [],
         pictureUrl: "",
         orgIds: ['hipteam', 'other'],
         password: "asd123"
@@ -24,12 +23,11 @@ function getRegisterTestUser(firstName: string, lastName: string) {
     };
 }
 
-function getTestUserWithOrganizations(firstName: string, lastName: string, organizationIds: string[]): User {
+function getTestUserWithOrganizations(firstName: string, lastName: string, organizationIds: string[]): any {
     return {
         firstName: firstName,
         lastName: lastName,
         email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}${Util.getRandomInt(1, 1000)}@email.com`,
-        tokens: [],
         pictureUrl: "",
         orgIds: organizationIds,
         password: "asd123"

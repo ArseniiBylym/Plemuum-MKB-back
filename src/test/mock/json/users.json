@@ -12,6 +12,18 @@
     ]
   },
   {
+    "firstName": "peter",
+    "lastName": "szabo",
+    "email": "peter.szabo@hipteam.io",
+    "password": "asd1234",
+    "pictureUrl": "",
+    "_id": "5984342227cd340363dc84c7",
+    "tokens": [],
+    "orgIds": [
+      "hipteam"
+    ]
+  },
+  {
     "firstName": "bill",
     "lastName": "cox",
     "email": "bill.cox@example.com",

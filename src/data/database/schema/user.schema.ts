@@ -20,7 +20,7 @@ let UserSchema = new Schema({
     orgIds: [String],
     password: {required: true, type: String},
     pictureUrl: {required: false, type: String},
-    token: TokenSchema,
+    token: {required: false, type: TokenSchema},
 
 }, {versionKey: false, collection: USER_COLLECTION});
 

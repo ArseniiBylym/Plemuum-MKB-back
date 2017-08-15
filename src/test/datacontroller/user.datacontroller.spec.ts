@@ -54,7 +54,7 @@ suite("UserDataController tests", () => {
             userDataController.getOrganizationUsers("hipteam")
                 .then(users => {
                     expect(users).to.be.an.instanceOf(Array);
-                    assert.lengthOf(users, 32);
+                    assert.lengthOf(users, 33);
                     done();
                 })
                 .catch(reason => {
