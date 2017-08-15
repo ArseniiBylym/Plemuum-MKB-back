@@ -7,7 +7,7 @@ import config from "../../../config/config";
 import { expect, should } from 'chai';
 import { validateGroup } from "../../util/model.validator";
 
-suite.only("Group datacontroller", () => {
+suite("Group datacontroller", () => {
 
     before((done) => {
         getDatabaseManager().openConnection(config.mongoUrl)

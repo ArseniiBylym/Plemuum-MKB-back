@@ -9,7 +9,7 @@ import { validateGroup } from "../../util/model.validator";
 import { getTestGroup } from "../../util/testobject.factory";
 import { expect, should } from 'chai';
 
-suite.only("Group request test", () => {
+suite("Group request test", () => {
 
     before((done) => {
         getDatabaseManager().openConnection(config.mongoUrl)

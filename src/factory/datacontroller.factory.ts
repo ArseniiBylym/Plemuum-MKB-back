@@ -1,5 +1,4 @@
 import FeedbackDataController from "../data/datacontroller/feedback.datacontroller";
-import UserDataController from "../data/datacontroller/user.datacontroller";
 import * as DatabaseFactory from './database.factory';
 import RequestDataController from "../data/datacontroller/request.datacontroller";
 import TagDataController from "../data/datacontroller/tag.datacontroller";
@@ -8,7 +7,6 @@ import OrganizationDataController from "../data/datacontroller/organization.data
 import GroupDataController from "../data/datacontroller/group.datacontroller";
 
 let feedbackDataControllerInstance: FeedbackDataController;
-let userDataControllerInstance: UserDataController;
 let requestDataController: RequestDataController;
 let tagDataController: TagDataController;
 let resetPasswordDataController: ResetPasswordDataController;
@@ -19,9 +17,6 @@ let groupDataController: GroupDataController;
 
 const getFeedbackDataController = (): FeedbackDataController =>
     getDataController(feedbackDataControllerInstance, FeedbackDataController);
-
-const getUserDataController = (): UserDataController =>
-    getDataController(userDataControllerInstance, UserDataController);
 
 const getRequestDataController = (): RequestDataController =>
     getDataController(requestDataController, RequestDataController);
@@ -49,7 +44,6 @@ function getDataController(instance: any, dataController: any) {
 
 export {
     getFeedbackDataController,
-    getUserDataController,
     getRequestDataController,
     getTagDataController,
     getResetPasswordDataController,

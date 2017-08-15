@@ -1,28 +1,13 @@
-import { OrganizationCollection, OrganizationModel } from "../database/schema/organization.schema";
-import BaseDataController from "./base.datacontroller";
-import DatabaseManager from "../database/database.manager";
+import { OrganizationCollection } from "../database/schema/organization.schema";
 import Organization from "../models/organization.model";
 
-export default class OrganizationDataController extends BaseDataController<OrganizationModel> {
+export default class OrganizationDataController {
 
-    constructor(databaseManager: DatabaseManager) {
-        super(databaseManager, OrganizationCollection);
+    public getOrganizationByDbName(dbName: string): Promise<any> {
+        return OrganizationCollection().findOne({dbName: dbName}).lean().exec();
     }
 
-    public getOrganizationByDbName(dbName: string): Promise<Organization> {
-        return new Promise((resolve, reject) => {
-            OrganizationCollection().findOne({dbName: dbName})
-                .lean()
-                .exec((err, organization: Organization) => err ? reject(err) : resolve(organization));
-        });
+    public saveNewOrganization(organization: Organization): Promise<any> {
+        return new (OrganizationCollection())(organization).save();
     }
-
-    public saveNewOrganization(organization: Organization): Promise<Organization> {
-        return new Promise((resolve, reject) => {
-            const organizationCollection = OrganizationCollection();
-            new organizationCollection(organization)
-                .save((err, organizationResult) => err ? reject(err) : resolve(organizationResult));
-        });
-    }
-
 }

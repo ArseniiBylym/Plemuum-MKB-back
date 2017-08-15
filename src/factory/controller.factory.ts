@@ -5,16 +5,17 @@ import OrganizationController from "../controller/organization.controller";
 import RequestController from "../controller/request.controller";
 import SessionController from "../controller/session.controller";
 import {
-    getFeedbackDataController, getGroupDataController,
+    getFeedbackDataController,
+    getGroupDataController,
     getOrganizationDataController,
     getRequestDataController,
     getResetPasswordDataController,
     getTagDataController,
-    getUserDataController
 } from "./datacontroller.factory";
 import EmailService from "../service/email/mail.service";
 import FileTransferService from "../service/file/filetransfer.service";
 import GroupController from "../controller/group.controller";
+import { userDataController } from "../data/datacontroller/user.datacontroller";
 
 let userController: UserController;
 let feedbackController: FeedbackController;
@@ -27,7 +28,7 @@ let groupController: GroupController;
 /* #########################     PUBLIC      ########################## */
 
 const getUserController = (): UserController => getController(userController, UserController,
-    getUserDataController(),
+    userDataController,
     getResetPasswordDataController(),
     new EmailService(),
     new FileTransferService());
@@ -45,7 +46,7 @@ const getRequestController = (): RequestController => getController(requestContr
     getRequestDataController());
 
 const getSessionController = (): SessionController => getController(sessionController, SessionController,
-    getUserDataController());
+    userDataController);
 
 const getGroupController = (): GroupController => getController(groupController, GroupController,
     getGroupDataController());

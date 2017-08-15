@@ -17,7 +17,7 @@ export default class SessionController extends BaseController {
 
     public login(req: any, res: Response, next: Function): Promise<string> {
         let tokenObj: TokenObject = tokenManager.generateNewTokenObject();
-        return UserDataController.getUserByIdWithoutOrgId(req.user._id)
+        return this.userDataController.getUserByIdWithoutOrgId(req.user._id)
             .then((user: User) => {
                 const now = new Date();
                 if (user && user.token && user.token.token_expiry > now) {
@@ -26,7 +26,7 @@ export default class SessionController extends BaseController {
                         tokenExpiry: tokenObj.tokenExpiry
                     };
                 }
-                return UserDataController.updateUserToken(req.user._id, tokenObj)
+                return this.userDataController.updateUserToken(req.user._id, tokenObj)
             })
             .then((updatedUser: UserModel) => {
                 const currentToken: any = updatedUser.token;

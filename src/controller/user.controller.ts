@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import UserDataController from "../data/datacontroller/user.datacontroller";
 import { User } from "../data/models/user.model";
 import BaseController from "./base.controller";
 import ResetPasswordDataController from "../data/datacontroller/resetpassword.datacontroller";
@@ -7,6 +6,7 @@ import { UserModel } from "../data/database/schema/user.schema";
 import EmailService from "../service/email/mail.service";
 import FileTransfer from "../service/file/filetransfer.service";
 import { generateNewTokensForResetPassword } from "../auth/token.manager";
+import { UserDataController } from "../data/datacontroller/user.datacontroller";
 
 const formidable = require('formidable');
 
@@ -64,11 +64,11 @@ export default class UserController extends BaseController {
         return this.userDataController.getUserByEmail(req.body.email)
             .then((u: UserModel) => {
                 user = u;
-                const {token, token_expiry} = UserDataController.generateToken(1);
+                const {token, token_expiry} = this.userDataController.generateToken(1);
                 const data = {userId: String(user._id), token: token, token_expiry: token_expiry, reseted: false};
                 return this.resetPasswordDataController.saveResetPassword(data)
             })
-            .then(resetPassword => {
+            .then((resetPassword: any) => {
                 const link = req.header('Origin') + "/set_new_password?token=" + resetPassword.token + "&email="
                     + user.email + (req.query.welcome ? "&welcome=true" : "");
                 resetPasswordToken = resetPassword.token;
@@ -79,7 +79,7 @@ export default class UserController extends BaseController {
                 res.send(response);
                 return resetPasswordToken;
             })
-            .catch(err => res.send({error: err}));
+            .catch((err: any) => res.send({error: err}));
     }
 
     public setPassword(req: Request, res: Response,) {
@@ -121,7 +121,7 @@ export default class UserController extends BaseController {
                 .status(!updatedUser ? 404 : 200)
                 .send(!updatedUser ? {error: "User not found"} : updatedUser)
             )
-            .catch((error) => res.json({error: error}));
+            .catch((error: any) => res.json({error: error}));
 
     }
 

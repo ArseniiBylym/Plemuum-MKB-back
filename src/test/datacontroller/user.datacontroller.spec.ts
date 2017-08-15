@@ -1,4 +1,4 @@
-import UserDataController from "../../data/datacontroller/user.datacontroller";
+import { userDataController } from "../../data/datacontroller/user.datacontroller";
 import DatabaseManager from "../../data/database/database.manager";
 import * as DatabaseFactory from "../../factory/database.factory";
 import * as TestObjectFactory from "../../util/testobject.factory";
@@ -6,14 +6,13 @@ import { User } from "../../data/models/user.model";
 import { assert, expect, should } from 'chai';
 import * as asserts from "assert";
 import { fixtureLoader } from "../mock/fixture.loader";
+import { UserCollection } from "../../data/database/schema/user.schema";
 
 suite("UserDataController tests", () => {
 
-    let userDataController: UserDataController;
     const databaseManager: DatabaseManager = DatabaseFactory.getDatabaseManager();
 
     beforeEach(done => {
-        userDataController = new UserDataController(databaseManager);
         fixtureLoader()
             .then(value => done())
             .catch((error) => {
@@ -26,8 +25,7 @@ suite("UserDataController tests", () => {
         const testUser = TestObjectFactory.getJohnDoe();
         userDataController.saveUser(testUser)
             .then((value: any) => {
-                const userModel = userDataController.getDatabaseModel();
-                userModel.findById(value._id, (error: Error, user: User) => {
+                UserCollection().findById(value._id, (error: Error, user: User) => {
                     should().exist(user);
                     done();
                 });

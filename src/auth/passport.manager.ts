@@ -1,14 +1,11 @@
 import * as passport from 'passport';
-import { Handler, Request } from 'express';
+import { Request } from 'express';
 import * as localStrategy from 'passport-local';
 import * as bearerStrategy from 'passport-http-bearer';
 import * as basicStrategy from 'passport-http'
-import * as DataControllerFactory from '../factory/datacontroller.factory';
-import UserDataController from "../data/datacontroller/user.datacontroller";
 import { UserCollection, UserModel } from "../data/database/schema/user.schema";
 import config from "../../config/config";
-
-const userDataController: UserDataController = DataControllerFactory.getUserDataController();
+import { userDataController } from "../data/datacontroller/user.datacontroller";
 
 function passportInit() {
 
