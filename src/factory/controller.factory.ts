@@ -12,8 +12,8 @@ import {
     getTagDataController,
     getUserDataController
 } from "./datacontroller.factory";
-import EmailService from "../email/mail.service";
-import FileTransferService from "../files/filetransfer.service";
+import EmailService from "../service/email/mail.service";
+import FileTransferService from "../service/file/filetransfer.service";
 import GroupController from "../controller/group.controller";
 
 let userController: UserController;

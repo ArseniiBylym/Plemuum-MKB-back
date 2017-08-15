@@ -13,4 +13,11 @@ export default class GroupController {
             .then((group) => res.status(201).send(group))
             .catch((err) => res.status(400).send({error: err}));
     }
+
+    public getGroupById(req: any, res: any, next: Function) {
+        this.groupDataController.getGroupById(req.params.orgId, req.params.groupId)
+            .then((group) => res.status(200).send(group))
+            .catch((err) => res.status(400).send({error: err}));
+    }
+
 }

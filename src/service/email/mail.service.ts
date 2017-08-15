@@ -1,4 +1,4 @@
-import config from "../../config/config";
+import config from "../../../config/config";
 
 const nodemailer = require('nodemailer');
 const ejs = require('ejs');

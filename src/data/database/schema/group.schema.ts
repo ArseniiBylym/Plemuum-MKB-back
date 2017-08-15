@@ -4,7 +4,7 @@ import Group from "../../models/group.model";
 
 let GroupSchema = new Schema({
     name: {required: true, type: String, index: {unique: true}},
-    users: {required: false, type: String},
+    users: {required: false, type: [String]},
     answerCardRelations: {required: false, type: [String]},
     todoCardRelations: {required: false, type: [String]},
     skills: {required: false, type: [String]},

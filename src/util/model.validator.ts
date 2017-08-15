@@ -61,6 +61,10 @@ function validateGroup(group: any) {
     expect(group).to.haveOwnProperty('skills');
     expect(group).to.haveOwnProperty('todoCardRelations');
     expect(group).to.haveOwnProperty('answerCardRelations');
+    expect(group.users).to.be.an.instanceOf(Array);
+    expect(group.skills).to.be.an.instanceOf(Array);
+    expect(group.todoCardRelations).to.be.an.instanceOf(Array);
+    expect(group.answerCardRelations).to.be.an.instanceOf(Array);
 }
 
 export {

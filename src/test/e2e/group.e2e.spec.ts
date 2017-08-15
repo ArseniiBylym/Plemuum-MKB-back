@@ -3,10 +3,11 @@ import config from "../../../config/config";
 import { authenticate, fixtureLoader, testUser } from "../mock/fixture.loader";
 import * as request from 'supertest';
 import app from "../../app";
-import { basicAuthHeader } from "../header.helper";
+import { basicAuthHeader, bearerAuthHeader } from "../header.helper";
 import { fail } from "assert";
 import { validateGroup } from "../../util/model.validator";
 import { getTestGroup } from "../../util/testobject.factory";
+import { should, expect } from 'chai';
 
 
 suite("Group request test", () => {
@@ -27,25 +28,46 @@ suite("Group request test", () => {
             .catch(() => done());
     });
 
+    const orgId = "hipteam";
     test("Should be able to create a group, response should contain a group object, return 201", done => {
-        const orgId = "hipteam";
         const url = `/api/${orgId}/groups`;
 
+        request(app)
+            .post(url)
+            .send(getTestGroup())
+            .set(basicAuthHeader)
+            .expect(201)
+            .then(response => {
+                validateGroup(response.body);
+                done();
+            })
+            .catch((err) => {
+                fail(err);
+                done();
+            });
+    });
+
+    test("Should be able to get a group by its id", done => {
+        const groupID = "599312971b31d008b6bd2781";
+        const url = `/api/${orgId}/groups/${groupID}`;
+
         authenticate(testUser)
-            .then(token => {
+            .then((token) => {
                 request(app)
                     .post(url)
                     .send(getTestGroup())
-                    .set(basicAuthHeader)
-                    .expect(201)
+                    .set(bearerAuthHeader(token))
+                    .expect(200)
                     .then(response => {
+                        should().exist(response.body);
                         validateGroup(response.body);
+                        expect(response.body._id.toString()).to.be.equal(groupID);
                         done();
                     })
                     .catch((err) => {
                         fail(err);
                         done();
                     });
-            });
-    });
+            })
+    })
 });

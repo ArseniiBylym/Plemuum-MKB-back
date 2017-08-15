@@ -4,8 +4,9 @@ import { getTestGroup } from "../../util/testobject.factory";
 import { GroupCollection } from "../../data/database/schema/group.schema";
 import { fixtureLoader } from "../mock/fixture.loader";
 import config from "../../../config/config";
-import { should } from 'chai';
+import { expect, should } from 'chai';
 import { validateGroup } from "../../util/model.validator";
+import { verify } from "ts-mockito";
 
 suite("Group datacontroller", () => {
 
@@ -36,6 +37,20 @@ suite("Group datacontroller", () => {
                 .then((group) => {
                     should().exist(group);
                     validateGroup(group);
+                    done();
+                })
+        })
+    });
+
+    suite("Get group by ID", () => {
+        test("Should be able to get a group by its ID", done => {
+            const groupID = "599312971b31d008b6bd2781";
+            const orgID = "hipteam";
+            groupDataController.getGroupById(orgID, groupID)
+                .then((group) => {
+                    should().exist(group);
+                    validateGroup(group);
+                    expect(group._id.toString()).to.be.equal(groupID);
                     done();
                 })
         })

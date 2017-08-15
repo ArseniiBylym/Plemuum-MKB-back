@@ -13,4 +13,8 @@ export default class GroupDataController extends BaseDataController<GroupModel> 
         return new (GroupCollection(orgId))(group).save();
     }
 
+    public getGroupById(orgId: string, groupId: string): Promise<any> {
+        return GroupCollection(orgId).findById(groupId).lean().exec();
+    }
+
 }

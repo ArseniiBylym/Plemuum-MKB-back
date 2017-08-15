@@ -4,8 +4,8 @@ import { User } from "../data/models/user.model";
 import BaseController from "./base.controller";
 import ResetPasswordDataController from "../data/datacontroller/resetpassword.datacontroller";
 import { UserModel } from "../data/database/schema/user.schema";
-import EmailService from "../email/mail.service";
-import FileTransfer from "../files/filetransfer.service";
+import EmailService from "../service/email/mail.service";
+import FileTransfer from "../service/file/filetransfer.service";
 import { generateNewTokensForResetPassword } from "../auth/token.manager";
 
 const formidable = require('formidable');

@@ -106,7 +106,7 @@ suite("User request tests", () => {
         });
     });
 
-    suite('Set password', () => {
+    suite.skip('Set password', () => {
         const url = `/api/setPassword`;
 
         test('Should send mail properly, return 200', done => {
