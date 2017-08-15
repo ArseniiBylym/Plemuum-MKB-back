@@ -5,6 +5,7 @@ import RequestDataController from "../data/datacontroller/request.datacontroller
 import TagDataController from "../data/datacontroller/tag.datacontroller";
 import ResetPasswordDataController from "../data/datacontroller/resetpassword.datacontroller";
 import OrganizationDataController from "../data/datacontroller/organization.datacontroller";
+import GroupDataController from "../data/datacontroller/group.datacontroller";
 
 let feedbackDataControllerInstance: FeedbackDataController;
 let userDataControllerInstance: UserDataController;
@@ -12,6 +13,7 @@ let requestDataController: RequestDataController;
 let tagDataController: TagDataController;
 let resetPasswordDataController: ResetPasswordDataController;
 let organizationDataController: OrganizationDataController;
+let groupDataController: GroupDataController;
 
 /* #########################     PUBLIC      ########################## */
 
@@ -33,6 +35,9 @@ const getResetPasswordDataController = (): ResetPasswordDataController =>
 const getOrganizationDataController = (): OrganizationDataController =>
     getDataController(organizationDataController, OrganizationDataController);
 
+const getGroupDataController = (): GroupDataController =>
+    getDataController(groupDataController, GroupDataController);
+
 /* #########################     PRIVATE      ########################## */
 
 function getDataController(instance: any, dataController: any) {
@@ -48,5 +53,6 @@ export {
     getRequestDataController,
     getTagDataController,
     getResetPasswordDataController,
-    getOrganizationDataController
+    getOrganizationDataController,
+    getGroupDataController
 }

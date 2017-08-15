@@ -7,6 +7,7 @@ import * as ControllerFactory from '../../factory/controller.factory';
 import { Model } from "mongoose";
 import { OrganizationCollection } from "../../data/database/schema/organization.schema";
 import { ResetPasswordCollection } from "../../data/database/schema/resetpassword.schema";
+import { GroupCollection } from "../../data/database/schema/group.schema";
 
 const testUser = {
     "firstName": "sheryl",
@@ -30,6 +31,7 @@ function fixtureLoader(): Promise<any> {
         {model: TagCollection('hipteam'), mockFile: 'tags'},
         {model: OrganizationCollection(), mockFile: "organizations"},
         {model: ResetPasswordCollection(), mockFile: null},
+        {model: GroupCollection('hipteam'), mockFile: "groups"},
     ];
 
     /* Clear each collection */

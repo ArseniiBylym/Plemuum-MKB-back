@@ -65,6 +65,16 @@ function getTestOrganization() {
     }
 }
 
+function getTestGroup() {
+    return {
+        name: "Test Group",
+        users: ["user1", "user2", "user3"],
+        answerCardRelations: ["group1", "group2"],
+        todoCardRelations: ["group3", "group4"],
+        skills: ["skill1", "skill2"]
+    }
+}
+
 export {
     getTestUser,
     getJohnDoe,
@@ -72,5 +82,6 @@ export {
     getTestUserWithOrganizations,
     getRegisterTestUser,
     getRegisterJohnDoe,
-    getTestOrganization
+    getTestOrganization,
+    getTestGroup
 }

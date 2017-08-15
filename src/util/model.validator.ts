@@ -54,6 +54,15 @@ function validateOrganization(organizationResponse: any) {
     expect(organizationResponse).to.haveOwnProperty("compasseGenerationTime");
 }
 
+function validateGroup(group: any) {
+    expect(group).to.haveOwnProperty('_id');
+    expect(group).to.haveOwnProperty('name');
+    expect(group).to.haveOwnProperty('users');
+    expect(group).to.haveOwnProperty('skills');
+    expect(group).to.haveOwnProperty('todoCardRelations');
+    expect(group).to.haveOwnProperty('answerCardRelations');
+}
+
 export {
     validateUser,
     validateFeedback,
@@ -61,5 +70,6 @@ export {
     validateRequest,
     validateLoginResponse,
     validateTagResponse,
-    validateOrganization
+    validateOrganization,
+    validateGroup
 }

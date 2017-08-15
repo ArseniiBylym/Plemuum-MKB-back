@@ -5,6 +5,7 @@ import TagRoute from './tag.route';
 import OrganizationRoute from './organization.route';
 import RequestRoute from './request.route';
 import SessionRoute from './session.route';
+import GroupRoute from './group.route';
 import * as ControllerFactory from '../factory/controller.factory'
 
 export default (express: Express) => {
@@ -14,4 +15,5 @@ export default (express: Express) => {
     OrganizationRoute(express, ControllerFactory.getOrganizationController());
     RequestRoute(express, ControllerFactory.getRequestController());
     SessionRoute(express, ControllerFactory.getSessionController());
+    GroupRoute(express, ControllerFactory.getGroupController());
 }
