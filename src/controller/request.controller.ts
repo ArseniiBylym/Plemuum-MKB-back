@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
-import RequestDatacontroller from "../data/datacontroller/request.datacontroller";
 import BaseController from "./base.controller";
+import { RequestDataController } from "../data/datacontroller/request.datacontroller";
 
 export default class RequestController extends BaseController {
 
-    public requestDataController: RequestDatacontroller;
+    public requestDataController: RequestDataController;
 
-    constructor(requestDataController: RequestDatacontroller) {
+    constructor(requestDataController: RequestDataController) {
         super();
         this.requestDataController = requestDataController;
     }

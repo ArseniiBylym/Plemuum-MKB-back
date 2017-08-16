@@ -1,6 +1,6 @@
 import BaseController from "./base.controller";
 import { Request, Response } from "express";
-import TagDataController from "../data/datacontroller/tag.datacontroller";
+import { TagDataController } from "../data/datacontroller/tag.datacontroller";
 
 export default class TagController extends BaseController {
 

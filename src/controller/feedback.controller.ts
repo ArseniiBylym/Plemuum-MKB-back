@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import Feedback from "../data/models/feedback.model";
-import FeedbackDataController from '../data/datacontroller/feedback.datacontroller'
 import BaseController from "./base.controller";
+import { FeedbackDataController } from "../data/datacontroller/feedback.datacontroller";
 
 export default class FeedbackController extends BaseController {
     private feedbackDataController: FeedbackDataController;

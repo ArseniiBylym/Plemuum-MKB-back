@@ -1,6 +1,4 @@
-
 import DatabaseManager from "../data/database/database.manager";
-import config from '../../config/config'
 
 let databaseManagerInstance: DatabaseManager;
 

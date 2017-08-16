@@ -1,24 +1,26 @@
-import BaseDataController from "./base.datacontroller";
-import { GroupCollection, GroupModel } from "../database/schema/group.schema";
-import DatabaseManager from "../database/database.manager";
+import { GroupCollection } from "../database/schema/group.schema";
 import Group from "../models/group.model";
 
-export default class GroupDataController extends BaseDataController<GroupModel> {
+interface GroupDataController {
+    createGroup: (orgId: string, group: Group) => Promise<any>
+    getGroupById: (orgId: string, groupId: string) => Promise<any>
+    getUserGroups: (orgId: string, userId: string) => Promise<any>
+}
 
-    constructor(databaseManager: DatabaseManager) {
-        super(databaseManager, GroupCollection);
-    }
+const groupDataController: GroupDataController = {
 
-    public createGroup(orgId: string, group: Group): Promise<any> {
+    createGroup: function (orgId: string, group: Group): Promise<any> {
         return new (GroupCollection(orgId))(group).save();
-    }
+    },
 
-    public getGroupById(orgId: string, groupId: string): Promise<any> {
+    getGroupById: function (orgId: string, groupId: string): Promise<any> {
         return GroupCollection(orgId).findById(groupId).lean().exec();
-    }
+    },
 
-    public getUserGroups(orgId: string, userId: string): Promise<any> {
+    getUserGroups: function (orgId: string, userId: string): Promise<any> {
         return GroupCollection(orgId).find({users: {$in: [userId]}}).lean().exec();
     }
 
-}
+};
+
+export { groupDataController, GroupDataController}

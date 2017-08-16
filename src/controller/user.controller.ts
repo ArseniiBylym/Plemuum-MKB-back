@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import { User } from "../data/models/user.model";
 import BaseController from "./base.controller";
-import ResetPasswordDataController from "../data/datacontroller/resetpassword.datacontroller";
 import { UserModel } from "../data/database/schema/user.schema";
 import EmailService from "../service/email/mail.service";
 import FileTransfer from "../service/file/filetransfer.service";
 import { generateNewTokensForResetPassword } from "../auth/token.manager";
 import { UserDataController } from "../data/datacontroller/user.datacontroller";
+import { ResetPasswordDataController } from "../data/datacontroller/resetpassword.datacontroller";
 
 const formidable = require('formidable');
 
@@ -36,6 +36,7 @@ export default class UserController extends BaseController {
     public static showPictureUploadPage(req: Request, res: Response,) {
         res.render("fileUploadTest", {});
     }
+
     public static showSetPasswordForm(req: Request, res: Response,) {
         res.render("setPassword", {token: "toke"});
     }

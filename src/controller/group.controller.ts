@@ -1,4 +1,4 @@
-import GroupDataController from "../data/datacontroller/group.datacontroller";
+import { GroupDataController } from "../data/datacontroller/group.datacontroller";
 
 export default class GroupController {
 

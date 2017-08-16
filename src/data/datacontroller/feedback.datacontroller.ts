@@ -1,24 +1,31 @@
 import Feedback from "../models/feedback.model";
 import { Model, Query } from "mongoose";
-import { FeedbackModel, FeedbackCollection } from "../database/schema/feedback.schema";
-import DatabaseManager from "../database/database.manager";
-import BaseDataController from "./base.datacontroller";
+import { FeedbackCollection } from "../database/schema/feedback.schema";
 
-export default class FeedbackDataController {
+interface FeedbackDataController {
+    getAllFeedback: (organizationId: string, userId: string) => Promise<any>
+    getSentFeedbacks: (organizationId: string, userId: string) => Promise<any>
+    getIncomingFeedbacks: (organizationId: string, userId: string) => Promise<any>
+    saveFeedback: (organizationId: string, feedback: Feedback) => Promise<any>
+}
 
-    public  getAllFeedback(organizationId: string, userId: string): Promise<any> {
+const feedbackDataController: FeedbackDataController = {
+
+    getAllFeedback: function (organizationId: string, userId: string): Promise<any> {
         return FeedbackCollection(organizationId).find({$or: [{senderId: userId}, {recipientId: userId}]}).lean().exec();
-    }
+    },
 
-    public  getSentFeedbacks(organizationId: string, userId: string): Promise<any> {
+    getSentFeedbacks: function (organizationId: string, userId: string): Promise<any> {
         return FeedbackCollection(organizationId).find({senderId: userId}).lean().exec();
-    }
+    },
 
-    public  getIncomingFeedbacks(organizationId: string, userId: string): Promise<any> {
+    getIncomingFeedbacks: function (organizationId: string, userId: string): Promise<any> {
         return FeedbackCollection(organizationId).find({recipientId: userId}).lean().exec();
-    }
+    },
 
-    public  saveFeedback(organizationId: string, feedback: Feedback): Promise<any> {
+    saveFeedback: function (organizationId: string, feedback: Feedback): Promise<any> {
         return new (FeedbackCollection(organizationId))(feedback).save();
     }
-}
+};
+
+export { feedbackDataController, FeedbackDataController}

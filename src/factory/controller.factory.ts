@@ -4,18 +4,16 @@ import TagController from "../controller/tag.controller";
 import OrganizationController from "../controller/organization.controller";
 import RequestController from "../controller/request.controller";
 import SessionController from "../controller/session.controller";
-import {
-    getFeedbackDataController,
-    getGroupDataController,
-    getOrganizationDataController,
-    getRequestDataController,
-    getResetPasswordDataController,
-    getTagDataController,
-} from "./datacontroller.factory";
 import EmailService from "../service/email/mail.service";
 import FileTransferService from "../service/file/filetransfer.service";
 import GroupController from "../controller/group.controller";
 import { userDataController } from "../data/datacontroller/user.datacontroller";
+import { feedbackDataController } from "../data/datacontroller/feedback.datacontroller";
+import { groupDataController } from "../data/datacontroller/group.datacontroller";
+import { organizationDataController } from "../data/datacontroller/organization.datacontroller";
+import { requestDataController } from "../data/datacontroller/request.datacontroller";
+import { resetPasswordDataController } from "../data/datacontroller/resetpassword.datacontroller";
+import { tagDataController } from "../data/datacontroller/tag.datacontroller";
 
 let userController: UserController;
 let feedbackController: FeedbackController;
@@ -29,27 +27,27 @@ let groupController: GroupController;
 
 const getUserController = (): UserController => getController(userController, UserController,
     userDataController,
-    getResetPasswordDataController(),
+    resetPasswordDataController,
     new EmailService(),
     new FileTransferService());
 
 const getFeedbackController = (): FeedbackController => getController(feedbackController, FeedbackController,
-    getFeedbackDataController());
+    feedbackDataController);
 
 const getTagController = (): TagController => getController(tagController, TagController,
-    getTagDataController());
+    tagDataController);
 
 const getOrganizationController = (): OrganizationController => getController(organizationController, OrganizationController,
-    getOrganizationDataController());
+    organizationDataController);
 
 const getRequestController = (): RequestController => getController(requestController, RequestController,
-    getRequestDataController());
+    requestDataController);
 
 const getSessionController = (): SessionController => getController(sessionController, SessionController,
     userDataController);
 
 const getGroupController = (): GroupController => getController(groupController, GroupController,
-    getGroupDataController());
+    groupDataController);
 
 /* #########################     PRIVATE      ########################## */
 

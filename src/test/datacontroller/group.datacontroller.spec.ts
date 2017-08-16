@@ -1,4 +1,3 @@
-import GroupDataController from "../../data/datacontroller/group.datacontroller";
 import { getDatabaseManager } from "../../factory/database.factory";
 import { getTestGroup } from "../../util/testobject.factory";
 import { GroupCollection } from "../../data/database/schema/group.schema";
@@ -6,6 +5,7 @@ import { fixtureLoader, testUser } from "../mock/fixture.loader";
 import config from "../../../config/config";
 import { expect, should } from 'chai';
 import { validateGroup } from "../../util/model.validator";
+import { groupDataController } from "../../data/datacontroller/group.datacontroller";
 
 suite("Group datacontroller", () => {
 
@@ -25,8 +25,6 @@ suite("Group datacontroller", () => {
             .catch(() => done());
     });
 
-    const databaseManager = getDatabaseManager();
-    const groupDataController = new GroupDataController(databaseManager);
 
     suite("Create group", () => {
         test("Should be able to create a new group", done => {
