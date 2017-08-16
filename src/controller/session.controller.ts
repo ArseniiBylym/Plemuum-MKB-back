@@ -4,7 +4,7 @@ import { TokenObject } from "../auth/token.manager";
 import { Request, Response } from "express";
 import { User } from "../data/models/user.model";
 import { UserModel } from "../data/database/schema/user.schema";
-import UserDataController from "../data/datacontroller/user.datacontroller";
+import { UserDataController } from "../data/datacontroller/user.datacontroller";
 
 export default class SessionController extends BaseController {
 

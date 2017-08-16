@@ -1,17 +1,12 @@
 import app from '../../app';
 import { assert, expect } from 'chai';
 import * as request from 'supertest';
-import UserDataController from "../../data/datacontroller/user.datacontroller";
-import UserController from "../../controller/user.controller";
 import * as TestObjectFactory from "../../util/testobject.factory"
 import * as modelValidator from "../../util/model.validator"
 import { authenticate, fixtureLoader, resetPassword, testUser } from "../mock/fixture.loader"
 import { getDatabaseManager } from "../../factory/database.factory";
 import config from "../../../config/config";
 import { basicAuthHeader, bearerAuthHeader } from "../header.helper";
-
-let userDataController: UserDataController;
-let userController: UserController;
 
 suite("User request tests", () => {
 

@@ -20,7 +20,7 @@ export default class TagController extends BaseController {
         data.isActive = true; //Always true
         this.tagDataController.getTags(req.params.orgId)
             .then(tags => {
-                if (tags.findIndex((element) => element.title.toLowerCase() === data.title.toLowerCase()) !== -1) {
+                if (tags.findIndex((element: any) => element.title.toLowerCase() === data.title.toLowerCase()) !== -1) {
                     res.status(400).send({error: "This tag already exist"});
                     return;
                 }
