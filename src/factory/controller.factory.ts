@@ -26,8 +26,6 @@ let groupController: GroupController;
 /* #########################     PUBLIC      ########################## */
 
 const getUserController = (): UserController => getController(userController, UserController,
-    userDataController,
-    resetPasswordDataController,
     new EmailService(),
     new FileTransferService());
 
@@ -43,8 +41,7 @@ const getOrganizationController = (): OrganizationController => getController(or
 const getRequestController = (): RequestController => getController(requestController, RequestController,
     requestDataController);
 
-const getSessionController = (): SessionController => getController(sessionController, SessionController,
-    userDataController);
+const getSessionController = (): SessionController => getController(sessionController, SessionController);
 
 const getGroupController = (): GroupController => getController(groupController, GroupController,
     groupDataController);
