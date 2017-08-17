@@ -5,24 +5,19 @@ import { UserModel } from "../data/database/schema/user.schema";
 import EmailService from "../service/email/mail.service";
 import FileTransfer from "../service/file/filetransfer.service";
 import { generateNewTokensForResetPassword } from "../auth/token.manager";
-import { UserDataController } from "../data/datacontroller/user.datacontroller";
-import { ResetPasswordDataController } from "../data/datacontroller/resetpassword.datacontroller";
+import { resetPasswordDataController } from "../data/datacontroller/resetpassword.datacontroller";
+import { userDataController } from "../data/datacontroller/user.datacontroller";
 
 const formidable = require('formidable');
 
 export default class UserController extends BaseController {
 
-    private userDataController: UserDataController;
-    private resetPasswordDataController: ResetPasswordDataController;
     private emailService: EmailService;
     private fileTransferService: FileTransfer;
     private form: any;
 
-    constructor(userDataController: UserDataController, resetPasswordDataController: ResetPasswordDataController,
-                emailService: EmailService, fileTransferService: FileTransfer) {
+    constructor(emailService: EmailService, fileTransferService: FileTransfer) {
         super();
-        this.userDataController = userDataController;
-        this.resetPasswordDataController = resetPasswordDataController;
         this.emailService = emailService;
         this.fileTransferService = fileTransferService;
     }
@@ -44,30 +39,30 @@ export default class UserController extends BaseController {
     public createNewUser(req: Request, res: Response,) {
         const user: User = req.body;
         if (user) {
-            this.callController(this.userDataController.saveUser(user), res, 201, 400);
+            this.callController(userDataController.saveUser(user), res, 201, 400);
         } else {
             res.status(400).json({error: "invalid input"});
         }
     }
 
     public getOrganizationUsers(req: any, res: Response,) {
-        this.callController(this.userDataController.getOrganizationUsers(req.params.orgId), res, 200, 400);
+        this.callController(userDataController.getOrganizationUsers(req.params.orgId), res, 200, 400);
     }
 
     public getUserByIdFromOrganization(req: Request, res: Response,) {
-        this.callController(this.userDataController.getUserById(req.params.orgId, req.params.userId), res, 200, 400);
+        this.callController(userDataController.getUserById(req.params.orgId, req.params.userId), res, 200, 400);
     }
 
     public resetPassword(req: Request, res: Response, next: Function) {
         let user: UserModel;
         let resetPasswordToken: any;
         let response: any;
-        return this.userDataController.getUserByEmail(req.body.email)
+        return userDataController.getUserByEmail(req.body.email)
             .then((u: UserModel) => {
                 user = u;
-                const {token, token_expiry} = this.userDataController.generateToken(1);
+                const {token, token_expiry} = userDataController.generateToken(1);
                 const data = {userId: String(user._id), token: token, token_expiry: token_expiry, reseted: false};
-                return this.resetPasswordDataController.saveResetPassword(data)
+                return resetPasswordDataController.saveResetPassword(data)
             })
             .then((resetPassword: any) => {
                 const link = req.header('Origin') + "/set_new_password?token=" + resetPassword.token + "&email="
@@ -87,7 +82,7 @@ export default class UserController extends BaseController {
         const data = req.body;
         const token = data.token;
 
-        this.resetPasswordDataController.getResetPasswordByToken(token)
+        resetPasswordDataController.getResetPasswordByToken(token)
             .then((resetedPassword: any) => {
                 return new Promise((resolve, reject) => {
                     if (resetedPassword.token_expiry <= new Date()) {
@@ -95,14 +90,14 @@ export default class UserController extends BaseController {
                         return;
                     }
                     const {tokenExpiry, tokenExpired} = generateNewTokensForResetPassword();
-                    this.resetPasswordDataController.updateResetPassword(resetedPassword._id, tokenExpired)
+                    resetPasswordDataController.updateResetPassword(resetedPassword._id, tokenExpired)
                         .then((result) => resolve(result))
                         .catch((err) => reject("Something went wrong, it was not possible to change your " +
                             "password. Please start the process again!"))
                 });
             })
             .then((resetedPassword: any) =>
-                this.userDataController.changeUserPasswordByUserId(resetedPassword.userId, data.newPassword))
+                userDataController.changeUserPasswordByUserId(resetedPassword.userId, data.newPassword))
             .then((updatedUser) => {
                 if (!updatedUser) {
                     res.status(404).json({error: "User not found"});
@@ -117,7 +112,7 @@ export default class UserController extends BaseController {
     }
 
     public changePassword(req: Request, res: Response,) {
-        this.userDataController.changeUserPassword(req.body.email, req.body.newPassword)
+        userDataController.changeUserPassword(req.body.email, req.body.newPassword)
             .then((updatedUser: UserModel) => res
                 .status(!updatedUser ? 404 : 200)
                 .send(!updatedUser ? {error: "User not found"} : updatedUser)
@@ -132,7 +127,7 @@ export default class UserController extends BaseController {
         this.form.parse(req, (parseError: any, fields: any, files: any) => {
             if (!parseError) {
                 this.fileTransferService.sendFile(files.avatar, req.user._id)
-                    .then((pictureUrl) => this.userDataController.setUserPic(req.user._id, pictureUrl))
+                    .then((pictureUrl) => userDataController.setUserPic(req.user._id, pictureUrl))
                     .then((result) => res.send(result))
                     .catch((err) => res.status(500).send({error: err}));
             } else {

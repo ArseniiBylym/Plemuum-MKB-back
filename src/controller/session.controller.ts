@@ -4,20 +4,13 @@ import { TokenObject } from "../auth/token.manager";
 import { Request, Response } from "express";
 import { User } from "../data/models/user.model";
 import { UserModel } from "../data/database/schema/user.schema";
-import { UserDataController } from "../data/datacontroller/user.datacontroller";
+import { userDataController } from "../data/datacontroller/user.datacontroller";
 
 export default class SessionController extends BaseController {
 
-    private userDataController: UserDataController;
-
-    constructor(userDataController: UserDataController) {
-        super();
-        this.userDataController = userDataController;
-    }
-
     public login(req: any, res: Response, next: Function): Promise<string> {
         let tokenObj: TokenObject = tokenManager.generateNewTokenObject();
-        return this.userDataController.getUserByIdWithoutOrgId(req.user._id)
+        return userDataController.getUserByIdWithoutOrgId(req.user._id)
             .then((user: User) => {
                 const now = new Date();
                 if (user && user.token && user.token.token_expiry > now) {
@@ -26,7 +19,7 @@ export default class SessionController extends BaseController {
                         tokenExpiry: tokenObj.tokenExpiry
                     };
                 }
-                return this.userDataController.updateUserToken(req.user._id, tokenObj)
+                return userDataController.updateUserToken(req.user._id, tokenObj)
             })
             .then((updatedUser: UserModel) => {
                 const currentToken: any = updatedUser.token;
@@ -50,7 +43,7 @@ export default class SessionController extends BaseController {
             const pastDate = new Date();
             pastDate.setDate(pastDate.getDate() - 30);
 
-            this.userDataController.changeTokens(req.user._id, req.user.token)
+            userDataController.changeTokens(req.user._id, req.user.token)
                 .then(result =>
                     res.send(result
                         ? {message: "User Logged out successfully!"}
@@ -63,7 +56,7 @@ export default class SessionController extends BaseController {
     }
 
     public checkToken(req: Request, res: Response, next: Function) {
-        this.userDataController.getResetToken(req.body.token)
+        userDataController.getResetToken(req.body.token)
             .then((resetToken) => {
                 const now = new Date();
                 let valid: Object = {validToken: true, reseted: false};

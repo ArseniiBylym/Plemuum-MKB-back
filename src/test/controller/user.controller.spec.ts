@@ -1,25 +1,29 @@
 import UserController from "../../controller/user.controller";
 import * as TestObjectFactory from "../../util/testobject.factory"
-import { anything, instance, mock, verify, when } from "ts-mockito";
 import { User } from "../../data/models/user.model";
-import { expect, should, assert } from 'chai';
+import { assert, expect, should } from 'chai';
 import * as sinon from 'sinon';
+import * as Sinon from 'sinon';
+import { userDataController } from "../../data/datacontroller/user.datacontroller";
 
 suite("UserController", () => {
 
     //TODO MAKE THIS TEST GREAT AGAIN!
+    let userController: UserController;
+    let userDataControllerStub: Sinon.SinonSpy;
+    const mockUser: User = TestObjectFactory.getJohnDoe();
+    const dummy: any = {};
 
-    /*
+    before(done => {
+        userDataControllerStub = sinon.stub(userDataController, 'saveUser')
+            .returns(new Promise((resolve, reject) => resolve(mockUser)));
+        done();
+    });
+
     suite("createNewUser", () => {
 
-        let userController: UserController;
-        const mockDataController = sinon.spy();
-        const mockResetPassDataController: any = {};
-        const mockResult: any = {};
-        const mockRequest: any = {};
-
         test("Happy case: should call response send", (done) => {
-            const mockUser: User = TestObjectFactory.getJohnDoe();
+
             const mockRequest: any = {
                 body: mockUser
             };
@@ -30,35 +34,33 @@ suite("UserController", () => {
                 },
                 status: (statusCode: number) => mockResponse
             };
-            when(mockDataController.saveUser(anything())).thenReturn(
-                new Promise<any>((resolve) => resolve(mockUser))
-            );
-            userController = new UserController(instance(mockDataController), mockResetPassDataController, mockRequest, mockRequest);
+            userController = new UserController(dummy, dummy);
             userController.createNewUser(mockRequest, mockResponse);
-            verify(mockDataController.saveUser(anything())).called();
+            userDataControllerStub.restore();
+            expect(userDataControllerStub.called).to.be.true;
         });
-
-        test("Sad case: should call response json", (done) => {
-            const mockResponse: any = {
-                json: (error: any) => {
-                    expect(error).have.property("error");
-                    done()
-                },
-                status: (statusCode: number) => {
-                    expect(statusCode).to.be.equal(400);
-                    return mockResponse;
-                }
-            };
-            when(mockDataController.saveUser(anything())).thenReturn(
-                new Promise<any>((resolve, reject) => reject(mockResult))
-            );
-            userController = new UserController(instance(mockDataController), mockResetPassDataController, mockRequest, mockRequest);
-            userController.createNewUser(mockRequest, mockResponse);
-            verify(mockDataController.saveUser(anything())).called();
-        })
+        /*
+                test("Sad case: should call response json", (done) => {
+                    const mockResponse: any = {
+                        json: (error: any) => {
+                            expect(error).have.property("error");
+                            done()
+                        },
+                        status: (statusCode: number) => {
+                            expect(statusCode).to.be.equal(400);
+                            return mockResponse;
+                        }
+                    };
+                    when(mockDataController.saveUser(anything())).thenReturn(
+                        new Promise<any>((resolve, reject) => reject(mockResult))
+                    );
+                    userController = new UserController(instance(mockDataController), mockResetPassDataController, mockRequest, mockRequest);
+                    userController.createNewUser(mockRequest, mockResponse);
+                    verify(mockDataController.saveUser(anything())).called();
+                })*/
     });
 
-    suite("showRegistrationForm", () => {
+    suite.skip("showRegistrationForm", () => {
 
         let renderWasCalled = false;
         let renderPage: string;
@@ -83,5 +85,4 @@ suite("UserController", () => {
             done();
         })
     })
-*/
 });
