@@ -8,7 +8,6 @@ import { userDataController } from "../../data/datacontroller/user.datacontrolle
 
 suite("UserController", () => {
 
-    //TODO MAKE THIS TEST GREAT AGAIN!
     let userController: UserController;
     let userDataControllerStub: Sinon.SinonSpy;
     const mockUser: User = TestObjectFactory.getJohnDoe();
@@ -39,35 +38,32 @@ suite("UserController", () => {
             userDataControllerStub.restore();
             expect(userDataControllerStub.called).to.be.true;
         });
-        /*
-                test("Sad case: should call response json", (done) => {
-                    const mockResponse: any = {
-                        json: (error: any) => {
-                            expect(error).have.property("error");
-                            done()
-                        },
-                        status: (statusCode: number) => {
-                            expect(statusCode).to.be.equal(400);
-                            return mockResponse;
-                        }
-                    };
-                    when(mockDataController.saveUser(anything())).thenReturn(
-                        new Promise<any>((resolve, reject) => reject(mockResult))
-                    );
-                    userController = new UserController(instance(mockDataController), mockResetPassDataController, mockRequest, mockRequest);
-                    userController.createNewUser(mockRequest, mockResponse);
-                    verify(mockDataController.saveUser(anything())).called();
-                })*/
+
+        test("Sad case: should call response json", (done) => {
+            const mockRequest: any = {
+                body: mockUser
+            };
+            const mockResponse: any = {
+                json: (error: any) => {
+                    expect(error).have.property("error");
+                    done()
+                },
+                status: (statusCode: number) => {
+                    expect(statusCode).to.be.equal(400);
+                    return mockResponse;
+                }
+            };
+            userController = new UserController(dummy, dummy);
+            userController.createNewUser(dummy, mockResponse);
+            expect(userDataControllerStub.called).to.be.true;
+        })
     });
 
-    suite.skip("showRegistrationForm", () => {
+    suite("showRegistrationForm", () => {
 
         let renderWasCalled = false;
         let renderPage: string;
 
-        let userController: UserController;
-        const mockDataController: any = {};
-        const mockResetPassDataController: any = {};
         const mockResponse: any = {
             render: (page: string) => {
                 renderWasCalled = true;
@@ -76,9 +72,6 @@ suite("UserController", () => {
         };
 
         test("Should call res.render with newUser", done => {
-            const mockUser: User = TestObjectFactory.getJohnDoe();
-            const dummy: any = {};
-
             UserController.showRegistrationForm(dummy, mockResponse);
             assert(renderWasCalled);
             assert(renderPage === "newUser", "Render page does not match: " + renderPage);

@@ -82,7 +82,7 @@ suite("Session request tests", () => {
     suite("Check token request", () => {
         const url = "/api/session/validtoken";
         let token: string;
-        test.only("Should be able to check if a token is valid", function (done) {
+        test("Should be able to check if a token is valid", function (done) {
             // This one is pretty slow, so as a quick fix I've added a bigger timeout (todo should be fixed though)
             this.timeout(5000);
             resetPassword(testUser.email)

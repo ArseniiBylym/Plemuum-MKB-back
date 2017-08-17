@@ -26,8 +26,6 @@ let groupController: GroupController;
 /* #########################     PUBLIC      ########################## */
 
 const getUserController = (): UserController => getController(userController, UserController,
-    userDataController,
-    resetPasswordDataController,
     new EmailService(),
     new FileTransferService());
 
