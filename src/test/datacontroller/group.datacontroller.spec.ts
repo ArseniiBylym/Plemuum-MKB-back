@@ -129,5 +129,56 @@ suite("Group datacontroller", () => {
                     done();
                 })
         })
+    });
+
+    suite("Update existing group", () => {
+        test("Should be able to update and existing group", done => {
+            const testGroup = {
+                "_id": "599312af1b31d008b6bd2786",
+                "updatedAt": "2017-08-15T15:26:39.272Z",
+                "createdAt": "2017-08-15T15:26:39.272Z",
+                "name": "Test Group F",
+                "users": [
+                    "5984342227cd340363dc84af",
+                    "5984342227cd340363dc84c7"
+                ],
+                "skills": [],
+                "todoCardRelations": [],
+                "answerCardRelations": []
+            };
+            testGroup.name = testGroup.name + " UPDATED";
+            GroupDataController.updateGroup('hipteam', testGroup._id, testGroup)
+                .then((res) => {
+                    console.log(res);
+                    done();
+                })
+                .catch((err) => done(err))
+        });
+
+        test("Should get an error if the group does not exist", done => {
+            const testGroup = {
+                "_id": "599312af1b31d008b6bd278c",  // This one does not exist
+                "updatedAt": "2017-08-15T15:26:39.272Z",
+                "createdAt": "2017-08-15T15:26:39.272Z",
+                "name": "Test Group F",
+                "users": [
+                    "5984342227cd340363dc84af",
+                    "5984342227cd340363dc84c7"
+                ],
+                "skills": [],
+                "todoCardRelations": [],
+                "answerCardRelations": []
+            };
+            testGroup.name = testGroup.name + " UPDATED";
+            GroupDataController.updateGroup('hipteam', testGroup._id, testGroup)
+                .then((res) => {
+                    fail("Should catch and error!");
+                    done();
+                })
+                .catch((err) => {
+                    expect(err.message).to.be.equal('Group was not found');
+                    done();
+                })
+        })
     })
 });

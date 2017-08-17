@@ -35,6 +35,15 @@ const GroupDataController = {
                     throw new Error("User is not part of this group");
                 }
             });
+    },
+
+    updateGroup: (orgId: string, groupId: string, group: Group): Promise<any> => {
+        return GroupCollection(orgId).update({_id: groupId}, group).exec()
+            .then((result) => {
+                if (result.nModified === 0) {
+                    throw new Error('Group was not found');
+                }
+            });
     }
 
 };

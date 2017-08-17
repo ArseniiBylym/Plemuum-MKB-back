@@ -26,7 +26,7 @@ export default (app: Express, sessionController: SessionController) => {
      */
 
     /**
-     * @api {DELETE} /api/session Log-in user
+     * @api {DELETE} /api/session Log-out user
      * @apiName logout
      * @apiGroup Session
      * @apiDescription If the user is authenticated successfully, a Bearer token will be returned.

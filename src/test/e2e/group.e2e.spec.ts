@@ -166,9 +166,7 @@ suite("Group request test", () => {
                     expect(response.body.success).to.be.equal("User has been removed");
                     done();
                 })
-                .catch((err) => {
-                    done(err);
-                });
+                .catch((err) => done(err));
         });
 
         test("Should not be able to remove a user from a group if the user is not part of that group",
@@ -193,4 +191,57 @@ suite("Group request test", () => {
                     });
             })
     });
+
+    suite("Update existing group", () => {
+        test("Should be able to update an existing group", done => {
+
+            const testGroup = {
+                "_id": "599312af1b31d008b6bd2786",
+                "name": "Updated via API",
+                "users": [],
+                "skills": [],
+                "todoCardRelations": [],
+                "answerCardRelations": []
+            };
+            const url = `/api/${orgId}/groups/${testGroup._id}`;
+
+            request(app)
+                .put(url)
+                .send(testGroup)
+                .set(basicAuthHeader)
+                .expect(200)
+                .then(response => {
+                    should().exist(response.body);
+                    expect(response.body).to.haveOwnProperty('success');
+                    expect(response.body.success).to.be.equal("Group has been updated");
+                    done();
+                })
+                .catch((err) => done(err));
+        });
+
+        test("Should not be able to update a group if the group does not exist", done => {
+
+            const testGroup = {
+                "_id": "599312af1b31d008b6bd2756",
+                "name": "Updated via API",
+                "users": [],
+                "skills": [],
+                "todoCardRelations": [],
+                "answerCardRelations": []
+            };
+            const url = `/api/${orgId}/groups/${testGroup._id}`;
+
+            request(app)
+                .put(url)
+                .send(testGroup)
+                .set(basicAuthHeader)
+                .expect(400)
+                .then(response => {
+                    should().exist(response.body);
+                    expect(response.body).to.haveOwnProperty('error');
+                    done();
+                })
+                .catch((err) => done(err));
+        });
+    })
 });

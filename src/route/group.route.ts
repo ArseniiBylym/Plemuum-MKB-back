@@ -11,6 +11,7 @@ export default (app: Express, groupController: GroupController) => {
      * @apiDescription Add a new groups to organization.
      *
      * @apiPermission basic
+     * @apiHeader {String} Authorization Basic username:password
      *
      * @apiParam {String} name The name of the group.
      * @apiParam {String[]} [users] The participant user ids in a string array.
@@ -38,6 +39,7 @@ export default (app: Express, groupController: GroupController) => {
      * @apiDescription Get a specific group by ID
      *
      * @apiPermission bearer
+     * @apiHeader {String} Authorization Bearer token
      *
      * @apiSuccess (Success 200) {String} name The name of the group.
      * @apiSuccess (Success 200) {String[]} [users] The participant user ids in a string array.
@@ -50,8 +52,29 @@ export default (app: Express, groupController: GroupController) => {
      *
      * @apiVersion 2.0.0
      */
+
+    /**
+     * @api {PUT} /api/:orgId/groups/:groupId Update a group
+     * @apiName Update a group
+     * @apiGroup Group
+     * @apiDescription Update a group
+     *
+     * @apiPermission basic
+     * @apiHeader {String} Authorization Basic username:password
+     *
+     * @apiParam {String} name The name of the group.
+     * @apiParam {String[]} [users] The participant user ids in a string array.
+     * @apiParam {String[]} [skills] Group skill ids.
+     * @apiParam {String[]} [answerCardRelations] Group answer card relations with other groups (group ids).
+     * @apiParam {String[]} [todoCardRelations] Group todo card relations with other groups (group ids).
+     *
+     * @apiError (Error 400) {Error} CouldNotFind Could not find the group by the given ID, or request was incorrect
+     *
+     * @apiVersion 2.0.0
+     */
     app.route('/api/:orgId/groups/:groupId')
-        .get(passport.authenticate('bearer', {session: false}), groupController.getGroupById.bind(groupController));
+        .get(passport.authenticate('bearer', {session: false}), groupController.getGroupById.bind(groupController))
+        .put(passport.authenticate('basic', {session: false}), groupController.updateGroup.bind(groupController));
 
     /**
      * @api {GET} /api/:orgId/groups/user/:userId Get all groups a user participates in
@@ -60,11 +83,10 @@ export default (app: Express, groupController: GroupController) => {
      * @apiDescription Get all groups a user participates in
      *
      * @apiPermission bearer
+     * @apiHeader {String} Authorization Bearer token
      *
      * @apiSuccess (Success 200) {Group[]} - An array of group object.
-     *
      * @apiVersion 2.0.0
-     *
      */
     app.route('/api/:orgId/groups/user/:userId')
         .get(passport.authenticate('bearer', {session: false}), groupController.getUserGroups.bind(groupController));
@@ -76,11 +98,10 @@ export default (app: Express, groupController: GroupController) => {
      * @apiDescription Put a user into a group
      *
      * @apiPermission basic
+     * @apiHeader {String} Authorization Basic username:password
      *
      * @apiParam {String} userId User's ID.
-     *
      * @apiVersion 2.0.0
-     *
      */
 
     /**
@@ -90,11 +111,10 @@ export default (app: Express, groupController: GroupController) => {
      * @apiDescription Remove a user from a group
      *
      * @apiPermission basic
+     * @apiHeader {String} Authorization Basic username:password
      *
      * @apiParam {String} userId User's ID.
-     *
      * @apiVersion 2.0.0
-     *
      */
     app.route('/api/:orgId/groups/:groupId/user')
         .post(passport.authenticate('basic', {session: false}), groupController.putUserIntoGroup.bind(groupController))

@@ -31,4 +31,10 @@ export default class GroupController {
             .then((group) => res.status(200).send({success: "User has been removed"}))
             .catch((err) => res.status(400).send({error: err}))
     }
+
+    public updateGroup(req: any, res: any, next: Function) {
+        GroupDataController.updateGroup(req.params.orgId, req.params.groupId, req.body)
+            .then((group) => res.status(200).send({success: "Group has been updated"}))
+            .catch((err) => res.status(400).send({error: err}))
+    }
 }
