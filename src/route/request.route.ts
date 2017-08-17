@@ -99,7 +99,6 @@ export default (app: Express, requestController: RequestController) => {
      * @apiParam {String} userId User unique id
      * @apiParam {String} requestId Request unique id
      *
-     * @apiUse flat_user_list_data
      */
     app.route("/api/:orgId/user/:userId/requests/:requestId/recipients")
         .get(passport.authenticate('bearer', {session: false}), requestController.getRecipientUsersFromRequest.bind(requestController));

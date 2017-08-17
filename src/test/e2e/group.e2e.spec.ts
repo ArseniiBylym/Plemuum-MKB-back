@@ -11,6 +11,8 @@ import { expect, should } from 'chai';
 
 suite("Group request test", () => {
 
+    const orgId = "hipteam";
+
     before((done) => {
         getDatabaseManager().openConnection(config.mongoUrl)
             .then(() => fixtureLoader())
@@ -27,71 +29,168 @@ suite("Group request test", () => {
             .catch(() => done());
     });
 
-    const orgId = "hipteam";
-    test("Should be able to create a group, response should contain a group object, return 201", done => {
-        const url = `/api/${orgId}/groups`;
+    suite("Create group", () => {
+        test("Should be able to create a group, response should contain a group object, return 201", done => {
+            const url = `/api/${orgId}/groups`;
 
-        request(app)
-            .post(url)
-            .send(getTestGroup())
-            .set(basicAuthHeader)
-            .expect(201)
-            .then(response => {
-                validateGroup(response.body);
-                done();
-            })
-            .catch((err) => {
-                fail(err);
-                done();
-            });
+            request(app)
+                .post(url)
+                .send(getTestGroup())
+                .set(basicAuthHeader)
+                .expect(201)
+                .then(response => {
+                    validateGroup(response.body);
+                    done();
+                })
+                .catch((err) => {
+                    fail(err);
+                    done();
+                });
+        });
     });
 
-    test("Should be able to get a group by its id", done => {
-        const groupID = "599312971b31d008b6bd2781";
-        const url = `/api/${orgId}/groups/${groupID}`;
+    suite("Get group by ID", () => {
+        test("Should be able to get a group by its id", done => {
+            const groupID = "599312971b31d008b6bd2781";
+            const url = `/api/${orgId}/groups/${groupID}`;
 
-        authenticate(testUser)
-            .then((token) => {
+            authenticate(testUser)
+                .then((token) => {
+                    request(app)
+                        .get(url)
+                        .send(getTestGroup())
+                        .set(bearerAuthHeader(token))
+                        .expect(200)
+                        .then(response => {
+                            should().exist(response.body);
+                            validateGroup(response.body);
+                            expect(response.body._id.toString()).to.be.equal(groupID);
+                            done();
+                        })
+                        .catch((err) => {
+                            fail(err);
+                            done();
+                        });
+                })
+        });
+    });
+
+    suite("Get groups for user", () => {
+        test("Should be able to get all groups a user participates in", done => {
+
+            const userID = "5984342227cd340363dc84af";
+            const url = `/api/${orgId}/groups/user/${userID}`;
+
+            authenticate(testUser)
+                .then((token) => {
+                    request(app)
+                        .get(url)
+                        .send(getTestGroup())
+                        .set(bearerAuthHeader(token))
+                        .expect(200)
+                        .then(response => {
+                            should().exist(response.body);
+                            expect(response.body).to.be.an.instanceof(Array);
+                            response.body.forEach((group: any) => validateGroup(group));
+                            done();
+                        })
+                        .catch((err) => {
+                            fail(err);
+                            done();
+                        });
+                })
+        });
+    });
+
+    suite("Put user into group", () => {
+        test("Should be able to put a user in a group", done => {
+
+            const userID = "5984342227cd340363dc84af";
+            const groupID = "599312a81b31d008b6bd2783";
+            const url = `/api/${orgId}/groups/${groupID}/user`;
+
+            request(app)
+                .post(url)
+                .send({userId: userID})
+                .set(basicAuthHeader)
+                .expect(200)
+                .then(response => {
+                    should().exist(response.body);
+                    expect(response.body).to.haveOwnProperty('success');
+                    expect(response.body.success).to.be.equal("User has been added");
+                    done();
+                })
+                .catch((err) => {
+                    done(err);
+                });
+        });
+
+        test("Should not be able to put a user in a group if the user is already part of that group",
+            done => {
+
+                const userID = "5984342227cd340363dc84af";
+                const groupID = "599312a31b31d008b6bd2782";
+                const url = `/api/${orgId}/groups/${groupID}/user`;
+
                 request(app)
-                    .get(url)
-                    .send(getTestGroup())
-                    .set(bearerAuthHeader(token))
-                    .expect(200)
+                    .post(url)
+                    .send({userId: userID})
+                    .set(basicAuthHeader)
+                    .expect(400)
                     .then(response => {
                         should().exist(response.body);
-                        validateGroup(response.body);
-                        expect(response.body._id.toString()).to.be.equal(groupID);
+                        expect(response.body).to.haveOwnProperty('error');
                         done();
                     })
                     .catch((err) => {
-                        fail(err);
-                        done();
+                        done(err);
                     });
             })
     });
 
-    test("Should be able to get all groups a user participates in", done => {
+    suite("Remove user from group", () => {
+        test("Should be able to remove a user from a group", done => {
 
-        const userID = "5984342227cd340363dc84af";
-        const url = `/api/${orgId}/groups/user/${userID}`;
+            const userID = "5984342227cd340363dc84af";
+            const groupID = "599312971b31d008b6bd2781";
+            const url = `/api/${orgId}/groups/${groupID}/user`;
 
-        authenticate(testUser)
-            .then((token) => {
+            request(app)
+                .delete(url)
+                .send({userId: userID})
+                .set(basicAuthHeader)
+                .expect(200)
+                .then(response => {
+                    should().exist(response.body);
+                    expect(response.body).to.haveOwnProperty('success');
+                    expect(response.body.success).to.be.equal("User has been removed");
+                    done();
+                })
+                .catch((err) => {
+                    done(err);
+                });
+        });
+
+        test("Should not be able to remove a user from a group if the user is not part of that group",
+            done => {
+
+                const userID = "5984342227cd340363dc84af";
+                const groupID = "599312aa1b31d008b6bd2784";
+                const url = `/api/${orgId}/groups/${groupID}/user`;
+
                 request(app)
-                    .get(url)
-                    .send(getTestGroup())
-                    .set(bearerAuthHeader(token))
-                    .expect(200)
+                    .delete(url)
+                    .send({userId: userID})
+                    .set(basicAuthHeader)
+                    .expect(400)
                     .then(response => {
                         should().exist(response.body);
-                        expect(response.body).to.be.an.instanceof(Array);
-                        response.body.forEach((group: any) => validateGroup(group));
+                        expect(response.body).to.haveOwnProperty('error');
                         done();
                     })
                     .catch((err) => {
-                        fail(err);
-                        done();
+                        done(err);
                     });
             })
-    })
+    });
 });

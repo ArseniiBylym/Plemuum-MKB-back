@@ -7,12 +7,9 @@ import SessionController from "../controller/session.controller";
 import EmailService from "../service/email/mail.service";
 import FileTransferService from "../service/file/filetransfer.service";
 import GroupController from "../controller/group.controller";
-import { userDataController } from "../data/datacontroller/user.datacontroller";
 import { feedbackDataController } from "../data/datacontroller/feedback.datacontroller";
-import { groupDataController } from "../data/datacontroller/group.datacontroller";
 import { organizationDataController } from "../data/datacontroller/organization.datacontroller";
 import { requestDataController } from "../data/datacontroller/request.datacontroller";
-import { resetPasswordDataController } from "../data/datacontroller/resetpassword.datacontroller";
 import { tagDataController } from "../data/datacontroller/tag.datacontroller";
 
 let userController: UserController;
@@ -43,8 +40,7 @@ const getRequestController = (): RequestController => getController(requestContr
 
 const getSessionController = (): SessionController => getController(sessionController, SessionController);
 
-const getGroupController = (): GroupController => getController(groupController, GroupController,
-    groupDataController);
+const getGroupController = (): GroupController => getController(groupController, GroupController);
 
 /* #########################     PRIVATE      ########################## */
 
