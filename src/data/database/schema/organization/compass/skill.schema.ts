@@ -20,7 +20,10 @@ export let SkillSchema = new Schema({
     name: {required: true, type: String, index: true},
     sentences: {required: false, type: [SentenceSchema], index: true},
     inactiveSentences: {required: false, type: [SentenceSchema], index: true},
-}, {timestamps: true});
+}, {
+    versionKey: false,
+    timestamps: true
+});
 
 const SkillCollection = (dbName: string) => getDatabaseManager().createCollection<SkillModel>(
     dbName, "Skill", SkillSchema);
