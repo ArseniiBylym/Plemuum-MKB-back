@@ -4,8 +4,46 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as Sinon from 'sinon';
 import UserDataController from "../../data/datacontroller/user.datacontroller";
+import OrganizationDataController from "../../data/datacontroller/organization.datacontroller";
+import CompassDataController from "../../data/datacontroller/compass.datacontroller";
 
 suite("CompassController tests", () => {
+
+    suite.only("generateTodo", () => {
+        test("Should return a promise with a saved compass todo", done => {
+            const getOrganizationByDbNameStub = sinon.stub(OrganizationDataController, "getOrganizationByDbName")
+                .returns(Promise.resolve({dbName: "mockOrganization"}));
+            const getAboutUserStub = sinon.stub(CompassController, "getAboutUser")
+                .returns(Promise.resolve({_id: "aboutUserId"}));
+            const getAllSkillsStub = sinon.stub(CompassDataController, "getAllSkills")
+                .returns(Promise.resolve([]));
+            const buildUpNewTodoResponseStub = sinon.stub(CompassController, "buildUpNewTodoResponse")
+                .returns(Promise.resolve([]));
+            const saveCompassTodoStub = sinon.stub(CompassDataController, "saveCompassTodo")
+                .returns(Promise.resolve({result: "result"}));
+
+            const dummy: any = {};
+            CompassController.generateTodo(dummy, "", "")
+                .then((result) => {
+                    expect(result).to.be.deep.equal({result: "result"});
+
+                    getOrganizationByDbNameStub.restore();
+                    getAboutUserStub.restore();
+                    getAllSkillsStub.restore();
+                    buildUpNewTodoResponseStub.restore();
+                    saveCompassTodoStub.restore();
+
+                    expect(getOrganizationByDbNameStub.calledOnce).to.be.true;
+                    expect(getAboutUserStub.calledOnce).to.be.true;
+                    expect(getAllSkillsStub.calledOnce).to.be.true;
+                    expect(buildUpNewTodoResponseStub.calledOnce).to.be.true;
+                    expect(saveCompassTodoStub.calledOnce).to.be.true;
+
+                    done();
+                })
+                .catch((err) => done(err));
+        })
+    });
 
     suite("checkOrganization", () => {
         test("Should return a promise with the given organization", done => {
@@ -16,10 +54,9 @@ suite("CompassController tests", () => {
                 compassGenerationTime: 3
             };
             try {
-                CompassController.checkOrganization(organization).then((org) => {
-                    expect(org).to.be.deep.equal(organization);
-                    done();
-                })
+                const result = CompassController.checkOrganization(organization);
+                expect(result).to.be.deep.equal(organization);
+                done();
             } catch (err) {
                 done(err)
             }
@@ -29,8 +66,8 @@ suite("CompassController tests", () => {
         test("Should throw any exception", done => {
             try {
                 let organization: any;
-                CompassController.checkOrganization(organization)
-                    .then((org) => done(new Error('This should fail!')))
+                const result = CompassController.checkOrganization(organization);
+                done(new Error('This should fail!'));
             } catch (err) {
                 expect(err.message).to.be.equal("Organization nonexistent!");
                 done()
@@ -48,10 +85,9 @@ suite("CompassController tests", () => {
                 orgIds: ["orgIds"]
             };
             try {
-                CompassController.checkAboutUser(user).then((u: any) => {
-                    expect(u).to.be.deep.equal(user);
-                    done();
-                })
+                const result = CompassController.checkAboutUser(user);
+                expect(result).to.be.deep.equal(user);
+                done();
             } catch (err) {
                 done(err)
             }
@@ -61,14 +97,14 @@ suite("CompassController tests", () => {
         test("Should throw any exception", done => {
             try {
                 let user: any;
-                CompassController.checkAboutUser(user)
-                    .then((org) => done(new Error('This should fail!')))
+                const result = CompassController.checkAboutUser(user);
+                done(new Error('This should fail!'))
             } catch (err) {
                 expect(err.message).to.be.equal("User could not be found");
                 done()
             }
         })
-    })
+    });
 
     suite("getAboutUser", () => {
         test("Should call UserDataController.getUserById", done => {
@@ -117,27 +153,25 @@ suite("CompassController tests", () => {
                 }
             ];
 
-            CompassController.buildUpNewTodoResponse(senderId, recipientId, organization, aboutUser, skills)
-                .then(value => {
-                    expect(value).to.haveOwnProperty("aboutUser");
-                    expect(value).to.haveOwnProperty("recipientId");
-                    expect(value).to.haveOwnProperty("sender");
-                    expect(value).to.haveOwnProperty("message");
-                    expect(value).to.haveOwnProperty("sentences");
+            const result: any = CompassController.buildUpNewTodoResponse(senderId, recipientId, organization, aboutUser, skills);
+            expect(result).to.haveOwnProperty("aboutUser");
+            expect(result).to.haveOwnProperty("recipientId");
+            expect(result).to.haveOwnProperty("sender");
+            expect(result).to.haveOwnProperty("message");
+            expect(result).to.haveOwnProperty("sentences");
 
-                    expect(value.aboutUser).to.be.equal(aboutUser._id);
-                    expect(value.recipientId).to.be.equal(recipientId);
-                    expect(value.sender).to.be.equal(senderId);
-                    expect(value.message).to.be.equal('What do you think about this common? ' +
-                        'Would be cool if you could answer some things about the common');
+            expect(result.aboutUser).to.be.equal(aboutUser._id);
+            expect(result.recipientId).to.be.equal(recipientId);
+            expect(result.sender).to.be.equal(senderId);
+            expect(result.message).to.be.equal('What do you think about this common? ' +
+                'Would be cool if you could answer some things about the common');
 
-                    expect(value.sentences).to.be.instanceof(Array);
-                    expect(value.sentences).to.have.lengthOf(3);
-                    expect(value.sentences[0]).to.haveOwnProperty("message");
-                    expect(value.sentences[0]).to.haveOwnProperty("skillName");
+            expect(result.sentences).to.be.instanceof(Array);
+            expect(result.sentences).to.have.lengthOf(3);
+            expect(result.sentences[0]).to.haveOwnProperty("message");
+            expect(result.sentences[0]).to.haveOwnProperty("skillName");
 
-                    done();
-                }).catch((err) => done(err));
+            done();
         })
     })
 

@@ -38,5 +38,5 @@ export default (app: Express, compassController: CompassController) => {
      * @apiUse dates
      */
     app.route("/api/:orgId/compasstodo")
-        .post(passport.authenticate('bearer', { session: false }), compassController.generateTodo.bind(compassController));
+        .post(passport.authenticate('bearer', { session: false }), compassController.generateTodoController.bind(compassController));
 }
