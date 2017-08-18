@@ -7,8 +7,6 @@ import SessionController from "../controller/session.controller";
 import EmailService from "../service/email/mail.service";
 import FileTransferService from "../service/file/filetransfer.service";
 import GroupController from "../controller/group.controller";
-import { feedbackDataController } from "../data/datacontroller/feedback.datacontroller";
-import { organizationDataController } from "../data/datacontroller/organization.datacontroller";
 import { requestDataController } from "../data/datacontroller/request.datacontroller";
 import { tagDataController } from "../data/datacontroller/tag.datacontroller";
 
@@ -26,14 +24,12 @@ const getUserController = (): UserController => getController(userController, Us
     new EmailService(),
     new FileTransferService());
 
-const getFeedbackController = (): FeedbackController => getController(feedbackController, FeedbackController,
-    feedbackDataController);
+const getFeedbackController = (): FeedbackController => getController(feedbackController, FeedbackController);
 
 const getTagController = (): TagController => getController(tagController, TagController,
     tagDataController);
 
-const getOrganizationController = (): OrganizationController => getController(organizationController, OrganizationController,
-    organizationDataController);
+const getOrganizationController = (): OrganizationController => getController(organizationController, OrganizationController);
 
 const getRequestController = (): RequestController => getController(requestController, RequestController,
     requestDataController);

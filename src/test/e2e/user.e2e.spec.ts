@@ -26,11 +26,11 @@ suite("User request tests", () => {
             .catch(() => done());
     });
 
-    suite('Create new user', () => {
+    suite('Create new common', () => {
 
         const url = `/api/register/user`;
 
-        test("POST: Correct request response should contain a user and return 201", done => {
+        test("POST: Correct request response should contain a common and return 201", done => {
             request(app)
                 .post(url)
                 .set(basicAuthHeader)
@@ -69,7 +69,7 @@ suite("User request tests", () => {
                 });
         })
     });
-    suite('Get one user from organization', () => {
+    suite('Get one common from organization', () => {
         const orgId = "hipteam";
         const userId = "5984342227cd340363dc84ab";
         const url = `/api/${orgId}/user/${userId}`;
@@ -86,12 +86,12 @@ suite("User request tests", () => {
                             modelValidator.validateUser(user);
                             expect(user._id).to.be.equal(userId);
                             done();
-                        });
+                        }).catch((err) => done(err));
                 });
         });
     });
 
-    suite.skip('Reset user password', () => {
+    suite.skip('Reset common password', () => {
         const url = `/api/resetPassword`;
         test('Should return 200', done => {
             request(app)
@@ -134,7 +134,7 @@ suite("User request tests", () => {
         });
     });
 
-    suite.skip('Change user picture', () => {
+    suite.skip('Change common picture', () => {
         const url = `/api/profile/setpicture`;
 
         test('Should return 200', done => {

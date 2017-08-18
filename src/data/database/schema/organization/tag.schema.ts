@@ -1,6 +1,6 @@
 import { Connection, Document, Model, Schema } from 'mongoose';
-import Tag from "../../models/tag.model";
-import { getDatabaseManager } from "../../../factory/database.factory";
+import Tag from "../../../models/organization/tag.model";
+import { getDatabaseManager } from "../../../../factory/database.factory";
 
 export let TagSchema = new Schema({
     title: {required: true, type: String, index: true},

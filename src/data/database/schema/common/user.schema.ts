@@ -1,6 +1,6 @@
 import { Connection, Document, Model, Schema } from "mongoose";
-import { User } from "../../models/user.model";
-import { getDatabaseManager } from "../../../factory/database.factory"
+import { getDatabaseManager } from "../../../../factory/database.factory"
+import { User } from "../../../models/common/user.model";
 
 
 const USER_COLLECTION = "users";

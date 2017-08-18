@@ -4,7 +4,7 @@ import * as TestObjectFactory from "../../util/testobject.factory"
 import app from '../../app';
 import { authenticate, fixtureLoader, testUser } from "../mock/fixture.loader";
 import * as modelValidator from "../../util/model.validator"
-import Feedback from "../../data/models/feedback.model";
+import Feedback from "../../data/models/organization/feedback.model";
 import { getDatabaseManager } from "../../factory/database.factory";
 import config from "../../../config/config";
 import { bearerAuthHeader } from "../header.helper";
@@ -44,7 +44,8 @@ suite("Feedback request test", () => {
                             expect(response.body).to.be.an.instanceOf(Array);
                             assert(response.body.length >= 1, "Check if there's at least one element in the response array");
                             done();
-                        });
+                        })
+                        .catch((err) => done(err));
                 });
         })
     });
@@ -63,7 +64,7 @@ suite("Feedback request test", () => {
                         .then(response => {
                             modelValidator.validateFeedback(response.body);
                             done();
-                        });
+                        }).catch((err) => done(err));
                 });
         });
     });
@@ -83,7 +84,7 @@ suite("Feedback request test", () => {
                         .then(response => {
                             modelValidator.validateError(response.body);
                             done();
-                        });
+                        }).catch((err) => done(err));
                 });
         });
 
@@ -113,7 +114,7 @@ suite("Feedback request test", () => {
                         .then(response => {
                             modelValidator.validateError(response.body);
                             done();
-                        });
+                        }).catch((err) => done(err));
                 });
         });
 
@@ -136,7 +137,7 @@ suite("Feedback request test", () => {
                                 assert(feedback.senderId === userId, 'senderId should be the same as the userId')
                             });
                             done();
-                        });
+                        }).catch((err) => done(err));
                 });
         })
     });

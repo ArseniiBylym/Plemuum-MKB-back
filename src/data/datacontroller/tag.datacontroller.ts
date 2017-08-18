@@ -1,4 +1,4 @@
-import { TagCollection } from "../database/schema/tag.schema";
+import { TagCollection } from "../database/schema/organization/tag.schema";
 
 interface TagDataController {
     getTags: (orgId: string) => Promise<any>

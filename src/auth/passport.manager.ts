@@ -3,9 +3,9 @@ import { Request } from 'express';
 import * as localStrategy from 'passport-local';
 import * as bearerStrategy from 'passport-http-bearer';
 import * as basicStrategy from 'passport-http'
-import { UserCollection, UserModel } from "../data/database/schema/user.schema";
 import config from "../../config/config";
-import { userDataController } from "../data/datacontroller/user.datacontroller";
+import UserDataController from "../data/datacontroller/user.datacontroller";
+import { UserCollection, UserModel } from "../data/database/schema/common/user.schema";
 
 function passportInit() {
 
@@ -37,7 +37,7 @@ function passportInit() {
 }
 
 function localAuth(email: string, password: string, done: Function): void {
-    userDataController.getUserByEmail(email)
+    UserDataController.getUserByEmail(email)
         .then((user: UserModel) => {
             return !user
                 ? done(null, false)
@@ -49,7 +49,7 @@ function localAuth(email: string, password: string, done: Function): void {
 }
 
 function bearerTokenAuth(req: Request, token: any, done: Function) {
-    userDataController.getUserByToken(token)
+    UserDataController.getUserByToken(token)
         .then((user: UserModel) => {
             if (!user) {
                 return done(null, false);

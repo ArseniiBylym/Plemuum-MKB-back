@@ -2,7 +2,7 @@ interface Organization {
     name: string;
     dbName: string;
     todoSentenceNumber: Number;
-    compasseGenerationTime: Number;
+    compassGenerationTime: Number;
 }
 
 export default Organization

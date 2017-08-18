@@ -1,0 +1,68 @@
+[
+  {
+    "_id": "5940f5f44d0d550007d863dc",
+    "name": "Integrity",
+    "sentences": [
+      {
+        "message": "Takes responsibility for own decisions and behavior."
+      },
+      {
+        "message": "Its willing to admit own mistakes"
+      },
+      {
+        "message": "Questions practices which might violate rules of fairness."
+      }
+    ],
+    "inactiveSentences": []
+  },
+  {
+    "_id": "5940f6044d0d550007d863df",
+    "name": "Performance Management",
+    "sentences": [
+      {
+        "message" : "Defines clear and measurable objectives."
+      },
+
+      {
+        "message" : "Recognize great performance."
+      },
+
+      {
+        "message" : "Supports the development of their colleagues. Gives frequent, detailed feedback."
+      },
+
+      {
+        "message" : "Supports the develment of their colleagues."
+      }],
+    "inactiveSentences": []
+  },
+  {
+    "_id": "5940f6144d0d550007d863e2",
+    "name": "Interpersonal Effectiveness",
+    "sentences": [
+      {
+        "message" : "Avoids using power when dealing with conflicts."
+      },
+      {
+        "message" : "Brings hidden conflicts to the open. Communicates complex ideas clearly."
+      }
+    ],
+    "inactiveSentences": []
+  },
+  {
+    "_id": "5940f61e4d0d550007d863e5",
+    "name": "Diversity",
+    "sentences": [
+      {
+        "message" : "Listen to people who represent different opinions"
+      },
+      {
+        "message" : "Creates an inclusive environment, where diversity is recognized."
+      },
+      {
+        "message" : "Treats everyone with equality high respect regardless of position, gender, age or nationality."
+      }
+    ],
+    "inactiveSentences": []
+  }
+]

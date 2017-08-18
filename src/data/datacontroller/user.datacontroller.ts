@@ -1,27 +1,11 @@
-import { User } from "../models/user.model";
 import { Model } from 'mongoose';
-import { UserCollection } from "../database/schema/user.schema";
 import { TokenObject } from "../../auth/token.manager";
-import { ResetPasswordCollection } from "../database/schema/resetpassword.schema";
 import * as crypto from 'crypto';
+import { User } from "../models/common/user.model";
+import { UserCollection } from "../database/schema/common/user.schema";
+import { ResetPasswordCollection } from "../database/schema/common/resetpassword.schema";
 
-interface UserDataController {
-    saveUser: (user: User) => Promise<any>
-    getOrganizationUsers: (orgId: string) => Promise<any>
-    getUserById: (orgId: string, userId: string) => Promise<any>
-    getUserByIdWithoutOrgId: (userId: string) => Promise<any>
-    getUserByToken: (token: string) => Promise<any>
-    getUserByEmail: (email: string) => Promise<any>
-    updateUserToken: (userId: string, tokenObj: TokenObject) => Promise<any>
-    changeTokens: (userId: string, tokens: any) => Promise<any>
-    getResetToken: (token: any) => Promise<any>
-    changeUserPassword: (email: string, newPassword: string) => Promise<any>
-    changeUserPasswordByUserId: (userId: string, newPassword: string) => Promise<any>
-    setUserPic: (userId: string, pictureUrl: string) => Promise<any>
-    generateToken: (days: number) => any
-}
-
-const userDataController: UserDataController = {
+const UserDataController = {
     saveUser: function (user: User): Promise<any> {
         return new (UserCollection())(user).save()
             .then((savedUser) => UserCollection().findById(savedUser._id).lean().exec())
@@ -31,8 +15,8 @@ const userDataController: UserDataController = {
         return UserCollection().find({orgIds: {$in: [orgId]}}).lean().exec();
     },
 
-    getUserById: function (orgId: string, userId: string): Promise<any> {
-        return UserCollection().findOne({$and: [{orgIds: {$in: [orgId]}}, {_id: userId}]}).lean().exec();
+    getUserById: function (orgId: string, userId: string, fields: string[] = []): Promise<any> {
+        return UserCollection().findOne({$and: [{orgIds: {$in: [orgId]}}, {_id: userId}]}, fields.join(' ')).lean().exec();
     },
 
     getUserByIdWithoutOrgId: function (userId: string): Promise<any> {
@@ -89,4 +73,4 @@ const userDataController: UserDataController = {
     },
 };
 
-export { userDataController, UserDataController}
+export default UserDataController

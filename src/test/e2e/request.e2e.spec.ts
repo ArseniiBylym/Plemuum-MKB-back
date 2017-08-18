@@ -2,8 +2,7 @@ import * as request from 'supertest';
 import app from "../../app";
 import { assert, expect } from 'chai';
 import * as modelValidator from "../../util/model.validator"
-import Request from "../../data/models/request.model";
-import { User } from "../../data/models/user.model";
+import Request from "../../data/models/organization/request.model";
 import { authenticate, fixtureLoader, testUser } from "../mock/fixture.loader";
 import { getDatabaseManager } from "../../factory/database.factory";
 import config from "../../../config/config";
@@ -75,10 +74,10 @@ suite("Request entity related request tests", () => {
         })
     });
 
-    suite("Get all request for user", () => {
+    suite("Get all request for common", () => {
         const url = `/api/${orgId}/user/${userId}/requests`;
 
-        test("Should be able to get all request for user", done => {
+        test("Should be able to get all request for common", done => {
             authenticate(testUser)
                 .then(token => {
                     request(app)
@@ -92,15 +91,15 @@ suite("Request entity related request tests", () => {
                                 modelValidator.validateRequest(requestObj);
                             });
                             done();
-                        });
+                        }).catch((err) => done(err));
                 });
         })
     });
 
-    suite("Get user's sent requests", () => {
+    suite("Get common's sent requests", () => {
         const url = `/api/${orgId}/user/${userId}/requests/sender`;
 
-        test("Should be able to get user's sent requests", done => {
+        test("Should be able to get common's sent requests", done => {
             authenticate(testUser)
                 .then(token => {
                     request(app)
@@ -115,14 +114,14 @@ suite("Request entity related request tests", () => {
                                 assert(requestObj.senderId === userId, 'senderId should be the same as the userId')
                             });
                             done();
-                        });
+                        }).catch((err) => done(err));
                 });
         })
     });
 
-    suite("Get user's received requests", () => {
+    suite("Get common's received requests", () => {
         const url = `/api/${orgId}/user/${userId}/requests/recipient`;
-        test("Should be able to get user's received requests", done => {
+        test("Should be able to get common's received requests", done => {
             authenticate(testUser)
                 .then(token => {
                     request(app)
@@ -137,7 +136,7 @@ suite("Request entity related request tests", () => {
                                 assert(requestObj.recipientId.indexOf(userId) !== -1, 'senderId should be the same as the userId')
                             });
                             done();
-                        });
+                        }).catch((err) => done(err));
                 });
         })
     });
@@ -155,7 +154,7 @@ suite("Request entity related request tests", () => {
                             modelValidator.validateRequest(response.body);
                             assert(response.body._id === requestId, "request's id should match with the url param id");
                             done();
-                        });
+                        }).catch((err) => done(err));
                 });
         })
     });
@@ -172,11 +171,11 @@ suite("Request entity related request tests", () => {
                         .then(response => {
                             expect(response.body).to.be.an.instanceOf(Array);
                             assert(response.body.length >= 1, "Check if there's at least one element in the response array");
-                            response.body.forEach((user: User) => {
+                            response.body.forEach((user: any) => {
                                 modelValidator.validateUser(user);
                             });
                             done();
-                        });
+                        }).catch((err) => done(err));
                 });
         })
     });

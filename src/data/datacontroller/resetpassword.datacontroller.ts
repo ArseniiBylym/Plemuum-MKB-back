@@ -1,5 +1,5 @@
-import { ResetPasswordCollection } from "../database/schema/resetpassword.schema";
-import ResetPassword from "../models/resetpassword.model";
+import ResetPassword from "../models/common/resetpassword.model";
+import { ResetPasswordCollection } from "../database/schema/common/resetpassword.schema";
 
 
 interface ResetPasswordDataController {

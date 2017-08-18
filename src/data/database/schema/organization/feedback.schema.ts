@@ -1,7 +1,7 @@
 import { Connection, Document, Model, Schema } from 'mongoose';
-import Feedback from "../../models/feedback.model";
+import Feedback from "../../../models/organization/feedback.model";
 import { TagSchema } from './tag.schema'
-import { getDatabaseManager } from "../../../factory/database.factory";
+import { getDatabaseManager } from "../../../../factory/database.factory";
 
 interface FeedbackModel extends Feedback, Document {
 }

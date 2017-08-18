@@ -1,22 +1,16 @@
 import { Request, Response } from "express";
 import { databaseNameValidator } from "../util/regexp.checker";
-import Organization from "../data/models/organization.model";
-import { OrganizationDataController } from "../data/datacontroller/organization.datacontroller";
+import Organization from "../data/models/organization/organization.model";
+import OrganizationDataController from "../data/datacontroller/organization.datacontroller";
 
 export default class OrganizationController {
 
-    private organizationDataController: OrganizationDataController;
-
-    constructor(organizationDataController: OrganizationDataController) {
-        this.organizationDataController = organizationDataController;
-    }
-
     public createOrganization(req: Request, res: Response, next: Function) {
         let newOrg: Organization = req.body;
-        this.organizationDataController.getOrganizationByDbName(newOrg.dbName)
+        OrganizationDataController.getOrganizationByDbName(newOrg.dbName)
             .then((existingOrganization) => {
                 if (!databaseNameValidator.test(newOrg.dbName) && !existingOrganization) {
-                    return this.organizationDataController.saveNewOrganization(newOrg);
+                    return OrganizationDataController.saveNewOrganization(newOrg);
                 } else {
                     throw new Error("The organization could not be added. Check if the dbName contains any forbidden character")
                 }

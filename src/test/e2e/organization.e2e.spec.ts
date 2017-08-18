@@ -44,12 +44,12 @@ suite("Organization request tests", () => {
                 .then((response) => {
                     validateOrganization(response.body);
                     done();
-                });
+                }).catch((err) => done(err));
         });
 
         test("Register organization with reserved dbName, should return 400 and proper error message", done => {
             const newOrg = getTestOrganization();
-            newOrg.dbName = "mockorganization";
+            newOrg.dbName = "hipteam"; // this organization is part of the mocks
 
             request(app)
                 .post(url)
@@ -61,7 +61,7 @@ suite("Organization request tests", () => {
                     expect(response.body.error).to.be.string(
                         "The organization could not be added. Check if the dbName contains any forbidden character");
                     done();
-                });
+                }).catch((err) => done(err));
         })
     })
 });

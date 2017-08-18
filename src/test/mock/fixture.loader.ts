@@ -1,13 +1,14 @@
-import { UserCollection } from "../../data/database/schema/user.schema"
-import { FeedbackCollection } from "../../data/database/schema/feedback.schema"
-import { RequestCollection } from "../../data/database/schema/request.schema"
-import { TagCollection } from "../../data/database/schema/tag.schema"
+import { FeedbackCollection } from "../../data/database/schema/organization/feedback.schema"
+import { RequestCollection } from "../../data/database/schema/organization/request.schema"
+import { TagCollection } from "../../data/database/schema/organization/tag.schema"
 import * as fs from "fs";
 import * as ControllerFactory from '../../factory/controller.factory';
 import { Model } from "mongoose";
-import { OrganizationCollection } from "../../data/database/schema/organization.schema";
-import { ResetPasswordCollection } from "../../data/database/schema/resetpassword.schema";
-import { GroupCollection } from "../../data/database/schema/group.schema";
+import { OrganizationCollection } from "../../data/database/schema/organization/organization.schema";
+import { GroupCollection } from "../../data/database/schema/organization/group.schema";
+import { SkillCollection } from "../../data/database/schema/organization/compass/skill.schema";
+import { ResetPasswordCollection } from "../../data/database/schema/common/resetpassword.schema";
+import { UserCollection } from "../../data/database/schema/common/user.schema";
 
 const testUser = {
     "firstName": "sheryl",
@@ -32,6 +33,7 @@ function fixtureLoader(): Promise<any> {
         {model: OrganizationCollection(), mockFile: "organizations"},
         {model: ResetPasswordCollection(), mockFile: null},
         {model: GroupCollection('hipteam'), mockFile: "groups"},
+        {model: SkillCollection('hipteam'), mockFile: "skills"},
     ];
 
     /* Clear each collection */

@@ -1,6 +1,6 @@
 import { Connection, Document, Model, Schema } from 'mongoose';
-import ResetPassword from "../../models/resetpassword.model";
-import { getDatabaseManager } from "../../../factory/database.factory";
+import ResetPassword from "../../../models/common/resetpassword.model";
+import { getDatabaseManager } from "../../../../factory/database.factory";
 
 interface ResetPasswordModel extends ResetPassword, Document {
 }

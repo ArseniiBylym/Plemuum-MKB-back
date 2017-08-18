@@ -1,11 +1,9 @@
 [
   {
-    "updatedAt": "2017-08-09T12:49:05.624Z",
-    "createdAt": "2017-08-09T12:49:05.624Z",
-    "name": "Mock Organization",
-    "dbName": "mockorganization",
+    "name": "hipteam",
+    "dbName": "hipteam",
     "todoSentenceNumber": 3,
-    "compasseGenerationTime": 3,
+    "compassGenerationTime": 3,
     "_id": "598b04c182664715590b7499"
   }
 ]

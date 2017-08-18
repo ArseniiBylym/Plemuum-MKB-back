@@ -1,5 +1,5 @@
 import { Connection, Document, Model, Schema } from 'mongoose';
-import { getDatabaseManager } from "../../../factory/database.factory";
+import { getDatabaseManager } from "../../../../factory/database.factory";
 
 interface RequestModel extends Request, Document {
     getRecipientId(): string[]

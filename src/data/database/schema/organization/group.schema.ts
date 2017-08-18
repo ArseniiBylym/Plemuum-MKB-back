@@ -1,6 +1,6 @@
 import { Connection, Document, Model, Schema } from "mongoose";
-import { getDatabaseManager } from "../../../factory/database.factory"
-import Group from "../../models/group.model";
+import { getDatabaseManager } from "../../../../factory/database.factory"
+import Group from "../../../models/organization/group.model";
 
 let GroupSchema = new Schema({
     name: {required: true, type: String, index: {unique: true}},

@@ -1,10 +1,10 @@
 import UserController from "../../controller/user.controller";
 import * as TestObjectFactory from "../../util/testobject.factory"
-import { User } from "../../data/models/user.model";
 import { assert, expect, should } from 'chai';
 import * as sinon from 'sinon';
 import * as Sinon from 'sinon';
-import { userDataController } from "../../data/datacontroller/user.datacontroller";
+import UserDataController from "../../data/datacontroller/user.datacontroller";
+import { User } from "../../data/models/common/user.model";
 
 suite("UserController", () => {
 
@@ -14,7 +14,7 @@ suite("UserController", () => {
     const dummy: any = {};
 
     before(done => {
-        userDataControllerStub = sinon.stub(userDataController, 'saveUser')
+        userDataControllerStub = sinon.stub(UserDataController, 'saveUser')
             .returns(new Promise((resolve, reject) => resolve(mockUser)));
         done();
     });

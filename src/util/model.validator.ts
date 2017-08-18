@@ -51,7 +51,7 @@ function validateOrganization(organizationResponse: any) {
     expect(organizationResponse).to.haveOwnProperty("name");
     expect(organizationResponse).to.haveOwnProperty("dbName");
     expect(organizationResponse).to.haveOwnProperty("todoSentenceNumber");
-    expect(organizationResponse).to.haveOwnProperty("compasseGenerationTime");
+    expect(organizationResponse).to.haveOwnProperty("compassGenerationTime");
 }
 
 function validateGroup(group: any) {

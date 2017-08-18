@@ -1,6 +1,6 @@
-import { RequestCollection } from "../database/schema/request.schema";
-import { UserCollection } from "../database/schema/user.schema";
+import { RequestCollection } from "../database/schema/organization/request.schema";
 import { Model, Types } from 'mongoose';
+import { UserCollection } from "../database/schema/common/user.schema";
 
 
 interface RequestDataController {

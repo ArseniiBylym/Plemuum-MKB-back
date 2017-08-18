@@ -1,12 +1,12 @@
-import { userDataController } from "../../data/datacontroller/user.datacontroller";
 import DatabaseManager from "../../data/database/database.manager";
 import * as DatabaseFactory from "../../factory/database.factory";
 import * as TestObjectFactory from "../../util/testobject.factory";
-import { User } from "../../data/models/user.model";
 import { assert, expect, should } from 'chai';
 import * as asserts from "assert";
 import { fixtureLoader } from "../mock/fixture.loader";
-import { UserCollection } from "../../data/database/schema/user.schema";
+import UserDataController from "../../data/datacontroller/user.datacontroller";
+import { User } from "../../data/models/common/user.model";
+import { UserCollection } from "../../data/database/schema/common/user.schema";
 
 suite("UserDataController tests", () => {
 
@@ -21,9 +21,9 @@ suite("UserDataController tests", () => {
             })
     });
 
-    test("New user should be in DB", done => {
+    test("New common should be in DB", done => {
         const testUser = TestObjectFactory.getJohnDoe();
-        userDataController.saveUser(testUser)
+        UserDataController.saveUser(testUser)
             .then((value: any) => {
                 UserCollection().findById(value._id, (error: Error, user: User) => {
                     should().exist(user);
@@ -43,13 +43,13 @@ suite("UserDataController tests", () => {
             TestObjectFactory.getTestUserWithOrganizations("John", "Doe", ['else'])
         ];
         Promise.all([
-                userDataController.saveUser(testUsers[0]),
-                userDataController.saveUser(testUsers[1]),
-                userDataController.saveUser(testUsers[2]),
-                userDataController.saveUser(testUsers[3])
+                UserDataController.saveUser(testUsers[0]),
+                UserDataController.saveUser(testUsers[1]),
+                UserDataController.saveUser(testUsers[2]),
+                UserDataController.saveUser(testUsers[3])
             ]
         ).then(value => {
-            userDataController.getOrganizationUsers("hipteam")
+            UserDataController.getOrganizationUsers("hipteam")
                 .then(users => {
                     expect(users).to.be.an.instanceOf(Array);
                     assert.lengthOf(users, 33);

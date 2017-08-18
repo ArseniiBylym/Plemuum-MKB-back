@@ -1,6 +1,6 @@
-import { User } from "../data/models/user.model";
 import * as Util from "./util";
-import { default as Feedback } from "../data/models/feedback.model";
+import { default as Feedback } from "../data/models/organization/feedback.model";
+import { User } from "../data/models/common/user.model";
 
 function getTestUser(firstName: string, lastName: string): any {
     return {
@@ -61,7 +61,7 @@ function getTestOrganization() {
         name: "TestOrg",
         dbName: "testorg",
         todoSentenceNumber: 3,
-        compasseGenerationTime: 3,
+        compassGenerationTime: 3,
     }
 }
 

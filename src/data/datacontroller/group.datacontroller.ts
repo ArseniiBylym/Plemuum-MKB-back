@@ -1,5 +1,5 @@
-import { GroupCollection } from "../database/schema/group.schema";
-import Group from "../models/group.model";
+import { GroupCollection } from "../database/schema/organization/group.schema";
+import Group from "../models/organization/group.model";
 
 const GroupDataController = {
 

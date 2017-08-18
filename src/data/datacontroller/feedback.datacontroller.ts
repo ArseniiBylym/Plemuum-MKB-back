@@ -1,15 +1,8 @@
-import Feedback from "../models/feedback.model";
+import Feedback from "../models/organization/feedback.model";
 import { Model, Query } from "mongoose";
-import { FeedbackCollection } from "../database/schema/feedback.schema";
+import { FeedbackCollection } from "../database/schema/organization/feedback.schema";
 
-interface FeedbackDataController {
-    getAllFeedback: (organizationId: string, userId: string) => Promise<any>
-    getSentFeedbacks: (organizationId: string, userId: string) => Promise<any>
-    getIncomingFeedbacks: (organizationId: string, userId: string) => Promise<any>
-    saveFeedback: (organizationId: string, feedback: Feedback) => Promise<any>
-}
-
-const feedbackDataController: FeedbackDataController = {
+const FeedbackDataController = {
 
     getAllFeedback: function (organizationId: string, userId: string): Promise<any> {
         return FeedbackCollection(organizationId).find({$or: [{senderId: userId}, {recipientId: userId}]}).lean().exec();
@@ -28,4 +21,4 @@ const feedbackDataController: FeedbackDataController = {
     }
 };
 
-export { feedbackDataController, FeedbackDataController}
+export default FeedbackDataController
