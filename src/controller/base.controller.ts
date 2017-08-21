@@ -5,7 +5,7 @@ class BaseController {
     protected callController(promise: Promise<any>, res: Response, successCode: number, errorCode: number) {
         promise
             .then((result) => res.status(successCode).send(result))
-            .catch((error) => res.status(errorCode).json(ErrorHandler.getFriendlyErrorFromMongooseError(error)));
+            .catch((error) => res.status(errorCode).json(ErrorHandler.formError(error)));
     }
 }
 

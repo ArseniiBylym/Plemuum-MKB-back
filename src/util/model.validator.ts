@@ -23,8 +23,7 @@ function validateFeedback(feedback: any) {
 }
 
 function validateError(error: any) {
-    expect(error).have.property("errorName");
-    expect(error).have.property("message");
+    expect(error).have.property("error");
 }
 
 function validateRequest(request: any) {

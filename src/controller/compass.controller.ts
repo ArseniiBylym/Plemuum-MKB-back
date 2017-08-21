@@ -42,7 +42,8 @@ export default class CompassController {
         return UserDataController.getUserById(orgId, userId, ['_id', 'firstName', 'lastName']);
     }
 
-    public static buildUpNewTodoResponse(senderId: string, recipientId: string, organization: Organization, aboutUser: UserModel, skills: Skill[]): any {
+    public static buildUpNewTodoResponse(senderId: string, recipientId: string, organization: Organization, aboutUser:
+        UserModel, skills: Skill[]): any {
         const numberOfSentences = organization.todoSentenceNumber;
         const sentencesToBeAnswered: any[] = [];
 

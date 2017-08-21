@@ -9,7 +9,7 @@ import CompassDataController from "../../data/datacontroller/compass.datacontrol
 
 suite("CompassController tests", () => {
 
-    suite.only("generateTodo", () => {
+    suite("generateTodo", () => {
         test("Should return a promise with a saved compass todo", done => {
             const getOrganizationByDbNameStub = sinon.stub(OrganizationDataController, "getOrganizationByDbName")
                 .returns(Promise.resolve({dbName: "mockOrganization"}));

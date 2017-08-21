@@ -1,28 +1,38 @@
 import { Request, Response } from "express";
-import Feedback from "../data/models/organization/feedback.model";
 import BaseController from "./base.controller";
 import FeedbackDataController from "../data/datacontroller/feedback.datacontroller";
+import { formError } from "../util/errorhandler";
+import Feedback from "../data/models/organization/feedback.model";
+import * as StatusCodes from 'http-status-codes';
 
 export default class FeedbackController extends BaseController {
 
-    public getFeedbacks(req: Request, res: Response,) {
-        this.callController(FeedbackDataController.getAllFeedback(req.params.orgId, req.params.userId), res, 200, 400);
+    public async getFeedbacks(req: Request, res: Response,) {
+        return FeedbackDataController.getAllFeedback(req.params.orgId, req.params.userId)
+            .then((result) => res.status(StatusCodes.OK).send(result))
+            .catch((error) => res.status(StatusCodes.BAD_REQUEST).json(formError(error)));
     }
 
-    public getSentFeedbacks(req: Request, res: Response,) {
-        this.callController(FeedbackDataController.getSentFeedbacks(req.params.orgId, req.params.userId), res, 200, 400);
+    public async getSentFeedbacks(req: Request, res: Response,) {
+        return FeedbackDataController.getSentFeedbacks(req.params.orgId, req.params.userId)
+            .then((result) => res.status(StatusCodes.OK).send(result))
+            .catch((error) => res.status(StatusCodes.BAD_REQUEST).json(formError(error)));
     }
 
-    public postFeedback(req: Request, res: Response,) {
-        const feedback: Feedback = req.body;
-        if (feedback) {
-            this.callController(FeedbackDataController.saveFeedback(req.params.orgId, feedback), res, 200, 400)
-        } else {
-            res.status(400).json({error: "invalid request"});
-        }
+    public async postFeedback(req: Request, res: Response) {
+        return FeedbackController.validateFeedback(req.body)
+            .then((feedback) => FeedbackDataController.saveFeedback(req.params.orgId, feedback))
+            .then((result) => res.status(StatusCodes.OK).send(result))
+            .catch((error) => res.status(StatusCodes.BAD_REQUEST).json(formError(error)));
     }
 
-    public getIncomingFeedbacks(req: Request, res: Response,) {
-        this.callController(FeedbackDataController.getIncomingFeedbacks(req.params.orgId, req.params.userId), res, 200, 400);
+    public async getIncomingFeedbacks(req: Request, res: Response,) {
+        return FeedbackDataController.getIncomingFeedbacks(req.params.orgId, req.params.userId)
+            .then((result) => res.status(StatusCodes.OK).send(result))
+            .catch((error) => res.status(StatusCodes.BAD_REQUEST).json(formError(error)));
+    }
+
+    public static validateFeedback(feedback: Feedback): Promise<Feedback> {
+        return feedback ? Promise.resolve(feedback) : Promise.reject("Invalid request")
     }
 }

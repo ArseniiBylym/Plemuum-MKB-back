@@ -41,7 +41,7 @@ suite("FeedbackController unit tests", () => {
         test("Sad case: test should getAllFeedback from FeedbackDataController then call res.json", done => {
 
             feedbackDataControllerStub = sinon.stub(FeedbackDataController, 'getAllFeedback')
-                .returns(new Promise<any>((resolve, reject) => resolve(mockResult)));
+                .returns(Promise.resolve(mockResult));
 
             const mockResponse: any = {
                 json: (error: any) => {
@@ -175,16 +175,14 @@ suite("FeedbackController unit tests", () => {
             };
 
             feedbackController = new FeedbackController();
-            feedbackController.postFeedback(mockRequest, mockResponse);
-
-            feedbackDataControllerStub.restore();
-            expect(feedbackDataControllerStub.called).to.be.true;
+            feedbackController.postFeedback(mockRequest, mockResponse)
+                .then(() => feedbackDataControllerStub.restore())
         });
 
         test("Sad case: test should postFeedback from FeedbackDataController then call res.json", done => {
 
             feedbackDataControllerStub = sinon.stub(FeedbackDataController, 'saveFeedback')
-                .returns(new Promise<any>((resolve, reject) => resolve(mockResult)));
+                .returns(Promise.reject(mockResult));
 
             const mockResponse: any = {
                 json: (result: any) => {
@@ -199,15 +197,10 @@ suite("FeedbackController unit tests", () => {
 
             feedbackController = new FeedbackController();
             feedbackController.postFeedback(mockRequest, mockResponse);
-
             feedbackDataControllerStub.restore();
-            expect(feedbackDataControllerStub.called).to.be.true;
         });
 
         test("Sad case: instant error when body is empty", done => {
-
-            feedbackDataControllerStub = sinon.stub(FeedbackDataController, 'saveFeedback')
-                .returns(new Promise<any>((resolve, reject) => resolve(mockResult)));
 
             const emptyMockRequest: any = {
                 body: undefined
@@ -225,10 +218,7 @@ suite("FeedbackController unit tests", () => {
             };
 
             feedbackController = new FeedbackController();
-            feedbackController.postFeedback(emptyMockRequest, mockResponse);
-
-            feedbackDataControllerStub.restore();
-            expect(feedbackDataControllerStub.called).to.be.true;
+            feedbackController.postFeedback(emptyMockRequest, mockResponse)
         })
     });
 });
