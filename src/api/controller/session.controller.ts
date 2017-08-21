@@ -1,10 +1,10 @@
 import BaseController from "./base.controller";
-import * as tokenManager from "../auth/token.manager";
-import { TokenObject } from "../auth/token.manager";
+import * as tokenManager from "../../service/auth/token.manager";
+import { TokenObject } from "../../service/auth/token.manager";
 import { Request, Response } from "express";
-import UserDataController from "../data/datacontroller/user.datacontroller";
-import { User } from "../data/models/common/user.model";
-import { UserModel } from "../data/database/schema/common/user.schema";
+import UserDataController from "../../data/datacontroller/user.datacontroller";
+import { User } from "../../data/models/common/user.model";
+import { UserModel } from "../../data/database/schema/common/user.schema";
 
 export default class SessionController extends BaseController {
 

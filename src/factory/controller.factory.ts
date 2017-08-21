@@ -1,14 +1,15 @@
-import UserController from "../controller/user.controller";
-import FeedbackController from "../controller/feedback.controller";
-import TagController from "../controller/tag.controller";
-import OrganizationController from "../controller/organization.controller";
-import RequestController from "../controller/request.controller";
-import SessionController from "../controller/session.controller";
+import UserController from "../api/controller/user.controller";
+import FeedbackController from "../api/controller/feedback.controller";
+import TagController from "../api/controller/tag.controller";
+import OrganizationController from "../api/controller/organization.controller";
+import RequestController from "../api/controller/request.controller";
+import SessionController from "../api/controller/session.controller";
 import EmailService from "../service/email/mail.service";
 import FileTransferService from "../service/file/filetransfer.service";
-import GroupController from "../controller/group.controller";
+import GroupController from "../api/controller/group.controller";
 import { requestDataController } from "../data/datacontroller/request.datacontroller";
 import { tagDataController } from "../data/datacontroller/tag.datacontroller";
+import { getGroupDataController } from "../data/datacontroller/group.datacontroller";
 
 let userController: UserController;
 let feedbackController: FeedbackController;
@@ -36,7 +37,7 @@ const getRequestController = (): RequestController => getController(requestContr
 
 const getSessionController = (): SessionController => getController(sessionController, SessionController);
 
-const getGroupController = (): GroupController => getController(groupController, GroupController);
+const getGroupController = (): GroupController => getController(groupController, GroupController, getGroupDataController());
 
 /* #########################     PRIVATE      ########################## */
 

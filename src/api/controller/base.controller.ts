@@ -1,4 +1,4 @@
-import * as ErrorHandler from '../util/errorhandler';
+import * as ErrorHandler from '../../util/errorhandler';
 import { Response } from 'express';
 
 class BaseController {
@@ -6,6 +6,11 @@ class BaseController {
         promise
             .then((result) => res.status(successCode).send(result))
             .catch((error) => res.status(errorCode).json(ErrorHandler.formError(error)));
+    }
+
+    static send(res: any, code: number, response: any) {
+        res.status(code);
+        res.send(response);
     }
 }
 

@@ -5,7 +5,7 @@ import * as Sinon from 'sinon';
 import UserDataController from "../../data/datacontroller/user.datacontroller";
 import OrganizationDataController from "../../data/datacontroller/organization.datacontroller";
 import CompassDataController from "../../data/datacontroller/compass.datacontroller";
-import CompassManager from "../../manager/compass.manager";
+import CompassManager from "../../api/manager/compass.manager";
 
 suite("CompassManager tests", () => {
     suite("generateTodo", () => {

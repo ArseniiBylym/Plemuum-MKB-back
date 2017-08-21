@@ -1,6 +1,6 @@
 import CompassManager from "../manager/compass.manager";
 import * as StatusCodes from 'http-status-codes';
-import { formError } from "../util/errorhandler";
+import { formError } from "../../util/errorhandler";
 
 export default class CompassController {
 

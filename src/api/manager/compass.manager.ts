@@ -1,11 +1,11 @@
-import OrganizationDataController from "../data/datacontroller/organization.datacontroller";
-import Skill from "../data/models/organization/compass/skill.model";
-import CompassDataController from "../data/datacontroller/compass.datacontroller";
-import Organization from "../data/models/organization/organization.model";
-import { UserModel } from "../data/database/schema/common/user.schema";
-import UserDataController from "../data/datacontroller/user.datacontroller";
+import OrganizationDataController from "../../data/datacontroller/organization.datacontroller";
+import Skill from "../../data/models/organization/compass/skill.model";
+import CompassDataController from "../../data/datacontroller/compass.datacontroller";
+import Organization from "../../data/models/organization/organization.model";
+import { UserModel } from "../../data/database/schema/common/user.schema";
+import UserDataController from "../../data/datacontroller/user.datacontroller";
 import * as lodash from 'lodash';
-import { SkillModel } from "../data/database/schema/organization/compass/skill.schema";
+import { SkillModel } from "../../data/database/schema/organization/compass/skill.schema";
 
 export default class CompassManager {
     public static async generateTodo(data: any, orgId: string, userId: string): Promise<any> {

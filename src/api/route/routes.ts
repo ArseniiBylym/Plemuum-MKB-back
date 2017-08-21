@@ -7,7 +7,7 @@ import RequestRoute from './request.route';
 import SessionRoute from './session.route';
 import GroupRoute from './group.route';
 import CompassRoute from './compass.route';
-import * as ControllerFactory from '../factory/controller.factory'
+import * as ControllerFactory from '../../factory/controller.factory'
 import CompassController from "../controller/compass.controller";
 
 export default (express: Express) => {

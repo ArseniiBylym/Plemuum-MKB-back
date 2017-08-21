@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import BaseController from "./base.controller";
-import { RequestDataController } from "../data/datacontroller/request.datacontroller";
+import { RequestDataController } from "../../data/datacontroller/request.datacontroller";
 
 export default class RequestController extends BaseController {
 

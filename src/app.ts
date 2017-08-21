@@ -1,11 +1,11 @@
 import * as express from 'express';
 import { Express } from 'express';
 import * as passport from 'passport';
-import Routes from './route/routes';
+import Routes from './api/route/routes';
 import * as bodyParser from "body-parser";
 import * as path from "path";
 import * as logger from 'morgan';
-import passportInit from "./auth/passport.manager";
+import passportInit from "./service/auth/passport.manager";
 import * as session from 'express-session';
 
 const viewsPath = [path.join(__dirname, "./view"), path.join(__dirname, "./email/raw")];

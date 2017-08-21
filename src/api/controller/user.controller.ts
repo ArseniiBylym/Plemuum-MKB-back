@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import BaseController from "./base.controller";
-import EmailService from "../service/email/mail.service";
-import FileTransfer from "../service/file/filetransfer.service";
-import { generateNewTokensForResetPassword } from "../auth/token.manager";
-import { resetPasswordDataController } from "../data/datacontroller/resetpassword.datacontroller";
-import UserDataController from "../data/datacontroller/user.datacontroller";
-import { User } from "../data/models/common/user.model";
-import { UserModel } from "../data/database/schema/common/user.schema";
+import EmailService from "../../service/email/mail.service";
+import FileTransfer from "../../service/file/filetransfer.service";
+import { generateNewTokensForResetPassword } from "../../service/auth/token.manager";
+import { resetPasswordDataController } from "../../data/datacontroller/resetpassword.datacontroller";
+import UserDataController from "../../data/datacontroller/user.datacontroller";
+import { User } from "../../data/models/common/user.model";
+import { UserModel } from "../../data/database/schema/common/user.schema";
 
 const formidable = require('formidable');
 

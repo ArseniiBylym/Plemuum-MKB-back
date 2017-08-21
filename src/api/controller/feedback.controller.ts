@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import BaseController from "./base.controller";
-import FeedbackDataController from "../data/datacontroller/feedback.datacontroller";
-import { formError } from "../util/errorhandler";
-import Feedback from "../data/models/organization/feedback.model";
+import FeedbackDataController from "../../data/datacontroller/feedback.datacontroller";
+import { formError } from "../../util/errorhandler";
+import Feedback from "../../data/models/organization/feedback.model";
 import * as StatusCodes from 'http-status-codes';
 
 export default class FeedbackController extends BaseController {

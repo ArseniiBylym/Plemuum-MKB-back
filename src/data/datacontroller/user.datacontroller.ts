@@ -1,5 +1,5 @@
 import { Model } from 'mongoose';
-import { TokenObject } from "../../auth/token.manager";
+import { TokenObject } from "../../service/auth/token.manager";
 import * as crypto from 'crypto';
 import { User } from "../models/common/user.model";
 import { UserCollection, UserModel } from "../database/schema/common/user.schema";

@@ -1,5 +1,5 @@
 import { expect, should } from 'chai';
-import FeedbackController from "../../controller/feedback.controller";
+import FeedbackController from "../../api/controller/feedback.controller";
 import * as Sinon from "sinon";
 import * as sinon from "sinon";
 import FeedbackDataController from "../../data/datacontroller/feedback.datacontroller";

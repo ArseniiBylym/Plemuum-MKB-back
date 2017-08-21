@@ -1,4 +1,4 @@
-import UserController from "../../controller/user.controller";
+import UserController from "../../api/controller/user.controller";
 import * as TestObjectFactory from "../../util/testobject.factory"
 import { assert, expect, should } from 'chai';
 import * as sinon from 'sinon';

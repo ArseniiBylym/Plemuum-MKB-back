@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { databaseNameValidator } from "../util/regexp.checker";
-import Organization from "../data/models/organization/organization.model";
-import OrganizationDataController from "../data/datacontroller/organization.datacontroller";
+import { databaseNameValidator } from "../../util/regexp.checker";
+import Organization from "../../data/models/organization/organization.model";
+import OrganizationDataController from "../../data/datacontroller/organization.datacontroller";
 
 export default class OrganizationController {
 

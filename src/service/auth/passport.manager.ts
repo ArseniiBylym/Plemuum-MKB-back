@@ -3,9 +3,9 @@ import { Request } from 'express';
 import * as localStrategy from 'passport-local';
 import * as bearerStrategy from 'passport-http-bearer';
 import * as basicStrategy from 'passport-http'
-import config from "../../config/config";
-import UserDataController from "../data/datacontroller/user.datacontroller";
-import { UserCollection, UserModel } from "../data/database/schema/common/user.schema";
+import config from "../../../config/config";
+import UserDataController from "../../data/datacontroller/user.datacontroller";
+import { UserCollection, UserModel } from "../../data/database/schema/common/user.schema";
 
 function passportInit() {
 
