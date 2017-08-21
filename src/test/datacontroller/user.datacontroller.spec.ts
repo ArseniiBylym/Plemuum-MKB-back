@@ -50,7 +50,7 @@ suite("UserDataController tests", () => {
             ]
         ).then(value => {
             UserDataController.getOrganizationUsers("hipteam")
-                .then(users => {
+                .then((users: any) => {
                     expect(users).to.be.an.instanceOf(Array);
                     assert.lengthOf(users, 33);
                     done();

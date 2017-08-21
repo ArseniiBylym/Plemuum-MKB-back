@@ -57,7 +57,7 @@ export default class SessionController extends BaseController {
 
     public checkToken(req: Request, res: Response, next: Function) {
         UserDataController.getResetToken(req.body.token)
-            .then((resetToken) => {
+            .then((resetToken: any) => {
                 const now = new Date();
                 let valid: Object = {validToken: true, reseted: false};
                 if (resetToken.token_expiry < now || resetToken.reseted) {

@@ -153,22 +153,22 @@ suite("CompassManager tests", () => {
             ];
 
             const result: any = CompassManager.buildUpNewTodoResponse(senderId, recipientId, organization, aboutUser, skills);
-            expect(result).to.haveOwnProperty("aboutUser");
-            expect(result).to.haveOwnProperty("recipientId");
-            expect(result).to.haveOwnProperty("sender");
+            expect(result).to.haveOwnProperty("about");
+            expect(result).to.haveOwnProperty("recipient");
+            expect(result).to.haveOwnProperty("createdBy");
             expect(result).to.haveOwnProperty("message");
-            expect(result).to.haveOwnProperty("sentences");
+            expect(result).to.haveOwnProperty("questions");
 
-            expect(result.aboutUser).to.be.equal(aboutUser._id);
-            expect(result.recipientId).to.be.equal(recipientId);
-            expect(result.sender).to.be.equal(senderId);
+            expect(result.about).to.be.equal(aboutUser._id);
+            expect(result.recipient).to.be.equal(recipientId);
+            expect(result.createdBy).to.be.equal(senderId);
             expect(result.message).to.be.equal('What do you think about this common? ' +
                 'Would be cool if you could answer some things about the common');
 
-            expect(result.sentences).to.be.instanceof(Array);
-            expect(result.sentences).to.have.lengthOf(3);
-            expect(result.sentences[0]).to.haveOwnProperty("message");
-            expect(result.sentences[0]).to.haveOwnProperty("skillName");
+            expect(result.questions).to.be.instanceof(Array);
+            expect(result.questions).to.have.lengthOf(3);
+            expect(result.questions[0]).to.haveOwnProperty("sentence");
+            expect(result.questions[0]).to.haveOwnProperty("skill");
 
             done();
         })

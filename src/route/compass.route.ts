@@ -7,6 +7,7 @@ import * as passport from 'passport';
  * @apiSuccess (Success 200) {String} updatedAt Date of update.
  */
 export default (app: Express, compassController: CompassController) => {
+
     /**
      * @api {POST} /api/:orgId/compasstodo CompassTodo for a user
      * @apiName compasstodo
@@ -38,5 +39,5 @@ export default (app: Express, compassController: CompassController) => {
      * @apiUse dates
      */
     app.route("/api/:orgId/compasstodo")
-        .post(passport.authenticate('bearer', { session: false }), compassController.generateTodoController.bind(compassController));
+        .post(passport.authenticate('bearer', { session: false }), compassController.generateTodo.bind(compassController));
 }

@@ -5,14 +5,15 @@ import Organization from "../data/models/organization/organization.model";
 import { UserModel } from "../data/database/schema/common/user.schema";
 import UserDataController from "../data/datacontroller/user.datacontroller";
 import * as lodash from 'lodash';
+import { SkillModel } from "../data/database/schema/organization/compass/skill.schema";
 
 export default class CompassManager {
     public static async generateTodo(data: any, orgId: string, userId: string): Promise<any> {
         const organization = await OrganizationDataController.getOrganizationByDbName(orgId);
         CompassManager.checkOrganization(organization);
-        const aboutUser: any = await CompassManager.getAboutUser(organization.dbName, data.recipientId);
+        const aboutUser: UserModel = await CompassManager.getAboutUser(organization.dbName, data.recipientId);
         CompassManager.checkAboutUser(aboutUser);
-        const skills: Skill[] = await CompassDataController.getAllSkills(organization.dbName);
+        const skills: SkillModel[] = await CompassDataController.getAllSkills(organization.dbName);
         const newTodo = CompassManager.buildUpNewTodoResponse(userId, data.senderId, organization, aboutUser, skills);
         return CompassDataController.saveCompassTodo(organization.dbName, newTodo);
     }
@@ -35,7 +36,7 @@ export default class CompassManager {
         return UserDataController.getUserById(orgId, userId, ['_id', 'firstName', 'lastName']);
     }
 
-    public static buildUpNewTodoResponse(senderId: string, recipientId: string, organization: Organization, aboutUser: UserModel, skills: Skill[]): any {
+    public static buildUpNewTodoResponse(senderId: string, recipientId: string, organization: Organization, aboutUser: UserModel, skills: SkillModel[]): any {
         const numberOfSentences = organization.todoSentenceNumber;
         const sentencesToBeAnswered: any[] = [];
 
@@ -43,18 +44,18 @@ export default class CompassManager {
             const randomSkill = skills[lodash.random(0, skills.length - 1, false)];
             const randomSentence = randomSkill.sentences[lodash.random(0, randomSkill.sentences.length - 1, false)];
             sentencesToBeAnswered.push({
-                message: randomSentence.message,
-                skillName: randomSkill.name
+                sentence: randomSentence,
+                skill: randomSkill
             });
             lodash.pull(skills, randomSkill);
         }
 
         return {
-            aboutUser: aboutUser._id,
-            recipientId: recipientId,
-            sender: senderId,
+            about: aboutUser._id,
+            recipient: recipientId,
+            createdBy: senderId,
             message: 'What do you think about this common? Would be cool if you could answer some things about the common',
-            sentences: sentencesToBeAnswered
+            questions: sentencesToBeAnswered
         };
     }
 }

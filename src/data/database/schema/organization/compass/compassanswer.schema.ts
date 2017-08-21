@@ -1,21 +1,19 @@
 import { Connection, Document, Model, Schema } from 'mongoose';
 import { getDatabaseManager } from "../../../../../factory/database.factory";
-import { CompassAnswer } from "../../../../../../compassanswer.model";
+import CompassAnswer from "../../../../models/organization/compass/compassanswer.model";
 
 
 interface CompassAnswerModel extends CompassAnswer, Document {
 }
 
 export let CompassAnswerSchema = new Schema({
-    compassTodoId: { required: true, type: String, index: true },
-    senderId: { required: true, type: String, index: true },
-    recipientId: { required: true, type: String, index: true },
-    areConnected: { required: true, type: Boolean, index: true },
+    compassTodo: { required: true, type: String, index: true },
+    sender: { required: true, type: String, index: true },
     sentencesAnswer: [
         {
             answer: { required: true, type: String, index: false, enum: ["SKIP", "AGREE", "DISAGREE"]},
-            message: { required: true, type: String, index: false },
-            competenceName: { required: true, type: String, index: false}
+            sentence: { required: true, type: String, index: false },
+            skill: { required: true, type: String, index: false}
         }
     ]
 },{

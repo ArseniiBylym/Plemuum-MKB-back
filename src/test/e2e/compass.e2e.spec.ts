@@ -41,15 +41,14 @@ suite("Compass request test", () => {
                         .then(response => {
                             should().exist(response.body);
                             expect(response.body).to.haveOwnProperty("_id");
-                            expect(response.body).to.haveOwnProperty("recipientId");
-                            expect(response.body).to.haveOwnProperty("sender");
+                            expect(response.body).to.haveOwnProperty("recipient");
+                            expect(response.body).to.haveOwnProperty("createdBy");
                             expect(response.body).to.haveOwnProperty("message");
-                            expect(response.body).to.haveOwnProperty("sentences");
-                            expect(response.body.sentences).to.be.instanceof(Array);
-                            expect(response.body.sentences).to.have.lengthOf(3);
-                            expect(response.body.sentences[0]).to.haveOwnProperty("message");
-                            expect(response.body.sentences[0]).to.haveOwnProperty("skillName");
-                            expect(response.body.sentences[0]).to.haveOwnProperty("_id");
+                            expect(response.body).to.haveOwnProperty("questions");
+                            expect(response.body.questions).to.be.instanceof(Array);
+                            expect(response.body.questions).to.have.lengthOf(3);
+                            expect(response.body.questions[0]).to.haveOwnProperty("sentence");
+                            expect(response.body.questions[0]).to.haveOwnProperty("skill");
                             done();
                         })
                         .catch((err) => done(err));
