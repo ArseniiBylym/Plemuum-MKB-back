@@ -14,9 +14,7 @@ const formidable = require('formidable');
 export default class UserController extends BaseController {
 
     fileTransferService: FileTransfer;
-    form: any;
     userManager: UserManager;
-
 
     constructor(fileTransferService: FileTransfer, userManager: UserManager) {
         super();
@@ -108,17 +106,25 @@ export default class UserController extends BaseController {
     }
 
     setPicture(req: any, res: Response,) {
-        this.form = new formidable.IncomingForm();
-        this.form.keepExtensions = true;
-        this.form.parse(req, (parseError: any, fields: any, files: any) => {
-            if (!parseError) {
-                this.fileTransferService.sendFile(files.avatar, req.user._id)
-                    .then((pictureUrl) => UserDataController.setUserPic(req.user._id, pictureUrl))
-                    .then((result) => res.send(result))
-                    .catch((err) => res.status(500).send({error: err}));
-            } else {
-                res.status(400).send({error: "Profile picture could not be set"});
-            }
+        this.handleProfilePictureUpload(req, req.user._id)
+            .then((result) => res.send(result))
+            .catch((err: Error) => res.status(400).send(formError(err)))
+    }
+
+    handleProfilePictureUpload(req: any, userId: string): Promise<any> {
+        return new Promise((resolve, reject) => {
+            const form = new formidable.IncomingForm();
+            form.keepExtensions = true;
+            form.parse(req, (parseError: any, fields: any, files: any) => {
+                if (!parseError) {
+                    this.fileTransferService.sendFile(files.avatar, req.user._id)
+                        .then((pictureUrl) => UserDataController.setUserPic(req.user._id, pictureUrl))
+                        .then((result) => resolve(result))
+                        .catch((err) => reject(err));
+                } else {
+                    throw new Error("Profile picture could not be set");
+                }
+            });
         });
     }
 }
