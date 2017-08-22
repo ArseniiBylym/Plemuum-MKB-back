@@ -1,42 +1,44 @@
 import { Request, Response } from "express";
 import BaseController from "./base.controller";
-import EmailService from "../../service/email/mail.service";
 import FileTransfer from "../../service/file/filetransfer.service";
 import { generateNewTokensForResetPassword } from "../../service/auth/token.manager";
 import { resetPasswordDataController } from "../../data/datacontroller/resetpassword.datacontroller";
 import UserDataController from "../../data/datacontroller/user.datacontroller";
 import { User } from "../../data/models/common/user.model";
 import { UserModel } from "../../data/database/schema/common/user.schema";
+import UserManager from "../manager/user.manager";
+import { formError } from "../../util/errorhandler";
 
 const formidable = require('formidable');
 
 export default class UserController extends BaseController {
 
-    private emailService: EmailService;
-    private fileTransferService: FileTransfer;
-    private form: any;
+    fileTransferService: FileTransfer;
+    form: any;
+    userManager: UserManager;
 
-    constructor(emailService: EmailService, fileTransferService: FileTransfer) {
+
+    constructor(fileTransferService: FileTransfer, userManager: UserManager) {
         super();
-        this.emailService = emailService;
         this.fileTransferService = fileTransferService;
+        this.userManager = userManager;
     }
 
-    public static showRegistrationForm(req: Request, res: Response,) {
+    static showRegistrationForm(req: Request, res: Response,) {
         res.render("newUser", {
             title: "Express", organizations: [{dbName: 'hipteam', name: 'hipteam'}, {dbName: 'other', name: 'other'}]
         });
     }
 
-    public static showPictureUploadPage(req: Request, res: Response,) {
+    static showPictureUploadPage(req: Request, res: Response,) {
         res.render("fileUploadTest", {});
     }
 
-    public static showSetPasswordForm(req: Request, res: Response,) {
+    static showSetPasswordForm(req: Request, res: Response,) {
         res.render("setPassword", {token: "toke"});
     }
 
-    public createNewUser(req: Request, res: Response,) {
+    createNewUser(req: Request, res: Response,) {
         const user: User = req.body;
         if (user) {
             this.callController(UserDataController.saveUser(user), res, 201, 400);
@@ -45,40 +47,24 @@ export default class UserController extends BaseController {
         }
     }
 
-    public getOrganizationUsers(req: any, res: Response,) {
+    getOrganizationUsers(req: any, res: Response,) {
         this.callController(UserDataController.getOrganizationUsers(req.params.orgId), res, 200, 400);
     }
 
-    public getUserByIdFromOrganization(req: Request, res: Response,) {
+    getUserByIdFromOrganization(req: Request, res: Response,) {
         this.callController(UserDataController.getUserById(req.params.orgId, req.params.userId), res, 200, 400);
     }
 
-    public resetPassword(req: Request, res: Response, next: Function) {
-        let user: UserModel;
-        let resetPasswordToken: any;
-        let response: any;
-        return UserDataController.getUserByEmail(req.body.email)
-            .then((u: UserModel) => {
-                user = u;
-                const {token, token_expiry} = UserDataController.generateToken(1);
-                const data = {userId: String(user._id), token: token, token_expiry: token_expiry, reseted: false};
-                return resetPasswordDataController.saveResetPassword(data)
+    resetPassword(req: Request, res: Response, next: Function) {
+        return this.userManager.resetPassword(req.body.email, req.header('Origin'), req.query.welcome)
+            .then((result: any) => {
+                BaseController.send(res, 200, result.response);
+                return result.resetPasswordToken;
             })
-            .then((resetPassword: any) => {
-                const link = req.header('Origin') + "/set_new_password?token=" + resetPassword.token + "&email="
-                    + user.email + (req.query.welcome ? "&welcome=true" : "");
-                resetPasswordToken = resetPassword.token;
-                response = {email: user.email, link: link};
-                return this.emailService.sendResetEmail(user.email, link);
-            })
-            .then(() => {
-                res.send(response);
-                return resetPasswordToken;
-            })
-            .catch((err: any) => res.send({error: err}));
+            .catch((err) => BaseController.send(res, 400, formError(err)));
     }
 
-    public setPassword(req: Request, res: Response,) {
+    setPassword(req: Request, res: Response,) {
         const data = req.body;
         const token = data.token;
 
@@ -111,7 +97,7 @@ export default class UserController extends BaseController {
             .catch((err: any) => res.json({error: err}));
     }
 
-    public changePassword(req: Request, res: Response,) {
+    changePassword(req: Request, res: Response,) {
         UserDataController.changeUserPassword(req.body.email, req.body.newPassword)
             .then((updatedUser: UserModel) => res
                 .status(!updatedUser ? 404 : 200)
@@ -121,7 +107,7 @@ export default class UserController extends BaseController {
 
     }
 
-    public setPicture(req: any, res: Response,) {
+    setPicture(req: any, res: Response,) {
         this.form = new formidable.IncomingForm();
         this.form.keepExtensions = true;
         this.form.parse(req, (parseError: any, fields: any, files: any) => {

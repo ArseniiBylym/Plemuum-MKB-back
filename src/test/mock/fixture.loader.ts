@@ -9,6 +9,7 @@ import { GroupCollection } from "../../data/database/schema/organization/group.s
 import { SkillCollection } from "../../data/database/schema/organization/compass/skill.schema";
 import { ResetPasswordCollection } from "../../data/database/schema/common/resetpassword.schema";
 import { UserCollection } from "../../data/database/schema/common/user.schema";
+import { resetPasswordDataController } from "../../data/datacontroller/resetpassword.datacontroller";
 
 const testUser = {
     "firstName": "sheryl",
@@ -68,23 +69,12 @@ function authenticate(testUser: any): Promise<string> {
     });
 }
 
-function resetPassword(testUserEmail: string): Promise<any> {
-    const userController = ControllerFactory.getUserController();
-    const request: any = {
-        body: {email: testUserEmail},
-        header: () => {
-        },
-        query: {}
-    };
-    const response: any = {
-        send: () => {
-        },
-        status: () => {
-        }
-    };
-
-    return userController.resetPassword(request, response, () => {
-    });
+async function resetPassword(userId: string): Promise<any> {
+    const expiry = new Date();
+    expiry.setHours(expiry.getMinutes() + 5);
+    const data: any = {userId: userId, token: "aaabbbccc11122233", token_expiry: expiry, reseted: false};
+    const resetPass = await resetPasswordDataController.saveResetPassword(data);
+    return resetPass.token;
 }
 
 export { fixtureLoader, authenticate, resetPassword, testUser }

@@ -82,21 +82,14 @@ suite("Session request tests", () => {
     suite("Check token request", () => {
         const url = "/api/session/validtoken";
         let token: string;
-        test("Should be able to check if a token is valid", function (done) {
-            // This one is pretty slow, so as a quick fix I've added a bigger timeout (todo should be fixed though)
-            this.timeout(5000);
-            resetPassword(testUser.email)
-                .then(token =>
-                    request(app)
-                        .post(url)
-                        .send({token: token})
-                        .expect(200)
-                        .then((response) => {
-                            expect(response.body).to.haveOwnProperty("validToken");
-                            expect(response.body).to.haveOwnProperty("reseted");
-                            done();
-                        })
-                );
+        test("Should be able to check if a token is valid", async () => {
+            const token = await resetPassword(testUser._id);
+            const response = await request(app)
+                .post(url)
+                .send({token: token})
+                .expect(200);
+            expect(response.body).to.haveOwnProperty("validToken");
+            expect(response.body).to.haveOwnProperty("reseted");
         });
     })
 
