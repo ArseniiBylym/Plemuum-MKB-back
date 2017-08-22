@@ -23,7 +23,12 @@ const CompassDataController = {
 
     saveSkill: (orgId: string, skill: Skill): Promise<SkillModel> => {
         return new (SkillCollection(orgId))(skill).save();
+    },
+
+    updateSkill: (orgId: string, skill: any): Promise<SkillModel> => {
+        return SkillCollection(orgId).update({_id: skill._id}, skill).lean().exec() as Promise<SkillModel>
     }
+
 };
 
 export default CompassDataController;

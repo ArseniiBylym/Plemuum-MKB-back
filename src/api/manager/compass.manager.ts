@@ -78,4 +78,11 @@ export default class CompassManager {
         return skill.sentences;
     }
 
+    static async deactivateSentence(orgId: string, skillId: string, sentenceId: string): Promise<SkillModel> {
+        const skill = await CompassDataController.getSkillById(orgId, skillId);
+        const sentenceToDeactivate: Sentence = skill.sentences.filter((sentence: any) => sentence._id === sentenceId)[0];
+        skill.sentences = skill.sentences.filter((sentence: any) => sentence._id !== sentenceId);
+        skill.inactiveSentences.push(sentenceToDeactivate);
+        return CompassDataController.updateSkill(orgId, skill);
+    }
 }

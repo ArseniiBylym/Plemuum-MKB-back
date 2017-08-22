@@ -6,11 +6,9 @@ import UserDataController from "../../data/datacontroller/user.datacontroller";
 import OrganizationDataController from "../../data/datacontroller/organization.datacontroller";
 import CompassDataController from "../../data/datacontroller/compass.datacontroller";
 import CompassManager from "../../api/manager/compass.manager";
-import Sentence from "../../data/models/organization/compass/sentence.model";
-import { SkillModel } from "../../data/database/schema/organization/compass/skill.schema";
 import Skill from "../../data/models/organization/compass/skill.model";
 
-suite.only("CompassManager tests", () => {
+suite("CompassManager tests", () => {
     suite("generateTodo", () => {
         test("Should return a promise with a saved compass todo", done => {
             const getOrganizationByDbNameStub = sinon.stub(OrganizationDataController, "getOrganizationByDbName")
@@ -220,6 +218,31 @@ suite.only("CompassManager tests", () => {
             getSkillById.restore();
 
             expect(sentences).to.be.deep.equal(mockSkill.sentences);
+        })
+    });
+
+    suite("deactivateSentence", () => {
+        test("Should remove sentence from the active array and push it into inactiveSentences", async () => {
+            const mockSkill: any = {
+                name: "Skill name",
+                sentences: [
+                    {_id: "removethis", message: "messageToDeactivate"},
+                    {_id: "shouldstayhere", message: "this should stay here"}
+                ],
+                inactiveSentences: []
+            };
+            const orgId: any = sinon.mock();
+            const skillId: any = sinon.mock();
+            const sentenceId: string = "removethis";
+
+            const getSkillById = sinon.stub(CompassDataController, 'getSkillById').resolves(mockSkill);
+            const updateSkill = sinon.stub(CompassDataController, 'updateSkill').returnsArg(1);
+            const resultSkill: any = await CompassManager.deactivateSentence(orgId, skillId, sentenceId);
+            getSkillById.restore();
+            updateSkill.restore();
+
+            expect(resultSkill.sentences).to.not.include({_id: "removethis", message: "messageToDeactivate"});
+            expect(resultSkill.inactiveSentences).to.deep.include({_id: "removethis", message: "messageToDeactivate"});
         })
     })
 });
