@@ -73,5 +73,6 @@ export default (app: Express, compassController: CompassController) => {
 
 
     app.route("/api/create/skill/:orgId")
+        .get(CompassController.competenceForm)
         .post(passport.authenticate('basic', { session: false }), compassController.createNewSkill.bind(compassController));
 }
