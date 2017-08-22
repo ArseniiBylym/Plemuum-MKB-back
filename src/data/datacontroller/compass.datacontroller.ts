@@ -12,7 +12,7 @@ const CompassDataController = {
         return new (CompassTodoCollection(orgId))(newTodo).save();
     },
 
-    saveCompassAnswerWith: (orgId: string, data: CompassAnswer): Promise<CompassAnswer> => {
+    saveCompassAnswer: (orgId: string, data: CompassAnswer): Promise<CompassAnswer> => {
         return new (CompassAnswerCollection(orgId))(data).save()
     }
 };

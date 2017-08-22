@@ -6,7 +6,6 @@ import UserDataController from "../../data/datacontroller/user.datacontroller";
 import * as lodash from 'lodash';
 import { SkillModel } from "../../data/database/schema/organization/compass/skill.schema";
 import CompassAnswer from "../../data/models/organization/compass/compassanswer.model";
-import { CompassAnswerCollection } from "../../data/database/schema/organization/compass/compassanswer.schema";
 
 export default class CompassManager {
 
@@ -40,7 +39,8 @@ export default class CompassManager {
         return UserDataController.getUserById(orgId, userId, ['_id', 'firstName', 'lastName']);
     }
 
-    static buildUpNewTodoResponse(senderId: string, recipientId: string, organization: Organization, aboutUser: UserModel, skills: SkillModel[]): any {
+    static buildUpNewTodoResponse(senderId: string, recipientId: string,
+                                  organization: Organization, aboutUser: UserModel, skills: SkillModel[]): any {
         const numberOfSentences = organization.todoSentenceNumber;
         const sentencesToBeAnswered: any[] = [];
 
@@ -63,7 +63,9 @@ export default class CompassManager {
     }
 
     //TODO Update statistics!
-    static async answerCompass(orgId: string, answer: CompassAnswer) {
-        return new (CompassAnswerCollection(orgId))(answer).save();
+    static async answerCompass(orgId: string, answer: CompassAnswer): Promise<CompassAnswer> {
+        return CompassDataController.saveCompassAnswer(orgId, answer);
     }
+
+
 }

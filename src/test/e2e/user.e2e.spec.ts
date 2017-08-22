@@ -20,6 +20,7 @@ suite("User request tests", () => {
             })
     });
 
+
     after(done => {
         getDatabaseManager().closeConnection()
             .then(() => done())

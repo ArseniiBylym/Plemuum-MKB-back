@@ -170,4 +170,16 @@ suite("CompassManager tests", () => {
             done();
         })
     })
+
+    suite("answerCompass", () => {
+        test("Should call CompassDataController.saveCompassAnswer", async () => {
+            const mockAnswer: any = sinon.mock;
+            const mockOrgId: any = sinon.mock;
+            const saveCompassAnswer = sinon.stub(CompassDataController, 'saveCompassAnswer').resolves();
+
+            await CompassManager.answerCompass(mockOrgId, mockAnswer);
+            sinon.assert.calledWith(saveCompassAnswer, mockOrgId, mockAnswer);
+            saveCompassAnswer.restore();
+        })
+    })
 });
