@@ -37,7 +37,6 @@ export default (app: Express, compassController: CompassController) => {
      * @apiSuccess (Success 200) {String} sentences.message The message of a sentence to answer.
      * @apiSuccess (Success 200) {String} sentences._id The id of a sentence to answer.
      * @apiSuccess (Success 200) {String} sentences.competenceName The competence that the sentence belongs to.
-     * @apiUse dates
      */
     app.route("/api/:orgId/compasstodo")
         .post(passport.authenticate('bearer', {session: false}), compassController.generateTodo.bind(compassController));
@@ -66,13 +65,28 @@ export default (app: Express, compassController: CompassController) => {
      * @apiSuccess (Success 200) {Sentence} sentencesAnswer.sentence The entire sentence object which was answered.
      * @apiSuccess (Success 200) {Skill} sentencesAnswer.skill The entire skill object, which under the sentence belongs.
      * @apiSuccess (Success 200) {String} sentencesAnswer.answer The answer for this specific sentence.
-     * @apiUse dates
      */
     app.route("/api/:orgId/compassanswers")
         .post(passport.authenticate('bearer', {session: false}), compassController.answerCompass.bind(compassController));
 
 
+    /**
+     * @api {POST} /api/create/skill/:orgId Create Skill
+     * @apiName create skill
+     * @apiGroup Compass Assesment
+     * @apiDescription Create a new skill object with at least one active sentence
+     *
+     * @apiHeader {String} Authorization Basic username:password
+     *
+     * @apiParam {String} name The name of the skill
+     * @apiParam {Sentence[]} sentences Active sentences. You need to add at least one.
+     * @apiParam {Sentence[]} inactivesentences Inactive sentences. Should be part of the object, but can be empty.
+     *
+     * @apiSuccess (Success 200) {String} name The name of the skill
+     * @apiSuccess (Success 200) {Sentence[]} sentences Active sentences. You need to add at least one.
+     * @apiSuccess (Success 200) {Sentence[]} inactivesentences Inactive sentences. Should be part of the object, but can be empty.
+     */
     app.route("/api/create/skill/:orgId")
         .get(CompassController.competenceForm)
-        .post(passport.authenticate('basic', { session: false }), compassController.createNewSkill.bind(compassController));
+        .post(passport.authenticate('basic', {session: false}), compassController.createNewSkill.bind(compassController));
 }
