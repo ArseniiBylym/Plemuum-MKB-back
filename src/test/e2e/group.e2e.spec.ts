@@ -197,7 +197,7 @@ suite("Group request test", () => {
             const url = `/api/${orgId}/groups/${testGroup._id}`;
 
             request(app)
-                .put(url)
+                .patch(url)
                 .send(testGroup)
                 .set(basicAuthHeader)
                 .expect(200)
@@ -223,7 +223,7 @@ suite("Group request test", () => {
             const url = `/api/${orgId}/groups/${testGroup._id}`;
 
             request(app)
-                .put(url)
+                .patch(url)
                 .send(testGroup)
                 .set(basicAuthHeader)
                 .expect(400)

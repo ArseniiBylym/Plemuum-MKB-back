@@ -54,7 +54,7 @@ export default (app: Express, groupController: GroupController) => {
      */
 
     /**
-     * @api {PUT} /api/:orgId/groups/:groupId Update a group
+     * @api {PATCH} /api/:orgId/groups/:groupId Update a group
      * @apiName Update a group
      * @apiGroup Group
      * @apiDescription Update a group
@@ -74,7 +74,7 @@ export default (app: Express, groupController: GroupController) => {
      */
     app.route('/api/:orgId/groups/:groupId')
         .get(passport.authenticate('bearer', {session: false}), groupController.getGroupById.bind(groupController))
-        .put(passport.authenticate('basic', {session: false}), groupController.updateGroup.bind(groupController));
+        .patch(passport.authenticate('basic', {session: false}), groupController.updateGroup.bind(groupController));
 
     /**
      * @api {GET} /api/:orgId/groups/user/:userId Get all groups a user participates in
