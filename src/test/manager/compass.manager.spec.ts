@@ -169,7 +169,7 @@ suite("CompassManager tests", () => {
 
             done();
         })
-    })
+    });
 
     suite("answerCompass", () => {
         test("Should call CompassDataController.saveCompassAnswer", async () => {
@@ -180,6 +180,23 @@ suite("CompassManager tests", () => {
             await CompassManager.answerCompass(mockOrgId, mockAnswer);
             sinon.assert.calledWith(saveCompassAnswer, mockOrgId, mockAnswer);
             saveCompassAnswer.restore();
+        })
+    });
+
+    suite("createNewSkill", () => {
+        test("Should call CompassDataController.saveSkill and return the saved skill object", async () => {
+            const mockOrgId: any = sinon.mock;
+            const mockSkill = {
+                name: "Mock Skill",
+                sentences: [{
+                    message: "Mock sentence message"
+                }],
+                inactiveSentences: []
+            };
+            const saveSkill = sinon.stub(CompassDataController, 'saveSkill').resolves();
+            await CompassManager.createNewSkill(mockOrgId, mockSkill);
+            sinon.assert.calledWith(saveSkill, mockOrgId, mockSkill);
+            saveSkill.restore();
         })
     })
 });

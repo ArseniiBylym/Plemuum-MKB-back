@@ -3,8 +3,9 @@ import config from "../../../config/config";
 import * as request from 'supertest';
 import { authenticate, fixtureLoader, testUser } from "../mock/fixture.loader";
 import app from "../../app";
-import { bearerAuthHeader } from "../header.helper";
+import { basicAuthHeader, bearerAuthHeader } from "../header.helper";
 import { expect, should } from 'chai';
+import Skill from "../../data/models/organization/compass/skill.model";
 
 const orgId = 'hipteam';
 
@@ -128,6 +129,67 @@ suite("Compass request test", () => {
             expect(answer.sentencesAnswer[0]).to.haveOwnProperty("skill");
             expect(answer.sentencesAnswer[0]).to.haveOwnProperty("sentence");
 
+        })
+    });
+
+    suite("Create new skill", () => {
+        const url = `/api/create/skill/${orgId}`;
+        const newSkill: Skill = {
+            name: "New Skill",
+            sentences: [
+                {
+                    message: "First sentence"
+                }
+            ],
+            inactiveSentences: []
+        };
+
+        test("Should be able to create a new skill, it should return 201 and the created skill object", async () => {
+            const response = await request(app)
+                .post(url)
+                .set(basicAuthHeader)
+                .send(newSkill)
+                .expect(201);
+
+            expect(response.body).to.haveOwnProperty('name');
+            expect(response.body).to.haveOwnProperty('sentences');
+            expect(response.body).to.haveOwnProperty('inactiveSentences');
+
+            expect(response.body.sentences).to.be.instanceof(Array);
+            expect(response.body.sentences).to.have.lengthOf(1);
+            expect(response.body.sentences[0]).to.haveOwnProperty('message');
+
+            expect(response.body.inactiveSentences).to.be.instanceof(Array);
+            expect(response.body.inactiveSentences).to.have.lengthOf(0);
+
+        });
+
+        test("Should get and error with status 400 if request body is empty", async () => {
+            const response = await request(app)
+                .post(url)
+                .set(basicAuthHeader)
+                .expect(400);
+
+            expect(response.body).to.haveOwnProperty("error");
+            expect(response.body).to.haveOwnProperty("hint");
+            expect(response.body.error).to.be.equal("Validation error");
+        });
+
+        test("Should get and error with status 400 if there's no sentence in the array", async () => {
+            const newSkill: Skill = {
+                name: "New Skill",
+                sentences: [],
+                inactiveSentences: []
+            };
+            const response = await request(app)
+                .post(url)
+                .set(basicAuthHeader)
+                .send(newSkill)
+                .expect(400);
+
+            expect(response.body).to.haveOwnProperty("error");
+            expect(response.body).to.haveOwnProperty("hint");
+            expect(response.body.error).to.be.equal("Validation error");
         })
     })
 });

@@ -7,6 +7,7 @@ import * as path from "path";
 import * as logger from 'morgan';
 import passportInit from "./service/auth/passport.manager";
 import * as session from 'express-session';
+import * as expressValidator from 'express-validator';
 
 const viewsPath = [path.join(__dirname, "./view"), path.join(__dirname, "./email/raw")];
 const sessionOptions = {
@@ -30,6 +31,22 @@ const app = (): Express => {
     app.use(session(sessionOptions));
     app.use(passport.initialize());
     app.use(passport.session());
+    app.use(expressValidator({
+        errorFormatter: function(param, msg, value) {
+            let namespace = param ? param.split('.') : []
+                , root    = namespace.shift()
+                , formParam = root;
+
+            while(namespace.length) {
+                formParam += '[' + namespace.shift() + ']';
+            }
+            return {
+                param : formParam,
+                msg   : msg,
+                value : value
+            };
+        }
+    }));
 
     passportInit();
     Routes(app);

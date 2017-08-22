@@ -70,4 +70,8 @@ export default (app: Express, compassController: CompassController) => {
      */
     app.route("/api/:orgId/compassanswers")
         .post(passport.authenticate('bearer', {session: false}), compassController.answerCompass.bind(compassController));
+
+
+    app.route("/api/create/skill/:orgId")
+        .post(passport.authenticate('basic', { session: false }), compassController.createNewSkill.bind(compassController));
 }

@@ -6,6 +6,7 @@ import UserDataController from "../../data/datacontroller/user.datacontroller";
 import * as lodash from 'lodash';
 import { SkillModel } from "../../data/database/schema/organization/compass/skill.schema";
 import CompassAnswer from "../../data/models/organization/compass/compassanswer.model";
+import Skill from "../../data/models/organization/compass/skill.model";
 
 export default class CompassManager {
 
@@ -67,5 +68,7 @@ export default class CompassManager {
         return CompassDataController.saveCompassAnswer(orgId, answer);
     }
 
-
+    static async createNewSkill(orgId: string, skill: Skill): Promise<SkillModel> {
+        return CompassDataController.saveSkill(orgId, skill);
+    }
 }
