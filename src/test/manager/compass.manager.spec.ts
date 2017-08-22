@@ -6,8 +6,11 @@ import UserDataController from "../../data/datacontroller/user.datacontroller";
 import OrganizationDataController from "../../data/datacontroller/organization.datacontroller";
 import CompassDataController from "../../data/datacontroller/compass.datacontroller";
 import CompassManager from "../../api/manager/compass.manager";
+import Sentence from "../../data/models/organization/compass/sentence.model";
+import { SkillModel } from "../../data/database/schema/organization/compass/skill.schema";
+import Skill from "../../data/models/organization/compass/skill.model";
 
-suite("CompassManager tests", () => {
+suite.only("CompassManager tests", () => {
     suite("generateTodo", () => {
         test("Should return a promise with a saved compass todo", done => {
             const getOrganizationByDbNameStub = sinon.stub(OrganizationDataController, "getOrganizationByDbName")
@@ -185,7 +188,7 @@ suite("CompassManager tests", () => {
 
     suite("createNewSkill", () => {
         test("Should call CompassDataController.saveSkill and return the saved skill object", async () => {
-            const mockOrgId: any = sinon.mock;
+            const mockOrgId: any = sinon.mock();
             const mockSkill = {
                 name: "Mock Skill",
                 sentences: [{
@@ -197,6 +200,26 @@ suite("CompassManager tests", () => {
             await CompassManager.createNewSkill(mockOrgId, mockSkill);
             sinon.assert.calledWith(saveSkill, mockOrgId, mockSkill);
             saveSkill.restore();
+        })
+    });
+
+    suite("getActiveSentencesFromSkill", () => {
+        test("Should call CompassDataController for skill and return it's active sentences", async () => {
+            const mockOrgId: any = sinon.mock();
+            const mockSkillId: any = sinon.mock();
+            const mockSkill: Skill = {
+                name: "Mock skill",
+                sentences: [{
+                    message: "Whatever"
+                }],
+                inactiveSentences: []
+            };
+
+            const getSkillById = sinon.stub(CompassDataController, 'getSkillById').resolves(mockSkill);
+            const sentences = await CompassManager.getActiveSentencesFromSkill(mockOrgId, mockSkillId);
+            getSkillById.restore();
+
+            expect(sentences).to.be.deep.equal(mockSkill.sentences);
         })
     })
 });

@@ -9,6 +9,10 @@ const CompassDataController = {
         return SkillCollection(orgId).find({}).lean().exec();
     },
 
+    getSkillById: (orgId: string, skillId: string): Promise<SkillModel> => {
+        return SkillCollection(orgId).findById(skillId).lean().exec() as Promise<SkillModel>
+    },
+
     saveCompassTodo: (orgId: string, newTodo: any): Promise<any> => {
         return new (CompassTodoCollection(orgId))(newTodo).save();
     },

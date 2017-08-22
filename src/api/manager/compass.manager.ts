@@ -7,6 +7,7 @@ import * as lodash from 'lodash';
 import { SkillModel } from "../../data/database/schema/organization/compass/skill.schema";
 import CompassAnswer from "../../data/models/organization/compass/compassanswer.model";
 import Skill from "../../data/models/organization/compass/skill.model";
+import Sentence from "../../data/models/organization/compass/sentence.model";
 
 export default class CompassManager {
 
@@ -71,4 +72,10 @@ export default class CompassManager {
     static async createNewSkill(orgId: string, skill: Skill): Promise<SkillModel> {
         return CompassDataController.saveSkill(orgId, skill);
     }
+
+    static async getActiveSentencesFromSkill(orgId: string, skillId: string): Promise<Sentence[]> {
+        const skill: Skill = await CompassDataController.getSkillById(orgId, skillId);
+        return skill.sentences;
+    }
+
 }

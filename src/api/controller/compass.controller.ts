@@ -40,7 +40,7 @@ export default class CompassController extends BaseController {
             .catch((err) => BaseController.send(res, 500, {error: err}))
     }
 
-    public static competenceForm(req: any, res: any): void {
+    static competenceForm(req: any, res: any): void {
         res.render("newCompetence", {title: "Add new competence", orgId: req.params.orgId});
     }
 
