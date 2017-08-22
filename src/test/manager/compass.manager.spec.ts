@@ -156,14 +156,11 @@ suite("CompassManager tests", () => {
             expect(result).to.haveOwnProperty("about");
             expect(result).to.haveOwnProperty("recipient");
             expect(result).to.haveOwnProperty("createdBy");
-            expect(result).to.haveOwnProperty("message");
             expect(result).to.haveOwnProperty("questions");
 
             expect(result.about).to.be.equal(aboutUser._id);
             expect(result.recipient).to.be.equal(recipientId);
             expect(result.createdBy).to.be.equal(senderId);
-            expect(result.message).to.be.equal('What do you think about this common? ' +
-                'Would be cool if you could answer some things about the common');
 
             expect(result.questions).to.be.instanceof(Array);
             expect(result.questions).to.have.lengthOf(3);

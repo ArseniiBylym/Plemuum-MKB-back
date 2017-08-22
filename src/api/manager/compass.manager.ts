@@ -1,42 +1,46 @@
 import OrganizationDataController from "../../data/datacontroller/organization.datacontroller";
-import Skill from "../../data/models/organization/compass/skill.model";
 import CompassDataController from "../../data/datacontroller/compass.datacontroller";
 import Organization from "../../data/models/organization/organization.model";
 import { UserModel } from "../../data/database/schema/common/user.schema";
 import UserDataController from "../../data/datacontroller/user.datacontroller";
 import * as lodash from 'lodash';
 import { SkillModel } from "../../data/database/schema/organization/compass/skill.schema";
+import CompassAnswer from "../../data/models/organization/compass/compassanswer.model";
+import { CompassAnswerCollection } from "../../data/database/schema/organization/compass/compassanswer.schema";
 
 export default class CompassManager {
-    public static async generateTodo(data: any, orgId: string, userId: string): Promise<any> {
+
+    static async generateTodo(data: any, orgId: string, userId: string): Promise<any> {
         const organization = await OrganizationDataController.getOrganizationByDbName(orgId);
         CompassManager.checkOrganization(organization);
+
         const aboutUser: UserModel = await CompassManager.getAboutUser(organization.dbName, data.recipientId);
         CompassManager.checkAboutUser(aboutUser);
+
         const skills: SkillModel[] = await CompassDataController.getAllSkills(organization.dbName);
         const newTodo = CompassManager.buildUpNewTodoResponse(userId, data.senderId, organization, aboutUser, skills);
         return CompassDataController.saveCompassTodo(organization.dbName, newTodo);
     }
 
-    public static checkOrganization(organization: Organization): Organization {
+    static checkOrganization(organization: Organization): Organization {
         if (!organization) {
             throw new Error('Organization nonexistent!');
         }
         return organization
     }
 
-    public static checkAboutUser(user: UserModel): UserModel {
+    static checkAboutUser(user: UserModel): UserModel {
         if (!user) {
             throw new Error('User could not be found');
         }
         return user;
     }
 
-    public static getAboutUser(orgId: string, userId: string): Promise<any> {
+    static getAboutUser(orgId: string, userId: string): Promise<any> {
         return UserDataController.getUserById(orgId, userId, ['_id', 'firstName', 'lastName']);
     }
 
-    public static buildUpNewTodoResponse(senderId: string, recipientId: string, organization: Organization, aboutUser: UserModel, skills: SkillModel[]): any {
+    static buildUpNewTodoResponse(senderId: string, recipientId: string, organization: Organization, aboutUser: UserModel, skills: SkillModel[]): any {
         const numberOfSentences = organization.todoSentenceNumber;
         const sentencesToBeAnswered: any[] = [];
 
@@ -54,8 +58,12 @@ export default class CompassManager {
             about: aboutUser._id,
             recipient: recipientId,
             createdBy: senderId,
-            message: 'What do you think about this common? Would be cool if you could answer some things about the common',
             questions: sentencesToBeAnswered
         };
+    }
+
+    //TODO Update statistics!
+    static async answerCompass(orgId: string, answer: CompassAnswer) {
+        return new (CompassAnswerCollection(orgId))(answer).save();
     }
 }

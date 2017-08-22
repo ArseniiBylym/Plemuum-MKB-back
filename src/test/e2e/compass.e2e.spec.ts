@@ -4,7 +4,7 @@ import * as request from 'supertest';
 import { authenticate, fixtureLoader, testUser } from "../mock/fixture.loader";
 import app from "../../app";
 import { bearerAuthHeader } from "../header.helper";
-import { expect, assert, should } from 'chai';
+import { expect, should } from 'chai';
 
 const orgId = 'hipteam';
 
@@ -43,7 +43,6 @@ suite("Compass request test", () => {
                             expect(response.body).to.haveOwnProperty("_id");
                             expect(response.body).to.haveOwnProperty("recipient");
                             expect(response.body).to.haveOwnProperty("createdBy");
-                            expect(response.body).to.haveOwnProperty("message");
                             expect(response.body).to.haveOwnProperty("questions");
                             expect(response.body.questions).to.be.instanceof(Array);
                             expect(response.body.questions).to.have.lengthOf(3);
@@ -92,4 +91,43 @@ suite("Compass request test", () => {
                 });
         })
     });
+
+    suite("Answer todo", () => {
+        const url = `/api/${orgId}/compassanswers`;
+
+        test("Should be able to send an answer, should get 200", async () => {
+            const token = await authenticate(testUser);
+            const response = await request(app).post(url).send({
+                compassTodo: "1234",
+                sender: "4321",
+                sentencesAnswer: [
+                    {
+                        answer: "AGREE",
+                        sentence: {
+                            _id: "599c073b9745c80bc9ee6a65",
+                            message: "message"
+                        },
+                        skill: {
+                            _id: "599c073b9745c80bc9ee6a63",
+                            name: "skill name",
+                            sentences: [{
+                                _id: "599c073b9745c80bc9ee6a65",
+                                message: "message"
+                            }],
+                            inactiveSentences: []
+                        }
+                    }
+                ]
+            }).set(bearerAuthHeader(token)).expect(200);
+            const answer = response.body;
+            expect(answer).to.haveOwnProperty("compassTodo");
+            expect(answer).to.haveOwnProperty("sender");
+            expect(answer).to.haveOwnProperty("sentencesAnswer");
+
+            expect(answer.sentencesAnswer[0]).to.haveOwnProperty("answer");
+            expect(answer.sentencesAnswer[0]).to.haveOwnProperty("skill");
+            expect(answer.sentencesAnswer[0]).to.haveOwnProperty("sentence");
+
+        })
+    })
 });
