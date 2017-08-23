@@ -24,6 +24,22 @@ export default class CompassController extends BaseController {
                 formError(err)));
     }
 
+    updateSkill(req: any, res: any) {
+        req.checkBody('_id', 'Missing skill id').notEmpty();
+        req.checkBody('name', 'Missing skill name').notEmpty();
+        req.checkBody('sentences', 'Missing skill sentence').notEmpty();
+        req.checkBody('sentences', 'Skill must contain at least one sentence').len({min: 1});
+
+        CompassManager.updateSkill(req.params.orgId, req.body)
+            .then(updatedSkill => BaseController.send(res, 200, updatedSkill))
+            .catch((err) => BaseController.send(
+                res,
+                (err.name === 'ValidationError')
+                    ? StatusCodes.INTERNAL_SERVER_ERROR
+                    : StatusCodes.BAD_REQUEST,
+                formError(err)));
+    }
+
     async createNewSkill(req: any, res: any) {
         req.checkBody('name', 'Missing skill name').notEmpty();
         req.checkBody('sentences', 'Missing skill sentence').notEmpty();
@@ -36,8 +52,8 @@ export default class CompassController extends BaseController {
             return;
         }
         CompassManager.createNewSkill(req.params.orgId, req.body)
-            .then(savedSkill => BaseController.send(res, 201, savedSkill))
-            .catch((err) => BaseController.send(res, 500, {error: err}))
+            .then(savedSkill => BaseController.send(res, StatusCodes.CREATED, savedSkill))
+            .catch((err) => BaseController.send(res, StatusCodes.INTERNAL_SERVER_ERROR, {error: err}))
     }
 
     static competenceForm(req: any, res: any): void {

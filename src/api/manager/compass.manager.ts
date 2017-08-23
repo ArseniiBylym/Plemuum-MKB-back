@@ -72,7 +72,8 @@ export default class CompassManager {
         return CompassDataController.saveSkill(orgId, skill);
     }
 
-    static async updateSkill(orgId: string, skill: Skill): Promise<any> {
-        return CompassDataController.updateSkill(orgId, skill);
+    static async updateSkill(orgId: string, skill: SkillModel): Promise<SkillModel> {
+        await CompassDataController.updateSkill(orgId, skill);
+        return CompassDataController.getSkillById(orgId, skill._id);
     }
 }

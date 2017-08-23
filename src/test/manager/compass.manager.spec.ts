@@ -206,11 +206,14 @@ suite("CompassManager tests", () => {
             const mockSkill: any = sinon.mock();
 
             const updateSkill = sinon.stub(CompassDataController, 'updateSkill').resolves(true);
+            const getSkillById = sinon.stub(CompassDataController, 'getSkillById').resolves(mockSkill);
             const result = await CompassManager.updateSkill(mockOrgId, mockSkill);
             updateSkill.restore();
+            getSkillById.restore();
 
             expect(updateSkill.calledWith(mockOrgId, mockSkill)).to.be.true;
-            expect(result).to.be.true;
+            expect(getSkillById.calledWith(mockOrgId, mockSkill._id)).to.be.true;
+            expect(result).to.be.deep.equal(mockSkill);
         });
 
         test("Should throw error if something goes wrong with the update", (done) => {

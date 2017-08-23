@@ -191,5 +191,41 @@ suite("Compass request test", () => {
             expect(response.body).to.haveOwnProperty("hint");
             expect(response.body.error).to.be.equal("Validation error");
         })
+    });
+
+    suite.only("Update existing skill", () => {
+        const url = `/api/${orgId}/skills`;
+        test("Should be able to upload and update a skill, should return the updated skill and 200", async () => {
+            const newSkill = {
+                _id: "5940f5f44d0d550007d863dc",
+                name: "Integrity",
+                inactiveSentences: [
+                    {
+                        message: "Questions practices which might violate rules of fairness.",
+                        _id: "599d3d95e8e27b04f2f05f55"
+                    }
+                ],
+                sentences: [
+                    {
+                        message: "Takes responsibility for own decisions and behavior.",
+                        _id: "599d3d95e8e27b04f2f05f57"
+                    },
+                    {
+                        message: "Its willing to admit own mistakes",
+                        _id: "599d3d95e8e27b04f2f05f56"
+                    },
+                ]
+            };
+
+            const response = await request(app)
+                .patch(url)
+                .set(basicAuthHeader)
+                .send(newSkill)
+                .expect(200);
+            expect(response.body.name).to.be.deep.equal(newSkill.name);
+            expect(response.body.inactiveSentences.length).to.be.equal(newSkill.inactiveSentences.length);
+            expect(response.body.sentences.length).to.be.equal(newSkill.sentences.length);
+        });
+
     })
 });
