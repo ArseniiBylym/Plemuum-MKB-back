@@ -6,7 +6,6 @@ import UserDataController from "../../data/datacontroller/user.datacontroller";
 import OrganizationDataController from "../../data/datacontroller/organization.datacontroller";
 import CompassDataController from "../../data/datacontroller/compass.datacontroller";
 import CompassManager from "../../api/manager/compass.manager";
-import Skill from "../../data/models/organization/compass/skill.model";
 
 suite("CompassManager tests", () => {
     suite("generateTodo", () => {
@@ -201,48 +200,32 @@ suite("CompassManager tests", () => {
         })
     });
 
-    suite("getActiveSentencesFromSkill", () => {
-        test("Should call CompassDataController for skill and return it's active sentences", async () => {
-            const mockOrgId: any = sinon.mock();
-            const mockSkillId: any = sinon.mock();
-            const mockSkill: Skill = {
-                name: "Mock skill",
-                sentences: [{
-                    message: "Whatever"
-                }],
-                inactiveSentences: []
-            };
+    suite("updateSkill", () => {
+        test("Should be able to update a skill", async () => {
+            const mockOrgId = "org";
+            const mockSkill: any = sinon.mock();
 
-            const getSkillById = sinon.stub(CompassDataController, 'getSkillById').resolves(mockSkill);
-            const sentences = await CompassManager.getActiveSentencesFromSkill(mockOrgId, mockSkillId);
-            getSkillById.restore();
-
-            expect(sentences).to.be.deep.equal(mockSkill.sentences);
-        })
-    });
-
-    suite("deactivateSentence", () => {
-        test("Should remove sentence from the active array and push it into inactiveSentences", async () => {
-            const mockSkill: any = {
-                name: "Skill name",
-                sentences: [
-                    {_id: "removethis", message: "messageToDeactivate"},
-                    {_id: "shouldstayhere", message: "this should stay here"}
-                ],
-                inactiveSentences: []
-            };
-            const orgId: any = sinon.mock();
-            const skillId: any = sinon.mock();
-            const sentenceId: string = "removethis";
-
-            const getSkillById = sinon.stub(CompassDataController, 'getSkillById').resolves(mockSkill);
-            const updateSkill = sinon.stub(CompassDataController, 'updateSkill').returnsArg(1);
-            const resultSkill: any = await CompassManager.deactivateSentence(orgId, skillId, sentenceId);
-            getSkillById.restore();
+            const updateSkill = sinon.stub(CompassDataController, 'updateSkill').resolves(true);
+            const result = await CompassManager.updateSkill(mockOrgId, mockSkill);
             updateSkill.restore();
 
-            expect(resultSkill.sentences).to.not.include({_id: "removethis", message: "messageToDeactivate"});
-            expect(resultSkill.inactiveSentences).to.deep.include({_id: "removethis", message: "messageToDeactivate"});
+            expect(updateSkill.calledWith(mockOrgId, mockSkill)).to.be.true;
+            expect(result).to.be.true;
+        });
+
+        test("Should throw error if something goes wrong with the update", (done) => {
+            const mockOrgId = "org";
+            const mockSkill: any = sinon.mock();
+
+            const updateSkill = sinon.stub(CompassDataController, 'updateSkill').throws(new Error("mock error"));
+            CompassManager.updateSkill(mockOrgId, mockSkill)
+                .catch(reason => {
+                    updateSkill.restore();
+                    expect(updateSkill.calledWith(mockOrgId, mockSkill)).to.be.true;
+                    expect(reason).to.be.instanceof(Error);
+                    expect(reason.message).to.be.deep.equal("mock error");
+                    done();
+                });
         })
     })
 });

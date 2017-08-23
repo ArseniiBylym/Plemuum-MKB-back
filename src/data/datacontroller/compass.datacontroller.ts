@@ -25,10 +25,15 @@ const CompassDataController = {
         return new (SkillCollection(orgId))(skill).save();
     },
 
-    updateSkill: (orgId: string, skill: any): Promise<SkillModel> => {
-        return SkillCollection(orgId).update({_id: skill._id}, skill).lean().exec() as Promise<SkillModel>
+    updateSkill: (orgId: string, skill: any): Promise<boolean> => {
+        return SkillCollection(orgId).update({_id: skill._id}, skill).exec()
+            .then((result) => {
+                if (result.nModified === 0) {
+                    throw new Error('Group was not found');
+                }
+                return true;
+            });
     }
-
 };
 
 export default CompassDataController;
