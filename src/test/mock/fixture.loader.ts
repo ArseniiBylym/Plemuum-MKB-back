@@ -71,7 +71,7 @@ function authenticate(testUser: any): Promise<string> {
 
 async function resetPassword(userId: string): Promise<any> {
     const expiry = new Date();
-    expiry.setHours(expiry.getMinutes() + 5);
+    expiry.setHours(expiry.getHours() + 5);
     const data: any = {userId: userId, token: "aaabbbccc11122233", token_expiry: expiry, reseted: false};
     const resetPass = await resetPasswordDataController.saveResetPassword(data);
     return resetPass.token;

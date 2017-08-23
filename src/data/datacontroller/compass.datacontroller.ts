@@ -1,5 +1,5 @@
 import { SkillCollection, SkillModel } from "../database/schema/organization/compass/skill.schema";
-import { CompassTodoCollection } from "../database/schema/organization/compass/compasstodo.schema";
+import { CompassTodoCollection, CompassTodoModel } from "../database/schema/organization/compass/compasstodo.schema";
 import CompassAnswer from "../models/organization/compass/compassanswer.model";
 import { CompassAnswerCollection } from "../database/schema/organization/compass/compassanswer.schema";
 import Skill from "../models/organization/compass/skill.model";
@@ -11,6 +11,10 @@ const CompassDataController = {
 
     getSkillById: (orgId: string, skillId: string): Promise<SkillModel> => {
         return SkillCollection(orgId).findById(skillId).lean().exec() as Promise<SkillModel>
+    },
+
+    getTodoById: (orgId: string, todoId: string): Promise<CompassTodoModel> => {
+        return CompassTodoCollection(orgId).findById(todoId).lean().exec() as Promise<CompassTodoModel>
     },
 
     saveCompassTodo: (orgId: string, newTodo: any): Promise<any> => {

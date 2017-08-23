@@ -1,11 +1,9 @@
-import { User } from "../../common/user.model";
-
 interface CompassTodo {
-    aboutUser: User;
-    recipientId: string;
-    sender: User;
+    about: string;
+    recipient: string;
+    createdBy: string;
     message: string;
-    sentences: Array<Object>;
+    questions: Array<Object>;
 }
 
 export default CompassTodo
