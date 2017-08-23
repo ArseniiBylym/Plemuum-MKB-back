@@ -12,9 +12,10 @@ suite("Compass Statistics Manager tests", () => {
         answer.compassTodo = "123asd321";
         const todo: any = sinon.mock();
         todo.about = "aboutUserId";
+        const statistics: any = sinon.mock();
 
         test("Create a new statistics from answer", async () => {
-            const createStatistics = sinon.stub(StatisticsManager, 'createStatistics');
+            const createStatistics = sinon.stub(StatisticsManager, 'createStatistics').resolves(statistics);
             const getTodoById = sinon.stub(CompassDataController, 'getTodoById');
             getTodoById.withArgs(orgId, answer.compassTodo).resolves(todo);
             const getStatisticsByUserId = sinon.stub(StatisticsDataController, 'getStatisticsByUserId');
@@ -25,14 +26,16 @@ suite("Compass Statistics Manager tests", () => {
             getStatisticsByUserId.restore();
             createStatistics.restore();
 
-            sinon.assert.calledWith(createStatistics, orgId, answer);
+            sinon.assert.calledWith(createStatistics, answer);
+            expect(result).to.be.deep.equal(statistics);
         });
 
         test("Update existing statistics if one exists", async () => {
 
             const statistics: any = sinon.mock();
+            const updatedStatistics: any = sinon.mock();
 
-            const updateStatistics = sinon.stub(StatisticsManager, 'updateStatistics');
+            const updateStatistics = sinon.stub(StatisticsManager, 'updateStatistics').resolves(updatedStatistics);
             const getTodoById = sinon.stub(CompassDataController, 'getTodoById');
 
             getTodoById.withArgs(orgId, answer.compassTodo).resolves(todo);
@@ -45,7 +48,8 @@ suite("Compass Statistics Manager tests", () => {
             updateStatistics.restore();
             getStatisticsByUserId.restore();
 
-            sinon.assert.calledWith(updateStatistics, orgId, answer, statistics);
+            sinon.assert.calledWith(updateStatistics, answer, statistics);
+            expect(result).to.be.deep.equal(updatedStatistics);
         })
     });
 
@@ -62,15 +66,14 @@ suite("Compass Statistics Manager tests", () => {
             };
 
             const updateStatistics = sinon.stub(StatisticsManager, 'updateStatistics').resolves();
-            const result = await StatisticsManager.createStatistics(orgId, answer, todo);
+            await StatisticsManager.createStatistics(answer, todo);
 
             updateStatistics.restore();
-            sinon.assert.calledWith(updateStatistics, orgId, answer, expectedStatistics);
+            sinon.assert.calledWith(updateStatistics, answer, expectedStatistics);
         });
     });
 
     suite("updateStatistics", () => {
-        const orgId = "orgId";
 
         suite("Update an empty statistics object", () => {
 
@@ -180,7 +183,7 @@ suite("Compass Statistics Manager tests", () => {
                     ]
                 };
 
-                const result = StatisticsManager.updateStatistics(orgId, answer, statistics);
+                const result = StatisticsManager.updateStatistics(answer, statistics);
 
                 expect(result).to.be.deep.equal(expectedStatistics);
 
@@ -282,7 +285,7 @@ suite("Compass Statistics Manager tests", () => {
                     ]
                 };
 
-                const result = StatisticsManager.updateStatistics(orgId, answer, statistics);
+                const result = StatisticsManager.updateStatistics(answer, statistics);
 
                 expect(result).to.be.deep.equal(expectedStatistics);
 
@@ -364,7 +367,7 @@ suite("Compass Statistics Manager tests", () => {
                     skillScores: []
                 };
 
-                const result = StatisticsManager.updateStatistics(orgId, answer, statistics);
+                const result = StatisticsManager.updateStatistics(answer, statistics);
 
                 expect(result).to.be.deep.equal(expectedStatistics);
 
@@ -499,7 +502,7 @@ suite("Compass Statistics Manager tests", () => {
                     ]
                 };
 
-                const result = StatisticsManager.updateStatistics(orgId, answer, statistics);
+                const result = StatisticsManager.updateStatistics(answer, statistics);
 
                 expect(result).to.be.deep.equal(expectedStatistics);
 
@@ -611,7 +614,7 @@ suite("Compass Statistics Manager tests", () => {
                     ]
                 };
 
-                const result = StatisticsManager.updateStatistics(orgId, answer, statistics);
+                const result = StatisticsManager.updateStatistics(answer, statistics);
 
                 expect(result).to.be.deep.equal(expectedStatistics);
 
@@ -714,7 +717,7 @@ suite("Compass Statistics Manager tests", () => {
                     ]
                 };
 
-                const result = StatisticsManager.updateStatistics(orgId, answer, statistics);
+                const result = StatisticsManager.updateStatistics(answer, statistics);
 
                 expect(result).to.be.deep.equal(expectedStatistics);
 
