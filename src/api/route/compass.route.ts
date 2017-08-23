@@ -70,8 +70,11 @@ export default (app: Express, compassController: CompassController) => {
         .post(passport.authenticate('bearer', {session: false}), compassController.answerCompass.bind(compassController));
 
 
+    app.route("/api/create/skill/:orgId")
+        .get(CompassController.createNewSkillForm);
+
     /**
-     * @api {POST} /api/create/skill/:orgId Create Skill
+     * @api {POST} /api/:orgId/skills Create Skill
      * @apiName create skill
      * @apiGroup Compass Assesment
      * @apiDescription Create a new skill object with at least one active sentence
@@ -86,10 +89,27 @@ export default (app: Express, compassController: CompassController) => {
      * @apiSuccess (Success 200) {Sentence[]} sentences Active sentences. You need to add at least one.
      * @apiSuccess (Success 200) {Sentence[]} inactivesentences Inactive sentences. Should be part of the object, but can be empty.
      */
-    app.route("/api/create/skill/:orgId")
-        .get(CompassController.competenceForm)
-        .post(passport.authenticate('basic', {session: false}), compassController.createNewSkill.bind(compassController));
 
+    /**
+     * @api {PATCH} /api/:orgId/skills Update Skill
+     * @apiName create skill
+     * @apiGroup Compass Assesment
+     * @apiDescription Update an existing skill
+     *
+     * @apiHeader {String} Authorization Basic username:password
+     *
+     * @apiParam {String} _id The identifier of the skill
+     * @apiParam {String} name The name of the skill
+     * @apiParam {Sentence[]} sentences Active sentences. You need to add at least one.
+     * @apiParam {String} sentences._id Id of the sentence.
+     * @apiParam {String} sentences.message Message of the sentence.
+     * @apiParam {Sentence[]} inactivesentences Inactive sentences. Should be part of the object, but can be empty.
+     * @apiParam {String} inactivesentences._id Id of the sentence.
+     * @apiParam {String} inactivesentences.message Message of the sentence.
+     *
+     * @apiSuccess (Success 200) {Skill} - skill object
+     */
     app.route("/api/:orgId/skills")
         .patch(passport.authenticate('basic', {session: false}), compassController.updateSkill.bind(compassController))
+        .post(passport.authenticate('basic', {session: false}), compassController.createNewSkill.bind(compassController));
 }

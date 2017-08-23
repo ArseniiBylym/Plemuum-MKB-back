@@ -133,7 +133,7 @@ suite("Compass request test", () => {
     });
 
     suite("Create new skill", () => {
-        const url = `/api/create/skill/${orgId}`;
+        const url = `/api/${orgId}/skills`;
         const newSkill: Skill = {
             name: "New Skill",
             sentences: [
@@ -193,7 +193,7 @@ suite("Compass request test", () => {
         })
     });
 
-    suite.only("Update existing skill", () => {
+    suite("Update existing skill", () => {
         const url = `/api/${orgId}/skills`;
         test("Should be able to upload and update a skill, should return the updated skill and 200", async () => {
             const newSkill = {
