@@ -9,8 +9,16 @@ import CompassAnswer from "../../data/models/organization/compass/compassanswer.
 import Skill from "../../data/models/organization/compass/skill.model";
 import StatisticsManager from "./statistics.manager";
 import StatisticsDataController from "../../data/datacontroller/statistics.datacontroller";
+import { GroupDataController } from "../../data/datacontroller/group.datacontroller";
+import Group from "../../data/models/organization/group.model";
 
 export default class CompassManager {
+
+    groupDataController: GroupDataController;
+
+    constructor(groupDataController: GroupDataController) {
+        this.groupDataController = groupDataController;
+    }
 
     static async generateTodo(data: any, orgId: string, userId: string): Promise<any> {
         const organization = await OrganizationDataController.getOrganizationByDbName(orgId);
@@ -79,5 +87,12 @@ export default class CompassManager {
     static async updateSkill(orgId: string, skill: SkillModel): Promise<SkillModel> {
         await CompassDataController.updateSkill(orgId, skill);
         return CompassDataController.getSkillById(orgId, skill._id);
+    }
+
+    async getStatistics(orgId: string, userId: string) {
+        const userGroups: Group[] = await this.groupDataController.getUserGroups(orgId, userId);
+        const statistics = await StatisticsManager.getStatistics(orgId, userId, userGroups);
+        await StatisticsDataController.saveOrUpdateStatistics(orgId, statistics);
+        return await StatisticsDataController.getStatisticsByUserId(orgId, userId);
     }
 }

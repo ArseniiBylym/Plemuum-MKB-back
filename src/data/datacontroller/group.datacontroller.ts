@@ -1,10 +1,10 @@
-import { GroupCollection } from "../database/schema/organization/group.schema";
+import { GroupCollection, GroupModel } from "../database/schema/organization/group.schema";
 import Group from "../models/organization/group.model";
 
 export interface GroupDataController {
     createGroup: ((orgId: string, group: Group) => Promise<any>);
     getGroupById: ((orgId: string, groupId: string) => Promise<any>);
-    getUserGroups: ((orgId: string, userId: string) => Promise<any>);
+    getUserGroups: ((orgId: string, userId: string) => Promise<GroupModel[]>);
     putUserIntoGroup: ((orgId: string, userId: string, groupId: string) => Promise<any>);
     removeUserFromGroup: ((orgId: string, userId: string, groupId: string) => Promise<any>);
     updateGroup: ((orgId: string, groupId: string, group: Group) => Promise<any>)
@@ -20,8 +20,8 @@ const getGroupDataController = () => {
             return GroupCollection(orgId).findById(groupId).lean().exec();
         },
 
-        getUserGroups: (orgId: string, userId: string): Promise<any> => {
-            return GroupCollection(orgId).find({users: {$in: [userId]}}).lean().exec();
+        getUserGroups: (orgId: string, userId: string): Promise<GroupModel[]> => {
+            return GroupCollection(orgId).find({users: {$in: [userId]}}).lean().exec() as Promise<GroupModel[]>;
         },
 
         putUserIntoGroup: (orgId: string, userId: string, groupId: string): Promise<any> => {

@@ -8,7 +8,9 @@
       "5984342227cd340363dc84af",
       "5984342227cd340363dc84c7"
     ],
-    "skills": [],
+    "skills": [
+      "5940f6144d0d550007d863e2"
+    ],
     "todoCardRelations": [],
     "answerCardRelations": []
   },
@@ -30,9 +32,13 @@
     "createdAt": "2017-08-15T15:26:32.245Z",
     "name": "Test Group C",
     "users": [
-      "5984342227cd340363dc84c7"
+      "5984342227cd340363dc84c7",
+      "5984342227cd340363dc84aa"
     ],
-    "skills": [],
+    "skills": [
+      "5940f5f44d0d550007d863dc",
+      "5940f6144d0d550007d863e2"
+    ],
     "todoCardRelations": [],
     "answerCardRelations": []
   },
@@ -42,7 +48,10 @@
     "createdAt": "2017-08-15T15:26:34.539Z",
     "name": "Test Group D",
     "users": [],
-    "skills": [],
+    "skills": [
+      "5940f5f44d0d550007d863dc",
+      "5940f6044d0d550007d863df"
+    ],
     "todoCardRelations": [],
     "answerCardRelations": []
   },

@@ -19,7 +19,7 @@ export const SentenceScoreSchema = new Schema({
 
 export const SkillScoreSchema = new Schema({
     skill: {required: true, type: String, index: true},
-    sentenceScores: {required: true, type: [SentenceScoreSchema], index: false},
+    sentenceScores: {required: false, type: [SentenceScoreSchema], index: false},
 }, {
     timestamps: true,
     versionKey: false
@@ -27,7 +27,7 @@ export const SkillScoreSchema = new Schema({
 
 export const CompassStatisticsSchema = new Schema({
     user: {required: true, type: String, index: true},
-    skillScores: {required: true, type: [SkillScoreSchema], index: false},
+    skillScores: {required: false, type: [SkillScoreSchema], index: false},
 }, {
     _id: true,
     timestamps: true,

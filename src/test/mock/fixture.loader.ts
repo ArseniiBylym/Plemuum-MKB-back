@@ -40,7 +40,7 @@ function fixtureLoader(): Promise<any> {
         {model: SkillCollection('hipteam'), mockFile: "skills"},
         {model: CompassTodoCollection('hipteam'), mockFile: "compasstodo"},
         {model: CompassAnswerCollection('hipteam'), mockFile: null},
-        {model: StatisticsCollection('hipteam'), mockFile: null},
+        {model: StatisticsCollection('hipteam'), mockFile: "statistics"},
     ];
 
     /* Clear each collection */

@@ -14,7 +14,7 @@ const StatisticsDataController = {
     },
 
     getStatisticsByUserId: (orgId: string, userId: string): Promise<CompassStatisticsModel> => {
-        return StatisticsCollection(orgId).findOne({_id: userId}).lean().exec() as Promise<CompassStatisticsModel>
+        return StatisticsCollection(orgId).findOne({user: userId}).lean().exec() as Promise<CompassStatisticsModel>
     }
 };
 

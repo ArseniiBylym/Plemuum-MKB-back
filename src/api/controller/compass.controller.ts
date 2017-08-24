@@ -5,6 +5,13 @@ import BaseController from "./base.controller";
 
 export default class CompassController extends BaseController {
 
+    compassManager: CompassManager;
+
+    constructor(compassManager: CompassManager) {
+        super();
+        this.compassManager = compassManager;
+    }
+
     generateTodo(req: any, res: any) {
         CompassManager.generateTodo(req.body, req.params.orgId, req.user._id)
             .then(savedTodo => res.send(savedTodo))
@@ -60,4 +67,9 @@ export default class CompassController extends BaseController {
         res.render("newSkill", {title: "Add new competence", orgId: req.params.orgId});
     }
 
+    async getStatistics(req: any, res: any) {
+        return this.compassManager.getStatistics(req.params.orgId, req.params.userId)
+            .then(statistics => BaseController.send(res, StatusCodes.OK, statistics))
+            .catch((err) => BaseController.send(res, StatusCodes.INTERNAL_SERVER_ERROR, {error: err}))
+    }
 }

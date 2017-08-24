@@ -112,4 +112,27 @@ export default (app: Express, compassController: CompassController) => {
     app.route("/api/:orgId/skills")
         .patch(passport.authenticate('basic', {session: false}), compassController.updateSkill.bind(compassController))
         .post(passport.authenticate('basic', {session: false}), compassController.createNewSkill.bind(compassController));
+
+    /**
+     * @api {GET} /api/:orgId/user/:userId/compassstatistics User Statistics
+     * @apiName CompassStatistics
+     * @apiGroup Compass Assesment
+     * @apiHeader {String} Authorization Bearer token Optional for web
+     * @apiHeader {String} token Optional for Mobile
+     * @apiParam {String} orgId Organization Id
+     * @apiParam {String} userId User unique id
+     * @apiDescription Get the statistics generated from compass answers. If the user have statistics, retireve them, if not, generates the statistics onlye with the current competnces on the organization
+     *
+     * @apiSuccess (Success 200) {Object[]} competencesScore
+     * @apiSuccess (Success 200) {Object} competencesScore.competence Competence object.
+     * @apiSuccess (Success 200) {Number} competencesScore.numberOfAnswers The number of answers to this competence.
+     * @apiSuccess (Success 200) {Number} competencesScore.score The score of answers for this competence.
+     * @apiSuccess (Success 200) {Object[]} competencesScore.sentencesScore is the array of sentences answerd for this particular competence.
+     * @apiSuccess (Success 200) {Object} competencesScore.sentencesScore.@apiUse sentence_object
+     * @apiSuccess (Success 200) {Number} competencesScore.sentencesScore.numberOfAnswers The number of answers for this particular sentence.
+     * @apiSuccess (Success 200) {Number} competencesScore.sentencesScore.score The score for this particular sentence.
+     */
+    //Just related to the user independent of the organization
+    app.route("/api/:orgId/user/:userId/compassstatistics")
+        .get(passport.authenticate('bearer', {session: false}), compassController.getStatistics.bind(compassController));
 }

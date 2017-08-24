@@ -8,6 +8,8 @@ import CompassDataController from "../../data/datacontroller/compass.datacontrol
 import CompassManager from "../../api/manager/compass.manager";
 import StatisticsManager from "../../api/manager/statistics.manager";
 import StatisticsDataController from "../../data/datacontroller/statistics.datacontroller";
+import Group from "../../data/models/organization/group.model";
+import { skills } from "../util/statistics.manager.util";
 
 suite("CompassManager tests", () => {
     suite("generateTodo", () => {
@@ -108,12 +110,11 @@ suite("CompassManager tests", () => {
     });
 
     suite("getAboutUser", () => {
-        test("Should call UserDataController.getUserById", done => {
+        test("Should call UserDataController.getUserById", async () => {
             let userDataControllerStub: Sinon.SinonStub = sinon.stub(UserDataController, "getUserById").returns(Promise.resolve({}));
-            CompassManager.getAboutUser("dummy", "dummy");
+            await CompassManager.getAboutUser("dummy", "dummy");
             userDataControllerStub.restore();
             expect(userDataControllerStub.calledWith("dummy", "dummy", ['_id', 'firstName', 'lastName'])).to.be.true;
-            done();
         })
     });
 
@@ -250,6 +251,52 @@ suite("CompassManager tests", () => {
                     expect(reason.message).to.be.deep.equal("mock error");
                     done();
                 });
+        })
+    });
+
+    suite("getStatistics", () => {
+        const orgId = "orgId";
+        const userId = "userId";
+
+        test("Should collect user groups, get statistics, save and return", async () => {
+            const mockStatistics: any = sinon.mock();
+            const groups: Group[] = [
+                {
+                    name: "Group name",
+                    users: [userId],
+                    answerCardRelations: [],
+                    todoCardRelations: [],
+                    skills: [skills[0]._id, skills[2]._id]
+                },
+                {
+                    name: "Group name 2",
+                    users: [userId],
+                    answerCardRelations: [],
+                    todoCardRelations: [],
+                    skills: [skills[1]._id]
+                }
+            ];
+
+            const groupDataController: any = {
+                getUserGroups: sinon.stub()
+            };
+            groupDataController.getUserGroups.withArgs(orgId, userId).resolves(groups);
+            const getStatistics = sinon.stub(StatisticsManager, 'getStatistics');
+            getStatistics.withArgs(orgId, userId, groups).resolves(mockStatistics);
+
+            const saveOrUpdateStatistics = sinon.stub(StatisticsDataController, 'saveOrUpdateStatistics');
+            saveOrUpdateStatistics.withArgs(orgId, mockStatistics).resolves(mockStatistics);
+            const getStatisticsByUserId = sinon.stub(StatisticsDataController, 'getStatisticsByUserId');
+            getStatisticsByUserId.withArgs(orgId, userId).resolves(mockStatistics);
+
+            const compassManager = new CompassManager(groupDataController);
+            const result = await compassManager.getStatistics(orgId, userId);
+
+            getStatistics.restore();
+            saveOrUpdateStatistics.restore();
+            getStatisticsByUserId.restore();
+            sinon.assert.calledWith(groupDataController.getUserGroups, orgId, userId);
+            expect(result).to.be.deep.equal(mockStatistics);
         })
     })
 });

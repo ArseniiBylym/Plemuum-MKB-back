@@ -9,6 +9,8 @@ import GroupRoute from './group.route';
 import CompassRoute from './compass.route';
 import * as ControllerFactory from '../../factory/controller.factory'
 import CompassController from "../controller/compass.controller";
+import CompassManager from "../manager/compass.manager";
+import { getGroupDataController } from "../../data/datacontroller/group.datacontroller";
 
 export default (express: Express) => {
     UserRoute(express, ControllerFactory.getUserController());
@@ -18,5 +20,5 @@ export default (express: Express) => {
     RequestRoute(express, ControllerFactory.getRequestController());
     SessionRoute(express, ControllerFactory.getSessionController());
     GroupRoute(express, ControllerFactory.getGroupController());
-    CompassRoute(express, new CompassController());
+    CompassRoute(express, new CompassController(new CompassManager(getGroupDataController())));
 }
