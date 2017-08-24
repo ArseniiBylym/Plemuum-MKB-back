@@ -3,6 +3,7 @@ import StatisticsDataController from "../../data/datacontroller/statistics.datac
 import { CompassStatistics, SkillScore } from "../../data/models/organization/compass/compass.statistics.model";
 import CompassDataController from "../../data/datacontroller/compass.datacontroller";
 import CompassTodo from "../../data/models/organization/compass/compasstodo.model";
+import Group from "../../data/models/organization/group.model";
 
 export default class StatisticsManager {
 
@@ -19,6 +20,42 @@ export default class StatisticsManager {
         return statistics
             ? this.updateStatistics(answer, statistics)
             : this.createStatistics(answer, todo);
+    }
+
+    /**
+     * Return the user Compass Statistics. If there's no available statistics, then it'll initialize one.
+     *
+     * @param {string} orgId    Organization ID
+     * @param {string} userId   User ID
+     * @param {Group[]} groups  Groups the user participates in
+     * @returns {Promise<CompassStatistics>}
+     */
+    static async getStatistics(orgId: string, userId: string, groups: Group[]): Promise<CompassStatistics> {
+        const emptySkillScore = (skillId: string) => ({skill: skillId, sentenceScores: []});
+
+        let availableSkillIds: string[] = [];
+        groups.forEach((group) => availableSkillIds = availableSkillIds.concat(group.skills));
+
+        const statistics = await StatisticsDataController.getStatisticsByUserId(orgId, userId);
+        if (statistics) {
+            const missingSkills: string[] = [];
+            availableSkillIds.forEach((skillId) => {
+                if (!statistics.skillScores.find((skillScore) => skillScore.skill === skillId)) {
+                    missingSkills.push(skillId)
+                }
+            });
+            if (missingSkills.length > 0) {
+                missingSkills.forEach((skillId) => statistics.skillScores.push(emptySkillScore(skillId)));
+            }
+            return statistics;
+        } else {
+            const skillScores: SkillScore[] = [];
+            availableSkillIds.forEach((skillId) => skillScores.push(emptySkillScore(skillId)));
+            return {
+                user: userId,
+                skillScores: skillScores
+            }
+        }
     }
 
     // Creates an empty statistics object and calls update to fill it up
@@ -74,4 +111,5 @@ export default class StatisticsManager {
             numberOfDisagree: sentenceAnswer.answer === ANSWER_TYPES.DISAGREE ? 1 : 0
         };
     }
+
 }

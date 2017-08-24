@@ -5,12 +5,17 @@ import { CompassAnswerCollection } from "../database/schema/organization/compass
 import Skill from "../models/organization/compass/skill.model";
 
 const CompassDataController = {
-    getAllSkills: (orgId: string): Promise<any> => {
-        return SkillCollection(orgId).find({}).lean().exec();
+
+    getAllSkills: (orgId: string): Promise<SkillModel[]> => {
+        return SkillCollection(orgId).find({}).lean().exec() as Promise<SkillModel[]>;
     },
 
     getSkillById: (orgId: string, skillId: string): Promise<SkillModel> => {
         return SkillCollection(orgId).findById(skillId).lean().exec() as Promise<SkillModel>
+    },
+
+    getSkillsByIds: (orgId: string, skillIds: string[]): Promise<SkillModel[]> => {
+        return SkillCollection(orgId).find({$in: {_id: skillIds}}).lean().exec() as Promise<SkillModel[]>;
     },
 
     getTodoById: (orgId: string, todoId: string): Promise<CompassTodoModel> => {

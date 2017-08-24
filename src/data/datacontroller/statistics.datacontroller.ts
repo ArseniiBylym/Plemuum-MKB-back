@@ -5,7 +5,7 @@ import {
 
 const StatisticsDataController = {
 
-    createOrUpdateStatistics(orgId: string, statistics: any): Promise<any> {
+    saveOrUpdateStatistics(orgId: string, statistics: any): Promise<any> {
         if (statistics._id) {
             return StatisticsCollection(orgId).update({_id: statistics._id}, statistics).lean().exec();
         } else {

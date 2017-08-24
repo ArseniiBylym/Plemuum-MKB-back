@@ -189,8 +189,8 @@ suite("CompassManager tests", () => {
                 .withArgs(mockOrgId, savedAnswer)
                 .resolves(mockStatistics);
 
-            const createOrUpdateStatisticsController = sinon.stub(StatisticsDataController, 'createOrUpdateStatistics');
-            createOrUpdateStatisticsController
+            const saveOrUpdateStatistics = sinon.stub(StatisticsDataController, 'saveOrUpdateStatistics');
+            saveOrUpdateStatistics
                 .withArgs(mockOrgId, mockStatistics)
                 .resolves(mockStatistics);
 
@@ -198,7 +198,7 @@ suite("CompassManager tests", () => {
 
             saveCompassAnswer.restore();
             createOrUpdateStatistics.restore();
-            createOrUpdateStatisticsController.restore();
+            saveOrUpdateStatistics.restore();
 
             expect(result).to.be.deep.equal(savedAnswer);
         })

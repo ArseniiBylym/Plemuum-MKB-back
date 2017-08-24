@@ -30,9 +30,9 @@ const createSentenceScore = (sentenceNumber: number, agrees: number, disagrees: 
     }
 };
 
-const createSentenceAnswer = (skillNumber: any, sentenceNumber: number, answer: ANSWER_TYPES) => {
+const createSentenceAnswer = (skill: any, sentenceNumber: number, answer: ANSWER_TYPES) => {
     return {
-        skill: skills[skillNumber],
+        skill: skill,
         sentence: createSentence(sentenceNumber),
         answer: answer
     }
@@ -46,9 +46,9 @@ const createCompassAnswer = (...sentenceAnswers: any[]) => {
     }
 };
 
-const createSkillScore = (skillNumber: number, ...sentenceScores: any[]) => {
+const createSkillScore = (skill: any, ...sentenceScores: any[]) => {
     return {
-        skill: skills[skillNumber]._id,
+        skill: skill._id,
         sentenceScores: sentenceScores
     }
 };

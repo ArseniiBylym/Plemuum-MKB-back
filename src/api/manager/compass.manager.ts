@@ -68,7 +68,7 @@ export default class CompassManager {
     static async answerCompass(orgId: string, answer: CompassAnswer): Promise<CompassAnswer> {
         const savedAnswer = await CompassDataController.saveCompassAnswer(orgId, answer);
         const statistics = await StatisticsManager.createOrUpdateStatistics(orgId, answer);
-        await StatisticsDataController.createOrUpdateStatistics(orgId, statistics);
+        await StatisticsDataController.saveOrUpdateStatistics(orgId, statistics);
         return savedAnswer;
     }
 
