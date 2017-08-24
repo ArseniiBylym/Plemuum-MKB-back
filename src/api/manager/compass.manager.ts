@@ -7,6 +7,8 @@ import * as lodash from 'lodash';
 import { SkillModel } from "../../data/database/schema/organization/compass/skill.schema";
 import CompassAnswer from "../../data/models/organization/compass/compassanswer.model";
 import Skill from "../../data/models/organization/compass/skill.model";
+import StatisticsManager from "./statistics.manager";
+import StatisticsDataController from "../../data/datacontroller/statistics.datacontroller";
 
 export default class CompassManager {
 
@@ -63,9 +65,11 @@ export default class CompassManager {
         };
     }
 
-    //TODO Update statistics!
     static async answerCompass(orgId: string, answer: CompassAnswer): Promise<CompassAnswer> {
-        return CompassDataController.saveCompassAnswer(orgId, answer);
+        const savedAnswer = await CompassDataController.saveCompassAnswer(orgId, answer);
+        const statistics = await StatisticsManager.createOrUpdateStatistics(orgId, answer);
+        await StatisticsDataController.createOrUpdateStatistics(orgId, statistics);
+        return savedAnswer;
     }
 
     static async createNewSkill(orgId: string, skill: Skill): Promise<SkillModel> {

@@ -6,6 +6,8 @@ import UserDataController from "../../data/datacontroller/user.datacontroller";
 import OrganizationDataController from "../../data/datacontroller/organization.datacontroller";
 import CompassDataController from "../../data/datacontroller/compass.datacontroller";
 import CompassManager from "../../api/manager/compass.manager";
+import StatisticsManager from "../../api/manager/statistics.manager";
+import StatisticsDataController from "../../data/datacontroller/statistics.datacontroller";
 
 suite("CompassManager tests", () => {
     suite("generateTodo", () => {
@@ -174,12 +176,31 @@ suite("CompassManager tests", () => {
     suite("answerCompass", () => {
         test("Should call CompassDataController.saveCompassAnswer", async () => {
             const mockAnswer: any = sinon.mock;
+            const savedAnswer: any = sinon.mock;
             const mockOrgId: any = sinon.mock;
-            const saveCompassAnswer = sinon.stub(CompassDataController, 'saveCompassAnswer').resolves();
+            const mockStatistics: any = sinon.mock;
+            const saveCompassAnswer = sinon.stub(CompassDataController, 'saveCompassAnswer');
+            saveCompassAnswer
+                .withArgs(mockOrgId, mockAnswer)
+                .resolves(savedAnswer);
 
-            await CompassManager.answerCompass(mockOrgId, mockAnswer);
-            sinon.assert.calledWith(saveCompassAnswer, mockOrgId, mockAnswer);
+            const createOrUpdateStatistics = sinon.stub(StatisticsManager, 'createOrUpdateStatistics');
+            createOrUpdateStatistics
+                .withArgs(mockOrgId, savedAnswer)
+                .resolves(mockStatistics);
+
+            const createOrUpdateStatisticsController = sinon.stub(StatisticsDataController, 'createOrUpdateStatistics');
+            createOrUpdateStatisticsController
+                .withArgs(mockOrgId, mockStatistics)
+                .resolves(mockStatistics);
+
+            const result = await CompassManager.answerCompass(mockOrgId, mockAnswer);
+
             saveCompassAnswer.restore();
+            createOrUpdateStatistics.restore();
+            createOrUpdateStatisticsController.restore();
+
+            expect(result).to.be.deep.equal(savedAnswer);
         })
     });
 

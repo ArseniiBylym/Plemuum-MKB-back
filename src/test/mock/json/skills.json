@@ -2,67 +2,77 @@
   {
     "_id": "5940f5f44d0d550007d863dc",
     "name": "Integrity",
+    "inactiveSentences": [],
     "sentences": [
       {
-        "message": "Takes responsibility for own decisions and behavior."
+        "message": "Takes responsibility for own decisions and behavior.",
+        "_id": "599e88721a6ec6039715b542"
       },
       {
-        "message": "Its willing to admit own mistakes"
+        "message": "Its willing to admit own mistakes",
+        "_id": "599e88721a6ec6039715b541"
       },
       {
-        "message": "Questions practices which might violate rules of fairness."
+        "message": "Questions practices which might violate rules of fairness.",
+        "_id": "599e88721a6ec6039715b540"
       }
-    ],
-    "inactiveSentences": []
+    ]
   },
   {
     "_id": "5940f6044d0d550007d863df",
     "name": "Performance Management",
+    "inactiveSentences": [],
     "sentences": [
       {
-        "message" : "Defines clear and measurable objectives."
+        "message": "Defines clear and measurable objectives.",
+        "_id": "599e88721a6ec6039715b546"
       },
-
       {
-        "message" : "Recognize great performance."
+        "message": "Recognize great performance.",
+        "_id": "599e88721a6ec6039715b545"
       },
-
       {
-        "message" : "Supports the development of their colleagues. Gives frequent, detailed feedback."
+        "message": "Supports the development of their colleagues. Gives frequent, detailed feedback.",
+        "_id": "599e88721a6ec6039715b544"
       },
-
       {
-        "message" : "Supports the develment of their colleagues."
-      }],
-    "inactiveSentences": []
+        "message": "Supports the develment of their colleagues.",
+        "_id": "599e88721a6ec6039715b543"
+      }
+    ]
   },
   {
     "_id": "5940f6144d0d550007d863e2",
     "name": "Interpersonal Effectiveness",
+    "inactiveSentences": [],
     "sentences": [
       {
-        "message" : "Avoids using power when dealing with conflicts."
+        "message": "Avoids using power when dealing with conflicts.",
+        "_id": "599e88721a6ec6039715b548"
       },
       {
-        "message" : "Brings hidden conflicts to the open. Communicates complex ideas clearly."
+        "message": "Brings hidden conflicts to the open. Communicates complex ideas clearly.",
+        "_id": "599e88721a6ec6039715b547"
       }
-    ],
-    "inactiveSentences": []
+    ]
   },
   {
     "_id": "5940f61e4d0d550007d863e5",
     "name": "Diversity",
+    "inactiveSentences": [],
     "sentences": [
       {
-        "message" : "Listen to people who represent different opinions"
+        "message": "Listen to people who represent different opinions",
+        "_id": "599e88721a6ec6039715b54b"
       },
       {
-        "message" : "Creates an inclusive environment, where diversity is recognized."
+        "message": "Creates an inclusive environment, where diversity is recognized.",
+        "_id": "599e88721a6ec6039715b54a"
       },
       {
-        "message" : "Treats everyone with equality high respect regardless of position, gender, age or nationality."
+        "message": "Treats everyone with equality high respect regardless of position, gender, age or nationality.",
+        "_id": "599e88721a6ec6039715b549"
       }
-    ],
-    "inactiveSentences": []
+    ]
   }
 ]

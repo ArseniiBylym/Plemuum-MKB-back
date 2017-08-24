@@ -5,7 +5,7 @@ import {
     SentenceScore,
     SkillScore
 } from "../../../../models/organization/compass/compass.statistics.model";
-import { SentenceSchema, SkillSchema } from "./skill.schema";
+import { SentenceSchema } from "./skill.schema";
 
 
 export const SentenceScoreSchema = new Schema({
@@ -14,13 +14,15 @@ export const SentenceScoreSchema = new Schema({
     numberOfDisagree: {required: true, type: Number, index: false},
 }, {
     timestamps: true,
+    versionKey: false
 });
 
 export const SkillScoreSchema = new Schema({
-    skill: {required: true, type: SkillSchema, index: true},
+    skill: {required: true, type: String, index: true},
     sentenceScores: {required: true, type: [SentenceScoreSchema], index: false},
 }, {
     timestamps: true,
+    versionKey: false
 });
 
 export const CompassStatisticsSchema = new Schema({
@@ -29,6 +31,7 @@ export const CompassStatisticsSchema = new Schema({
 }, {
     _id: true,
     timestamps: true,
+    versionKey: false
 });
 
 

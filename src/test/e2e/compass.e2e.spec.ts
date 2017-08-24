@@ -99,25 +99,95 @@ suite("Compass request test", () => {
         test("Should be able to send an answer, should get 200", async () => {
             const token = await authenticate(testUser);
             const response = await request(app).post(url).send({
-                compassTodo: "1234",
-                sender: "4321",
+                compassTodo: "599e89e390adc5039fbc285b",
+                sender: "5984342227cd340363dc84af",
                 sentencesAnswer: [
                     {
                         answer: "AGREE",
                         sentence: {
-                            _id: "599c073b9745c80bc9ee6a65",
-                            message: "message"
+                            message: "Its willing to admit own mistakes",
+                            _id: "599e88721a6ec6039715b541"
                         },
                         skill: {
-                            _id: "599c073b9745c80bc9ee6a63",
-                            name: "skill name",
-                            sentences: [{
-                                _id: "599c073b9745c80bc9ee6a65",
-                                message: "message"
-                            }],
-                            inactiveSentences: []
+                            _id: "5940f5f44d0d550007d863dc",
+                            name: "Integrity",
+                            inactiveSentences: [],
+                            sentences: [
+                                {
+                                    message: "Takes responsibility for own decisions and behavior.",
+                                    _id: "599e88721a6ec6039715b542"
+                                },
+                                {
+                                    message: "Its willing to admit own mistakes",
+                                    _id: "599e88721a6ec6039715b541"
+                                },
+                                {
+                                    message: "Questions practices which might violate rules of fairness.",
+                                    _id: "599e88721a6ec6039715b540"
+                                }
+                            ]
                         }
-                    }
+                    },
+                    {
+                        answer: "AGREE",
+                        sentence: {
+                            message: "Supports the development of their colleagues. Gives frequent, detailed feedback.",
+                            _id: "599e88721a6ec6039715b544"
+                        },
+                        skill: {
+                            _id: "5940f6044d0d550007d863df",
+                            name: "Performance Management",
+                            inactiveSentences: [],
+                            sentences: [
+                                {
+                                    message: "Defines clear and measurable objectives.",
+                                    _id: "599e88721a6ec6039715b546"
+                                },
+                                {
+                                    message: "Recognize great performance.",
+                                    _id: "599e88721a6ec6039715b545"
+                                },
+                                {
+                                    message: "Supports the development of their colleagues. Gives frequent, detailed feedback.",
+                                    _id: "599e88721a6ec6039715b544"
+                                },
+                                {
+                                    message: "Supports the develment of their colleagues.",
+                                    _id: "599e88721a6ec6039715b543"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        answer: "DISAGREE",
+                        sentence: {
+                            message: "Supports the develment of their colleagues.",
+                            _id: "599e88721a6ec6039715b543"
+                        },
+                        skill: {
+                            _id: "5940f6044d0d550007d863df",
+                            name: "Performance Management",
+                            inactiveSentences: [],
+                            sentences: [
+                                {
+                                    message: "Defines clear and measurable objectives.",
+                                    _id: "599e88721a6ec6039715b546"
+                                },
+                                {
+                                    message: "Recognize great performance.",
+                                    _id: "599e88721a6ec6039715b545"
+                                },
+                                {
+                                    message: "Supports the development of their colleagues. Gives frequent, detailed feedback.",
+                                    _id: "599e88721a6ec6039715b544"
+                                },
+                                {
+                                    message: "Supports the develment of their colleagues.",
+                                    _id: "599e88721a6ec6039715b543"
+                                }
+                            ]
+                        }
+                    },
                 ]
             }).set(bearerAuthHeader(token)).expect(200);
             const answer = response.body;

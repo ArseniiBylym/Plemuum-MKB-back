@@ -1,9 +1,6 @@
 import CompassAnswer from "../../data/models/organization/compass/compassanswer.model";
 import StatisticsDataController from "../../data/datacontroller/statistics.datacontroller";
-import {
-    CompassStatistics,
-    SkillScore
-} from "../../data/models/organization/compass/compass.statistics.model";
+import { CompassStatistics, SkillScore } from "../../data/models/organization/compass/compass.statistics.model";
 import CompassDataController from "../../data/datacontroller/compass.datacontroller";
 import CompassTodo from "../../data/models/organization/compass/compasstodo.model";
 
@@ -56,7 +53,7 @@ export default class StatisticsManager {
     }
 
     private static createOrUpdateSentenceScore(skillScore: SkillScore, sentenceAnswer: any) {
-        let sentenceScore = skillScore.sentenceScores.find((ss) => ss.sentence === sentenceAnswer.sentence._id);
+        let sentenceScore = skillScore.sentenceScores.find((ss: any) => ss.sentence._id === sentenceAnswer.sentence._id);
         if (sentenceScore) {
             if (sentenceAnswer.answer === ANSWER_TYPES.AGREE) {
                 sentenceScore.numberOfAgree++;
@@ -78,7 +75,7 @@ export default class StatisticsManager {
 
     private static createSentenceScore(sentenceAnswer: any) {
         return {
-            sentence: sentenceAnswer.sentence._id,
+            sentence: sentenceAnswer.sentence,
             numberOfAgree: sentenceAnswer.answer === ANSWER_TYPES.AGREE ? 1 : 0,
             numberOfDisagree: sentenceAnswer.answer === ANSWER_TYPES.DISAGREE ? 1 : 0
         };

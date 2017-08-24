@@ -10,6 +10,9 @@ import { SkillCollection } from "../../data/database/schema/organization/compass
 import { ResetPasswordCollection } from "../../data/database/schema/common/resetpassword.schema";
 import { UserCollection } from "../../data/database/schema/common/user.schema";
 import { resetPasswordDataController } from "../../data/datacontroller/resetpassword.datacontroller";
+import { CompassTodoCollection } from "../../data/database/schema/organization/compass/compasstodo.schema";
+import { StatisticsCollection } from "../../data/database/schema/organization/compass/compass.statistics.schema";
+import { CompassAnswerCollection } from "../../data/database/schema/organization/compass/compassanswer.schema";
 
 const testUser = {
     "firstName": "sheryl",
@@ -35,6 +38,9 @@ function fixtureLoader(): Promise<any> {
         {model: ResetPasswordCollection(), mockFile: null},
         {model: GroupCollection('hipteam'), mockFile: "groups"},
         {model: SkillCollection('hipteam'), mockFile: "skills"},
+        {model: CompassTodoCollection('hipteam'), mockFile: "compasstodo"},
+        {model: CompassAnswerCollection('hipteam'), mockFile: null},
+        {model: StatisticsCollection('hipteam'), mockFile: null},
     ];
 
     /* Clear each collection */

@@ -164,7 +164,10 @@ suite("Compass Statistics Manager tests", () => {
                             skill: "skillId",
                             sentenceScores: [
                                 {
-                                    sentence: "sentenceId1",
+                                    sentence: {
+                                        _id: "sentenceId1",
+                                        message: "sentence1"
+                                    },
                                     numberOfAgree: 1,
                                     numberOfDisagree: 0
                                 }
@@ -174,7 +177,10 @@ suite("Compass Statistics Manager tests", () => {
                             skill: "skillId2",
                             sentenceScores: [
                                 {
-                                    sentence: "sentenceId3",
+                                    sentence: {
+                                        _id: "sentenceId3",
+                                        message: "sentence3"
+                                    },
                                     numberOfAgree: 0,
                                     numberOfDisagree: 1
                                 }
@@ -271,12 +277,18 @@ suite("Compass Statistics Manager tests", () => {
                             skill: "skillId",
                             sentenceScores: [
                                 {
-                                    sentence: "sentenceId1",
+                                    sentence: {
+                                        _id: "sentenceId1",
+                                        message: "sentence1"
+                                    },
                                     numberOfAgree: 1,
                                     numberOfDisagree: 0
                                 },
                                 {
-                                    sentence: "sentenceId2",
+                                    sentence: {
+                                        _id: "sentenceId2",
+                                        message: "sentence2"
+                                    },
                                     numberOfAgree: 1,
                                     numberOfDisagree: 0
                                 }
@@ -385,7 +397,10 @@ suite("Compass Statistics Manager tests", () => {
                             skill: "skillId",
                             sentenceScores: [
                                 {
-                                    sentence: "sentenceId1",
+                                    sentence: {
+                                        _id: "sentenceId1",
+                                        message: "sentence1"
+                                    },
                                     numberOfAgree: 1,
                                     numberOfDisagree: 0
                                 }
@@ -395,7 +410,10 @@ suite("Compass Statistics Manager tests", () => {
                             skill: "skillId2",
                             sentenceScores: [
                                 {
-                                    sentence: "sentenceId3",
+                                    sentence: {
+                                        _id: "sentenceId3",
+                                        message: "sentence3"
+                                    },
                                     numberOfAgree: 0,
                                     numberOfDisagree: 1
                                 }
@@ -483,7 +501,10 @@ suite("Compass Statistics Manager tests", () => {
                             skill: "skillId",
                             sentenceScores: [
                                 {
-                                    sentence: "sentenceId1",
+                                    sentence: {
+                                        _id: "sentenceId1",
+                                        message: "sentence1"
+                                    },
                                     numberOfAgree: 2,
                                     numberOfDisagree: 0
                                 }
@@ -493,7 +514,10 @@ suite("Compass Statistics Manager tests", () => {
                             skill: "skillId2",
                             sentenceScores: [
                                 {
-                                    sentence: "sentenceId3",
+                                    sentence: {
+                                        _id: "sentenceId3",
+                                        message: "sentence3"
+                                    },
                                     numberOfAgree: 0,
                                     numberOfDisagree: 2
                                 }
@@ -590,12 +614,18 @@ suite("Compass Statistics Manager tests", () => {
                             skill: "skillId",
                             sentenceScores: [
                                 {
-                                    sentence: "sentenceId1",
+                                    sentence: {
+                                        _id: "sentenceId1",
+                                        message: "sentence1"
+                                    },
                                     numberOfAgree: 2,
                                     numberOfDisagree: 0
                                 },
                                 {
-                                    sentence: "sentenceId2",
+                                    sentence: {
+                                        _id: "sentenceId2",
+                                        message: "sentence2"
+                                    },
                                     numberOfAgree: 1,
                                     numberOfDisagree: 0
                                 }
@@ -605,7 +635,10 @@ suite("Compass Statistics Manager tests", () => {
                             skill: "skillId2",
                             sentenceScores: [
                                 {
-                                    sentence: "sentenceId3",
+                                    sentence: {
+                                        _id: "sentenceId3",
+                                        message: "sentence3"
+                                    },
                                     numberOfAgree: 0,
                                     numberOfDisagree: 1
                                 }
@@ -698,7 +731,10 @@ suite("Compass Statistics Manager tests", () => {
                             skill: "skillId",
                             sentenceScores: [
                                 {
-                                    sentence: "sentenceId1",
+                                    sentence: {
+                                        _id: "sentenceId1",
+                                        message: "sentence1"
+                                    },
                                     numberOfAgree: 1,
                                     numberOfDisagree: 0
                                 }
@@ -708,7 +744,10 @@ suite("Compass Statistics Manager tests", () => {
                             skill: "skillId2",
                             sentenceScores: [
                                 {
-                                    sentence: "sentenceId3",
+                                    sentence: {
+                                        _id: "sentenceId3",
+                                        message: "sentence3"
+                                    },
                                     numberOfAgree: 0,
                                     numberOfDisagree: 1
                                 }

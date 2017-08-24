@@ -22,7 +22,9 @@ const CompassDataController = {
     },
 
     saveCompassAnswer: (orgId: string, data: CompassAnswer): Promise<CompassAnswer> => {
-        return new (CompassAnswerCollection(orgId))(data).save();
+        return new (CompassAnswerCollection(orgId))(data).save()
+            .then((savedAnswer) => CompassAnswerCollection(orgId).findById(savedAnswer._id)
+                .lean().exec() as Promise<CompassAnswer>)
     },
 
     saveSkill: (orgId: string, skill: Skill): Promise<SkillModel> => {
