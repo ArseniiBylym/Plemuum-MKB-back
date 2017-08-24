@@ -1,8 +1,7 @@
 import { Connection, Document, Model, Schema } from 'mongoose';
 import { getDatabaseManager } from "../../../../../factory/database.factory";
-import CompassAnswer from "../../../../models/organization/compass/compassanswer.model";
+import CompassAnswer, { ANSWER_TYPES } from "../../../../models/organization/compass/compassanswer.model";
 import { SentenceSchema, SkillSchema } from "./skill.schema";
-
 
 interface CompassAnswerModel extends CompassAnswer, Document {
 }
@@ -12,7 +11,12 @@ export let CompassAnswerSchema = new Schema({
     sender: {required: true, type: String, index: true},
     sentencesAnswer: [
         new Schema({
-            answer: {required: true, type: String, index: false, enum: ["SKIP", "AGREE", "DISAGREE"]},
+            answer: {
+                required: true,
+                type: String,
+                index: false,
+                enum: [ANSWER_TYPES.SKIP, ANSWER_TYPES.AGREE, ANSWER_TYPES.DISAGREE]
+            },
             sentence: {required: true, type: SentenceSchema, index: false},
             skill: {required: true, type: SkillSchema, index: false}
         }, {_id: false})

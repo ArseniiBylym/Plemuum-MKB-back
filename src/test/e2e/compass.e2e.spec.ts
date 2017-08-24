@@ -6,6 +6,7 @@ import app from "../../app";
 import { basicAuthHeader, bearerAuthHeader } from "../header.helper";
 import { expect, should } from 'chai';
 import Skill from "../../data/models/organization/compass/skill.model";
+import { ANSWER_TYPES } from "../../data/models/organization/compass/compassanswer.model";
 
 const orgId = 'hipteam';
 
@@ -103,7 +104,7 @@ suite("Compass request test", () => {
                 sender: "5984342227cd340363dc84af",
                 sentencesAnswer: [
                     {
-                        answer: "AGREE",
+                        answer: ANSWER_TYPES.AGREE,
                         sentence: {
                             message: "Its willing to admit own mistakes",
                             _id: "599e88721a6ec6039715b541"
@@ -129,7 +130,7 @@ suite("Compass request test", () => {
                         }
                     },
                     {
-                        answer: "AGREE",
+                        answer: ANSWER_TYPES.AGREE,
                         sentence: {
                             message: "Supports the development of their colleagues. Gives frequent, detailed feedback.",
                             _id: "599e88721a6ec6039715b544"
@@ -159,7 +160,7 @@ suite("Compass request test", () => {
                         }
                     },
                     {
-                        answer: "DISAGREE",
+                        answer: ANSWER_TYPES.DISAGREE,
                         sentence: {
                             message: "Supports the develment of their colleagues.",
                             _id: "599e88721a6ec6039715b543"

@@ -3,16 +3,23 @@ import * as sinon from 'sinon';
 import StatisticsDataController from "../../data/datacontroller/statistics.datacontroller";
 import CompassDataController from "../../data/datacontroller/compass.datacontroller";
 import { expect } from 'chai';
+import { ANSWER_TYPES } from "../../data/models/organization/compass/compassanswer.model";
+import {
+    createCompassAnswer,
+    createSentenceAnswer,
+    createSentenceScore,
+    createSkillScore
+} from "../util/statistics.manager.util";
 
 suite("Compass Statistics Manager tests", () => {
 
     suite("createOrUpdateStatistics", () => {
         const orgId = "orgId";
         const answer: any = sinon.mock();
-        answer.compassTodo = "123asd321";
         const todo: any = sinon.mock();
-        todo.about = "aboutUserId";
         const statistics: any = sinon.mock();
+        answer.compassTodo = "123asd321";
+        todo.about = "aboutUserId";
 
         test("Create a new statistics from answer", async () => {
             const createStatistics = sinon.stub(StatisticsManager, 'createStatistics').resolves(statistics);
@@ -88,291 +95,55 @@ suite("Compass Statistics Manager tests", () => {
 
             test("Three difference skills", async () => {
                 // Input
-                const answer: any = {
-                    compassTodo: "compassTodo",
-                    sender: "sender",
-                    sentencesAnswer: [
-                        {
-                            skill: {
-                                _id: "skillId",
-                                name: "skill name",
-                                sentences: [
-                                    {
-                                        _id: "sentenceId1",
-                                        message: "sentence1"
-                                    },
-                                    {
-                                        _id: "sentenceId2",
-                                        message: "sentence2"
-                                    }
-                                ],
-                                inactiveSentences: []
-                            },
-                            sentence: {
-                                _id: "sentenceId1",
-                                message: "sentence1"
-                            },
-                            answer: "AGREE"
-                        },
-                        {
-                            skill: {
-                                _id: "skillId2",
-                                name: "skill name",
-                                sentences: [
-                                    {
-                                        _id: "sentenceId3",
-                                        message: "sentence3"
-                                    }
-                                ],
-                                inactiveSentences: []
-                            },
-                            sentence: {
-                                _id: "sentenceId3",
-                                message: "sentence3"
-                            },
-                            answer: "DISAGREE"
-                        },
-                        {
-                            skill: {
-                                _id: "skillId3",
-                                name: "skill name3",
-                                sentences: [
-                                    {
-                                        _id: "sentenceId4",
-                                        message: "sentence4"
-                                    },
-                                    {
-                                        _id: "sentenceId5",
-                                        message: "sentence5"
-                                    }
-                                ],
-                                inactiveSentences: []
-                            },
-                            sentence: {
-                                _id: "sentenceId5",
-                                message: "sentence5"
-                            },
-                            answer: "SKIP"
-                        }
-                    ]
-                };
+                const answer: any = createCompassAnswer(
+                    //createSentenceAnswer(skill_number, sentence_number, answer)
+                    createSentenceAnswer(0, 1, ANSWER_TYPES.AGREE),
+                    createSentenceAnswer(1, 3, ANSWER_TYPES.DISAGREE),
+                    createSentenceAnswer(2, 5, ANSWER_TYPES.SKIP));
+
                 // Expected output
                 const expectedStatistics: any = {
                     user: "aboutUser",
                     skillScores: [
-                        {
-                            skill: "skillId",
-                            sentenceScores: [
-                                {
-                                    sentence: {
-                                        _id: "sentenceId1",
-                                        message: "sentence1"
-                                    },
-                                    numberOfAgree: 1,
-                                    numberOfDisagree: 0
-                                }
-                            ]
-                        },
-                        {
-                            skill: "skillId2",
-                            sentenceScores: [
-                                {
-                                    sentence: {
-                                        _id: "sentenceId3",
-                                        message: "sentence3"
-                                    },
-                                    numberOfAgree: 0,
-                                    numberOfDisagree: 1
-                                }
-                            ]
-                        }
+                        createSkillScore(0, createSentenceScore(1, 1, 0)),
+                        createSkillScore(1, createSentenceScore(3, 0, 1)),
                     ]
                 };
 
                 const result = StatisticsManager.updateStatistics(answer, statistics);
 
                 expect(result).to.be.deep.equal(expectedStatistics);
-
             });
 
             test("One skill multiple times", async () => {
                 // Input
-                const answer: any = {
-                    compassTodo: "compassTodo",
-                    sender: "sender",
-                    sentencesAnswer: [
-                        {
-                            skill: {
-                                _id: "skillId",
-                                name: "skill name",
-                                sentences: [
-                                    {
-                                        _id: "sentenceId1",
-                                        message: "sentence1"
-                                    },
-                                    {
-                                        _id: "sentenceId2",
-                                        message: "sentence2"
-                                    }
-                                ],
-                                inactiveSentences: []
-                            },
-                            sentence: {
-                                _id: "sentenceId1",
-                                message: "sentence1"
-                            },
-                            answer: "AGREE"
-                        },
-                        {
-                            skill: {
-                                _id: "skillId",
-                                name: "skill name",
-                                sentences: [
-                                    {
-                                        _id: "sentenceId1",
-                                        message: "sentence1"
-                                    },
-                                    {
-                                        _id: "sentenceId2",
-                                        message: "sentence2"
-                                    }
-                                ],
-                                inactiveSentences: []
-                            },
-                            sentence: {
-                                _id: "sentenceId2",
-                                message: "sentence2"
-                            },
-                            answer: "AGREE"
-                        },
-                        {
-                            skill: {
-                                _id: "skillId3",
-                                name: "skill name3",
-                                sentences: [
-                                    {
-                                        _id: "sentenceId4",
-                                        message: "sentence4"
-                                    },
-                                    {
-                                        _id: "sentenceId5",
-                                        message: "sentence5"
-                                    }
-                                ],
-                                inactiveSentences: []
-                            },
-                            sentence: {
-                                _id: "sentenceId5",
-                                message: "sentence5"
-                            },
-                            answer: "SKIP"
-                        }
-                    ]
-                };
+                const answer: any = createCompassAnswer(
+                    //createSentenceAnswer(skill_number, sentence_number, answer)
+                    createSentenceAnswer(0, 1, ANSWER_TYPES.AGREE),
+                    createSentenceAnswer(0, 2, ANSWER_TYPES.AGREE),
+                    createSentenceAnswer(2, 5, ANSWER_TYPES.SKIP));
+
                 // Expected output
                 const expectedStatistics: any = {
                     user: "aboutUser",
                     skillScores: [
-                        {
-                            skill: "skillId",
-                            sentenceScores: [
-                                {
-                                    sentence: {
-                                        _id: "sentenceId1",
-                                        message: "sentence1"
-                                    },
-                                    numberOfAgree: 1,
-                                    numberOfDisagree: 0
-                                },
-                                {
-                                    sentence: {
-                                        _id: "sentenceId2",
-                                        message: "sentence2"
-                                    },
-                                    numberOfAgree: 1,
-                                    numberOfDisagree: 0
-                                }
-                            ]
-                        },
+                        createSkillScore(0, createSentenceScore(1, 1, 0), createSentenceScore(2, 1, 0)),
                     ]
                 };
 
                 const result = StatisticsManager.updateStatistics(answer, statistics);
 
                 expect(result).to.be.deep.equal(expectedStatistics);
-
             });
 
             test("Just SKIP answers", async () => {
                 // Input
-                const answer: any = {
-                    compassTodo: "compassTodo",
-                    sender: "sender",
-                    sentencesAnswer: [
-                        {
-                            skill: {
-                                _id: "skillId",
-                                name: "skill name",
-                                sentences: [
-                                    {
-                                        _id: "sentenceId1",
-                                        message: "sentence1"
-                                    },
-                                    {
-                                        _id: "sentenceId2",
-                                        message: "sentence2"
-                                    }
-                                ],
-                                inactiveSentences: []
-                            },
-                            sentence: {
-                                _id: "sentenceId1",
-                                message: "sentence1"
-                            },
-                            answer: "SKIP"
-                        },
-                        {
-                            skill: {
-                                _id: "skillId2",
-                                name: "skill name",
-                                sentences: [
-                                    {
-                                        _id: "sentenceId3",
-                                        message: "sentence3"
-                                    },
-                                ],
-                                inactiveSentences: []
-                            },
-                            sentence: {
-                                _id: "sentenceId3",
-                                message: "sentence3"
-                            },
-                            answer: "SKIP"
-                        },
-                        {
-                            skill: {
-                                _id: "skillId3",
-                                name: "skill name3",
-                                sentences: [
-                                    {
-                                        _id: "sentenceId4",
-                                        message: "sentence4"
-                                    },
-                                    {
-                                        _id: "sentenceId5",
-                                        message: "sentence5"
-                                    }
-                                ],
-                                inactiveSentences: []
-                            },
-                            sentence: {
-                                _id: "sentenceId5",
-                                message: "sentence5"
-                            },
-                            answer: "SKIP"
-                        }
-                    ]
-                };
+                const answer: any = createCompassAnswer(
+                    //createSentenceAnswer(skill_number, sentence_number, answer)
+                    createSentenceAnswer(0, 1, ANSWER_TYPES.SKIP),
+                    createSentenceAnswer(1, 3, ANSWER_TYPES.SKIP),
+                    createSentenceAnswer(2, 5, ANSWER_TYPES.SKIP));
+
                 // Expected output
                 const expectedStatistics: any = {
                     user: "aboutUser",
@@ -382,7 +153,6 @@ suite("Compass Statistics Manager tests", () => {
                 const result = StatisticsManager.updateStatistics(answer, statistics);
 
                 expect(result).to.be.deep.equal(expectedStatistics);
-
             })
         });
 
@@ -393,373 +163,76 @@ suite("Compass Statistics Manager tests", () => {
                 statistics = {
                     user: "aboutUser",
                     skillScores: [
-                        {
-                            skill: "skillId",
-                            sentenceScores: [
-                                {
-                                    sentence: {
-                                        _id: "sentenceId1",
-                                        message: "sentence1"
-                                    },
-                                    numberOfAgree: 1,
-                                    numberOfDisagree: 0
-                                }
-                            ]
-                        },
-                        {
-                            skill: "skillId2",
-                            sentenceScores: [
-                                {
-                                    sentence: {
-                                        _id: "sentenceId3",
-                                        message: "sentence3"
-                                    },
-                                    numberOfAgree: 0,
-                                    numberOfDisagree: 1
-                                }
-                            ]
-                        }
+                        createSkillScore(0, createSentenceScore(1, 1, 0)),
+                        createSkillScore(1, createSentenceScore(3, 0, 1)),
                     ]
                 };
             });
 
             test("Three difference skills", async () => {
                 // Input
-                const answer: any = {
-                    compassTodo: "compassTodo",
-                    sender: "sender",
-                    sentencesAnswer: [
-                        {
-                            skill: {
-                                _id: "skillId",
-                                name: "skill name",
-                                sentences: [
-                                    {
-                                        _id: "sentenceId1",
-                                        message: "sentence1"
-                                    },
-                                    {
-                                        _id: "sentenceId2",
-                                        message: "sentence2"
-                                    }
-                                ],
-                                inactiveSentences: []
-                            },
-                            sentence: {
-                                _id: "sentenceId1",
-                                message: "sentence1"
-                            },
-                            answer: "AGREE"
-                        },
-                        {
-                            skill: {
-                                _id: "skillId2",
-                                name: "skill name",
-                                sentences: [
-                                    {
-                                        _id: "sentenceId3",
-                                        message: "sentence3"
-                                    }
-                                ],
-                                inactiveSentences: []
-                            },
-                            sentence: {
-                                _id: "sentenceId3",
-                                message: "sentence3"
-                            },
-                            answer: "DISAGREE"
-                        },
-                        {
-                            skill: {
-                                _id: "skillId3",
-                                name: "skill name3",
-                                sentences: [
-                                    {
-                                        _id: "sentenceId4",
-                                        message: "sentence4"
-                                    },
-                                    {
-                                        _id: "sentenceId5",
-                                        message: "sentence5"
-                                    }
-                                ],
-                                inactiveSentences: []
-                            },
-                            sentence: {
-                                _id: "sentenceId5",
-                                message: "sentence5"
-                            },
-                            answer: "SKIP"
-                        }
-                    ]
-                };
+                const answer: any = createCompassAnswer(
+                    //createSentenceAnswer(skill_number, sentence_number, answer)
+                    createSentenceAnswer(0, 1, ANSWER_TYPES.AGREE),
+                    createSentenceAnswer(1, 3, ANSWER_TYPES.DISAGREE),
+                    createSentenceAnswer(2, 5, ANSWER_TYPES.SKIP));
+
                 // Expected output
                 const expectedStatistics: any = {
                     user: "aboutUser",
                     skillScores: [
-                        {
-                            skill: "skillId",
-                            sentenceScores: [
-                                {
-                                    sentence: {
-                                        _id: "sentenceId1",
-                                        message: "sentence1"
-                                    },
-                                    numberOfAgree: 2,
-                                    numberOfDisagree: 0
-                                }
-                            ]
-                        },
-                        {
-                            skill: "skillId2",
-                            sentenceScores: [
-                                {
-                                    sentence: {
-                                        _id: "sentenceId3",
-                                        message: "sentence3"
-                                    },
-                                    numberOfAgree: 0,
-                                    numberOfDisagree: 2
-                                }
-                            ]
-                        }
+                        createSkillScore(0, createSentenceScore(1, 2, 0)),
+                        createSkillScore(1, createSentenceScore(3, 0, 2))
                     ]
                 };
 
                 const result = StatisticsManager.updateStatistics(answer, statistics);
 
                 expect(result).to.be.deep.equal(expectedStatistics);
-
             });
 
             test("One skill multiple times", async () => {
                 // Input
-                const answer: any = {
-                    compassTodo: "compassTodo",
-                    sender: "sender",
-                    sentencesAnswer: [
-                        {
-                            skill: {
-                                _id: "skillId",
-                                name: "skill name",
-                                sentences: [
-                                    {
-                                        _id: "sentenceId1",
-                                        message: "sentence1"
-                                    },
-                                    {
-                                        _id: "sentenceId2",
-                                        message: "sentence2"
-                                    }
-                                ],
-                                inactiveSentences: []
-                            },
-                            sentence: {
-                                _id: "sentenceId1",
-                                message: "sentence1"
-                            },
-                            answer: "AGREE"
-                        },
-                        {
-                            skill: {
-                                _id: "skillId",
-                                name: "skill name",
-                                sentences: [
-                                    {
-                                        _id: "sentenceId1",
-                                        message: "sentence1"
-                                    },
-                                    {
-                                        _id: "sentenceId2",
-                                        message: "sentence2"
-                                    }
-                                ],
-                                inactiveSentences: []
-                            },
-                            sentence: {
-                                _id: "sentenceId2",
-                                message: "sentence2"
-                            },
-                            answer: "AGREE"
-                        },
-                        {
-                            skill: {
-                                _id: "skillId3",
-                                name: "skill name3",
-                                sentences: [
-                                    {
-                                        _id: "sentenceId4",
-                                        message: "sentence4"
-                                    },
-                                    {
-                                        _id: "sentenceId5",
-                                        message: "sentence5"
-                                    }
-                                ],
-                                inactiveSentences: []
-                            },
-                            sentence: {
-                                _id: "sentenceId5",
-                                message: "sentence5"
-                            },
-                            answer: "SKIP"
-                        }
-                    ]
-                };
+                const answer: any = createCompassAnswer(
+                    //createSentenceAnswer(skill_number, sentence_number, answer)
+                    createSentenceAnswer(0, 1, ANSWER_TYPES.AGREE),
+                    createSentenceAnswer(0, 2, ANSWER_TYPES.AGREE),
+                    createSentenceAnswer(2, 5, ANSWER_TYPES.SKIP));
+
                 // Expected output
                 const expectedStatistics: any = {
                     user: "aboutUser",
                     skillScores: [
-                        {
-                            skill: "skillId",
-                            sentenceScores: [
-                                {
-                                    sentence: {
-                                        _id: "sentenceId1",
-                                        message: "sentence1"
-                                    },
-                                    numberOfAgree: 2,
-                                    numberOfDisagree: 0
-                                },
-                                {
-                                    sentence: {
-                                        _id: "sentenceId2",
-                                        message: "sentence2"
-                                    },
-                                    numberOfAgree: 1,
-                                    numberOfDisagree: 0
-                                }
-                            ]
-                        },
-                        {
-                            skill: "skillId2",
-                            sentenceScores: [
-                                {
-                                    sentence: {
-                                        _id: "sentenceId3",
-                                        message: "sentence3"
-                                    },
-                                    numberOfAgree: 0,
-                                    numberOfDisagree: 1
-                                }
-                            ]
-                        }
+                        createSkillScore(0, createSentenceScore(1, 2, 0), createSentenceScore(2, 1, 0)),
+                        createSkillScore(1, createSentenceScore(3, 0, 1))
                     ]
                 };
 
                 const result = StatisticsManager.updateStatistics(answer, statistics);
 
                 expect(result).to.be.deep.equal(expectedStatistics);
-
             });
 
             test("Just SKIP answers", async () => {
                 // Input
-                const answer: any = {
-                    compassTodo: "compassTodo",
-                    sender: "sender",
-                    sentencesAnswer: [
-                        {
-                            skill: {
-                                _id: "skillId",
-                                name: "skill name",
-                                sentences: [
-                                    {
-                                        _id: "sentenceId1",
-                                        message: "sentence1"
-                                    },
-                                    {
-                                        _id: "sentenceId2",
-                                        message: "sentence2"
-                                    }
-                                ],
-                                inactiveSentences: []
-                            },
-                            sentence: {
-                                _id: "sentenceId1",
-                                message: "sentence1"
-                            },
-                            answer: "SKIP"
-                        },
-                        {
-                            skill: {
-                                _id: "skillId2",
-                                name: "skill name",
-                                sentences: [
-                                    {
-                                        _id: "sentenceId3",
-                                        message: "sentence3"
-                                    },
-                                ],
-                                inactiveSentences: []
-                            },
-                            sentence: {
-                                _id: "sentenceId3",
-                                message: "sentence3"
-                            },
-                            answer: "SKIP"
-                        },
-                        {
-                            skill: {
-                                _id: "skillId3",
-                                name: "skill name3",
-                                sentences: [
-                                    {
-                                        _id: "sentenceId4",
-                                        message: "sentence4"
-                                    },
-                                    {
-                                        _id: "sentenceId5",
-                                        message: "sentence5"
-                                    }
-                                ],
-                                inactiveSentences: []
-                            },
-                            sentence: {
-                                _id: "sentenceId5",
-                                message: "sentence5"
-                            },
-                            answer: "SKIP"
-                        }
-                    ]
-                };
+                const answer: any = createCompassAnswer(
+                    //createSentenceAnswer(skill_number, sentence_number, answer)
+                    createSentenceAnswer(0, 1, ANSWER_TYPES.SKIP),
+                    createSentenceAnswer(1, 3, ANSWER_TYPES.SKIP),
+                    createSentenceAnswer(2, 5, ANSWER_TYPES.SKIP));
+
                 // Expected output
                 const expectedStatistics: any = {
                     user: "aboutUser",
                     skillScores: [
-                        {
-                            skill: "skillId",
-                            sentenceScores: [
-                                {
-                                    sentence: {
-                                        _id: "sentenceId1",
-                                        message: "sentence1"
-                                    },
-                                    numberOfAgree: 1,
-                                    numberOfDisagree: 0
-                                }
-                            ]
-                        },
-                        {
-                            skill: "skillId2",
-                            sentenceScores: [
-                                {
-                                    sentence: {
-                                        _id: "sentenceId3",
-                                        message: "sentence3"
-                                    },
-                                    numberOfAgree: 0,
-                                    numberOfDisagree: 1
-                                }
-                            ]
-                        }
+                        createSkillScore(0, createSentenceScore(1, 1, 0)),
+                        createSkillScore(1, createSentenceScore(3, 0, 1))
                     ]
                 };
 
                 const result = StatisticsManager.updateStatistics(answer, statistics);
 
                 expect(result).to.be.deep.equal(expectedStatistics);
-
             })
         })
     })

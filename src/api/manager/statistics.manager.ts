@@ -1,14 +1,8 @@
-import CompassAnswer from "../../data/models/organization/compass/compassanswer.model";
+import CompassAnswer, { ANSWER_TYPES } from "../../data/models/organization/compass/compassanswer.model";
 import StatisticsDataController from "../../data/datacontroller/statistics.datacontroller";
 import { CompassStatistics, SkillScore } from "../../data/models/organization/compass/compass.statistics.model";
 import CompassDataController from "../../data/datacontroller/compass.datacontroller";
 import CompassTodo from "../../data/models/organization/compass/compasstodo.model";
-
-enum ANSWER_TYPES {
-    AGREE = "AGREE",
-    DISAGREE = "DISAGREE",
-    SKIP = "SKIP",
-}
 
 export default class StatisticsManager {
 
