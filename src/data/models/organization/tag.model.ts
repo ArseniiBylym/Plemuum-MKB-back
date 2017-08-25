@@ -1,5 +1,6 @@
-export default interface ITag {
+interface Tag {
     title: string;
-    isActive: Boolean;
     order: number;
 }
+
+ export default Tag
