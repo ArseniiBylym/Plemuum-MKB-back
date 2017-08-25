@@ -3,6 +3,7 @@ import Group from "../models/organization/group.model";
 
 export interface GroupDataController {
     createGroup: ((orgId: string, group: Group) => Promise<any>);
+    getGroups: ((orgId: string) => Promise<GroupModel[]>);
     getGroupById: ((orgId: string, groupId: string) => Promise<any>);
     getUserGroups: ((orgId: string, userId: string) => Promise<GroupModel[]>);
     putUserIntoGroup: ((orgId: string, userId: string, groupId: string) => Promise<any>);
@@ -14,6 +15,10 @@ const getGroupDataController = () => {
     return {
         createGroup: (orgId: string, group: Group): Promise<any> => {
             return new (GroupCollection(orgId))(group).save();
+        },
+
+        getGroups: (orgId: string): Promise<Group[]> => {
+            return GroupCollection(orgId).find({}).lean().exec() as Promise<Group[]>;
         },
 
         getGroupById: (orgId: string, groupId: string): Promise<any> => {

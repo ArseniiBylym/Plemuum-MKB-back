@@ -28,8 +28,11 @@ export default (app: Express, groupController: GroupController) => {
      *
      * @apiVersion 2.0.0
      *
+     *
+     * GET is only a dev feature to check all the groups
      */
     app.route('/api/:orgId/groups')
+        .get(passport.authenticate('basic', {session: false}), groupController.getGroups)
         .post(passport.authenticate('basic', {session: false}), groupController.createGroup.bind(groupController));
 
     /**

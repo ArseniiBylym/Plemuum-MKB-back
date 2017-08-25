@@ -57,23 +57,21 @@ suite("Group datacontroller", () => {
         })
     });
 
-    suite("Get all groups a common participates in", () => {
-        test("Should get an array of group objects", done => {
+    suite("Get all groups a user participates in", () => {
+        test("Should get an array of group objects", async () => {
             const orgID = "hipteam";
-            groupDataController.getUserGroups(orgID, testUser._id)
-                .then((groups) => {
-                    should().exist(groups);
-                    expect(groups).length(3);
-                    groups.forEach((group: any) => {
-                        validateGroup(group);
-                    });
-                    done();
-                })
+            const userID = "5984342227cd340363dc84c6";
+            const groups = await groupDataController.getUserGroups(orgID, userID);
+            should().exist(groups);
+            expect(groups).length(2);
+            groups.forEach((group: any) => {
+                validateGroup(group);
+            });
         })
     });
 
-    suite("Push userId into users array in order to add a common to the group", () => {
-        test("Should be able to add a common to a group", done => {
+    suite("Push userId into users array in order to add a user to the group", () => {
+        test("Should be able to add a user to a group", done => {
             const orgID = "hipteam";
             const groupID = "599312a81b31d008b6bd2783";
             groupDataController.putUserIntoGroup(orgID, testUser._id, groupID)
@@ -88,10 +86,11 @@ suite("Group datacontroller", () => {
                 })
         });
 
-        test("Should not be able to add a common to a group if the common is already part of that group", done => {
+        test("Should not be able to add a user to a group if the user is already part of that group", done => {
             const orgID = "hipteam";
             const groupID = "599312a31b31d008b6bd2782";
-            groupDataController.putUserIntoGroup(orgID, testUser._id, groupID)
+            const userID = "5984342227cd340363dc84b2";
+            groupDataController.putUserIntoGroup(orgID, userID, groupID)
                 .then(() => {
                     fail("DataController should throw an error, catch should be called!");
                 })
@@ -102,9 +101,9 @@ suite("Group datacontroller", () => {
         })
     });
 
-    suite("Remove common from group", () => {
+    suite("Remove user from group", () => {
 
-        test("Should be able to remove a common from a group", done => {
+        test("Should be able to remove a user from a group", done => {
             const orgID = "hipteam";
             const groupID = "599312971b31d008b6bd2781";
             groupDataController.removeUserFromGroup(orgID, testUser._id, groupID)
@@ -112,7 +111,7 @@ suite("Group datacontroller", () => {
                 .then((group: any) => {
                     should().exist(group);
                     expect(group.users).not.contains(testUser._id);
-                    expect(group.users).lengthOf(1);
+                    expect(group.users).lengthOf(2);
                     done();
                 })
                 .catch((err: any) => {
@@ -120,7 +119,7 @@ suite("Group datacontroller", () => {
                 })
         });
 
-        test("Should not be able to remove a common from a group if the common is not part of that group", done => {
+        test("Should not be able to remove a user from a group if the user is not part of that group", done => {
             const orgID = "hipteam";
             const groupID = "599312aa1b31d008b6bd2784";
             groupDataController.removeUserFromGroup(orgID, testUser._id, groupID)

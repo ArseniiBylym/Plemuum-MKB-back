@@ -75,8 +75,8 @@ suite("Group request test", () => {
         });
     });
 
-    suite("Get groups for common", () => {
-        test("Should be able to get all groups a common participates in", done => {
+    suite("Get groups for user", () => {
+        test("Should be able to get all groups a user participates in", done => {
 
             const userID = "5984342227cd340363dc84af";
             const url = `/api/${orgId}/groups/user/${userID}`;
@@ -99,8 +99,8 @@ suite("Group request test", () => {
         });
     });
 
-    suite("Put common into group", () => {
-        test("Should be able to put a common in a group", done => {
+    suite("Put user into group", () => {
+        test("Should be able to put a user in a group", done => {
 
             const userID = "5984342227cd340363dc84af";
             const groupID = "599312a81b31d008b6bd2783";
@@ -120,49 +120,43 @@ suite("Group request test", () => {
                 .catch((err) => done(err));
         });
 
-        test("Should not be able to put a common in a group if the common is already part of that group",
-            done => {
+        test("Should not be able to put a user in a group if the user is already part of that group",
+            async () => {
 
-                const userID = "5984342227cd340363dc84af";
+                const userID = "5984342227cd340363dc84b2";
                 const groupID = "599312a31b31d008b6bd2782";
                 const url = `/api/${orgId}/groups/${groupID}/user`;
 
-                request(app)
+                const response = await request(app)
                     .post(url)
                     .send({userId: userID})
                     .set(basicAuthHeader)
-                    .expect(400)
-                    .then(response => {
-                        should().exist(response.body);
-                        expect(response.body).to.haveOwnProperty('error');
-                        done();
-                    })
-                    .catch((err) => done(err));
+                    .expect(400);
+
+                should().exist(response.body);
+                expect(response.body).to.haveOwnProperty('error');
             })
     });
 
-    suite("Remove common from group", () => {
-        test("Should be able to remove a common from a group", done => {
+    suite("Remove user from group", () => {
+        test("Should be able to remove a user from a group", async () => {
 
-            const userID = "5984342227cd340363dc84af";
+            const userID = "5984342227cd340363dc84c6";
             const groupID = "599312971b31d008b6bd2781";
             const url = `/api/${orgId}/groups/${groupID}/user`;
 
-            request(app)
+            const response = await request(app)
                 .delete(url)
                 .send({userId: userID})
                 .set(basicAuthHeader)
-                .expect(200)
-                .then(response => {
-                    should().exist(response.body);
-                    expect(response.body).to.haveOwnProperty('success');
-                    expect(response.body.success).to.be.equal("User has been removed");
-                    done();
-                })
-                .catch((err) => done(err));
+                .expect(200);
+
+            should().exist(response.body);
+            expect(response.body).to.haveOwnProperty('success');
+            expect(response.body.success).to.be.equal("User has been removed");
         });
 
-        test("Should not be able to remove a common from a group if the common is not part of that group",
+        test("Should not be able to remove a user from a group if the user is not part of that group",
             done => {
 
                 const userID = "5984342227cd340363dc84af";

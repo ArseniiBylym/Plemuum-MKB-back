@@ -5,7 +5,9 @@ suite("Group controller tests", () => {
 
     const mockGroup: any = {group: "group"};
     const dataController: any = {};
-    const res: any = {status: sinon.stub(), send: sinon.stub()};
+    const res: any = {
+        status: sinon.stub().callsFake(() => res),
+        send: sinon.stub()};
 
     suite("createGroup", () => {
         const req: any = {params: {orgId: "mockOrg"}};

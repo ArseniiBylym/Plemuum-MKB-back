@@ -74,10 +74,10 @@ suite("Request entity related request tests", () => {
         })
     });
 
-    suite("Get all request for common", () => {
+    suite("Get all request for user", () => {
         const url = `/api/${orgId}/user/${userId}/requests`;
 
-        test("Should be able to get all request for common", done => {
+        test("Should be able to get all request for user", done => {
             authenticate(testUser)
                 .then(token => {
                     request(app)
@@ -96,10 +96,10 @@ suite("Request entity related request tests", () => {
         })
     });
 
-    suite("Get common's sent requests", () => {
+    suite("Get user's sent requests", () => {
         const url = `/api/${orgId}/user/${userId}/requests/sender`;
 
-        test("Should be able to get common's sent requests", done => {
+        test("Should be able to get user's sent requests", done => {
             authenticate(testUser)
                 .then(token => {
                     request(app)
@@ -119,9 +119,9 @@ suite("Request entity related request tests", () => {
         })
     });
 
-    suite("Get common's received requests", () => {
+    suite("Get user's received requests", () => {
         const url = `/api/${orgId}/user/${userId}/requests/recipient`;
-        test("Should be able to get common's received requests", done => {
+        test("Should be able to get user's received requests", done => {
             authenticate(testUser)
                 .then(token => {
                     request(app)

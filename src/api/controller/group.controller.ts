@@ -3,6 +3,8 @@ import { formError } from "../../util/errorhandler";
 import { GroupModel } from "../../data/database/schema/organization/group.schema";
 import { GroupDataController } from "../../data/datacontroller/group.datacontroller";
 import BaseController from "./base.controller";
+import UserDataController from "../../data/datacontroller/user.datacontroller";
+import CompassDataController from "../../data/datacontroller/compass.datacontroller";
 
 export default class GroupController extends BaseController {
 
@@ -14,10 +16,31 @@ export default class GroupController extends BaseController {
         this.createGroup.bind(this);
     }
 
+    getGroups = async (req: any, res: any, next?: Function) => {
+        try {
+            const orgId: string = req.params.orgId;
+            const allGroups: GroupModel[] = await this.groupDataController.getGroups(orgId);
+            const resultGroups = allGroups.map((group: any) => {
+                group.users = group.users.map((userId: string) => UserDataController.getUserById(orgId, userId));
+                group.skills = group.skills.map((skillId: string) => CompassDataController.getSkillById(orgId, skillId));
+                return group;
+            });
+
+            for (let group of resultGroups) {
+                group.users = await Promise.all(group.users);
+                group.skills = await Promise.all(group.skills);
+            }
+            res.send(resultGroups);
+        } catch (error) {
+
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(error);
+        }
+    };
+
     createGroup(req: any, res: any, next?: Function) {
         return this.groupDataController.createGroup(req.params.orgId, req.body)
-            .then((group: GroupModel) => BaseController.send(res, StatusCodes.CREATED, group))
-            .catch((err: Error) => BaseController.send(res, StatusCodes.BAD_REQUEST, formError(err)));
+            .then((group: GroupModel) => res.status(StatusCodes.CREATED).send(group))
+            .catch((err: Error) => res.status(StatusCodes.BAD_REQUEST).send(formError(err)));
     }
 
     getGroupById(req: any, res: any, next?: Function) {

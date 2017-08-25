@@ -13,7 +13,7 @@ export default class FileTransferService {
     }
 
     /**
-     * Upload a common picture to Firebase
+     * Upload a user picture to Firebase
      *
      * @param picture Image file to upload
      * @param {String} userId Image owner's ID

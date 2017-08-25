@@ -21,7 +21,7 @@ suite("UserDataController tests", () => {
             })
     });
 
-    test("New common should be in DB", done => {
+    test("New user should be in DB", done => {
         const testUser = TestObjectFactory.getJohnDoe();
         UserDataController.saveUser(testUser)
             .then((value: any) => {
