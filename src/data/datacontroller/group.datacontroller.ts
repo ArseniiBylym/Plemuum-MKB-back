@@ -1,28 +1,28 @@
-import { GroupCollection, GroupModel } from "../database/schema/organization/group.schema";
+import {GroupCollection, GroupModel} from "../database/schema/organization/group.schema";
 import Group from "../models/organization/group.model";
 
 export interface GroupDataController {
     createGroup: ((orgId: string, group: Group) => Promise<any>);
     getGroups: ((orgId: string) => Promise<GroupModel[]>);
-    getGroupById: ((orgId: string, groupId: string) => Promise<any>);
+    getGroupById: ((orgId: string, groupId: string) => Promise<Group>);
     getUserGroups: ((orgId: string, userId: string) => Promise<GroupModel[]>);
     putUserIntoGroup: ((orgId: string, userId: string, groupId: string) => Promise<any>);
     removeUserFromGroup: ((orgId: string, userId: string, groupId: string) => Promise<any>);
     updateGroup: ((orgId: string, groupId: string, group: Group) => Promise<any>)
 }
 
-const getGroupDataController = () => {
+const getGroupDataController = (): GroupDataController => {
     return {
         createGroup: (orgId: string, group: Group): Promise<any> => {
             return new (GroupCollection(orgId))(group).save();
         },
 
-        getGroups: (orgId: string): Promise<Group[]> => {
-            return GroupCollection(orgId).find({}).lean().exec() as Promise<Group[]>;
+        getGroups: (orgId: string): Promise<GroupModel[]> => {
+            return GroupCollection(orgId).find({}).lean().exec() as Promise<GroupModel[]>;
         },
 
-        getGroupById: (orgId: string, groupId: string): Promise<any> => {
-            return GroupCollection(orgId).findById(groupId).lean().exec();
+        getGroupById: (orgId: string, groupId: string): Promise<Group> => {
+            return GroupCollection(orgId).findById(groupId).lean().exec() as Promise<Group>;
         },
 
         getUserGroups: (orgId: string, userId: string): Promise<GroupModel[]> => {
@@ -62,4 +62,4 @@ const getGroupDataController = () => {
     }
 };
 
-export { getGroupDataController }
+export {getGroupDataController}

@@ -35,7 +35,7 @@ suite("Group datacontroller", () => {
             const testGroup = getTestGroup();
             groupDataController.createGroup('hipteam', testGroup)
                 .then(() => GroupCollection('hipteam').findOne({name: testGroup.name}).lean().exec())
-                .then((group) => {
+                .then((group: any) => {
                     should().exist(group);
                     validateGroup(group);
                     done();
@@ -48,7 +48,7 @@ suite("Group datacontroller", () => {
             const groupID = "599312971b31d008b6bd2781";
             const orgID = "hipteam";
             groupDataController.getGroupById(orgID, groupID)
-                .then((group) => {
+                .then((group: any) => {
                     should().exist(group);
                     validateGroup(group);
                     expect(group._id.toString()).to.be.equal(groupID);
@@ -150,11 +150,11 @@ suite("Group datacontroller", () => {
             };
             testGroup.name = testGroup.name + " UPDATED";
             groupDataController.updateGroup('hipteam', testGroup._id, testGroup)
-                .then((res) => {
+                .then((res: any) => {
                     console.log(res);
                     done();
                 })
-                .catch((err) => done(err))
+                .catch((err: any) => done(err))
         });
 
         test("Should get an error if the group does not exist", done => {
@@ -173,11 +173,11 @@ suite("Group datacontroller", () => {
             };
             testGroup.name = testGroup.name + " UPDATED";
             groupDataController.updateGroup('hipteam', testGroup._id, testGroup)
-                .then((res) => {
+                .then((res: any) => {
                     fail("Should catch and error!");
                     done();
                 })
-                .catch((err) => {
+                .catch((err: any) => {
                     expect(err.message).to.be.equal('Group was not found');
                     done();
                 })
