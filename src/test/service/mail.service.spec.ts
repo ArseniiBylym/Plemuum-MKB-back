@@ -1,8 +1,7 @@
 import EmailService from "../../service/email/mail.service";
-import { testUser} from "../mock/fixture.loader";
+import { testUser } from "../mock/fixture.loader";
 import * as sinon from "sinon";
 import { expect } from "chai";
-import {callback} from "testdouble";
 import { fail } from 'assert';
 
 suite("Mail service tests", () => {
@@ -10,14 +9,16 @@ suite("Mail service tests", () => {
     const link = "mock_link";
     const email = testUser.email;
     const firstName = testUser.firstName;
-    const organization : any = sinon.mock();
+    const organization: any = sinon.mock();
     let emailService: EmailService;
     const resultInfo = {info: "Info"};
 
     suite("sendWelcomeEmail", () => {
 
         suite("Happy cases", () => {
-            beforeEach(() => { emailService = new EmailService(); })
+            beforeEach(() => {
+                emailService = new EmailService();
+            });
 
             test("It should send mail successfuly", async () => {
                 const mockTransport = {
@@ -45,7 +46,8 @@ suite("Mail service tests", () => {
                     firstName: firstName,
                     company: organization,
                     email: email,
-                    link: link})
+                    link: link
+                });
                 sinon.assert.calledWith(getMailOptions, email);
             });
         });
@@ -59,13 +61,13 @@ suite("Mail service tests", () => {
                 const getTransportStub = sinon.stub(EmailService, "getTransport")
                     .returns(mockTransport);
 
-                try{
+                try {
                     await emailService.sendWelcomeEmail(email, firstName, link, organization);
                     fail('Should throw an error!');
                 }
-                catch (error){
+                catch (error) {
                     expect(error.message).to.be.equal(errormessage);
-                }finally {
+                } finally {
                     getTransportStub.restore();
                 }
             });
@@ -75,7 +77,9 @@ suite("Mail service tests", () => {
     suite("sendResetEmail", () => {
 
         suite("Happy cases", () => {
-            beforeEach(() => { emailService = new EmailService(); })
+            beforeEach(() => {
+                emailService = new EmailService();
+            });
 
             test("It should send mail successfully and return info object", async () => {
                 const mockTransport = {
@@ -83,7 +87,7 @@ suite("Mail service tests", () => {
                 };
 
                 const getTransportStub = sinon.stub(EmailService, "getTransport").returns(mockTransport);
-                const result = await emailService.sendResetEmail(email, link)
+                const result = await emailService.sendResetEmail(email, link);
                 getTransportStub.restore();
                 expect(result).to.not.be.undefined;
             });
@@ -96,10 +100,10 @@ suite("Mail service tests", () => {
                 const getTransportStub = sinon.stub(EmailService, "getTransport").returns(mockTransport);
                 const getHtmlFromEjsSpy = sinon.spy(emailService, "getHtmlFromEjs");
                 const getMailOptions = sinon.spy(EmailService, "getMailOptions");
-                await emailService.sendResetEmail(email, link)
+                await emailService.sendResetEmail(email, link);
                 getHtmlFromEjsSpy.restore();
                 getTransportStub.restore();
-                sinon.assert.calledWith(getHtmlFromEjsSpy, "resetpassword.ejs", {link: link})
+                sinon.assert.calledWith(getHtmlFromEjsSpy, "resetpassword.ejs", {link: link});
                 sinon.assert.calledWith(getMailOptions, email);
             });
         });
@@ -113,13 +117,13 @@ suite("Mail service tests", () => {
                 const getTransportStub = sinon.stub(EmailService, "getTransport")
                     .returns(mockTransport);
 
-                try{
+                try {
                     await emailService.sendResetEmail(email, link);
                     fail('Should throw an error!');
                 }
-                catch (error){
+                catch (error) {
                     expect(error.message).to.be.equal(errormessage);
-                }finally {
+                } finally {
                     getTransportStub.restore();
                 }
             });
