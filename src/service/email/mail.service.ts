@@ -1,6 +1,6 @@
 import config from "../../../config/config";
+import * as nodemailer from 'nodemailer';
 
-const nodemailer = require('nodemailer');
 const ejs = require('ejs');
 
 const USERNAME = config.plenuumBotEmail;
@@ -15,7 +15,7 @@ const RESET_PASSWORD_TEMPLATE = "resetpassword.ejs";
 
 export default class EmailService {
 
-    private static getTransport(host: string, port: number, secure: boolean, username: string, password: string) {
+    static getTransport(host: string, port: number, secure: boolean, username: string, password: string) {
 
         return nodemailer.createTransport({
             host: host,
@@ -29,20 +29,20 @@ export default class EmailService {
         });
     };
 
-    private getHtmlFromEjs(template: string, data: any): Promise<any> {
+    getHtmlFromEjs(template: string, data: any): Promise<any> {
         return new Promise((resolve, reject) => ejs.renderFile(MAIL_TEMPLATE_DIR + template, data,
             (error: any, html: any) => error ? reject(error) : resolve(html)));
     }
 
 
-    private static getMailOptions(html: string, email: string) {
+    static getMailOptions(email: string, html: string) {
         const message = "This is an automated answer, there is no need to reply!";
         return {
             from: 'bot@plenuum.com',
-            to: email,
+            to: html,
             subject: 'Pleenum Change password step 2',
             text: message,
-            html: html
+            html: email
         };
     };
 
@@ -56,7 +56,7 @@ export default class EmailService {
         return this.getHtmlFromEjs(WELCOME_TEMPLATE, data)
             .then((html) => {
                 const transporter = EmailService.getTransport(HOST, PORT, SECURE, USERNAME, SECRET);
-                const mailOptions = EmailService.getMailOptions(html, email);
+                const mailOptions = EmailService.getMailOptions(email, html);
                 return new Promise((resolve, reject) => {
                     transporter.sendMail(mailOptions, (error: any, info: any) => error ? reject({
                         error: error,
@@ -66,19 +66,17 @@ export default class EmailService {
             })
     };
 
-    public sendResetEmail(email: string, link: string): Promise<any> {
+    public async sendResetEmail(email: string, link: string): Promise<any> {
         const data = {
             link: link
         };
         return this.getHtmlFromEjs(RESET_PASSWORD_TEMPLATE, data)
             .then((html) => {
                 const transporter = EmailService.getTransport(HOST, PORT, SECURE, USERNAME, SECRET);
-                const mailOptions = EmailService.getMailOptions(html, email);
+                const mailOptions = EmailService.getMailOptions(email, html);
                 return new Promise((resolve, reject) => {
-                    transporter.sendMail(mailOptions, (error: any, info: any) => error ? reject({
-                        error: error,
-                        info: info
-                    }) : resolve(info));
+                    transporter.sendMail(mailOptions, (error: any, info: any) => error ? reject(error)
+                        : resolve(info));
                 })
             });
     };
