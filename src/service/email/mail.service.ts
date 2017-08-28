@@ -58,10 +58,7 @@ export default class EmailService {
                 const transporter = EmailService.getTransport(HOST, PORT, SECURE, USERNAME, SECRET);
                 const mailOptions = EmailService.getMailOptions(email, html);
                 return new Promise((resolve, reject) => {
-                    transporter.sendMail(mailOptions, (error: any, info: any) => error ? reject({
-                        error: error,
-                        info: info
-                    }) : resolve(info));
+                    transporter.sendMail(mailOptions, (error: any, info: any) => error ? reject(error) : resolve(info));
                 })
             })
     };

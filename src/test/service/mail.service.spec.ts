@@ -5,62 +5,124 @@ import { expect } from "chai";
 import {callback} from "testdouble";
 import { fail } from 'assert';
 
-suite.only("Mail service tests", () => {
+suite("Mail service tests", () => {
 
     const link = "mock_link";
     const email = testUser.email;
+    const firstName = testUser.firstName;
+    const organization : any = sinon.mock();
     let emailService: EmailService;
     const resultInfo = {info: "Info"};
 
-    suite("sendResetEmail", () => {
+    suite("sendWelcomeEmail", () => {
 
-        beforeEach(() => { emailService = new EmailService(); })
+        suite("Happy cases", () => {
+            beforeEach(() => { emailService = new EmailService(); })
 
-        test("It should send mail successfully and return info object", async () => {
-            const mockTransport = {
-                sendMail: sinon.mock().callsFake((options, callback) => callback(null, resultInfo))
-            };
+            test("It should send mail successfuly", async () => {
+                const mockTransport = {
+                    sendMail: sinon.mock().callsFake((options, callback) => callback(null, resultInfo))
+                };
+                const getTransportStub = sinon.stub(EmailService, "getTransport").returns(mockTransport);
+                const result = await emailService.sendWelcomeEmail(email, firstName, link, organization);
+                getTransportStub.restore();
 
-            const getTransportStub = sinon.stub(EmailService, "getTransport").returns(mockTransport);
-            const result = await emailService.sendResetEmail(email, link)
-            getTransportStub.restore();
-            expect(result).to.not.be.undefined;
+                expect(result).to.not.be.undefined;
+            });
+
+            test("Should use a welcome email template", async () => {
+                const mockTransport = {
+                    sendMail: sinon.mock().callsFake((options, callback) => callback(null, resultInfo))
+                };
+                const getTransportStub = sinon.stub(EmailService, "getTransport").returns(mockTransport);
+                const getMailOptions = sinon.spy(EmailService, "getMailOptions");
+                const getHtmlFromEjsSpy = sinon.spy(emailService, "getHtmlFromEjs");
+                await emailService.sendWelcomeEmail(email, firstName, link, organization);
+                getTransportStub.restore();
+                getMailOptions.restore();
+                getHtmlFromEjsSpy.restore();
+                sinon.assert.calledWith(getHtmlFromEjsSpy, "welcome.ejs", {
+                    firstName: firstName,
+                    company: organization,
+                    email: email,
+                    link: link})
+                sinon.assert.calledWith(getMailOptions, email);
+            });
         });
 
-        test("Should use reset password template", async () => {
-            const mockTransport = {
-                sendMail: sinon.mock().callsFake((options, callback) => callback(null, resultInfo))
-            };
+        suite("Failed cases", () => {
+            test("Should reject if there's an error", async () => {
+                const errormessage = "mock error";
+                const mockTransport = {
+                    sendMail: sinon.mock().callsFake((options, callback) => callback(new Error(errormessage), null))
+                };
+                const getTransportStub = sinon.stub(EmailService, "getTransport")
+                    .returns(mockTransport);
 
-            const getTransportStub = sinon.stub(EmailService, "getTransport").returns(mockTransport);
-            const getHtmlFromEjsSpy = sinon.spy(emailService, "getHtmlFromEjs");
-            const getMailOptions = sinon.spy(EmailService, "getMailOptions");
-            await emailService.sendResetEmail(email, link)
-            getHtmlFromEjsSpy.restore();
-            getTransportStub.restore();
-            sinon.assert.calledWith(getHtmlFromEjsSpy, "resetpassword.ejs", {link: link})
-            sinon.assert.calledWith(getMailOptions, email);
+                try{
+                    await emailService.sendWelcomeEmail(email, firstName, link, organization);
+                    fail('Should throw an error!');
+                }
+                catch (error){
+                    expect(error.message).to.be.equal(errormessage);
+                }finally {
+                    getTransportStub.restore();
+                }
+            });
         });
     });
 
-    suite("Error cases for sendResetEmail", () => {
-        test("Should reject if there's an error", async () => {
-            const errormessage = "mock error";
-            const mockTransport = {
-                sendMail: sinon.mock().callsFake((options, callback) => callback(new Error(errormessage), null))
-            };
-            const getTransportStub = sinon.stub(EmailService, "getTransport")
-                .returns(mockTransport);
+    suite("sendResetEmail", () => {
 
-            try{
-                await emailService.sendResetEmail(email, link);
-                fail('Should throw an error!');
-            }
-            catch (error){
-                expect(error.message).to.be.equal(errormessage);
-            }finally {
+        suite("Happy cases", () => {
+            beforeEach(() => { emailService = new EmailService(); })
+
+            test("It should send mail successfully and return info object", async () => {
+                const mockTransport = {
+                    sendMail: sinon.mock().callsFake((options, callback) => callback(null, resultInfo))
+                };
+
+                const getTransportStub = sinon.stub(EmailService, "getTransport").returns(mockTransport);
+                const result = await emailService.sendResetEmail(email, link)
                 getTransportStub.restore();
-            }
+                expect(result).to.not.be.undefined;
+            });
+
+            test("Should use reset password template", async () => {
+                const mockTransport = {
+                    sendMail: sinon.mock().callsFake((options, callback) => callback(null, resultInfo))
+                };
+
+                const getTransportStub = sinon.stub(EmailService, "getTransport").returns(mockTransport);
+                const getHtmlFromEjsSpy = sinon.spy(emailService, "getHtmlFromEjs");
+                const getMailOptions = sinon.spy(EmailService, "getMailOptions");
+                await emailService.sendResetEmail(email, link)
+                getHtmlFromEjsSpy.restore();
+                getTransportStub.restore();
+                sinon.assert.calledWith(getHtmlFromEjsSpy, "resetpassword.ejs", {link: link})
+                sinon.assert.calledWith(getMailOptions, email);
+            });
         });
-    })
+
+        suite("Failed cases", () => {
+            test("Should reject if there's an error", async () => {
+                const errormessage = "mock error";
+                const mockTransport = {
+                    sendMail: sinon.mock().callsFake((options, callback) => callback(new Error(errormessage), null))
+                };
+                const getTransportStub = sinon.stub(EmailService, "getTransport")
+                    .returns(mockTransport);
+
+                try{
+                    await emailService.sendResetEmail(email, link);
+                    fail('Should throw an error!');
+                }
+                catch (error){
+                    expect(error.message).to.be.equal(errormessage);
+                }finally {
+                    getTransportStub.restore();
+                }
+            });
+        })
+    });
 });
