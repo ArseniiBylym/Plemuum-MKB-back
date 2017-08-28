@@ -21,10 +21,10 @@ const prodConfig: Config = {
     },
     get firebaseConfig() {
         return {
-            projectId: 'plenuum',
-            keyFileName: 'Plenuum-8eba73778480.json',
-            bucketName: 'plenuum.appspot.com',
-            baseUrl: 'http://storage.googleapis.com/plenuum.appspot.com/'
+            projectId: 'plenuumbackend',
+            keyFileName: 'PlenuumBackend-25b19e804e20.json',
+            bucketName: 'plenuumbackend.appspot.com',
+            baseUrl: 'http://storage.googleapis.com/plenuumbackend.appspot.com/'
         };
     }
 };
