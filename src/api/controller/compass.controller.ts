@@ -12,8 +12,8 @@ export default class CompassController extends BaseController {
         this.compassManager = compassManager;
     }
 
-    generateTodo(req: any, res: any) {
-        CompassManager.generateTodo(req.body, req.params.orgId, req.user._id)
+    answerCard(req: any, res: any) {
+        this.compassManager.answerCard(req.body.aboutUserId, req.body.senderId, req.params.orgId, req.user._id)
             .then(savedTodo => res.send(savedTodo))
             .catch((err) => res.status((err.name === 'ValidationError')
                 ? StatusCodes.INTERNAL_SERVER_ERROR

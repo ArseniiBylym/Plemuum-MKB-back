@@ -11,6 +11,7 @@ import StatisticsManager from "./statistics.manager";
 import StatisticsDataController from "../../data/datacontroller/statistics.datacontroller";
 import { GroupDataController } from "../../data/datacontroller/group.datacontroller";
 import Group from "../../data/models/organization/group.model";
+import Sentence from "../../data/models/organization/compass/sentence.model";
 
 export default class CompassManager {
 
@@ -20,15 +21,22 @@ export default class CompassManager {
         this.groupDataController = groupDataController;
     }
 
-    static async generateTodo(data: any, orgId: string, userId: string): Promise<any> {
+    async answerCard(aboutUserId: string, senderId: string, orgId: string, userId: string) {
+        const aboutUserGroups = await this.groupDataController.getUserGroups(orgId, aboutUserId);
+        let aboutUserSkillIds: string[] = [];
+        aboutUserGroups.forEach((group) => aboutUserSkillIds = aboutUserSkillIds.concat(group.skills));
+        const aboutUserSkills = await CompassDataController.getSkillsByIds(orgId, aboutUserSkillIds);
+        return CompassManager.generateTodo(aboutUserId, senderId, orgId, userId, aboutUserSkills);
+    }
+
+    static async generateTodo(aboutUserId: string, senderId: string, orgId: string, userId: string, skills: SkillModel[]): Promise<any> {
         const organization = await OrganizationDataController.getOrganizationByDbName(orgId);
         CompassManager.checkOrganization(organization);
 
-        const aboutUser: UserModel = await CompassManager.getAboutUser(organization.dbName, data.recipientId);
+        const aboutUser: UserModel = await CompassManager.getAboutUser(organization.dbName, aboutUserId);
         CompassManager.checkAboutUser(aboutUser);
 
-        const skills: SkillModel[] = await CompassDataController.getAllSkills(organization.dbName);
-        const newTodo = CompassManager.buildUpNewTodoResponse(userId, data.senderId, organization, aboutUser, skills);
+        const newTodo = CompassManager.buildUpNewTodoResponse(userId, senderId, organization, aboutUser, skills);
         return CompassDataController.saveCompassTodo(organization.dbName, newTodo);
     }
 
@@ -52,17 +60,26 @@ export default class CompassManager {
 
     static buildUpNewTodoResponse(senderId: string, recipientId: string,
                                   organization: Organization, aboutUser: UserModel, skills: SkillModel[]): any {
-        const numberOfSentences = organization.todoSentenceNumber;
+        let numberOfSentences = organization.todoSentenceNumber;
+        let possibleSentences: Sentence[] = [];
         const sentencesToBeAnswered: any[] = [];
+        skills.forEach((skill) => possibleSentences = possibleSentences.concat(skill.sentences));
 
-        for (let i = 0; i < numberOfSentences; i++) {
+        if (possibleSentences.length < numberOfSentences) {
+            numberOfSentences = possibleSentences.length;
+        }
+
+        while (numberOfSentences > 0) {
             const randomSkill = skills[lodash.random(0, skills.length - 1, false)];
-            const randomSentence = randomSkill.sentences[lodash.random(0, randomSkill.sentences.length - 1, false)];
-            sentencesToBeAnswered.push({
-                sentence: randomSentence,
-                skill: randomSkill
-            });
-            lodash.pull(skills, randomSkill);
+            if (randomSkill.sentences.length > 0) {
+                const randomSentence = randomSkill.sentences[lodash.random(0, randomSkill.sentences.length - 1, false)];
+                sentencesToBeAnswered.push({
+                    sentence: randomSentence,
+                    skill: randomSkill
+                });
+                lodash.pull(randomSkill.sentences, randomSentence);
+                numberOfSentences--;
+            }
         }
 
         return {

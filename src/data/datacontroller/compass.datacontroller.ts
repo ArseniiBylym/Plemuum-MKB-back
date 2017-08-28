@@ -15,7 +15,7 @@ const CompassDataController = {
     },
 
     getSkillsByIds: (orgId: string, skillIds: string[]): Promise<SkillModel[]> => {
-        return SkillCollection(orgId).find({$in: {_id: skillIds}}).lean().exec() as Promise<SkillModel[]>;
+        return SkillCollection(orgId).find({_id: {$in: skillIds}}).lean().exec() as Promise<SkillModel[]>;
     },
 
     getTodoById: (orgId: string, todoId: string): Promise<CompassTodoModel> => {

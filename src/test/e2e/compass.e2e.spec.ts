@@ -17,7 +17,7 @@ suite("Compass request test", () => {
             .then(() => fixtureLoader())
             .then(value => done())
             .catch((error) => {
-                console.error(error);
+                console.error (error);
                 done();
             })
     });
@@ -37,7 +37,7 @@ suite("Compass request test", () => {
                 .then(token => {
                     request(app)
                         .post(url)
-                        .send({recipientId: "5984342227cd340363dc84ac", senderId: "5984342227cd340363dc84b3"})
+                        .send({aboutUserId: "5984342227cd340363dc84c7", senderId: "5984342227cd340363dc84aa"})
                         .set(bearerAuthHeader(token))
                         .expect(200)
                         .then(response => {

@@ -43,11 +43,10 @@ const getGroupDataController = (): GroupDataController => {
         removeUserFromGroup: (orgId: string, userId: string, groupId: string): Promise<any> => {
             return GroupCollection(orgId).findById(groupId).lean().exec()
                 .then((group: any) => {
-                    if (group.users.includes(userId)) {
-                        return GroupCollection(orgId).update({_id: groupId}, {$pull: {users: userId}}).lean().exec();
-                    } else {
+                    if (!group.users.includes(userId)) {
                         throw new Error("User is not part of this group");
                     }
+                    return GroupCollection(orgId).update({_id: groupId}, {$pull: {users: userId}}).lean().exec();
                 });
         },
 
