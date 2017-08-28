@@ -15,12 +15,12 @@ import { validateCompassTodo } from "../../util/model.validator";
 suite("CompassManager tests", () => {
 
     suite("answerCard", () => {
-        test.only("Should get the correct skills and call generateTodo", async () => {
-            const aboutUserId = "5984342227cd340363dc84c7";
-            const senderId = "5984342227cd340363dc84aa";
-            const orgId = "hipteam";
-            const userId = "5984342227cd340363dc84aa";
+        const aboutUserId = "5984342227cd340363dc84c7";
+        const senderId = "5984342227cd340363dc84aa";
+        const orgId = "hipteam";
+        const userId = "5984342227cd340363dc84aa";
 
+        test("Should get the correct skills and call generateTodo", async () => {
             const aboutUserGroups: any = [
                 {
                     _id: "599312971b31d008b6bd2781",
@@ -76,6 +76,57 @@ suite("CompassManager tests", () => {
             generateTodo.restore();
 
             sinon.assert.calledWith(generateTodo, aboutUserId, senderId, orgId, userId, mockSkills);
+        });
+
+        test.only("Should throw error, if the sender does not have an answerCard relation to the about user's group", (done) => {
+            const aboutUserGroups: any = [
+                {
+                    _id: "599312ac1b31d008b6bd2785",
+                    skills: [
+                        "5940f6144d0d550007d863e2"
+                    ],
+                    answerCardRelations: []
+                },
+            ];
+
+            const senderUserGroups: any = [
+                {
+                    _id: "599312a31b31d008b6bd2782",
+                    skills: [
+                        "5940f6044d0d550007d863df",
+                        "5940f6144d0d550007d863e2"
+                    ],
+                    answerCardRelations: [
+                        "599312971b31d008b6bd2781"
+                    ]
+                }
+
+            ];
+
+            const getUserGroups = sinon.stub();
+            getUserGroups.withArgs(orgId, "5984342227cd340363dc84c7").resolves(aboutUserGroups);
+            getUserGroups.withArgs(orgId, "5984342227cd340363dc84aa").resolves(senderUserGroups);
+
+
+            const groupDataController: any = {getUserGroups: getUserGroups};
+
+            const getSkillsByIds = sinon.stub(CompassDataController, "getSkillsByIds");
+            const generateTodo = sinon.stub(CompassManager, "generateTodo");
+
+            const compassManager = new CompassManager(groupDataController);
+
+            compassManager.answerCard(aboutUserId, senderId, orgId, userId)
+                .then(() => {
+                    getSkillsByIds.restore();
+                    generateTodo.restore();
+                    done(new Error('This case answerCard should throw an error'));
+                })
+                .catch((error) => {
+                    getSkillsByIds.restore();
+                    generateTodo.restore();
+                    expect(error.message).to.be.equal("Sender has no answer card relation to this user");
+                    done();
+                });
         })
     });
 

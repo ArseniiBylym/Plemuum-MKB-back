@@ -28,12 +28,14 @@ export default class CompassManager {
         const answerGroups: Group[] = [];
         const answerCardRelationGroups = senderUserGroups.forEach(
             (senderGroup) => senderGroup.answerCardRelations.forEach((relationGroupId) => {
-                const found = aboutUserGroups.find((aboutGroup) => aboutGroup._id === relationGroupId);
+                const found = aboutUserGroups.find((aboutGroup) => aboutGroup._id.toString() === relationGroupId);
                 if (found) {
                     answerGroups.push(found);
                 }
             }));
-
+        if (answerGroups.length === 0) {
+            throw new Error("Sender has no answer card relation to this user");
+        }
         let answerSkillIds: string[] = [];
         answerGroups.forEach((group) => answerSkillIds = answerSkillIds.concat(group.skills));
         const aboutUserSkills = await CompassDataController.getSkillsByIds(orgId, answerSkillIds);
