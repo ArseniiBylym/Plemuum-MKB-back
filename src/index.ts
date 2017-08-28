@@ -1,4 +1,4 @@
-import app from './App'
+import app from './app'
 import * as http from "http";
 import config from '../config/config';
 import { getDatabaseManager } from "./factory/database.factory";
