@@ -62,6 +62,7 @@
     "@types/lodash": "4.14.71",
     "@types/mongoose": "4.7.19",
     "@types/morgan": "1.7.32",
+    "@types/nodemailer": "3.1.2",
     "@types/passport": "0.3.3",
     "@types/passport-http": "0.3.2",
     "@types/passport-http-bearer": "1.0.30",

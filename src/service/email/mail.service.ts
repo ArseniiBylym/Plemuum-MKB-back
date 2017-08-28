@@ -1,5 +1,6 @@
 import config from "../../../config/config";
 import * as nodemailer from 'nodemailer';
+import { promisify } from "util";
 
 const ejs = require('ejs');
 
@@ -15,8 +16,9 @@ const RESET_PASSWORD_TEMPLATE = "resetpassword.ejs";
 
 export default class EmailService {
 
-    static getTransport(host: string, port: number, secure: boolean, username: string, password: string) {
+    renderFile = promisify(ejs.renderFile);
 
+    static getTransport(host: string, port: number, secure: boolean, username: string, password: string) {
         return nodemailer.createTransport({
             host: host,
             port: port,
@@ -30,8 +32,7 @@ export default class EmailService {
     };
 
     getHtmlFromEjs(template: string, data: any): Promise<any> {
-        return new Promise((resolve, reject) => ejs.renderFile(MAIL_TEMPLATE_DIR + template, data,
-            (error: any, html: any) => error ? reject(error) : resolve(html)));
+        return this.renderFile(MAIL_TEMPLATE_DIR + template, data);
     }
 
 
