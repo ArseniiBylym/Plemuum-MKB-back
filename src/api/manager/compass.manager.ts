@@ -23,9 +23,20 @@ export default class CompassManager {
 
     async answerCard(aboutUserId: string, senderId: string, orgId: string, userId: string) {
         const aboutUserGroups = await this.groupDataController.getUserGroups(orgId, aboutUserId);
-        let aboutUserSkillIds: string[] = [];
-        aboutUserGroups.forEach((group) => aboutUserSkillIds = aboutUserSkillIds.concat(group.skills));
-        const aboutUserSkills = await CompassDataController.getSkillsByIds(orgId, aboutUserSkillIds);
+        const senderUserGroups = await this.groupDataController.getUserGroups(orgId, senderId);
+
+        const answerGroups: Group[] = [];
+        const answerCardRelationGroups = senderUserGroups.forEach(
+            (senderGroup) => senderGroup.answerCardRelations.forEach((relationGroupId) => {
+                const found = aboutUserGroups.find((aboutGroup) => aboutGroup._id === relationGroupId);
+                if (found) {
+                    answerGroups.push(found);
+                }
+            }));
+
+        let answerSkillIds: string[] = [];
+        answerGroups.forEach((group) => answerSkillIds = answerSkillIds.concat(group.skills));
+        const aboutUserSkills = await CompassDataController.getSkillsByIds(orgId, answerSkillIds);
         return CompassManager.generateTodo(aboutUserId, senderId, orgId, userId, aboutUserSkills);
     }
 

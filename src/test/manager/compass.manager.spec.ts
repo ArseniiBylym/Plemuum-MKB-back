@@ -15,30 +15,59 @@ import { validateCompassTodo } from "../../util/model.validator";
 suite("CompassManager tests", () => {
 
     suite("answerCard", () => {
-        test("test", async () => {
+        test.only("Should get the correct skills and call generateTodo", async () => {
             const aboutUserId = "5984342227cd340363dc84c7";
-            const senderId = "5984342227cd340363dc84c7";
+            const senderId = "5984342227cd340363dc84aa";
             const orgId = "hipteam";
-            const userId = "5984342227cd340363dc84c7";
+            const userId = "5984342227cd340363dc84aa";
 
-            const userGroups: any = [
+            const aboutUserGroups: any = [
                 {
-                    skills: ["asd", "asd", "asd"]
+                    _id: "599312971b31d008b6bd2781",
+                    skills: [
+                        "5940f6044d0d550007d863df",
+                        "5940f5f44d0d550007d863dc"
+                    ],
+                    answerCardRelations: [
+                        "599312a31b31d008b6bd2782",
+                        "599312971b31d008b6bd2781"
+                    ]
                 },
                 {
-                    skills: ["das"]
+                    _id: "599312ac1b31d008b6bd2785",
+                    skills: [
+                        "5940f6144d0d550007d863e2"
+                    ],
+                    answerCardRelations: []
                 },
+            ];
+
+            const senderUserGroups: any = [
                 {
-                    skills: []
+                    _id: "599312a31b31d008b6bd2782",
+                    skills: [
+                        "5940f6044d0d550007d863df",
+                        "5940f6144d0d550007d863e2"
+                    ],
+                    answerCardRelations: [
+                        "599312971b31d008b6bd2781"
+                    ]
                 }
+
             ];
             const mockSkills = sinon.mock();
-            const groupDataController: any = {getUserGroups: sinon.mock().resolves(userGroups)};
+            const getUserGroups = sinon.stub();
+            getUserGroups.withArgs(orgId, "5984342227cd340363dc84c7").resolves(aboutUserGroups);
+            getUserGroups.withArgs(orgId, "5984342227cd340363dc84aa").resolves(senderUserGroups);
+
+
+            const groupDataController: any = {getUserGroups: getUserGroups};
 
             const getSkillsByIds = sinon.stub(CompassDataController, "getSkillsByIds");
             const generateTodo = sinon.stub(CompassManager, "generateTodo");
 
-            getSkillsByIds.withArgs(orgId, ["asd", "asd", "asd", "das"]).resolves(mockSkills);
+            getSkillsByIds.withArgs(orgId, ["5940f6044d0d550007d863df", "5940f5f44d0d550007d863dc"])
+                .resolves(mockSkills);
 
             const compassManager = new CompassManager(groupDataController);
             const result = await compassManager.answerCard(aboutUserId, senderId, orgId, userId);
