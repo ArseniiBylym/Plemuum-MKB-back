@@ -142,4 +142,48 @@ export default (app: Express, userController: UserController) => {
     app.route("/api/profile/setpicture")
         .get(UserController.showPictureUploadPage.bind(userController))
         .post(passport.authenticate('bearer', {session: false}), userController.setPicture.bind(userController));
+
+    /**
+     * @api {POST} /api/user/setNotificationDevice Add a notification Token
+     * @apiName setNotificationDevice
+     * @apiGroup User
+     * @apiDescription Add a notification token to a device that is subscribing to receive notification
+     *
+     * Authorization: Bearer {token}
+     *
+     * @apiParam {NotificationToken} {String} token The unique identifier of the notification device on the notification service
+     *
+     * @apiUse user_list_data
+     * @apiSuccess (Success 200) {String[]} notificationToken The tokens for all the devices subscribed for notification
+     *
+     * @api {PATCH} /api/user/setNotificationDevice Set a new token
+     * @apiName setNotificationDevice
+     * @apiGroup User
+     * @apiDescription Set the new unique token, replacing the old one.
+     *
+     * Authorization: Bearer {token}
+     *
+     * @apiParam {NotificationToken} {String} oldToken The current unique identifier of the notification device on the notification service
+     * @apiParam {NotificationToken} {String} newToken The new unique identifier of the notification device on the notification service to be used in replacement of the oldToken
+     *
+     * @apiUse user_list_data
+     * @apiSuccess (Success 200) {String[]} notificationToken The tokens for all the devices subscribed for notification
+     *
+     * @api {PUT} /api/user/setNotificationDevice Delete a token
+     * @apiName setNotificationDevice
+     * @apiGroup User
+     * @apiDescription Delete a token when the device is subscribed
+     *
+     * Authorization: Bearer {token}
+     *
+     * @apiParam {NotificationToken} {String} token The unique identifier of the notification device on the notification service to be deleted
+     *
+     * @apiUse user_list_data
+     * @apiSuccess (Success 200) {String[]} notificationToken The tokens for all the devices subscribed for notification
+     */
+    app.route("/api/user/setNotificationDevice")
+        .post(passport.authenticate('bearer', {session: false}), userController.setNotificationDevice.bind(userController))
+        .patch(passport.authenticate('bearer', {session: false}), userController.refreshNotificationDevice.bind(userController))
+        .put(passport.authenticate('bearer', {session: false}), userController.removeNotificationToken.bind(userController));
+
 }
