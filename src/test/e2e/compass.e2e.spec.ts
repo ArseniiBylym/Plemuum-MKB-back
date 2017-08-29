@@ -62,7 +62,7 @@ suite("Compass request test", () => {
                     // That recipientId does not exist in the mock user list
                     request(app)
                         .post(url)
-                        .send({recipientId: "5984342227cd340363dd84ae", senderId: "5984342227cd340363dc84b3"})
+                        .send({aboutUserId: "5984342227cd340363dd84ae", senderId: "5984342227cd340363dc84b3"})
                         .set(bearerAuthHeader(token))
                         .expect(400)
                         .then(response => {
@@ -81,7 +81,7 @@ suite("Compass request test", () => {
                 .then(token => {
                     request(app)
                         .post(urlWhatever)
-                        .send({recipientId: "5984342227cd340363dd84ac", senderId: "5984342227cd340363dc84b3"})
+                        .send({aboutUserId: "5984342227cd340363dd84ac", senderId: "5984342227cd340363dc84b3"})
                         .set(bearerAuthHeader(token))
                         .expect(400)
                         .then(response => {

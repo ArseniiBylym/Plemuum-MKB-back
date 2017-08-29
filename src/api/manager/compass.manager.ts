@@ -12,6 +12,7 @@ import StatisticsDataController from "../../data/datacontroller/statistics.datac
 import { GroupDataController } from "../../data/datacontroller/group.datacontroller";
 import Group from "../../data/models/organization/group.model";
 import Sentence from "../../data/models/organization/compass/sentence.model";
+import { User } from "../../data/models/common/user.model";
 
 export default class CompassManager {
 
@@ -22,6 +23,12 @@ export default class CompassManager {
     }
 
     async answerCard(aboutUserId: string, senderId: string, orgId: string, userId: string) {
+        const organization = await OrganizationDataController.getOrganizationByDbName(orgId);
+        CompassManager.checkOrganization(organization);
+
+        const aboutUser: UserModel = await CompassManager.getAboutUser(organization.dbName, aboutUserId);
+        CompassManager.checkAboutUser(aboutUser);
+
         const aboutUserGroups = await this.groupDataController.getUserGroups(orgId, aboutUserId);
         const senderUserGroups = await this.groupDataController.getUserGroups(orgId, senderId);
 
@@ -33,24 +40,25 @@ export default class CompassManager {
                     answerGroups.push(found);
                 }
             }));
-        if (answerGroups.length === 0) {
-            throw new Error("Sender has no answer card relation to this user");
-        }
+
+        CompassManager.checkAnswerCardRelation(answerGroups);
+
         let answerSkillIds: string[] = [];
         answerGroups.forEach((group) => answerSkillIds = answerSkillIds.concat(group.skills));
         const aboutUserSkills = await CompassDataController.getSkillsByIds(orgId, answerSkillIds);
-        return CompassManager.generateTodo(aboutUserId, senderId, orgId, userId, aboutUserSkills);
+        return CompassManager.generateTodo(aboutUser, senderId, organization, userId, aboutUserSkills);
     }
 
-    static async generateTodo(aboutUserId: string, senderId: string, orgId: string, userId: string, skills: SkillModel[]): Promise<any> {
-        const organization = await OrganizationDataController.getOrganizationByDbName(orgId);
-        CompassManager.checkOrganization(organization);
-
-        const aboutUser: UserModel = await CompassManager.getAboutUser(organization.dbName, aboutUserId);
-        CompassManager.checkAboutUser(aboutUser);
-
+    static async generateTodo(aboutUser: UserModel, senderId: string, organization: Organization, userId: string,
+                              skills: SkillModel[]): Promise<any> {
         const newTodo = CompassManager.buildUpNewTodoResponse(userId, senderId, organization, aboutUser, skills);
         return CompassDataController.saveCompassTodo(organization.dbName, newTodo);
+    }
+
+    static checkAnswerCardRelation(answerGroups: Group[]) {
+        if (answerGroups.length === 0) {
+            throw new Error("Sender has no answer card relation to this user");
+        }
     }
 
     static checkOrganization(organization: Organization): Organization {
