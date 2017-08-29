@@ -3,7 +3,7 @@ import * as sinon from 'sinon';
 import { ErrorType, PlenuumError } from "../../util/errorhandler";
 import CompassManager from "../../api/manager/compass.manager";
 
-suite.only("CompassController tests", () => {
+suite("CompassController tests", () => {
 
     suite("answerCard", () => {
 
@@ -123,6 +123,210 @@ suite.only("CompassController tests", () => {
 
             sinon.assert.calledWith(res.status, 404);
             sinon.assert.calledWith(res.send, {error: "Error"});
+        });
+
+        test("If fails validation, should return 400", async () => {
+            req.getValidationResult = sinon.stub().resolves({
+                isEmpty: sinon.stub().returns(false),
+                array: sinon.stub().returns(["Error hint"])
+            });
+
+            const answerCompass = sinon.stub(CompassManager, "answerCompass");
+            await compassController.answerCompass(req, res);
+
+            answerCompass.restore();
+
+            sinon.assert.notCalled(answerCompass);
+            sinon.assert.calledWith(res.status, 400);
+            sinon.assert.calledWithMatch(res.send, {error: "Validation error", hint: ["Error hint"]});
         })
+    });
+
+    suite("updateSkill", () => {
+        let res: any;
+        let compassController: CompassController;
+        let compassManager: any;
+        let req: any;
+
+        beforeEach(() => {
+            compassManager = {};
+            compassController = new CompassController(compassManager);
+            res = {
+                status: sinon.stub().callsFake(() => res),
+                send: sinon.stub()
+            };
+            req = {
+                params: {},
+                body: {},
+                checkBody: sinon.stub().returns({
+                    notEmpty: sinon.stub(),
+                    len: sinon.stub()
+                })
+            };
+
+            req.getValidationResult = sinon.stub().resolves({
+                isEmpty: sinon.stub().returns(true)
+            });
+            req.params.orgId = "orgId";
+            req.body.compassTodo = "compassTodo";
+            req.body.sender = "sender";
+            req.body.sentencesAnswer = ["sentencesAnswer"];
+        });
+
+        test("Should call CompassManager and send result with 200", async () => {
+            const result = sinon.mock();
+            const updateSkill = sinon.stub(CompassManager, "updateSkill").resolves(result);
+            await compassController.updateSkill(req, res);
+
+            updateSkill.restore();
+
+            sinon.assert.calledWith(res.status, 200);
+            sinon.assert.calledWith(res.send, result);
+        });
+
+        test("Should handle CompassManager error", async () => {
+            const updateSkill = sinon.stub(CompassManager, "updateSkill").rejects(new PlenuumError("Error", 404));
+            await compassController.updateSkill(req, res);
+
+            updateSkill.restore();
+
+            sinon.assert.calledWith(res.status, 404);
+            sinon.assert.calledWith(res.send, {error: "Error"});
+        });
+
+        test("If fails validation, should return 400", async () => {
+            req.getValidationResult = sinon.stub().resolves({
+                isEmpty: sinon.stub().returns(false),
+                array: sinon.stub().returns(["Error hint"])
+            });
+
+            const updateSkill = sinon.stub(CompassManager, "updateSkill");
+            await compassController.updateSkill(req, res);
+
+            updateSkill.restore();
+
+            sinon.assert.notCalled(updateSkill);
+            sinon.assert.calledWith(res.status, 400);
+            sinon.assert.calledWithMatch(res.send, {error: "Validation error", hint: ["Error hint"]});
+        })
+    });
+
+    suite("createNewSkill", () => {
+        let res: any;
+        let compassController: CompassController;
+        let compassManager: any;
+        let req: any;
+
+        beforeEach(() => {
+            compassManager = {};
+            compassController = new CompassController(compassManager);
+            res = {
+                status: sinon.stub().callsFake(() => res),
+                send: sinon.stub()
+            };
+            req = {
+                params: {},
+                body: {},
+                checkBody: sinon.stub().returns({
+                    notEmpty: sinon.stub(),
+                    len: sinon.stub()
+                })
+            };
+
+            req.getValidationResult = sinon.stub().resolves({
+                isEmpty: sinon.stub().returns(true)
+            });
+            req.params.orgId = "orgId";
+            req.body.compassTodo = "compassTodo";
+            req.body.sender = "sender";
+            req.body.sentencesAnswer = ["sentencesAnswer"];
+        });
+
+        test("Should call CompassManager and send result with 201", async () => {
+            const result = sinon.mock();
+            const createNewSkill = sinon.stub(CompassManager, "createNewSkill").resolves(result);
+            await compassController.createNewSkill(req, res);
+
+            createNewSkill.restore();
+
+            sinon.assert.calledWith(res.status, 201);
+            sinon.assert.calledWith(res.send, result);
+        });
+
+        test("Should handle CompassManager error", async () => {
+            const createNewSkill = sinon.stub(CompassManager, "createNewSkill").rejects(new PlenuumError("Error", 404));
+            await compassController.createNewSkill(req, res);
+
+            createNewSkill.restore();
+
+            sinon.assert.calledWith(res.status, 404);
+            sinon.assert.calledWith(res.send, {error: "Error"});
+        });
+
+        test("If fails validation, should return 400", async () => {
+            req.getValidationResult = sinon.stub().resolves({
+                isEmpty: sinon.stub().returns(false),
+                array: sinon.stub().returns(["Error hint"])
+            });
+
+            const createNewSkill = sinon.stub(CompassManager, "createNewSkill");
+            await compassController.createNewSkill(req, res);
+
+            createNewSkill.restore();
+
+            sinon.assert.notCalled(createNewSkill);
+            sinon.assert.calledWith(res.status, 400);
+            sinon.assert.calledWithMatch(res.send, {error: "Validation error", hint: ["Error hint"]});
+        })
+    });
+
+    suite("getStatistics", () => {
+        let res: any;
+        let compassController: CompassController;
+        let compassManager: any;
+        let req: any;
+
+        beforeEach(() => {
+            compassManager = {};
+            compassController = new CompassController(compassManager);
+            res = {
+                status: sinon.stub().callsFake(() => res),
+                send: sinon.stub()
+            };
+            req = {
+                params: {},
+                body: {},
+                checkBody: sinon.stub().returns({
+                    notEmpty: sinon.stub(),
+                    len: sinon.stub()
+                })
+            };
+
+            req.getValidationResult = sinon.stub().resolves({
+                isEmpty: sinon.stub().returns(true)
+            });
+            req.params.orgId = "orgId";
+            req.params.userId = "userId";
+            req.body.compassTodo = "compassTodo";
+            req.body.sender = "sender";
+            req.body.sentencesAnswer = ["sentencesAnswer"];
+        });
+
+        test("Should call CompassManager and send result with 200", async () => {
+            const result = sinon.mock();
+            compassManager.getStatistics = sinon.stub().resolves(result);
+            await compassController.getStatistics(req, res);
+
+            sinon.assert.calledWith(res.status, 200);
+            sinon.assert.calledWith(res.send, result);
+        });
+
+        test("Should handle CompassManager error", async () => {
+            compassManager.getStatistics = sinon.stub().rejects(new PlenuumError("Error", 404));
+            await compassController.getStatistics(req, res);
+
+            sinon.assert.calledWith(res.status, 404);
+            sinon.assert.calledWith(res.send, {error: "Error"});
+        });
     })
 });

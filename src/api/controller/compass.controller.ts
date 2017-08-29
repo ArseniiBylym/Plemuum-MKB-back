@@ -51,9 +51,9 @@ export default class CompassController extends BaseController {
             return;
         }
 
-        CompassManager.updateSkill(req.params.orgId, req.body)
-            .then(updatedSkill => BaseController.send(res, StatusCodes.OK, updatedSkill))
-            .catch((err) => BaseController.send(res, StatusCodes.INTERNAL_SERVER_ERROR, formError(err)));
+        return CompassManager.updateSkill(req.params.orgId, req.body)
+            .then(updatedSkill => res.status(StatusCodes.OK).send(updatedSkill))
+            .catch((err) => res.status(BaseController.getErrorStatus(err)).send(formError(err)));
     }
 
     async createNewSkill(req: any, res: any) {
@@ -65,9 +65,9 @@ export default class CompassController extends BaseController {
             return;
         }
 
-        CompassManager.createNewSkill(req.params.orgId, req.body)
-            .then(savedSkill => BaseController.send(res, StatusCodes.CREATED, savedSkill))
-            .catch((err) => BaseController.send(res, StatusCodes.INTERNAL_SERVER_ERROR, {error: err}))
+        return CompassManager.createNewSkill(req.params.orgId, req.body)
+            .then(savedSkill => res.status(StatusCodes.CREATED).send(savedSkill))
+            .catch((err) => res.status(BaseController.getErrorStatus(err)).send(formError(err)));
     }
 
     static createNewSkillForm(req: any, res: any): void {
@@ -76,7 +76,7 @@ export default class CompassController extends BaseController {
 
     async getStatistics(req: any, res: any) {
         return this.compassManager.getStatistics(req.params.orgId, req.params.userId)
-            .then(statistics => BaseController.send(res, StatusCodes.OK, statistics))
-            .catch((err) => BaseController.send(res, StatusCodes.INTERNAL_SERVER_ERROR, {error: err}))
+            .then(statistics => res.status(StatusCodes.OK).send(statistics))
+            .catch((err) => res.status(BaseController.getErrorStatus(err)).send(formError(err)));
     }
 }
