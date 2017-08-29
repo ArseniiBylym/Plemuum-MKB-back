@@ -5,6 +5,7 @@ export interface GroupDataController {
     createGroup: ((orgId: string, group: Group) => Promise<any>);
     getGroups: ((orgId: string) => Promise<GroupModel[]>);
     getGroupById: ((orgId: string, groupId: string) => Promise<Group>);
+    getGroupsByIds: ((orgId: string, groupIds: string[]) => Promise<Group[]>);
     getUserGroups: ((orgId: string, userId: string) => Promise<GroupModel[]>);
     putUserIntoGroup: ((orgId: string, userId: string, groupId: string) => Promise<any>);
     removeUserFromGroup: ((orgId: string, userId: string, groupId: string) => Promise<any>);
@@ -25,6 +26,10 @@ const getGroupDataController = (): GroupDataController => {
             return GroupCollection(orgId).findById(groupId).lean().exec() as Promise<Group>;
         },
 
+        getGroupsByIds: (orgId: string, groupIds: string[]): Promise<Group[]> => {
+            return GroupCollection(orgId).find({_id: {$in: groupIds}}).lean().exec() as Promise<Group[]>;
+        },
+
         getUserGroups: (orgId: string, userId: string): Promise<GroupModel[]> => {
             return GroupCollection(orgId).find({users: {$in: [userId]}}).lean().exec() as Promise<GroupModel[]>;
         },
@@ -43,11 +48,10 @@ const getGroupDataController = (): GroupDataController => {
         removeUserFromGroup: (orgId: string, userId: string, groupId: string): Promise<any> => {
             return GroupCollection(orgId).findById(groupId).lean().exec()
                 .then((group: any) => {
-                    if (group.users.includes(userId)) {
-                        return GroupCollection(orgId).update({_id: groupId}, {$pull: {users: userId}}).lean().exec();
-                    } else {
+                    if (!group.users.includes(userId)) {
                         throw new Error("User is not part of this group");
                     }
+                    return GroupCollection(orgId).update({_id: groupId}, {$pull: {users: userId}}).lean().exec();
                 });
         },
 

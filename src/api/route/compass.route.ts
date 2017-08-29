@@ -13,13 +13,11 @@ export default (app: Express, compassController: CompassController) => {
      * @api {POST} /api/:orgId/compasstodo CompassTodo for a user
      * @apiName compasstodo
      * @apiGroup Compass Assesment
-     * @apiDescription Generate a todo, set of sentences about a specific user to answer.
+     * @apiDescription Generate and answer card (CompassTodo).
      *
      * @apiHeader {String} Authorization Bearer token
      *
-     * @apiParam {String} orgId Organization id
-     * @apiParam {String} recipientId The user who the todo will be about.
-     * @apiParam {String} senderId The user who ask to generate the todo.
+     * @apiParam {String} aboutUserId The user who the todo will be about.
      *
      * @apiSuccess (Success 200) {String} _id The unique identifier of the todo.
      * @apiSuccess (Success 200) {Object} aboutUser The user who the answers on the competences are for.
@@ -39,7 +37,7 @@ export default (app: Express, compassController: CompassController) => {
      * @apiSuccess (Success 200) {String} sentences.competenceName The competence that the sentence belongs to.
      */
     app.route("/api/:orgId/compasstodo")
-        .post(passport.authenticate('bearer', {session: false}), compassController.generateTodo.bind(compassController));
+        .post(passport.authenticate('bearer', {session: false}), compassController.answerCard.bind(compassController));
 
     /**
      * @api {POST} /api/:orgId/compassanswers Send CompassTodo answer

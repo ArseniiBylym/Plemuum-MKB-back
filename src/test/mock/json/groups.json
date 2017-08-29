@@ -1,8 +1,6 @@
 [
   {
     "_id": "599312971b31d008b6bd2781",
-    "updatedAt": "2017-08-15T15:26:15.646Z",
-    "createdAt": "2017-08-15T15:26:15.646Z",
     "name": "Developers",
     "users": [
       "5984342227cd340363dc84af",
@@ -21,8 +19,6 @@
   },
   {
     "_id": "599312a31b31d008b6bd2782",
-    "updatedAt": "2017-08-15T15:26:27.830Z",
-    "createdAt": "2017-08-15T15:26:27.830Z",
     "name": "Database Administrators",
     "users": [
       "5984342227cd340363dc84b2",
@@ -40,8 +36,6 @@
   },
   {
     "_id": "599312a81b31d008b6bd2783",
-    "updatedAt": "2017-08-15T15:26:32.245Z",
-    "createdAt": "2017-08-15T15:26:32.245Z",
     "name": "Managers",
     "users": [
       "5984342227cd340363dc84c7",
@@ -61,8 +55,6 @@
   },
   {
     "_id": "599312aa1b31d008b6bd2784",
-    "updatedAt": "2017-08-15T15:26:34.539Z",
-    "createdAt": "2017-08-15T15:26:34.539Z",
     "name": "Human resources",
     "users": [
       "5984342227cd340363dc84b4",
@@ -81,8 +73,6 @@
   },
   {
     "_id": "599312ac1b31d008b6bd2785",
-    "updatedAt": "2017-08-15T15:26:36.779Z",
-    "createdAt": "2017-08-15T15:26:36.779Z",
     "name": "Maintenance",
     "users": [
       "5984342227cd340363dc84b8",
@@ -97,8 +87,6 @@
   },
   {
     "_id": "599312af1b31d008b6bd2786",
-    "updatedAt": "2017-08-15T15:26:39.272Z",
-    "createdAt": "2017-08-15T15:26:39.272Z",
     "name": "Building security",
     "users": [
       "5984342227cd340363dc84c1",

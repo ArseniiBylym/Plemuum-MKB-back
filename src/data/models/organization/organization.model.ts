@@ -1,8 +1,8 @@
 interface Organization {
     name: string;
     dbName: string;
-    todoSentenceNumber: Number;
-    compassGenerationTime: Number;
+    todoSentenceNumber: number;
+    compassGenerationTime: number;
 }
 
 export default Organization

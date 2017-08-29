@@ -10,35 +10,145 @@ import StatisticsManager from "../../api/manager/statistics.manager";
 import StatisticsDataController from "../../data/datacontroller/statistics.datacontroller";
 import Group from "../../data/models/organization/group.model";
 import { skills } from "../util/statistics.manager.util";
+import { validateCompassTodo } from "../../util/model.validator";
 
 suite("CompassManager tests", () => {
+
+    suite("answerCard", () => {
+        const aboutUserId = "5984342227cd340363dc84c7";
+        const senderId = "5984342227cd340363dc84aa";
+        const orgId = "hipteam";
+        const userId = "5984342227cd340363dc84aa";
+
+        test("Should get the correct skills and call generateTodo", async () => {
+            const aboutUserGroups: any = [
+                {
+                    _id: "599312971b31d008b6bd2781",
+                    skills: [
+                        "5940f6044d0d550007d863df",
+                        "5940f5f44d0d550007d863dc"
+                    ],
+                    answerCardRelations: [
+                        "599312a31b31d008b6bd2782",
+                        "599312971b31d008b6bd2781"
+                    ]
+                },
+                {
+                    _id: "599312ac1b31d008b6bd2785",
+                    skills: [
+                        "5940f6144d0d550007d863e2"
+                    ],
+                    answerCardRelations: []
+                },
+            ];
+
+            const senderUserGroups: any = [
+                {
+                    _id: "599312a31b31d008b6bd2782",
+                    skills: [
+                        "5940f6044d0d550007d863df",
+                        "5940f6144d0d550007d863e2"
+                    ],
+                    answerCardRelations: [
+                        "599312971b31d008b6bd2781"
+                    ]
+                }
+
+            ];
+            const mockSkills = sinon.mock();
+            const getUserGroups = sinon.stub();
+            getUserGroups.withArgs(orgId, "5984342227cd340363dc84c7").resolves(aboutUserGroups);
+            getUserGroups.withArgs(orgId, "5984342227cd340363dc84aa").resolves(senderUserGroups);
+
+
+            const groupDataController: any = {getUserGroups: getUserGroups};
+
+            const getSkillsByIds = sinon.stub(CompassDataController, "getSkillsByIds");
+            const generateTodo = sinon.stub(CompassManager, "generateTodo");
+
+            getSkillsByIds.withArgs(orgId, ["5940f6044d0d550007d863df", "5940f5f44d0d550007d863dc"])
+                .resolves(mockSkills);
+
+            const compassManager = new CompassManager(groupDataController);
+            const result = await compassManager.answerCard(aboutUserId, senderId, orgId, userId);
+
+            getSkillsByIds.restore();
+            generateTodo.restore();
+
+            sinon.assert.calledWith(generateTodo, aboutUserId, senderId, orgId, userId, mockSkills);
+        });
+
+        test.only("Should throw error, if the sender does not have an answerCard relation to the about user's group", (done) => {
+            const aboutUserGroups: any = [
+                {
+                    _id: "599312ac1b31d008b6bd2785",
+                    skills: [
+                        "5940f6144d0d550007d863e2"
+                    ],
+                    answerCardRelations: []
+                },
+            ];
+
+            const senderUserGroups: any = [
+                {
+                    _id: "599312a31b31d008b6bd2782",
+                    skills: [
+                        "5940f6044d0d550007d863df",
+                        "5940f6144d0d550007d863e2"
+                    ],
+                    answerCardRelations: [
+                        "599312971b31d008b6bd2781"
+                    ]
+                }
+
+            ];
+
+            const getUserGroups = sinon.stub();
+            getUserGroups.withArgs(orgId, "5984342227cd340363dc84c7").resolves(aboutUserGroups);
+            getUserGroups.withArgs(orgId, "5984342227cd340363dc84aa").resolves(senderUserGroups);
+
+
+            const groupDataController: any = {getUserGroups: getUserGroups};
+
+            const getSkillsByIds = sinon.stub(CompassDataController, "getSkillsByIds");
+            const generateTodo = sinon.stub(CompassManager, "generateTodo");
+
+            const compassManager = new CompassManager(groupDataController);
+
+            compassManager.answerCard(aboutUserId, senderId, orgId, userId)
+                .then(() => {
+                    getSkillsByIds.restore();
+                    generateTodo.restore();
+                    done(new Error('This case answerCard should throw an error'));
+                })
+                .catch((error) => {
+                    getSkillsByIds.restore();
+                    generateTodo.restore();
+                    expect(error.message).to.be.equal("Sender has no answer card relation to this user");
+                    done();
+                });
+        })
+    });
+
     suite("generateTodo", () => {
         test("Should return a promise with a saved compass todo", done => {
             const getOrganizationByDbNameStub = sinon.stub(OrganizationDataController, "getOrganizationByDbName")
-                .returns(Promise.resolve({dbName: "mockOrganization"}));
-            const getAboutUserStub = sinon.stub(CompassManager, "getAboutUser")
-                .returns(Promise.resolve({_id: "aboutUserId"}));
-            const getAllSkillsStub = sinon.stub(CompassDataController, "getAllSkills")
-                .returns(Promise.resolve([]));
-            const buildUpNewTodoResponseStub = sinon.stub(CompassManager, "buildUpNewTodoResponse")
-                .returns(Promise.resolve([]));
-            const saveCompassTodoStub = sinon.stub(CompassDataController, "saveCompassTodo")
-                .returns(Promise.resolve({result: "result"}));
+                .resolves({dbName: "mockOrganization"});
+            const getAboutUserStub = sinon.stub(CompassManager, "getAboutUser").resolves({_id: "aboutUserId"});
+            const buildUpNewTodoResponseStub = sinon.stub(CompassManager, "buildUpNewTodoResponse").resolves([]);
+            const saveCompassTodoStub = sinon.stub(CompassDataController, "saveCompassTodo").resolves({result: "result"});
 
-            const dummy: any = {};
-            CompassManager.generateTodo(dummy, "", "")
+            CompassManager.generateTodo("", "", "", "", [])
                 .then((result) => {
                     expect(result).to.be.deep.equal({result: "result"});
 
                     getOrganizationByDbNameStub.restore();
                     getAboutUserStub.restore();
-                    getAllSkillsStub.restore();
                     buildUpNewTodoResponseStub.restore();
                     saveCompassTodoStub.restore();
 
                     expect(getOrganizationByDbNameStub.calledOnce).to.be.true;
                     expect(getAboutUserStub.calledOnce).to.be.true;
-                    expect(getAllSkillsStub.calledOnce).to.be.true;
                     expect(buildUpNewTodoResponseStub.calledOnce).to.be.true;
                     expect(saveCompassTodoStub.calledOnce).to.be.true;
 
@@ -119,15 +229,16 @@ suite("CompassManager tests", () => {
     });
 
     suite("buildUpNewTodoResponse", () => {
-        test("Should return a valid response object", done => {
-            const senderId = "senderId";
-            const recipientId = "recipientId";
-            const organization: any = {
-                todoSentenceNumber: 3
-            };
-            const aboutUser: any = {
-                _id: "1234"
-            };
+        const senderId = "senderId";
+        const recipientId = "recipientId";
+        const organization: any = {
+            todoSentenceNumber: 3
+        };
+        const aboutUser: any = {
+            _id: "1234"
+        };
+
+        test("Should return a valid response object", () => {
             const skills: any = [
                 {
                     name: "skill 1",
@@ -155,22 +266,64 @@ suite("CompassManager tests", () => {
                 }
             ];
 
-            const result: any = CompassManager.buildUpNewTodoResponse(senderId, recipientId, organization, aboutUser, skills);
-            expect(result).to.haveOwnProperty("about");
-            expect(result).to.haveOwnProperty("recipient");
-            expect(result).to.haveOwnProperty("createdBy");
-            expect(result).to.haveOwnProperty("questions");
+            const result = CompassManager.buildUpNewTodoResponse(senderId, recipientId, organization, aboutUser, skills);
 
             expect(result.about).to.be.equal(aboutUser._id);
             expect(result.recipient).to.be.equal(recipientId);
             expect(result.createdBy).to.be.equal(senderId);
+            validateCompassTodo(result, organization.todoSentenceNumber);
+        });
 
-            expect(result.questions).to.be.instanceof(Array);
-            expect(result.questions).to.have.lengthOf(3);
-            expect(result.questions[0]).to.haveOwnProperty("sentence");
-            expect(result.questions[0]).to.haveOwnProperty("skill");
+        test("Should work even if there's less skill then the todoSentenceNumber", () => {
+            const skills: any = [
+                {
+                    name: "skill 1",
+                    sentences: [
+                        {message: "message 1"},
+                        {message: "message 1"},
+                        {message: "message 1"},
+                    ]
+                },
+                {
+                    name: "skill 2",
+                    sentences: [
+                        {message: "message 2"},
+                        {message: "message 2"},
+                        {message: "message 2"},
+                    ]
+                }
+            ];
 
-            done();
+            const result = CompassManager.buildUpNewTodoResponse(senderId, recipientId, organization, aboutUser, skills);
+
+            expect(result.about).to.be.equal(aboutUser._id);
+            expect(result.recipient).to.be.equal(recipientId);
+            expect(result.createdBy).to.be.equal(senderId);
+            validateCompassTodo(result, organization.todoSentenceNumber);
+        });
+
+        test("If the number of possible sentences is less than the todoSentenceNumber, then return less sentence", () => {
+            const skills: any = [
+                {
+                    name: "skill 1",
+                    sentences: [
+                        {message: "message 1"},
+                    ]
+                },
+                {
+                    name: "skill 2",
+                    sentences: [
+                        {message: "message 2"},
+                    ]
+                }
+            ];
+
+            const result = CompassManager.buildUpNewTodoResponse(senderId, recipientId, organization, aboutUser, skills);
+
+            expect(result.about).to.be.equal(aboutUser._id);
+            expect(result.recipient).to.be.equal(recipientId);
+            expect(result.createdBy).to.be.equal(senderId);
+            validateCompassTodo(result, 2);
         })
     });
 

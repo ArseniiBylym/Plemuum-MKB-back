@@ -66,6 +66,18 @@ function validateGroup(group: any) {
     expect(group.answerCardRelations).to.be.an.instanceOf(Array);
 }
 
+function validateCompassTodo(result: any, todoSentenceNumber: number) {
+    expect(result).to.haveOwnProperty("about");
+    expect(result).to.haveOwnProperty("recipient");
+    expect(result).to.haveOwnProperty("createdBy");
+    expect(result).to.haveOwnProperty("questions");
+
+    expect(result.questions).to.be.instanceof(Array);
+    expect(result.questions).to.have.lengthOf(todoSentenceNumber);
+    expect(result.questions[0]).to.haveOwnProperty("sentence");
+    expect(result.questions[0]).to.haveOwnProperty("skill");
+};
+
 export {
     validateUser,
     validateFeedback,
@@ -74,5 +86,6 @@ export {
     validateLoginResponse,
     validateTagResponse,
     validateOrganization,
-    validateGroup
+    validateGroup,
+    validateCompassTodo
 }
