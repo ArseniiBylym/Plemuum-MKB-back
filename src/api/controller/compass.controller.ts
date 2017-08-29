@@ -27,9 +27,18 @@ export default class CompassController extends BaseController {
     }
 
     async answerCompass(req: any, res: any) {
-        CompassManager.answerCompass(req.params.orgId, req.body)
-            .then(savedAnswer => BaseController.send(res, StatusCodes.OK, savedAnswer))
-            .catch((err) => BaseController.send(res, StatusCodes.INTERNAL_SERVER_ERROR, formError(err)));
+        req.checkBody('compassTodo', 'Missing compassTodo').notEmpty();
+        req.checkBody('sender', 'Missing sender').notEmpty();
+        req.checkBody('sentencesAnswer', 'Missing sentencesAnswer').notEmpty();
+        req.checkBody('sentencesAnswer', 'sentencesAnswer must be an Array').len(1);
+
+        if (!await validate(req, res)) {
+            return;
+        }
+
+        return CompassManager.answerCompass(req.params.orgId, req.body)
+            .then(savedAnswer => res.status(StatusCodes.OK).send(savedAnswer))
+            .catch((err) => res.status(BaseController.getErrorStatus(err)).send(formError(err)));
     }
 
     async updateSkill(req: any, res: any) {

@@ -1,15 +1,17 @@
 import CompassController from "../../api/controller/compass.controller";
 import * as sinon from 'sinon';
 import { ErrorType, PlenuumError } from "../../util/errorhandler";
+import CompassManager from "../../api/manager/compass.manager";
 
 suite.only("CompassController tests", () => {
 
-    let res: any;
-    let compassController: CompassController;
-    let compassManager: any;
-    let req: any;
-
     suite("answerCard", () => {
+
+        let res: any;
+        let compassController: CompassController;
+        let compassManager: any;
+        let req: any;
+
         beforeEach(() => {
             compassManager = {};
             compassController = new CompassController(compassManager);
@@ -37,7 +39,6 @@ suite.only("CompassController tests", () => {
 
             sinon.assert.calledWith(res.status, 200);
             sinon.assert.calledWith(res.send, mockTodo);
-            res = null;
         });
 
         test("If CompassManager throws a Plenuum error, should use the error status code and send the error", async () => {
@@ -68,6 +69,60 @@ suite.only("CompassController tests", () => {
             sinon.assert.notCalled(compassManager.answerCard);
             sinon.assert.calledWith(res.status, 400);
             sinon.assert.calledWithMatch(res.send, {error: "Validation error", hint: ["Error hint"]});
+        })
+    });
+
+    suite("answerCompass", () => {
+
+        let res: any;
+        let compassController: CompassController;
+        let compassManager: any;
+        let req: any;
+
+        beforeEach(() => {
+            compassManager = {};
+            compassController = new CompassController(compassManager);
+            res = {
+                status: sinon.stub().callsFake(() => res),
+                send: sinon.stub()
+            };
+            req = {
+                params: {},
+                body: {},
+                checkBody: sinon.stub().returns({
+                    notEmpty: sinon.stub(),
+                    len: sinon.stub()
+                })
+            };
+
+            req.getValidationResult = sinon.stub().resolves({
+                isEmpty: sinon.stub().returns(true)
+            });
+            req.params.orgId = "orgId";
+            req.body.compassTodo = "compassTodo";
+            req.body.sender = "sender";
+            req.body.sentencesAnswer = ["sentencesAnswer"];
+        });
+
+        test("Should call CompassManager and send result with 200", async () => {
+            const mockAnswer = sinon.mock();
+            const answerCompass = sinon.stub(CompassManager, "answerCompass").resolves(mockAnswer);
+            await compassController.answerCompass(req, res);
+
+            answerCompass.restore();
+
+            sinon.assert.calledWith(res.status, 200);
+            sinon.assert.calledWith(res.send, mockAnswer);
+        });
+
+        test("Should handle CompassManager error", async () => {
+            const answerCompass = sinon.stub(CompassManager, "answerCompass").rejects(new PlenuumError("Error", 404));
+            await compassController.answerCompass(req, res);
+
+            answerCompass.restore();
+
+            sinon.assert.calledWith(res.status, 404);
+            sinon.assert.calledWith(res.send, {error: "Error"});
         })
     })
 });

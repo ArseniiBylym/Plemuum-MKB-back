@@ -184,7 +184,7 @@ suite("FeedbackController unit tests", () => {
             feedbackDataControllerStub = sinon.stub(FeedbackDataController, 'saveFeedback').rejects(mockResult);
 
             const mockResponse: any = {
-                json: sinon.stub(), 
+                json: sinon.stub(),
                 status: sinon.stub().callsFake(() => mockResponse)
             };
 
