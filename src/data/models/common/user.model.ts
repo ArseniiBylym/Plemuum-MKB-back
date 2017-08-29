@@ -12,5 +12,6 @@ export interface User {
     password: string;
     token: Token;
     pictureUrl: string;
-    orgIds: string[]
+    orgIds: string[];
+    notificationToken: string[];
 }
