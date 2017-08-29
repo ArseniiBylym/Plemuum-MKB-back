@@ -18,6 +18,7 @@ export default (app: Express, compassController: CompassController) => {
      * @apiHeader {String} Authorization Bearer token
      *
      * @apiParam {String} aboutUserId The user who the todo will be about.
+     * @apiParam {String} senderId The user who ask to generate the todo.
      *
      * @apiSuccess (Success 200) {String} _id The unique identifier of the todo.
      * @apiSuccess (Success 200) {Object} aboutUser The user who the answers on the competences are for.
@@ -48,7 +49,6 @@ export default (app: Express, compassController: CompassController) => {
      *
      * @apiHeader {String} Authorization Bearer token
      *
-     * @apiParam {String} orgId Organization id
      * @apiParam {String} compassTodo The unique identifier of the CompassTODO.
      * @apiParam {String} sender The unique identifier of the user who answered the CompassTODO.
      * @apiParam {Object[]} sentencesAnswer Array of the answers for the sentences.

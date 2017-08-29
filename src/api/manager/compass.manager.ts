@@ -12,7 +12,7 @@ import StatisticsDataController from "../../data/datacontroller/statistics.datac
 import { GroupDataController } from "../../data/datacontroller/group.datacontroller";
 import Group from "../../data/models/organization/group.model";
 import Sentence from "../../data/models/organization/compass/sentence.model";
-import { User } from "../../data/models/common/user.model";
+import { ErrorType, PlenuumError } from "../../util/errorhandler";
 
 export default class CompassManager {
 
@@ -57,20 +57,20 @@ export default class CompassManager {
 
     static checkAnswerCardRelation(answerGroups: Group[]) {
         if (answerGroups.length === 0) {
-            throw new Error("Sender has no answer card relation to this user");
+            throw new PlenuumError("Sender has no answer card relation to this user", ErrorType.NOT_FOUND);
         }
     }
 
     static checkOrganization(organization: Organization): Organization {
         if (!organization) {
-            throw new Error('Organization nonexistent!');
+            throw new PlenuumError('Organization nonexistent!', ErrorType.NOT_FOUND);
         }
         return organization
     }
 
     static checkAboutUser(user: UserModel): UserModel {
         if (!user) {
-            throw new Error('User could not be found');
+            throw new PlenuumError('User could not be found', ErrorType.NOT_FOUND);
         }
         return user;
     }
