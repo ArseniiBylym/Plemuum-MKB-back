@@ -127,4 +127,22 @@ export default class UserController extends BaseController {
             });
         });
     }
+
+    setNotificationDevice(req: any, res: Response) {
+        UserDataController.setUserNotificationDevice(req.user._id, req.body.token)
+            .then( (result) => res.send(result))
+            .catch((err: Error) => res.status(400).send(formError(err)))
+    }
+
+    refreshNotificationDevice(req: any, res: Response) {
+        UserDataController.refreshNotificationDevice(req.user._id, req.body.oldToken, req.body.newToken)
+            .then((result) => res.send(result))
+            .catch((err: Error) => res.status(400).send(formError(err)))
+    }
+
+    removeNotificationToken(req: any, res: Response) {
+        UserDataController.removeNotificationToken(req.user._id, req.body.token)
+            .then((result) => res.send(result))
+            .catch((err: Error) => res.status(400).send(formError(err)))
+    }
 }
