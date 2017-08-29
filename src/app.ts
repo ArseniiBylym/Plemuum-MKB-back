@@ -8,6 +8,7 @@ import * as logger from 'morgan';
 import passportInit from "./service/auth/passport.manager";
 import * as session from 'express-session';
 import * as expressValidator from 'express-validator';
+import * as cors from 'cors';
 
 const viewsPath = [path.join(__dirname, "./view"), path.join(__dirname, "./email/raw")];
 const sessionOptions = {
@@ -24,6 +25,15 @@ const app = (): Express => {
     if (process.env.NODE_ENV == "dev") {
         app.use(logger("dev"));
     }
+
+    // TODO finish and use this before release!
+    const corsOptions = {
+        origin: 'http://example.com',
+        optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+    };
+
+    app.use(cors());
+
     app.use(require('cookie-parser')());
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended: true}));
@@ -32,18 +42,18 @@ const app = (): Express => {
     app.use(passport.initialize());
     app.use(passport.session());
     app.use(expressValidator({
-        errorFormatter: function(param, msg, value) {
+        errorFormatter: function (param, msg, value) {
             let namespace = param ? param.split('.') : []
-                , root    = namespace.shift()
+                , root = namespace.shift()
                 , formParam = root;
 
-            while(namespace.length) {
+            while (namespace.length) {
                 formParam += '[' + namespace.shift() + ']';
             }
             return {
-                param : formParam,
-                msg   : msg,
-                value : value
+                param: formParam,
+                msg: msg,
+                value: value
             };
         }
     }));
