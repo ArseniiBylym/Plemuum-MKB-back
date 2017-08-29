@@ -179,25 +179,21 @@ suite("FeedbackController unit tests", () => {
                 .then(() => feedbackDataControllerStub.restore())
         });
 
-        test("Sad case: test should postFeedback from FeedbackDataController then call res.json", done => {
+        test("Sad case: test should postFeedback from FeedbackDataController then call res.json", async () => {
 
-            feedbackDataControllerStub = sinon.stub(FeedbackDataController, 'saveFeedback')
-                .returns(Promise.reject(mockResult));
+            feedbackDataControllerStub = sinon.stub(FeedbackDataController, 'saveFeedback').rejects(mockResult);
 
             const mockResponse: any = {
-                json: (result: any) => {
-                    should().exist(result);
-                    done();
-                },
-                status: (statusCode: number) => {
-                    expect(statusCode).to.equal(400);
-                    return mockResponse;
-                }
+                json: sinon.stub(), 
+                status: sinon.stub().callsFake(() => mockResponse)
             };
 
             feedbackController = new FeedbackController();
-            feedbackController.postFeedback(mockRequest, mockResponse);
+            await feedbackController.postFeedback(mockRequest, mockResponse);
             feedbackDataControllerStub.restore();
+
+            sinon.assert.calledWith(mockResponse.status, 400);
+            sinon.assert.called(mockResponse.json);
         });
 
         test("Sad case: instant error when body is empty", done => {
