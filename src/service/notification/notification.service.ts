@@ -1,36 +1,26 @@
-import config from "../../../config/config";
-import * as admin from "firebase-admin";
 import NotificationInterface from "./notification.interface";
 
-const FEEDBACK_TEMPLATE = "FEEDBACK";
-const REQUEST_TEMPLATE = "REQUEST";
-const COMPASS_TEMPLATE = "COMPASS";
+export const TEMPLATE = {
+    FEEDBACK: (name: string) => {
+        return { body: `You received a feedback from ${name}`,  title: `New feedback` }
+    },
+    REQUEST: (name: string) => {
+        return { body: `${name} needs your feedback`, title: `New feedback request`};
+    },
+    COMPASS: (name: string) => {
+        return { body: `Would you like to help ${name} to improve?`, title: `New todo`};
+    },
+};
 
 export default class NotificationService {
 
-    service : any;
+    service : NotificationInterface;
 
     constructor(service: NotificationInterface){
         this.service = service;
     }
 
-    static getNotificationFromTemplate(senderName: string, template: string){
-        switch (template){
-            case FEEDBACK_TEMPLATE:
-                return { body: `You received a feedback from ${senderName}`, title: `New feedback`};
-            case REQUEST_TEMPLATE:
-                return { body: `${senderName} needs your feedback`, title: `New feedback request`};
-            case COMPASS_TEMPLATE:
-                return { body: `Would you like to help ${senderName} to improve?`, title: `New todo`};
-            default:
-                return { body: "", title: "" };
-        }
-    }
-
-    sendNotification(deviceToken: string, senderName: string, notificationType: string): Promise<any> {
-        const content = NotificationService.getNotificationFromTemplate(senderName, notificationType);
-        return this.service.sendNotification(deviceToken, content)
-            .then((response: any) => response)
-            .catch((err: Error) => err);
+    sendNotification(deviceToken: string, template: Object): Promise<any> {
+        return this.service.sendNotification(deviceToken, template);
     }
 }

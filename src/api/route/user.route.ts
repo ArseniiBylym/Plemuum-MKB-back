@@ -181,7 +181,7 @@ export default (app: Express, userController: UserController) => {
      * @apiUse user_list_data
      * @apiSuccess (Success 200) {String[]} notificationToken The tokens for all the devices subscribed for notification
      */
-    app.route("/api/user/setNotificationDevice")
+    app.route("/api/user/set_notification_device")
         .post(passport.authenticate('bearer', {session: false}), userController.setNotificationDevice.bind(userController))
         .patch(passport.authenticate('bearer', {session: false}), userController.refreshNotificationDevice.bind(userController))
         .put(passport.authenticate('bearer', {session: false}), userController.removeNotificationToken.bind(userController));

@@ -92,7 +92,7 @@ const UserDataController = {
         return UserCollection().findById(userId).lean().exec()
             .then((user: any) => {
                 const modifiedToken = user.notificationToken.filter((currentToken: string) => {
-                    return currentToken !== token ? true : false;
+                    return currentToken !== token;
                 });
                 return UserCollection().findByIdAndUpdate({_id: userId}, {$set: {notificationToken: modifiedToken}}, {"new": true}).lean().exec() as Promise<UserModel>;
             });

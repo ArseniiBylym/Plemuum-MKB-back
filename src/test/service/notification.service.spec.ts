@@ -1,7 +1,7 @@
-import { testUser } from "../mock/fixture.loader";
+import {testUser} from "../mock/fixture.loader";
 import * as sinon from "sinon";
-import { expect } from "chai";
-import NotificationService from "../../service/notification/notification.service";
+import {expect} from "chai";
+import NotificationService, {TEMPLATE} from "../../service/notification/notification.service";
 
 suite("Notification tests", () => {
     const mockToken = "217c98da-92b0-48ca-b97e-22ee55a6eeb7";
@@ -16,54 +16,41 @@ suite("Notification tests", () => {
             notificationService = new NotificationService(mockService);
         });
 
-        test("Get Notification From template Feedback", () => {
-            const expectedResult = {
-                body: `You received a feedback from ${testUser.firstName}`,
-                title: `New feedback`
+        test("Template for feedback", () => {
+            const template = TEMPLATE.FEEDBACK(testUser.firstName);
+            const expected = {
+                body: `You received a feedback from ${testUser.firstName}`,  title: `New feedback`
             };
-            const result = NotificationService.getNotificationFromTemplate(testUser.firstName, "FEEDBACK");
-            expect(result).to.deep.equal(expectedResult);
+            expect(template).to.deep.equal(expected);
         });
 
-        test("Get Notification From template Request", () => {
-            const expectedResult = {
-                body: `${testUser.firstName} needs your feedback`,
-                title: `New feedback request`
-            };
-            const result = NotificationService.getNotificationFromTemplate(testUser.firstName, "REQUEST");
-            expect(result).to.deep.equal(expectedResult);
+        test("Template for request feedback", () => {
+            const template = TEMPLATE.REQUEST(testUser.firstName);
+            const expected = { body: `${testUser.firstName} needs your feedback`, title: `New feedback request`};
+            expect(template).to.deep.equal(expected);
         });
 
-        test("Get Notification From template Compass", () => {
-            const expectedResult = {
-                body: `Would you like to help ${testUser.firstName} to improve?`,
-                title: `New todo`
-            };
-            const result = NotificationService.getNotificationFromTemplate(testUser.firstName, "COMPASS");
-            expect(result).to.deep.equal(expectedResult);
-        });
-
-        test("Get Notification From template undefined", () => {
-            const expectedResult = { body: "",  title: ""};
-            const result = NotificationService.getNotificationFromTemplate(testUser.firstName, "");
-            expect(result).to.deep.equal(expectedResult);
+        test("Template for compass", () => {
+            const template = TEMPLATE.COMPASS(testUser.firstName);
+            const expected = { body: `Would you like to help ${testUser.firstName} to improve?`, title: `New todo`};
+            expect(template).to.deep.equal(expected);
         });
 
         test("Send feedback notification", async () => {
-            const mockType = "FEEDBACK";
-            await notificationService.sendNotification(mockToken, testUser.firstName, mockType)
+            const template = TEMPLATE.FEEDBACK(testUser.firstName);
+            await notificationService.sendNotification(mockToken, template)
                 .then((result) => expect(result).to.not.be.undefined);
         });
 
         test("Send request feedback notification", async () => {
-            const mockType = "REQUEST";
-            await notificationService.sendNotification(mockToken, testUser.firstName, mockType)
+            const template = TEMPLATE.REQUEST(testUser.firstName);
+            await notificationService.sendNotification(mockToken, template)
                 .then((result) => expect(result).to.not.be.undefined);
         });
 
         test("Send compass  notification", async () => {
-            const mockType = "COMPASS";
-            await notificationService.sendNotification(mockToken, testUser.firstName, mockType)
+            const template = TEMPLATE.COMPASS(testUser.firstName);
+            await notificationService.sendNotification(mockToken, template)
                 .then((result) => expect(result).to.not.be.undefined);
         });
     });
@@ -81,8 +68,8 @@ suite("Notification tests", () => {
         });
 
         test("Send compass  notification", async () => {
-            const mockType = "COMPASS";
-            await notificationService.sendNotification(mockToken, testUser.firstName, mockType)
+            const template = TEMPLATE.COMPASS(testUser.firstName);
+            await notificationService.sendNotification(mockToken, template)
                 .catch((err: Error) => expect(err).to.be.equal(mockError))
         });
     });

@@ -1,14 +1,12 @@
 import NotificationInterface from "./notification.interface";
 import * as admin from "firebase-admin";
-import config from "../../../config/config";
 
 export default class FirebaseNotification implements NotificationInterface {
 
-    constructor(){
-        const serviceAccount = require(`../../../res/${config.firebaseConfig.keyFileName}`);
+    constructor(serviceAccount: string, url: string){
         admin.initializeApp({
             credential: admin.credential.cert(serviceAccount),
-            databaseURL: "https://plenuumbackend.firebaseio.com"
+            databaseURL: url
         });
     }
 
