@@ -21,6 +21,7 @@ let UserSchema = new Schema({
     password: {required: true, type: String},
     pictureUrl: {required: false, type: String},
     token: {required: false, type: TokenSchema},
+    notificationToken: [String]
 
 }, {versionKey: false, collection: USER_COLLECTION});
 

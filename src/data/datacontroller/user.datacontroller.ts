@@ -1,7 +1,7 @@
 import { Model } from 'mongoose';
 import { TokenObject } from "../../service/auth/token.manager";
 import * as crypto from 'crypto';
-import { User } from "../models/common/user.model";
+import { User} from "../models/common/user.model";
 import { UserCollection, UserModel } from "../database/schema/common/user.schema";
 import { ResetPasswordCollection } from "../database/schema/common/resetpassword.schema";
 
@@ -71,6 +71,31 @@ const UserDataController = {
     setUserPic: function (userId: string, pictureUrl: string): Promise<UserModel> {
         return UserCollection().findByIdAndUpdate(userId, {pictureUrl: pictureUrl},
             {"new": true, "select": "_is firstName lastName email orgData"}).lean().exec() as Promise<UserModel>;
+    },
+
+    setUserNotificationDevice: function (userId: string, notificationToken: string): Promise<UserModel> {
+        const query = { $push: { notificationToken: notificationToken}};
+        return UserCollection().findByIdAndUpdate(userId, query, {"new": true}).lean().exec() as Promise<UserModel>;
+    },
+
+    refreshNotificationDevice: function (userId: string, oldToken: string, newToken: string): Promise<UserModel> {
+        return UserCollection().findById(userId).lean().exec()
+            .then((user: any) => {
+                const modifiedToken = user.notificationToken.map((token: string) => {
+                   if (token === oldToken) { return newToken } else { return token }
+                });
+                return UserCollection().findByIdAndUpdate({_id: userId}, {$set: {notificationToken: modifiedToken}}, {"new": true}).lean().exec() as Promise<UserModel>;
+            });
+    },
+
+    removeNotificationToken: function (userId: string, token: string): Promise<UserModel> {
+        return UserCollection().findById(userId).lean().exec()
+            .then((user: any) => {
+                const modifiedToken = user.notificationToken.filter((currentToken: string) => {
+                    return currentToken !== token;
+                });
+                return UserCollection().findByIdAndUpdate({_id: userId}, {$set: {notificationToken: modifiedToken}}, {"new": true}).lean().exec() as Promise<UserModel>;
+            });
     },
 };
 
