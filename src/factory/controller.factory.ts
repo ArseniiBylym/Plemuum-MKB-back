@@ -11,6 +11,7 @@ import { requestDataController } from "../data/datacontroller/request.datacontro
 import { tagDataController } from "../data/datacontroller/tag.datacontroller";
 import { getGroupDataController } from "../data/datacontroller/group.datacontroller";
 import UserManager from "../api/manager/user.manager";
+import GroupManager from "../api/manager/group.manager";
 
 let userController: UserController;
 let feedbackController: FeedbackController;
@@ -25,7 +26,7 @@ let groupController: GroupController;
 const getUserController = (): UserController => getController(userController, UserController,
     new FileTransferService(),
     new UserManager(new EmailService())
-    );
+);
 
 const getFeedbackController = (): FeedbackController => getController(feedbackController, FeedbackController);
 
@@ -39,7 +40,8 @@ const getRequestController = (): RequestController => getController(requestContr
 
 const getSessionController = (): SessionController => getController(sessionController, SessionController);
 
-const getGroupController = (): GroupController => getController(groupController, GroupController, getGroupDataController());
+const getGroupController = (): GroupController => getController(groupController, GroupController,
+    new GroupManager(getGroupDataController()));
 
 /* #########################     PRIVATE      ########################## */
 

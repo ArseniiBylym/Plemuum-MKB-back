@@ -7,7 +7,8 @@ export enum ErrorType {
     VALIDATION = StatusCodes.BAD_REQUEST,
     NOT_FOUND = StatusCodes.NOT_FOUND,
     FORBIDDEN = StatusCodes.FORBIDDEN,
-    NOT_IMPLEMENTED = StatusCodes.NOT_IMPLEMENTED
+    NOT_IMPLEMENTED = StatusCodes.NOT_IMPLEMENTED,
+    NOT_ALLOWED = StatusCodes.METHOD_NOT_ALLOWED
 }
 
 export class PlenuumError extends Error {

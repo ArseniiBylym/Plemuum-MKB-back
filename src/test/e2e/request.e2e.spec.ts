@@ -6,7 +6,7 @@ import Request from "../../data/models/organization/request.model";
 import { authenticate, fixtureLoader, testUser } from "../mock/fixture.loader";
 import { getDatabaseManager } from "../../factory/database.factory";
 import config from "../../../config/config";
-import { bearerAuthHeader } from "../header.helper";
+import { bearerAuthHeader } from "../util/header.helper";
 
 const orgId = "hipteam";
 const userId = "5984342227cd340363dc84ac";

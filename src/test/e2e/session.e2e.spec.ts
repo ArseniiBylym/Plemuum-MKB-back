@@ -5,7 +5,7 @@ import * as responseValidator from "../../util/model.validator";
 import { expect } from 'chai';
 import { getDatabaseManager } from "../../factory/database.factory";
 import config from "../../../config/config";
-import { bearerAuthHeader } from "../header.helper";
+import { bearerAuthHeader } from "../util/header.helper";
 
 suite("Session request tests", () => {
 

@@ -5,7 +5,7 @@ import { authenticate, fixtureLoader, testUser } from "../mock/fixture.loader";
 import * as modelValidator from "../../util/model.validator";
 import { getDatabaseManager } from "../../factory/database.factory";
 import config from "../../../config/config";
-import { basicAuthHeader, bearerAuthHeader } from "../header.helper";
+import { basicAuthHeader, bearerAuthHeader } from "../util/header.helper";
 
 suite("Tag request tests", () => {
 

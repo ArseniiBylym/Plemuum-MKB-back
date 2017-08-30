@@ -3,7 +3,7 @@ import config from "../../../config/config";
 import * as request from 'supertest';
 import { authenticate, fixtureLoader, testUser } from "../mock/fixture.loader";
 import app from "../../app";
-import { basicAuthHeader, bearerAuthHeader } from "../header.helper";
+import { basicAuthHeader, bearerAuthHeader } from "../util/header.helper";
 import { expect, should } from 'chai';
 import Skill from "../../data/models/organization/compass/skill.model";
 import { ANSWER_TYPES } from "../../data/models/organization/compass/compassanswer.model";

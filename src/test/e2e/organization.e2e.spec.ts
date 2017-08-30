@@ -1,6 +1,6 @@
 import * as request from 'supertest';
 import app from "../../app";
-import { basicAuthHeader } from "../header.helper";
+import { basicAuthHeader } from "../util/header.helper";
 import { getTestOrganization } from "../../util/testobject.factory";
 import { getDatabaseManager } from "../../factory/database.factory";
 import { fixtureLoader } from "../mock/fixture.loader";

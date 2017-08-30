@@ -1,74 +1,81 @@
 import * as StatusCodes from 'http-status-codes';
-import {formError} from "../../util/errorhandler";
-import {GroupModel} from "../../data/database/schema/organization/group.schema";
-import {GroupDataController} from "../../data/datacontroller/group.datacontroller";
+import { GroupModel } from "../../data/database/schema/organization/group.schema";
 import BaseController from "./base.controller";
-import UserDataController from "../../data/datacontroller/user.datacontroller";
-import CompassDataController from "../../data/datacontroller/compass.datacontroller";
+import GroupManager from "../manager/group.manager";
+import { validate } from "../../util/input.validator";
 
 export default class GroupController extends BaseController {
 
-    groupDataController: GroupDataController;
+    groupManager: GroupManager;
 
-    constructor(groupDataController: GroupDataController) {
+    constructor(groupManager: GroupManager) {
         super();
-        this.groupDataController = groupDataController;
-        this.createGroup.bind(this);
+        this.groupManager = groupManager;
     }
 
-    getGroups = async (req: any, res: any, next?: Function) => {
-        try {
-            const orgId: string = req.params.orgId;
-            const allGroups: GroupModel[] = await this.groupDataController.getGroups(orgId);
-            const resultGroups = await Promise.all(allGroups.map(async (group: any) => {
-                group.users = await Promise.all(group.users.map((userId: string) =>
-                    UserDataController.getUserById(orgId, userId)));
-                group.skills = await Promise.all(group.skills.map((skillId: string) =>
-                    CompassDataController.getSkillById(orgId, skillId)));
-                return group;
-            }));
-            res.send(resultGroups);
-        } catch (error) {
-            res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(error);
-        }
+    async getGroups(req: any, res: any, next?: Function) {
+        this.groupManager.getGroups(req.params.orgId)
+            .then((groups: any[]) => res.status(StatusCodes.CREATED).send(groups))
+            .catch((err: any) => BaseController.handleError(err, res));
     };
 
-    createGroup(req: any, res: any, next?: Function) {
-        return this.groupDataController.createGroup(req.params.orgId, req.body)
+    async createGroup(req: any, res: any, next?: Function) {
+        req.checkBody('name', 'Missing group name').notEmpty();
+
+        if (!await validate(req, res)) {
+            return;
+        }
+
+        return this.groupManager.createGroup(req.params.orgId, req.body)
             .then((group: GroupModel) => res.status(StatusCodes.CREATED).send(group))
-            .catch((err: Error) => res.status(StatusCodes.BAD_REQUEST).send(formError(err)));
+            .catch((err: any) => BaseController.handleError(err, res));
     }
 
-    getGroupById(req: any, res: any, next?: Function) {
-        return this.groupDataController.getGroupById(req.params.orgId, req.params.groupId)
-            .then((group: GroupModel) => BaseController.send(res, StatusCodes.OK, group))
-            .catch((err: Error) => BaseController.send(res, StatusCodes.BAD_REQUEST, formError(err)));
+    async getGroupById(req: any, res: any, next?: Function) {
+        return this.groupManager.getGroupById(req.params.orgId, req.params.groupId)
+            .then((group: GroupModel) => res.status(StatusCodes.OK).send(group))
+            .catch((err: any) => BaseController.handleError(err, res));
     }
 
-    getUserGroups(req: any, res: any, next?: Function) {
-        return this.groupDataController.getUserGroups(req.params.orgId, req.params.userId)
-            .then((groups: GroupModel[]) => BaseController.send(res, StatusCodes.OK, groups))
-            .catch((err: Error) => BaseController.send(res, StatusCodes.BAD_REQUEST, formError(err)));
+    async getUserGroups(req: any, res: any, next?: Function) {
+        return this.groupManager.getUserGroups(req.params.orgId, req.params.userId)
+            .then((groups: GroupModel[]) => res.status(StatusCodes.OK).send(groups))
+            .catch((err: any) => BaseController.handleError(err, res));
     }
 
-    putUserIntoGroup(req: any, res: any, next?: Function) {
-        return this.groupDataController.putUserIntoGroup(req.params.orgId, req.body.userId, req.params.groupId)
-            .then((group: GroupModel) =>
-                BaseController.send(res, StatusCodes.OK, {success: "User has been added"}))
-            .catch((err: Error) => BaseController.send(res, StatusCodes.BAD_REQUEST, formError(err)))
+    async putUserIntoGroup(req: any, res: any, next?: Function) {
+        req.checkBody('userId', 'Missing userId').notEmpty();
+
+        if (!await validate(req, res)) {
+            return;
+        }
+
+        return this.groupManager.putUserIntoGroup(req.params.orgId, req.body.userId, req.params.groupId)
+            .then((result: any) => res.status(StatusCodes.OK).send(result))
+            .catch((err: any) => BaseController.handleError(err, res));
     }
 
-    removeUserFromGroup(req: any, res: any, next?: Function) {
-        return this.groupDataController.removeUserFromGroup(req.params.orgId, req.body.userId, req.params.groupId)
-            .then((group: GroupModel) =>
-                BaseController.send(res, StatusCodes.OK, {success: "User has been removed"}))
-            .catch((err: Error) => BaseController.send(res, StatusCodes.BAD_REQUEST, formError(err)))
+    async removeUserFromGroup(req: any, res: any, next?: Function) {
+        req.checkBody('userId', 'Missing userId').notEmpty();
+
+        if (!await validate(req, res)) {
+            return;
+        }
+
+        return this.groupManager.removeUserFromGroup(req.params.orgId, req.body.userId, req.params.groupId)
+            .then((result: any) => res.status(StatusCodes.OK).send(result))
+            .catch((err: any) => BaseController.handleError(err, res));
     }
 
-    updateGroup(req: any, res: any, next?: Function) {
-        return this.groupDataController.updateGroup(req.params.orgId, req.params.groupId, req.body)
-            .then((group: GroupModel) =>
-                BaseController.send(res, StatusCodes.OK, {success: "Group has been updated"}))
-            .catch((err: Error) => BaseController.send(res, StatusCodes.BAD_REQUEST, formError(err)))
+    async updateGroup(req: any, res: any, next?: Function) {
+        req.checkBody('name', 'Missing group name').notEmpty();
+
+        if (!await validate(req, res)) {
+            return;
+        }
+
+        return this.groupManager.updateGroup(req.params.orgId, req.params.groupId, req.body)
+            .then((result: any) => res.status(StatusCodes.OK).send(result))
+            .catch((err: any) => BaseController.handleError(err, res));
     }
 }

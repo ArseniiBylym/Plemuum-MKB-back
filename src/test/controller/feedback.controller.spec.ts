@@ -4,23 +4,17 @@ import * as Sinon from "sinon";
 import * as sinon from "sinon";
 import FeedbackDataController from "../../data/datacontroller/feedback.datacontroller";
 import { ErrorType, PlenuumError } from "../../util/errorhandler";
+import { getRequestObject } from "../util/testutil";
 
 suite("FeedbackController unit tests", () => {
 
     let feedbackController: FeedbackController;
     let feedbackDataControllerStub: Sinon.SinonSpy;
-    const mockRequest: any = {
-        params: {
-            userId: "userId",
-            orgId: "orgId"
-        },
-        body: {},
-        checkBody: sinon.stub().returns({notEmpty: sinon.stub()}),
-        getValidationResult: sinon.stub().returns({
-            isEmpty: sinon.stub().returns(true),
-            array: sinon.stub()
-        })
-    };
+
+    const mockRequest: any = getRequestObject(true);
+    mockRequest.params.orgId = "orgId";
+    mockRequest.params.userId = "userId";
+
     const mockResult: any = {result: "result"};
 
     suite("getFeedbacks", () => {

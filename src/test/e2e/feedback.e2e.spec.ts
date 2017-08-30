@@ -7,7 +7,7 @@ import * as modelValidator from "../../util/model.validator"
 import Feedback from "../../data/models/organization/feedback.model";
 import { getDatabaseManager } from "../../factory/database.factory";
 import config from "../../../config/config";
-import { bearerAuthHeader } from "../header.helper";
+import { bearerAuthHeader } from "../util/header.helper";
 
 const orgId = "hipteam";
 const userId = "5984342227cd340363dc84c2";
