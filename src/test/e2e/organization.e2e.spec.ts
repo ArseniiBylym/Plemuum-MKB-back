@@ -35,12 +35,12 @@ suite("Organization request tests", () => {
                 .expect(200, done);
         });
 
-        test("Register new organization, should return 200", done => {
+        test("Register new organization, should return 201", done => {
             request(app)
                 .post(url)
                 .set(basicAuthHeader)
                 .send(getTestOrganization())
-                .expect(200)
+                .expect(201)
                 .then((response) => {
                     validateOrganization(response.body);
                     done();

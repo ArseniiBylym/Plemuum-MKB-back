@@ -1,4 +1,3 @@
-import OrganizationDataController from "../../data/datacontroller/organization.datacontroller";
 import CompassDataController from "../../data/datacontroller/compass.datacontroller";
 import Organization from "../../data/models/organization/organization.model";
 import { UserModel } from "../../data/database/schema/common/user.schema";
@@ -13,17 +12,20 @@ import { GroupDataController } from "../../data/datacontroller/group.datacontrol
 import Group from "../../data/models/organization/group.model";
 import Sentence from "../../data/models/organization/compass/sentence.model";
 import { ErrorType, PlenuumError } from "../../util/errorhandler";
+import { OrganizationDataController } from "../../data/datacontroller/organization.datacontroller";
 
 export default class CompassManager {
 
     groupDataController: GroupDataController;
+    organizationDataController: OrganizationDataController;
 
-    constructor(groupDataController: GroupDataController) {
+    constructor(groupDataController: GroupDataController, organizationDataController: OrganizationDataController) {
         this.groupDataController = groupDataController;
+        this.organizationDataController = organizationDataController;
     }
 
     async answerCard(aboutUserId: string, senderId: string, orgId: string, userId: string) {
-        const organization = await OrganizationDataController.getOrganizationByDbName(orgId);
+        const organization = await this.organizationDataController.getOrganizationByDbName(orgId);
         CompassManager.checkOrganization(organization);
 
         const aboutUser: UserModel = await CompassManager.getAboutUser(organization.dbName, aboutUserId);
@@ -93,7 +95,8 @@ export default class CompassManager {
         while (numberOfSentences > 0) {
             const randomSkill = skills[lodash.random(0, skills.length - 1, false)];
             if (randomSkill.sentences.length > 0) {
-                const randomSentence = randomSkill.sentences[lodash.random(0, randomSkill.sentences.length - 1, false)];
+                const randomSentence = randomSkill.sentences[
+                    lodash.random(0, randomSkill.sentences.length - 1, false)];
                 sentencesToBeAnswered.push({
                     sentence: randomSentence,
                     skill: randomSkill

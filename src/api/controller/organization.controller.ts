@@ -1,25 +1,24 @@
 import { Request, Response } from "express";
-import { databaseNameValidator } from "../../util/regexp.checker";
-import Organization from "../../data/models/organization/organization.model";
-import OrganizationDataController from "../../data/datacontroller/organization.datacontroller";
+import BaseController from "./base.controller";
+import OrganizationManager from "../manager/organization.manager";
+import * as StatusCodes from 'http-status-codes';
 
-export default class OrganizationController {
+export default class OrganizationController extends BaseController {
 
-    public createOrganization(req: Request, res: Response, next: Function) {
-        let newOrg: Organization = req.body;
-        OrganizationDataController.getOrganizationByDbName(newOrg.dbName)
-            .then((existingOrganization) => {
-                if (!databaseNameValidator.test(newOrg.dbName) && !existingOrganization) {
-                    return OrganizationDataController.saveNewOrganization(newOrg);
-                } else {
-                    throw new Error("The organization could not be added. Check if the dbName contains any forbidden character")
-                }
-            })
-            .then((savedOrganization) => res.send(savedOrganization))
-            .catch(reason => res.status(400).send({error: reason.message}));
+    private organizationManager: OrganizationManager;
+
+    constructor(organizationManager: OrganizationManager) {
+        super();
+        this.organizationManager = organizationManager;
     }
 
-    public showCreateOrganizationForm(req: Request, res: Response, next: Function) {
+    async createOrganization(req: any, res: any) {
+        return this.organizationManager.createOrganization(req.body)
+            .then((savedOrganization) => res.status(StatusCodes.CREATED).send(savedOrganization))
+            .catch((err) => BaseController.handleError(err, res));
+    }
+
+    public static showCreateOrganizationForm(req: Request, res: Response, next: Function) {
         res.render("newOrganization", {title: "Add new organization"});
     }
 
