@@ -7,7 +7,7 @@ const getRequestObject = (isInputValid: boolean) => {
         checkBody: sinon.stub().returns({notEmpty: sinon.stub()}),
         getValidationResult: sinon.stub().returns({
             isEmpty: sinon.stub().returns(isInputValid),
-            array: sinon.stub()
+            array: sinon.stub().returns([{hint: "hint"}])
         })
     }
 };
