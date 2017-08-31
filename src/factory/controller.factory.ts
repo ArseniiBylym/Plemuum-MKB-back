@@ -15,6 +15,7 @@ import GroupManager from "../api/manager/group.manager";
 import OrganizationManager from "../api/manager/organization.manager";
 import { getOrganizationDataController } from "../data/datacontroller/organization.datacontroller";
 import RequestManager from "../api/manager/request.manager";
+import SessionManager from "../api/manager/session.manager";
 
 let userController: UserController;
 let feedbackController: FeedbackController;
@@ -42,7 +43,7 @@ const getOrganizationController = (): OrganizationController =>
 const getRequestController = (): RequestController => getController(requestController, RequestController,
     new RequestManager(requestDataController));
 
-const getSessionController = (): SessionController => getController(sessionController, SessionController);
+const getSessionController = (): SessionController => getController(sessionController, SessionController, new SessionManager());
 
 const getGroupController = (): GroupController => getController(groupController, GroupController,
     new GroupManager(getGroupDataController()));

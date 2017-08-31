@@ -8,7 +8,8 @@ export enum ErrorType {
     NOT_FOUND = StatusCodes.NOT_FOUND,
     FORBIDDEN = StatusCodes.FORBIDDEN,
     NOT_IMPLEMENTED = StatusCodes.NOT_IMPLEMENTED,
-    NOT_ALLOWED = StatusCodes.METHOD_NOT_ALLOWED
+    NOT_ALLOWED = StatusCodes.METHOD_NOT_ALLOWED,
+    UNKNOWN = StatusCodes.INTERNAL_SERVER_ERROR,
 }
 
 export class PlenuumError extends Error {

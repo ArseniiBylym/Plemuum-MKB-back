@@ -5,66 +5,33 @@ import { Request, Response } from "express";
 import UserDataController from "../../data/datacontroller/user.datacontroller";
 import { User } from "../../data/models/common/user.model";
 import { UserModel } from "../../data/database/schema/common/user.schema";
+import SessionManager from "../manager/session.manager";
+import * as StatusCodes from 'http-status-codes';
 
 export default class SessionController extends BaseController {
 
-    public login(req: any, res: Response, next: Function): Promise<string> {
-        let tokenObj: TokenObject = tokenManager.generateNewTokenObject();
-        return UserDataController.getUserByIdWithoutOrgId(req.user._id)
-            .then((user: User) => {
-                const now = new Date();
-                if (user && user.token && user.token.token_expiry > now) {
-                    tokenObj = {
-                        token: user.token.token,
-                        tokenExpiry: tokenObj.tokenExpiry
-                    };
-                }
-                return UserDataController.updateUserToken(req.user._id, tokenObj)
-            })
-            .then((updatedUser: UserModel) => {
-                const currentToken: any = updatedUser.token;
-                res.send({
-                    _id: updatedUser._id,
-                    token: currentToken.token,
-                    token_expiry: currentToken.token_expiry,
-                    orgIds: updatedUser.orgIds
-                });
-                return currentToken.token
-            })
-            .catch((err: any) => {
-                res.send({error: err});
-            });
+    private sessionManager: SessionManager;
+
+    constructor(sessionManager: SessionManager) {
+        super();
+        this.sessionManager = sessionManager;
     }
 
-    public logout(req: any, res: Response, next: Function) {
-        const authHeader = req.get('authorization');
-        if (authHeader) {
-            const token = authHeader.replace('bearer ', '');
-            const pastDate = new Date();
-            pastDate.setDate(pastDate.getDate() - 30);
-
-            UserDataController.changeTokens(req.user._id, req.user.token)
-                .then(result =>
-                    res.send(result
-                        ? {message: "User Logged out successfully!"}
-                        : {message: "User could not be logged out. Try again!"})
-                )
-                .catch(err => res.status(404).json({error: "User not found"}));
-        } else {
-            res.status(400).send("Bad Request");
-        }
+    async login(req: any, res: Response, next: Function) {
+        return this.sessionManager.login(req.user._id)
+            .then((result: any) => res.status(StatusCodes.OK).send(result))
+            .catch((err: any) => BaseController.handleError(err, res));
     }
 
-    public checkToken(req: Request, res: Response, next: Function) {
-        UserDataController.getResetToken(req.body.token)
-            .then((resetToken: any) => {
-                const now = new Date();
-                let valid: Object = {validToken: true, reseted: false};
-                if (resetToken.token_expiry < now || resetToken.reseted) {
-                    valid = {validToken: false, reseted: resetToken.reseted};
-                }
-                res.send(valid);
-            })
-            .catch(reason => res.status(400).json({error: "Something went wrong!"}));
+    async logout(req: any, res: Response, next: Function) {
+        return this.sessionManager.logout(req.user._id)
+            .then((result: any) => res.status(StatusCodes.OK).send(result))
+            .catch((err: any) => BaseController.handleError(err, res));
+    }
+
+    async checkToken(req: Request, res: Response, next: Function) {
+        return this.sessionManager.checkToken(req.body.token)
+            .then((result: any) => res.status(StatusCodes.OK).send(result))
+            .catch((err: any) => BaseController.handleError(err, res));
     }
 }

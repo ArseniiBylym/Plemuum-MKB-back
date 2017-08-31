@@ -3,7 +3,7 @@ import { TokenObject } from "../../service/auth/token.manager";
 import * as crypto from 'crypto';
 import { User} from "../models/common/user.model";
 import { UserCollection, UserModel } from "../database/schema/common/user.schema";
-import { ResetPasswordCollection } from "../database/schema/common/resetpassword.schema";
+import { ResetPasswordCollection, ResetPasswordModel } from "../database/schema/common/resetpassword.schema";
 
 const UserDataController = {
     saveUser: function (user: User): Promise<UserModel> {
@@ -44,12 +44,16 @@ const UserDataController = {
         return UserCollection().findByIdAndUpdate(userId, query, {"new": true}).lean().exec() as Promise<UserModel>;
     },
 
+    removeToken: (userId: string): Promise<any> => {
+        return UserCollection().findByIdAndUpdate(userId, {$set: {token: {}}}).lean().exec();
+    },
+
     changeTokens: function (userId: string, tokens: any): Promise<UserModel> {
         return UserCollection().findByIdAndUpdate(userId, {$set: {tokens: tokens}}, {'new': true}).lean().exec() as Promise<UserModel>;
     },
 
-    getResetToken: function (token: any): Promise<UserModel> {
-        return ResetPasswordCollection().findOne({token: token}).lean().exec() as Promise<UserModel>;
+    getResetToken: function (token: any): Promise<ResetPasswordModel> {
+        return ResetPasswordCollection().findOne({token: token}).lean().exec() as Promise<ResetPasswordModel>;
     },
 
     changeUserPassword: function (email: string, newPassword: string): Promise<UserModel> {
