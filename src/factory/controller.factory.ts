@@ -16,6 +16,7 @@ import OrganizationManager from "../api/manager/organization.manager";
 import { getOrganizationDataController } from "../data/datacontroller/organization.datacontroller";
 import RequestManager from "../api/manager/request.manager";
 import SessionManager from "../api/manager/session.manager";
+import TagManager from "../api/manager/tag.manager";
 
 let userController: UserController;
 let feedbackController: FeedbackController;
@@ -35,7 +36,7 @@ const getUserController = (): UserController => getController(userController, Us
 const getFeedbackController = (): FeedbackController => getController(feedbackController, FeedbackController);
 
 const getTagController = (): TagController => getController(tagController, TagController,
-    tagDataController);
+    new TagManager(tagDataController));
 
 const getOrganizationController = (): OrganizationController =>
     getController(organizationController, OrganizationController, new OrganizationManager(getOrganizationDataController()));

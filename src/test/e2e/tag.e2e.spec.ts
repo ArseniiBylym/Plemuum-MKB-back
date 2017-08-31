@@ -9,76 +9,56 @@ import { basicAuthHeader, bearerAuthHeader } from "../util/header.helper";
 
 suite("Tag request tests", () => {
 
-    before((done) => {
-        getDatabaseManager().openConnection(config.mongoUrl)
-            .then(() => fixtureLoader())
-            .then(value => done())
-            .catch((error) => {
-                console.error(error);
-                done();
-            })
+    before(async () => {
+        await getDatabaseManager().openConnection(config.mongoUrl);
+        await fixtureLoader();
     });
 
-    after(done => {
-        getDatabaseManager().closeConnection()
-            .then(() => done())
-            .catch(() => done());
-    });
+    after(async () => await getDatabaseManager().closeConnection());
 
     suite("New Tag", () => {
         const orgId = 'hipteam';
         const url = `/api/${orgId}/tag`;
 
-        test("GET: should return 200", done => {
-            request(app)
+        test("GET: should return 200", async () => {
+            await request(app)
                 .get(url)
                 .set(basicAuthHeader)
-                .expect(200, done);
+                .expect(200);
         });
 
-        test("POST: should return 201", done => {
-            request(app)
+        test("POST: should return 201", async () => {
+            const response = await request(app)
                 .post(url)
                 .set(basicAuthHeader)
-                .send({title: "TestTagTitle"})
-                .expect(201)
-                .then(response => {
-                    modelValidator.validateTagResponse(response.body);
-                    done();
-                })
+                .send({ title: "TestTagTitle" })
+                .expect(201);
+            modelValidator.validateTagResponse(response.body);
         });
 
-        test("POST: should not be able to post a tag with an already existing title", done => {
-            request(app)
+        test("POST: should not be able to post a tag with an already existing title", async () => {
+            const response = await request(app)
                 .post(url)
                 .set(basicAuthHeader)
-                .send({title: "TestTitle"})
-                .expect(400)
-                .then(response => {
-                    expect(response.body).to.haveOwnProperty("error");
-                    expect(response.body.error).to.be.equal("This tag already exist");
-                    done();
-                })
+                .send({ title: "TestTitle" })
+                .expect(405);
+            expect(response.body).to.haveOwnProperty("error");
+            expect(response.body.error).to.be.equal("This tag already exists");
         })
     });
 
     suite("Get tags", () => {
         const orgId = 'hipteam';
         const url = `/api/${orgId}/tags`;
-        test("Response should contain an array and return 200", done => {
-            authenticate(testUser)
-                .then(token => {
-                    request(app)
-                        .get(url)
-                        .set(bearerAuthHeader(token))
-                        .expect(200)
-                        .then(response => {
-                            expect(response.body).to.be.an.instanceOf(Array);
-                            assert(response.body.length > 0);
-                            modelValidator.validateTagResponse(response.body[0]);
-                            done();
-                        });
-                });
+        test("Response should contain an array and return 200", async () => {
+            const token = await authenticate(testUser)
+            const response = await request(app)
+                .get(url)
+                .set(bearerAuthHeader(token))
+                .expect(200);
+            expect(response.body).to.be.an.instanceOf(Array);
+            assert(response.body.length > 0);
+            modelValidator.validateTagResponse(response.body[0]);
         })
     })
 });

@@ -1,40 +1,31 @@
 import BaseController from "./base.controller";
 import { Request, Response } from "express";
 import { TagDataController } from "../../data/datacontroller/tag.datacontroller";
+import TagManager from "../manager/tag.manager";
+import * as StatusCodes from 'http-status-codes';
 
 export default class TagController extends BaseController {
 
-    private tagDataController: TagDataController;
+    private tagManager: TagManager;
 
-    constructor(tagDataController: TagDataController) {
+    constructor(tagManager: TagManager) {
         super();
-        this.tagDataController = tagDataController;
+        this.tagManager = tagManager;
     }
 
-    public showNewTagForm(req: Request, res: Response, next: Function) {
-        res.render("newTag", {title: "Add new tag", orgId: req.params.orgId});
+    async showNewTagForm(req: Request, res: Response, next: Function) {
+        res.render("newTag", { title: "Add new tag", orgId: req.params.orgId });
     }
 
-    public addNewTag(req: Request, res: Response, next: Function) {
-        let data = req.body;
-        data.isActive = true; //Always true
-        this.tagDataController.getTags(req.params.orgId)
-            .then(tags => {
-                if (tags.findIndex((element: any) => element.title.toLowerCase() === data.title.toLowerCase()) !== -1) {
-                    res.status(400).send({error: "This tag already exist"});
-                    return;
-                }
-                data.order = tags.length + 1;
-                return this.tagDataController.saveTag(req.params.orgId, data);
-            })
-            .then(tag => res.status(201).send(tag))
-            .catch(err => res.status(400).send({error: err}));
+    async addNewTag(req: Request, res: Response, next: Function) {
+        return this.tagManager.addNewTag(req.params.orgId, req.body)
+            .then(tag => res.status(StatusCodes.CREATED).send(tag))
+            .catch(error => BaseController.handleError(error, res));
     }
 
-    public getTags(req: Request, res: Response, next: Function) {
-        this.tagDataController.getTags(req.params.orgId)
-            .then(tags => res.send(tags))
-            .catch(error => res.status(400).send(error))
+    async getTags(req: Request, res: Response, next: Function) {
+        return this.tagManager.getTags(req.params.orgId)
+            .then(tags => res.status(StatusCodes.OK).send(tags))
+            .catch(error => BaseController.handleError(error, res))
     }
-
 }
