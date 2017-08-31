@@ -18,12 +18,10 @@ export default class SessionManager {
             };
         }
         const updatedUser = await UserDataController.updateUserToken(user._id, tokenObj);
-        const currentToken: any = updatedUser.token;
-        
         return {
             _id: updatedUser._id,
-            token: currentToken.token,
-            token_expiry: currentToken.token_expiry,
+            token: updatedUser.token.token,
+            token_expiry: updatedUser.token.token_expiry,
             orgIds: updatedUser.orgIds
         }
     }
