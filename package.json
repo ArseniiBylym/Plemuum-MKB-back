@@ -19,7 +19,8 @@
       "src/test",
       "src/data/database/schema",
       "**/*.d.ts",
-      "**/*.spec.ts"
+      "**/*.spec.ts",
+      "src/service/file/firebase.**.ts"
     ],
     "require": [
       "ts-node/register"

@@ -1,15 +1,12 @@
 import * as fs from "fs-extra";
-import config from "../../../config/config";
+import StorageManager from './storage.manager';
 
 export default class FileTransferService {
 
-    private gcs: any; // Google Cloud Storage
+    private storageManager: StorageManager;
 
-    constructor() {
-        this.gcs = require('@google-cloud/storage')({
-            projectId: config.firebaseConfig.projectId,
-            keyFilename: `res/${config.firebaseConfig.keyFileName}`
-        });
+    constructor(storageManager: StorageManager) {
+        this.storageManager = storageManager;
     }
 
     /**
@@ -19,19 +16,12 @@ export default class FileTransferService {
      * @param {String} userId Image owner's ID
      * @returns {Promise<string>}  Returns a promise with URL pointing to the Firebase location
      */
-    public sendFile(picture: any, userId: String): Promise<string> {
-        const bucket = this.gcs.bucket(config.firebaseConfig.bucketName);
-        const bucketOptions = {
-            destination: `plenuum/userPictures/${userId.valueOf()}`,
-            public: true
-        };
-        let uploadedFile: any;
-        return bucket.upload(picture.path, bucketOptions)
-            .then((file: any[]) => {
-                    uploadedFile = file[0];
-                    return fs.unlink(picture.path);
-                }
-            )
-            .then(() => config.firebaseConfig.baseUrl.concat(uploadedFile.name))
+    public async uploadUserPicture(picture: any, userId: String): Promise<string> {
+        const destination = "plenuum/userPictures";
+        const fileName = userId.valueOf();
+
+        const url = await this.storageManager.uploadFile(destination, fileName, picture.path)
+        fs.unlink(picture.path)
+        return url;
     }
 }

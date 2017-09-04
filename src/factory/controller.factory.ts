@@ -17,6 +17,7 @@ import { getOrganizationDataController } from "../data/datacontroller/organizati
 import RequestManager from "../api/manager/request.manager";
 import SessionManager from "../api/manager/session.manager";
 import TagManager from "../api/manager/tag.manager";
+import FirebaseStorageManager from "../service/file/firebase.storage.manager";
 
 let userController: UserController;
 let feedbackController: FeedbackController;
@@ -29,7 +30,7 @@ let groupController: GroupController;
 /* #########################     PUBLIC      ########################## */
 
 const getUserController = (): UserController => getController(userController, UserController,
-    new UserManager(new EmailService(), new FileTransferService())
+    new UserManager(new EmailService(), new FileTransferService(new FirebaseStorageManager()))
 );
 
 const getFeedbackController = (): FeedbackController => getController(feedbackController, FeedbackController);
