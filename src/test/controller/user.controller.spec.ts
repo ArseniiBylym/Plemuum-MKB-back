@@ -5,58 +5,58 @@ import * as sinon from 'sinon';
 import * as Sinon from 'sinon';
 import UserDataController from "../../data/datacontroller/user.datacontroller";
 import { User } from "../../data/models/common/user.model";
-import { testUser} from "../mock/fixture.loader"
+import { testUser } from "../mock/fixture.loader"
+import { getRequestObject } from "../util/testutil";
+import { ErrorType, PlenuumError } from "../../util/errorhandler";
 
 suite("UserController", () => {
 
-    let userController: UserController;
-    let userDataControllerStub: Sinon.SinonSpy;
     const mockUser: User = TestObjectFactory.getJohnDoe();
     const dummy: any = {};
 
-    before(done => {
-        userDataControllerStub = sinon.stub(UserDataController, 'saveUser')
-            .returns(new Promise((resolve, reject) => resolve(mockUser)));
-        done();
+    before(() => {
+
     });
 
     suite("createNewUser", () => {
 
-        test("Happy case: should call response send", (done) => {
+        test("Happy case: should call response send", async () => {
+            const mockRequest: any = getRequestObject(true);
+            mockRequest.body = mockUser;
 
-            const mockRequest: any = {
-                body: mockUser
-            };
             const mockResponse: any = {
-                send: (result: any) => {
-                    should().equal(result, mockUser);
-                    done();
-                },
-                status: (statusCode: number) => mockResponse
+                send: sinon.stub(),
+                status: sinon.stub().callsFake(() => mockResponse)
             };
-            userController = new UserController(dummy, dummy);
-            userController.createNewUser(mockRequest, mockResponse);
+
+            const userDataControllerStub = sinon.stub(UserDataController, 'saveUser').resolves(mockUser);
+
+            const userController = new UserController(dummy);
+            await userController.createNewUser(mockRequest, mockResponse);
             userDataControllerStub.restore();
-            expect(userDataControllerStub.called).to.be.true;
+
+            sinon.assert.calledWith(mockResponse.status, 201);
+            sinon.assert.calledWith(mockResponse.send, mockUser)
         });
 
-        test("Sad case: should call response json", (done) => {
-            const mockRequest: any = {
-                body: mockUser
-            };
+        test("Sad case: should return an error", async () => {
+            const mockRequest: any = getRequestObject(true);
+            mockRequest.body = mockUser;
+
             const mockResponse: any = {
-                json: (error: any) => {
-                    expect(error).have.property("error");
-                    done()
-                },
-                status: (statusCode: number) => {
-                    expect(statusCode).to.be.equal(400);
-                    return mockResponse;
-                }
+                send: sinon.stub(),
+                status: sinon.stub().callsFake(() => mockResponse)
             };
-            userController = new UserController(dummy, dummy);
-            userController.createNewUser(dummy, mockResponse);
-            expect(userDataControllerStub.called).to.be.true;
+
+            const userDataControllerStub = sinon.stub(UserDataController, 'saveUser')
+                .rejects(new PlenuumError("Mock error", ErrorType.NOT_IMPLEMENTED));
+
+            const userController = new UserController(dummy);
+            await userController.createNewUser(mockRequest, mockResponse);
+            userDataControllerStub.restore();
+
+            sinon.assert.calledWith(mockResponse.status, 501);
+            sinon.assert.calledWith(mockResponse.send, { error: "Mock error" })
         })
     });
 
@@ -84,49 +84,46 @@ suite("UserController", () => {
 
         suite("Happy cases", () => {
 
-            test("Should call response send", (done) => {
+            test("Should call response send", async () => {
                 const setUserNotificationDeviceStub = sinon.stub(UserDataController, "setUserNotificationDevice")
                     .returns(new Promise((resolve, reject) => resolve(mockUser)));
-                const mockRequest: any = {
-                    user: testUser,
-                    body: { token: "mocked_token" }
-                };
+
+                const mockRequest: any = getRequestObject(true);
+                mockRequest.user = testUser;
+                mockRequest.body = { token: "mocked_token" }
 
                 const mockResponse: any = {
-                    send: (result: any) => {
-                        should().equal(result, mockUser);
-                        done();
-                    },
-                    status: (statusCode: number) => mockResponse
+                    send: sinon.stub(),
+                    status: sinon.stub().callsFake(() => mockResponse)
                 };
-                userController = new UserController(dummy, dummy);
-                userController.setNotificationDevice(mockRequest, mockResponse);
+                const userController = new UserController(dummy);
+                await userController.setNotificationDevice(mockRequest, mockResponse);
                 setUserNotificationDeviceStub.restore();
+
                 expect(setUserNotificationDeviceStub.called).to.be.true;
+                sinon.assert.calledWith(mockResponse.send, mockUser);
             });
         });
 
         suite("Sad cases", () => {
-            test("Should send status code 400", (done) => {
+            test("Should send status code 400", async () => {
                 const setUserNotificationDeviceStub = sinon.stub(UserDataController, "setUserNotificationDevice")
-                    .returns(new Promise((resolve, reject) => reject(new Error("mock error"))));
+                    .rejects(new Error("mock error"));
 
-                const mockRequest: any = {
-                    user: testUser,
-                    body: { token: "mocked_token" }
-                };
+                const mockRequest: any = getRequestObject(true);
+                mockRequest.user = testUser;
+                mockRequest.body = { token: "mocked_token" }
 
                 const mockResponse: any = {
-                    send: (result: any) => result,
-                    status: (statusCode: number) => {
-                        expect(statusCode).to.be.equal(400);
-                        done();
-                    }
+                    send: sinon.stub(),
+                    status: sinon.stub().callsFake(() => mockResponse)
                 };
-                userController = new UserController(dummy, dummy);
-                userController.setNotificationDevice(mockRequest, mockResponse);
+                const userController = new UserController(dummy);
+                await userController.setNotificationDevice(mockRequest, mockResponse);
                 setUserNotificationDeviceStub.restore();
 
+                sinon.assert.calledWith(mockResponse.status, 500);
+                sinon.assert.calledWith(mockResponse.send, { error: "mock error" })
             })
         });
 
@@ -147,49 +144,49 @@ suite("UserController", () => {
 
         suite("Happy cases", () => {
 
-            test("Should call method", () => {
+            test("Should call method", async () => {
                 const res: any = {
                     status: sinon.stub().callsFake(() => res),
-                    send: sinon.stub()};
+                    send: sinon.stub()
+                };
 
-                const mockRequest: any = {
-                    user: testUser,
-                    body: {
-                        oldToken: "old_mocked_token",
-                        newToken: "new_mocked_token"
-                    }
+                const mockRequest: any = getRequestObject(true);
+                mockRequest.user = testUser;
+                mockRequest.body = {
+                    oldToken: "old_mocked_token",
+                    newToken: "new_mocked_token"
                 };
 
                 refreshNotificationDeviceStub.resolves(testUser);
-                userController = new UserController(dummy, dummy);
-                userController.refreshNotificationDevice(mockRequest, res);
+                const userController = new UserController(dummy);
+                await userController.refreshNotificationDevice(mockRequest, res);
 
                 expect(refreshNotificationDeviceStub.called).to.be.true;
             });
         });
 
         suite("Sad case", () => {
-           test("Should send status code 400", () => {
+            test("Should send status code 400", async () => {
 
-               const res: any = {
-                   status: sinon.stub().callsFake((statusCode) => {
-                       expect(statusCode).to.be.equal(400);
-                   }),
-                   send: sinon.stub()};
+                const res: any = {
+                    status: sinon.stub().callsFake(() => res),
+                    send: sinon.stub()
+                };
 
-               const mockRequest: any = {
-                   user: testUser,
-                   body: {
-                       oldToken: "old_mocked_token",
-                       newToken: "new_mocked_token"
-                   }
-               };
+                const mockRequest: any = getRequestObject(true);
+                mockRequest.user = testUser;
+                mockRequest.body = {
+                    oldToken: "old_mocked_token",
+                    newToken: "new_mocked_token"
+                };
 
-               refreshNotificationDeviceStub.rejects(new Error("mock error"));
-               userController = new UserController(dummy, dummy);
-               userController.refreshNotificationDevice(mockRequest, res);
+                refreshNotificationDeviceStub.rejects(new Error("mock error"));
+                const userController = new UserController(dummy);
+                await userController.refreshNotificationDevice(mockRequest, res);
 
-           });
+                sinon.assert.calledWith(res.status, 500)
+                sinon.assert.calledWith(res.send, { error: "mock error" })
+            });
         });
     });
 
@@ -206,42 +203,42 @@ suite("UserController", () => {
         });
 
         suite("Happy Cases", () => {
-            test("Should call the method", () => {
+            test("Should call the method", async () => {
                 const res: any = {
                     status: sinon.stub().callsFake(() => res),
-                    send: sinon.stub()};
-
-                const mockRequest: any = {
-                    user: testUser,
-                    body: { token: "old_mocked_token" }
+                    send: sinon.stub()
                 };
 
+                const mockRequest: any = getRequestObject(true);
+                mockRequest.user = testUser;
+                mockRequest.body = { token: "old_mocked_token" };
+
                 removeNotificationTokenStub.resolves(testUser);
-                userController = new UserController(dummy, dummy);
-                userController.removeNotificationToken(mockRequest, res);
+                const userController = new UserController(dummy);
+                await userController.removeNotificationToken(mockRequest, res);
 
                 expect(removeNotificationTokenStub.called).to.be.true;
             });
         });
 
         suite("Sad Cases", () => {
-            test("Should send status code 400", () => {
+            test("Should send status code 400", async () => {
 
                 const res: any = {
-                    status: sinon.stub().callsFake((statusCode) => {
-                        expect(statusCode).to.be.equal(400);
-                    }),
-                    send: sinon.stub()};
-
-                const mockRequest: any = {
-                    user: testUser,
-                    body: { token: "old_mocked_token" }
+                    status: sinon.stub().callsFake(() => res),
+                    send: sinon.stub()
                 };
 
-                removeNotificationTokenStub.rejects(new Error("mock error"));
-                userController = new UserController(dummy, dummy);
-                userController.removeNotificationToken(mockRequest, res);
+                const mockRequest: any = getRequestObject(true);
+                mockRequest.user = testUser;
+                mockRequest.body = { token: "old_mocked_token" };
 
+                removeNotificationTokenStub.rejects(new Error("mock error"));
+                const userController = new UserController(dummy);
+                await userController.removeNotificationToken(mockRequest, res);
+
+                sinon.assert.calledWith(res.status, 500)
+                sinon.assert.calledWith(res.send, { error: "mock error" })
             });
         });
     });

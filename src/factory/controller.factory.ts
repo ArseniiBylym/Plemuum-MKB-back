@@ -29,8 +29,7 @@ let groupController: GroupController;
 /* #########################     PUBLIC      ########################## */
 
 const getUserController = (): UserController => getController(userController, UserController,
-    new FileTransferService(),
-    new UserManager(new EmailService())
+    new UserManager(new EmailService(), new FileTransferService())
 );
 
 const getFeedbackController = (): FeedbackController => getController(feedbackController, FeedbackController);
