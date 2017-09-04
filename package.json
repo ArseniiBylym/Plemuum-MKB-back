@@ -17,6 +17,7 @@
     "exclude": [
       "config",
       "src/test",
+      "src/data/database/schema",
       "**/*.d.ts",
       "**/*.spec.ts"
     ],
