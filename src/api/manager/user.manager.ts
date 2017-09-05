@@ -50,7 +50,7 @@ export default class UserManager {
     }
 
     async profilePictureUpload(avatar: any, userId: string) {
-        const pictureUrl = await this.fileTransferService.sendFile(avatar, userId);
+        const pictureUrl = await this.fileTransferService.uploadUserPicture(avatar, userId);
         return await UserDataController.setUserPic(userId, pictureUrl);
     }
 
