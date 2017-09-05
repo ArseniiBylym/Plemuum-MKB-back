@@ -13,6 +13,7 @@ import Group from "../../data/models/organization/group.model";
 import Sentence from "../../data/models/organization/compass/sentence.model";
 import { ErrorType, PlenuumError } from "../../util/errorhandler";
 import { OrganizationDataController } from "../../data/datacontroller/organization.datacontroller";
+import { getRandomItem } from "../../test/util/utils";
 
 export default class CompassManager {
 
@@ -48,16 +49,32 @@ export default class CompassManager {
         let answerSkillIds: string[] = [];
         answerGroups.forEach((group) => answerSkillIds = answerSkillIds.concat(group.skills));
         const aboutUserSkills = await CompassDataController.getSkillsByIds(orgId, answerSkillIds);
-        return CompassManager.buildUpNewTodoResponse(ownerId, organization, aboutUser, aboutUserSkills);
+        return CompassManager.buildUpNewTodoResponse(ownerId, organization.todoSentenceNumber, aboutUserId, aboutUserSkills);
     }
 
     async autoGenerateTodo(orgId: string) {
+        const organization = await this.organizationDataController.getOrganizationByDbName(orgId);
         const organizationGroups = await this.groupDataController.getGroups(orgId);
         const groupsWithTodoRelations = organizationGroups.filter((group) => group.todoCardRelations.length > 0);
 
+        if(groupsWithTodoRelations.length === 0) {
+            throw new PlenuumError("Organization has no group with Todo relations", ErrorType.NOT_FOUND)
+        }
+
+        const randomGroup = getRandomItem(groupsWithTodoRelations);
+        const randomOwnerUserId = getRandomItem(randomGroup.users);
+
+        const randomAboutGroupId = getRandomItem(randomGroup.todoCardRelations);
+        const randomAboutGroup = await this.groupDataController.getGroupById(orgId, randomAboutGroupId);
+
+        const randomAboutUserId = getRandomItem(randomAboutGroup.users);
+        const skills = await CompassDataController.getSkillsByIds(orgId, randomAboutGroup.skills); 
+
+        const todo = CompassManager.buildUpNewTodoResponse(randomOwnerUserId, organization.todoSentenceNumber, randomAboutGroupId, skills)
+
         // CompassDataController.saveCompassTodo(organization.dbName, newTodo);
 
-        return groupsWithTodoRelations;
+        return todo;
     }
 
     static checkAnswerCardRelation(answerGroups: Group[]) {
@@ -84,8 +101,7 @@ export default class CompassManager {
         return UserDataController.getUserById(orgId, userId, ['_id', 'firstName', 'lastName']);
     }
 
-    static buildUpNewTodoResponse(ownerId: string, organization: Organization, aboutUser: UserModel, skills: SkillModel[]): any {
-        let numberOfSentences = organization.todoSentenceNumber;
+    static buildUpNewTodoResponse(ownerId: string, numberOfSentences: number, aboutUserId: string, skills: SkillModel[]): any {
         let possibleSentences: Sentence[] = [];
         const sentencesToBeAnswered: any[] = [];
         skills.forEach((skill) => possibleSentences = possibleSentences.concat(skill.sentences));
@@ -109,7 +125,7 @@ export default class CompassManager {
         }
 
         return {
-            about: aboutUser._id,
+            about: aboutUserId,
             owner: ownerId,
             questions: sentencesToBeAnswered
         };

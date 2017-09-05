@@ -11,6 +11,7 @@ import Group from "../../data/models/organization/group.model";
 import { skills } from "../util/statistics.manager.util";
 import { validateCompassTodo } from "../../util/model.validator";
 import { getGroupDataController } from "../../data/datacontroller/group.datacontroller";
+import { getOrganizationDataController } from "../../data/datacontroller/organization.datacontroller";
 
 const dummy: any = {};
 
@@ -433,7 +434,7 @@ suite("CompassManager tests", () => {
         })
     })
 
-    suite.skip("autoGenerateTodo", () => {
+    suite.only("autoGenerateTodo", () => {
 
         const testGroups: any[] = [
             {
@@ -460,14 +461,16 @@ suite("CompassManager tests", () => {
         
         test("test", async () => {
             const groupDataController: any = {
-                getGroups: sinon.stub()
+                getGroups: sinon.stub(),
+                getGroupById: sinon.stub().callsFake((orgId, groupId) => Promise.resolve(testGroups.filter((g) => g._id === groupId)[0]))
             }
             groupDataController.getGroups.resolves(testGroups);
 
-            const compassManager = new CompassManager(groupDataController, dummy)
+            const compassManager = new CompassManager(getGroupDataController(), getOrganizationDataController())
             const result: any = await compassManager.autoGenerateTodo("hipteam");
 
-            expect(result.length).to.be.equal(3);
+            console.log(result);
+            expect(result).to.not.be.undefined;
         })
     })
 });
