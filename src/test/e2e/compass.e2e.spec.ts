@@ -3,7 +3,7 @@ import config from "../../../config/config";
 import * as request from 'supertest';
 import { authenticate, fixtureLoader, testUser } from "../mock/fixture.loader";
 import app from "../../app";
-import { basicAuthHeader, bearerAuthHeader } from "../header.helper";
+import { basicAuthHeader, bearerAuthHeader } from "../util/header.helper";
 import { expect, should } from 'chai';
 import Skill from "../../data/models/organization/compass/skill.model";
 import { ANSWER_TYPES } from "../../data/models/organization/compass/compassanswer.model";
@@ -64,7 +64,7 @@ suite("Compass request test", () => {
                         .post(url)
                         .send({aboutUserId: "5984342227cd340363dd84ae", senderId: "5984342227cd340363dc84b3"})
                         .set(bearerAuthHeader(token))
-                        .expect(400)
+                        .expect(404)
                         .then(response => {
                             should().exist(response.body);
                             expect(response.body).to.haveOwnProperty("error");
@@ -83,7 +83,7 @@ suite("Compass request test", () => {
                         .post(urlWhatever)
                         .send({aboutUserId: "5984342227cd340363dd84ac", senderId: "5984342227cd340363dc84b3"})
                         .set(bearerAuthHeader(token))
-                        .expect(400)
+                        .expect(404)
                         .then(response => {
                             should().exist(response.body);
                             expect(response.body).to.haveOwnProperty("error");

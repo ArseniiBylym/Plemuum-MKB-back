@@ -3,22 +3,23 @@ import FeedbackController from "../../api/controller/feedback.controller";
 import * as Sinon from "sinon";
 import * as sinon from "sinon";
 import FeedbackDataController from "../../data/datacontroller/feedback.datacontroller";
+import { ErrorType, PlenuumError } from "../../util/errorhandler";
+import { getRequestObject } from "../util/testutil";
 
 suite("FeedbackController unit tests", () => {
 
     let feedbackController: FeedbackController;
     let feedbackDataControllerStub: Sinon.SinonSpy;
-    const mockRequest: any = {
-        params: {
-            userId: "userId",
-            orgId: "orgId"
-        }
-    };
+
+    const mockRequest: any = getRequestObject(true);
+    mockRequest.params.orgId = "orgId";
+    mockRequest.params.userId = "userId";
+
     const mockResult: any = {result: "result"};
 
     suite("getFeedbacks", () => {
 
-        test("Happy case: test should getAllFeedback from FeedbackDataController then call res.json", done => {
+        test("Happy case: test should getAllFeedback from FeedbackDataController then call res.send", done => {
 
             feedbackDataControllerStub = sinon.stub(FeedbackDataController, 'getAllFeedback')
                 .returns(new Promise<any>((resolve, reject) => resolve(mockResult)));
@@ -38,13 +39,13 @@ suite("FeedbackController unit tests", () => {
             expect(feedbackDataControllerStub.called).to.be.true;
         });
 
-        test("Sad case: test should getAllFeedback from FeedbackDataController then call res.json", done => {
+        test("Sad case: test should getAllFeedback from FeedbackDataController then call res.send", done => {
 
             feedbackDataControllerStub = sinon.stub(FeedbackDataController, 'getAllFeedback')
                 .returns(Promise.resolve(mockResult));
 
             const mockResponse: any = {
-                json: (error: any) => {
+                send: (error: any) => {
                     done();
                 },
                 status: (statusCode: number) => mockResponse
@@ -66,7 +67,7 @@ suite("FeedbackController unit tests", () => {
 
     suite("getSentFeedbacks", () => {
 
-        test("Happy case: test should getSentFeedbacks from FeedbackDataController then call res.json", done => {
+        test("Happy case: test should getSentFeedbacks from FeedbackDataController then call res.send", done => {
 
             feedbackDataControllerStub = sinon.stub(FeedbackDataController, 'getSentFeedbacks')
                 .returns(new Promise<any>((resolve, reject) => resolve(mockResult)));
@@ -86,13 +87,13 @@ suite("FeedbackController unit tests", () => {
             expect(feedbackDataControllerStub.called).to.be.true;
         });
 
-        test("Sad case: test should getSentFeedbacks from FeedbackDataController then call res.json", done => {
+        test("Sad case: test should getSentFeedbacks from FeedbackDataController then call res.send", done => {
 
             feedbackDataControllerStub = sinon.stub(FeedbackDataController, 'getSentFeedbacks')
                 .returns(new Promise<any>((resolve, reject) => resolve(mockResult)));
 
             const mockResponse: any = {
-                json: (error: any) => {
+                send: (error: any) => {
                     done();
                 },
                 status: (statusCode: number) => mockResponse
@@ -109,7 +110,7 @@ suite("FeedbackController unit tests", () => {
 
     suite("getIncomingFeedbacks", () => {
 
-        test("Happy case: test should getIncomingFeedbacks from FeedbackDataController then call res.json", done => {
+        test("Happy case: test should getIncomingFeedbacks from FeedbackDataController then call res.send", done => {
 
             feedbackDataControllerStub = sinon.stub(FeedbackDataController, 'getIncomingFeedbacks')
                 .returns(new Promise<any>((resolve, reject) => resolve(mockResult)));
@@ -129,13 +130,13 @@ suite("FeedbackController unit tests", () => {
             expect(feedbackDataControllerStub.called).to.be.true;
         });
 
-        test("Sad case: test should getIncomingFeedbacks from FeedbackDataController then call res.json", done => {
+        test("Sad case: test should getIncomingFeedbacks from FeedbackDataController then call res.send", done => {
 
             feedbackDataControllerStub = sinon.stub(FeedbackDataController, 'getIncomingFeedbacks')
                 .returns(new Promise<any>((resolve, reject) => resolve(mockResult)));
 
             const mockResponse: any = {
-                json: (error: any) => {
+                send: (error: any) => {
                     should().exist(error);
                     done();
                 },
@@ -153,72 +154,59 @@ suite("FeedbackController unit tests", () => {
 
     suite("postFeedback", () => {
 
-        test("Happy case: test should postFeedback from FeedbackDataController then call res.send", done => {
+        test("Happy case: test should postFeedback from FeedbackDataController then call res.send", async () => {
+            feedbackDataControllerStub = sinon.stub(FeedbackDataController, 'saveFeedback').resolves(mockResult);
 
-            feedbackDataControllerStub = sinon.stub(FeedbackDataController, 'saveFeedback')
-                .returns(new Promise<any>((resolve, reject) => resolve(mockResult)));
-
-            const mockRequest: any = {
-                params: {
-                    userId: "userId",
-                    orgId: "hipteam"
-                },
-                body: {data: "data"}
-            };
+            mockRequest.body = {data: "data"};
 
             const mockResponse: any = {
-                send: (result: any) => {
-                    should().equal(result, mockResult);
-                    done();
-                },
-                status: (statusCode: number) => mockResponse
+                send: sinon.stub(),
+                status: sinon.stub().callsFake(() => mockResponse)
             };
 
             feedbackController = new FeedbackController();
-            feedbackController.postFeedback(mockRequest, mockResponse)
-                .then(() => feedbackDataControllerStub.restore())
-        });
-
-        test("Sad case: test should postFeedback from FeedbackDataController then call res.json", done => {
-
-            feedbackDataControllerStub = sinon.stub(FeedbackDataController, 'saveFeedback')
-                .returns(Promise.reject(mockResult));
-
-            const mockResponse: any = {
-                json: (result: any) => {
-                    should().exist(result);
-                    done();
-                },
-                status: (statusCode: number) => {
-                    expect(statusCode).to.equal(400);
-                    return mockResponse;
-                }
-            };
-
-            feedbackController = new FeedbackController();
-            feedbackController.postFeedback(mockRequest, mockResponse);
+            await feedbackController.postFeedback(mockRequest, mockResponse);
             feedbackDataControllerStub.restore();
+
+            sinon.assert.calledWith(mockResponse.status, 201);
+            sinon.assert.calledWith(mockResponse.send, mockResult);
         });
 
-        test("Sad case: instant error when body is empty", done => {
+        test("Sad case: test should postFeedback from FeedbackDataController then call res.send", async () => {
 
-            const emptyMockRequest: any = {
-                body: undefined
-            };
+            feedbackDataControllerStub = sinon.stub(FeedbackDataController, 'saveFeedback')
+                .rejects(new PlenuumError("Mock error", ErrorType.VALIDATION));
 
             const mockResponse: any = {
-                json: (result: any) => {
-                    expect(result).have.property("error");
-                    done();
-                },
-                status: (statusCode: number) => {
-                    expect(statusCode).to.equal(400);
-                    return mockResponse;
-                }
+                send: sinon.stub(),
+                status: sinon.stub().callsFake(() => mockResponse)
             };
 
             feedbackController = new FeedbackController();
-            feedbackController.postFeedback(emptyMockRequest, mockResponse)
+            await feedbackController.postFeedback(mockRequest, mockResponse);
+            feedbackDataControllerStub.restore();
+
+            sinon.assert.calledWith(mockResponse.status, 400);
+            sinon.assert.called(mockResponse.send);
+        });
+
+        test("Sad case: instant error when body is empty", async () => {
+
+            mockRequest.getValidationResult = sinon.stub().returns({
+                isEmpty: sinon.stub().returns(false),
+                array: sinon.stub()
+            });
+
+            const mockResponse: any = {
+                send: sinon.stub(),
+                status: sinon.stub().callsFake(() => mockResponse)
+            };
+
+            feedbackController = new FeedbackController();
+            await feedbackController.postFeedback(mockRequest, mockResponse);
+
+            sinon.assert.calledWith(mockResponse.status, 400);
+            sinon.assert.calledWithMatch(mockResponse.send, sinon.match.has("error"));
         })
     });
 });

@@ -25,7 +25,7 @@ export default (app: Express, userController: UserController) => {
      * @apiParam {String} firstName First name of user
      * @apiParam {String} lastName Last name of user
      * @apiParam {String} email Email address
-     * @apiParam {String} orgId Organization ID
+     * @apiParam {String} [orgId] Organization ID
      * @apiParam {String} [managerId] ID of the user's manager
      * @apiParam {String} [pictureUrl] URL for the user profile picture
      *
@@ -169,7 +169,7 @@ export default (app: Express, userController: UserController) => {
      * @apiUse user_list_data
      * @apiSuccess (Success 200) {String[]} notificationToken The tokens for all the devices subscribed for notification
      *
-     * @api {PUT} /api/user/setNotificationDevice Delete a token
+     * @api {DELETE} /api/user/setNotificationDevice Delete a token
      * @apiName setNotificationDevice
      * @apiGroup User
      * @apiDescription Delete a token when the device is subscribed
@@ -184,6 +184,6 @@ export default (app: Express, userController: UserController) => {
     app.route("/api/user/set_notification_device")
         .post(passport.authenticate('bearer', {session: false}), userController.setNotificationDevice.bind(userController))
         .patch(passport.authenticate('bearer', {session: false}), userController.refreshNotificationDevice.bind(userController))
-        .put(passport.authenticate('bearer', {session: false}), userController.removeNotificationToken.bind(userController));
+        .delete(passport.authenticate('bearer', {session: false}), userController.removeNotificationToken.bind(userController));
 
 }

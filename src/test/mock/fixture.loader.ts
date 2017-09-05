@@ -13,6 +13,7 @@ import { resetPasswordDataController } from "../../data/datacontroller/resetpass
 import { CompassTodoCollection } from "../../data/database/schema/organization/compass/compasstodo.schema";
 import { StatisticsCollection } from "../../data/database/schema/organization/compass/compass.statistics.schema";
 import { CompassAnswerCollection } from "../../data/database/schema/organization/compass/compassanswer.schema";
+import SessionManager from "../../api/manager/session.manager";
 
 const testUser = {
     "firstName": "sheryl",
@@ -60,19 +61,9 @@ function fixtureLoader(): Promise<any> {
 }
 
 /* Returns a token for tests */
-function authenticate(testUser: any): Promise<string> {
-    const sessionController = ControllerFactory.getSessionController();
-    const request = {
-        user: {_id: testUser._id},
-        header: () => {
-        },
-    };
-    const response: any = {
-        send: () => {
-        }
-    };
-    return sessionController.login(request, response, () => {
-    });
+async function authenticate(testUser: any): Promise<string> {
+    const sessionManager = new SessionManager();
+    return (await sessionManager.login(testUser._id)).token;
 }
 
 async function resetPassword(userId: string): Promise<any> {

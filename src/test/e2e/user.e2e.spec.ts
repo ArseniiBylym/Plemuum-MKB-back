@@ -6,7 +6,7 @@ import * as modelValidator from "../../util/model.validator"
 import { authenticate, fixtureLoader, resetPassword, testUser } from "../mock/fixture.loader"
 import { getDatabaseManager } from "../../factory/database.factory";
 import config from "../../../config/config";
-import { basicAuthHeader, bearerAuthHeader } from "../header.helper";
+import { basicAuthHeader, bearerAuthHeader } from "../util/header.helper";
 
 suite("User request tests", () => {
 
@@ -31,17 +31,13 @@ suite("User request tests", () => {
 
         const url = `/api/register/user`;
 
-        test("POST: Correct request response should contain a user and return 201", done => {
-            request(app)
+        test("POST: Correct request response should contain a user and return 201", async () => {
+            const response = await request(app)
                 .post(url)
                 .set(basicAuthHeader)
                 .send(TestObjectFactory.getRegisterJohnDoe())
-                .expect(201)
-                .then(response => {
-                    modelValidator.validateUser(response.body);
-                    done();
-                })
-                .catch(reason => done(reason));
+                .expect(201);
+            modelValidator.validateUser(response.body);
         });
 
         test('GET: Should return 200', done => {
@@ -97,7 +93,7 @@ suite("User request tests", () => {
         test('Should return 200', done => {
             request(app)
                 .post(url)
-                .send({email: testUser.email})
+                .send({ email: testUser.email })
                 .expect(200, done())
         });
     });
@@ -109,7 +105,7 @@ suite("User request tests", () => {
             const token = await resetPassword(testUser._id);
             const response = await request(app)
                 .post(url)
-                .send({token: token, newPassword: "newPass"})
+                .send({ token: token, newPassword: "newPass" })
                 .expect(200);
             expect(response.body).to.haveOwnProperty("successMessage");
         });

@@ -1,54 +1,60 @@
 import { Request, Response } from "express";
 import BaseController from "./base.controller";
-import { RequestDataController } from "../../data/datacontroller/request.datacontroller";
+import RequestManager from "../manager/request.manager";
+import * as StatusCodes from 'http-status-codes';
+import { User } from "../../data/models/common/user.model";
+import { validate } from "../../util/input.validator";
 
 export default class RequestController extends BaseController {
 
-    public requestDataController: RequestDataController;
+    private requestManager: RequestManager;
 
-    constructor(requestDataController: RequestDataController) {
+    constructor(requestManager: RequestManager) {
         super();
-        this.requestDataController = requestDataController;
+        this.requestManager = requestManager;
     }
 
-    public createRequest(req: Request, res: Response, next: Function) {
-        const request = req.body;
-        if (request) {
-            this.callController(
-                this.requestDataController.saveNewRequest(req.params.orgId, request),
-                res, 200, 400);
-        } else {
-            res.status(400).json({error: "invalid request"});
+    async createRequest(req: Request, res: Response) {
+        req.checkBody('senderId', 'Missing senderId').notEmpty();
+        req.checkBody('recipientId', 'recipientId').notEmpty();
+        req.checkBody('requestMessage', 'requestMessage').notEmpty();
+
+        if (!await validate(req, res)) {
+            return;
         }
+
+        this.requestManager.saveNewRequest(req.params.orgId, req.body)
+            .then((savedRequest: Request) => res.status(StatusCodes.CREATED).send(savedRequest))
+            .catch((error: any) => BaseController.handleError(error, res));
     }
 
-    public getSenderRequests(req: Request, res: Response, next: Function) {
-        this.callController(
-            this.requestDataController.getSenderRequests(req.params.orgId, req.params.userId),
-            res, 200, 400);
+    async getSenderRequests(req: Request, res: Response) {
+        this.requestManager.getSenderRequests(req.params.orgId, req.params.userId)
+            .then((requests: Request[]) => res.status(StatusCodes.OK).send(requests))
+            .catch((error: any) => BaseController.handleError(error, res));
     }
 
-    public getRecipientRequests(req: Request, res: Response, next: Function) {
-        this.callController(
-            this.requestDataController.getRecipientRequests(req.params.orgId, req.params.userId),
-            res, 200, 400);
+    async getRecipientRequests(req: Request, res: Response) {
+        this.requestManager.getRecipientRequests(req.params.orgId, req.params.userId)
+            .then((requests: Request[]) => res.status(StatusCodes.OK).send(requests))
+            .catch((error: any) => BaseController.handleError(error, res));
     }
 
-    public getRequests(req: Request, res: Response, next: Function) {
-        this.callController(this.requestDataController.getAllRequests(req.params.orgId, req.params.userId),
-            res, 200, 400);
+    async getRequests(req: Request, res: Response) {
+        this.requestManager.getRequests(req.params.orgId, req.params.userId)
+            .then((requests: Request[]) => res.status(StatusCodes.OK).send(requests))
+            .catch((error: any) => BaseController.handleError(error, res));
     }
 
-    public getRequest(req: Request, res: Response, next: Function) {
-        this.callController(
-            this.requestDataController.getSpecificRequestForUser(req.params.orgId, req.params.userId, req.params.requestId),
-            res, 200, 400);
+    async getRequest(req: Request, res: Response) {
+        this.requestManager.getRequest(req.params.orgId, req.params.userId, req.params.requestId)
+            .then((request: Request) => res.status(StatusCodes.OK).send(request))
+            .catch((error: any) => BaseController.handleError(error, res));
     }
 
-    public getRecipientUsersFromRequest(req: Request, res: Response, next: Function) {
-        this.callController(
-            this.requestDataController.getRecipientUsersFromRequest(req.params.orgId, req.params.userId, req.params.requestId),
-            res, 200, 400);
+    async getRecipientUsersFromRequest(req: Request, res: Response) {
+        this.requestManager.getRecipientUsersFromRequest(req.params.orgId, req.params.userId, req.params.requestId)
+            .then((users: User[]) => res.status(StatusCodes.OK).send(users))
+            .catch((error: any) => BaseController.handleError(error, res));
     }
-
 }

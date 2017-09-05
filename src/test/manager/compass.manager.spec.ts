@@ -3,7 +3,6 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as Sinon from 'sinon';
 import UserDataController from "../../data/datacontroller/user.datacontroller";
-import OrganizationDataController from "../../data/datacontroller/organization.datacontroller";
 import CompassDataController from "../../data/datacontroller/compass.datacontroller";
 import CompassManager from "../../api/manager/compass.manager";
 import StatisticsManager from "../../api/manager/statistics.manager";
@@ -11,6 +10,8 @@ import StatisticsDataController from "../../data/datacontroller/statistics.datac
 import Group from "../../data/models/organization/group.model";
 import { skills } from "../util/statistics.manager.util";
 import { validateCompassTodo } from "../../util/model.validator";
+
+const dummy: any = {};
 
 suite("CompassManager tests", () => {
 
@@ -57,26 +58,27 @@ suite("CompassManager tests", () => {
             ];
             const mockSkills = sinon.mock();
             const getUserGroups = sinon.stub();
+            const getOrganizationByDbName = sinon.stub();
+
             getUserGroups.withArgs(orgId, "5984342227cd340363dc84c7").resolves(aboutUserGroups);
             getUserGroups.withArgs(orgId, "5984342227cd340363dc84aa").resolves(senderUserGroups);
+            getOrganizationByDbName.withArgs(orgId).resolves({dbName: orgId});
 
             const groupDataController: any = {getUserGroups: getUserGroups};
+            const organizationDataController: any = {getOrganizationByDbName: getOrganizationByDbName};
 
             const getSkillsByIds = sinon.stub(CompassDataController, "getSkillsByIds");
             const generateTodo = sinon.stub(CompassManager, "generateTodo");
-            const getOrganizationByDbName = sinon.stub(OrganizationDataController, "getOrganizationByDbName");
             const getAboutUser = sinon.stub(CompassManager, "getAboutUser");
 
-            getOrganizationByDbName.withArgs(orgId).resolves({dbName: orgId});
             getAboutUser.withArgs(orgId, aboutUserId).resolves(aboutUserId);
 
             getSkillsByIds.withArgs(orgId, ["5940f6044d0d550007d863df", "5940f5f44d0d550007d863dc"])
                 .resolves(mockSkills);
 
-            const compassManager = new CompassManager(groupDataController);
+            const compassManager = new CompassManager(groupDataController, organizationDataController);
             const result = await compassManager.answerCard(aboutUserId, senderId, orgId, userId);
 
-            getOrganizationByDbName.restore();
             getSkillsByIds.restore();
             generateTodo.restore();
             getAboutUser.restore();
@@ -110,16 +112,19 @@ suite("CompassManager tests", () => {
             ];
 
             const getUserGroups = sinon.stub();
+            const getOrganizationByDbName = sinon.stub();
+
             getUserGroups.withArgs(orgId, "5984342227cd340363dc84c7").resolves(aboutUserGroups);
             getUserGroups.withArgs(orgId, "5984342227cd340363dc84aa").resolves(senderUserGroups);
-
+            getOrganizationByDbName.withArgs(orgId).resolves({dbName: orgId});
 
             const groupDataController: any = {getUserGroups: getUserGroups};
+            const organizationDataController: any = {getOrganizationByDbName: getOrganizationByDbName};
 
             const getSkillsByIds = sinon.stub(CompassDataController, "getSkillsByIds");
             const generateTodo = sinon.stub(CompassManager, "generateTodo");
 
-            const compassManager = new CompassManager(groupDataController);
+            const compassManager = new CompassManager(groupDataController, organizationDataController);
 
             compassManager.answerCard(aboutUserId, senderId, orgId, userId)
                 .then(() => {
@@ -437,7 +442,7 @@ suite("CompassManager tests", () => {
             const getStatisticsByUserId = sinon.stub(StatisticsDataController, 'getStatisticsByUserId');
             getStatisticsByUserId.withArgs(orgId, userId).resolves(mockStatistics);
 
-            const compassManager = new CompassManager(groupDataController);
+            const compassManager = new CompassManager(groupDataController, dummy);
             const result = await compassManager.getStatistics(orgId, userId);
 
             getStatistics.restore();

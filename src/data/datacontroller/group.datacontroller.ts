@@ -1,5 +1,6 @@
 import {GroupCollection, GroupModel} from "../database/schema/organization/group.schema";
 import Group from "../models/organization/group.model";
+import { ErrorType, PlenuumError } from "../../util/errorhandler";
 
 export interface GroupDataController {
     createGroup: ((orgId: string, group: Group) => Promise<any>);
@@ -38,7 +39,7 @@ const getGroupDataController = (): GroupDataController => {
             return GroupCollection(orgId).findById(groupId).lean().exec()
                 .then((group: any) => {
                     if (group.users.includes(userId)) {
-                        throw new Error("User is already part of this group");
+                        throw new PlenuumError("User is already part of this group", ErrorType.NOT_ALLOWED);
                     } else {
                         return GroupCollection(orgId).update({_id: groupId}, {$push: {users: userId}}).lean().exec();
                     }
@@ -49,7 +50,7 @@ const getGroupDataController = (): GroupDataController => {
             return GroupCollection(orgId).findById(groupId).lean().exec()
                 .then((group: any) => {
                     if (!group.users.includes(userId)) {
-                        throw new Error("User is not part of this group");
+                        throw new PlenuumError("User is not part of this group", ErrorType.NOT_ALLOWED);
                     }
                     return GroupCollection(orgId).update({_id: groupId}, {$pull: {users: userId}}).lean().exec();
                 });
@@ -59,7 +60,7 @@ const getGroupDataController = (): GroupDataController => {
             return GroupCollection(orgId).update({_id: groupId}, group).exec()
                 .then((result) => {
                     if (result.nModified === 0) {
-                        throw new Error('Group was not found');
+                        throw new PlenuumError('Group was not found', ErrorType.NOT_FOUND);
                     }
                 });
         }

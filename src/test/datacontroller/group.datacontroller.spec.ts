@@ -151,7 +151,6 @@ suite("Group datacontroller", () => {
             testGroup.name = testGroup.name + " UPDATED";
             groupDataController.updateGroup('hipteam', testGroup._id, testGroup)
                 .then((res: any) => {
-                    console.log(res);
                     done();
                 })
                 .catch((err: any) => done(err))

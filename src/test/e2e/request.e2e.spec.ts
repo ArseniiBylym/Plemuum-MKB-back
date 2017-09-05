@@ -6,7 +6,7 @@ import Request from "../../data/models/organization/request.model";
 import { authenticate, fixtureLoader, testUser } from "../mock/fixture.loader";
 import { getDatabaseManager } from "../../factory/database.factory";
 import config from "../../../config/config";
-import { bearerAuthHeader } from "../header.helper";
+import { bearerAuthHeader } from "../util/header.helper";
 
 const orgId = "hipteam";
 const userId = "5984342227cd340363dc84ac";
@@ -14,169 +14,125 @@ const requestId = "59844c1cd0b5d006da3c9620";
 
 suite("Request entity related request tests", () => {
 
-    before((done) => {
-        getDatabaseManager().openConnection(config.mongoUrl)
-            .then(() => fixtureLoader())
-            .then(value => done())
-            .catch((error) => {
-                console.error(error);
-                done();
-            })
+    before(async () => {
+        await getDatabaseManager().openConnection(config.mongoUrl);
+        await fixtureLoader();
     });
 
-    after(done => {
-        getDatabaseManager().closeConnection()
-            .then(() => done())
-            .catch(() => done());
-    });
+    after(async () => await getDatabaseManager().closeConnection());
 
     suite("Create new request", () => {
         const url = `/api/${orgId}/request`;
 
-        test("Should be able to post a request", done => {
+        test("Should be able to post a request", async () => {
             const requestForm = {
                 senderId: "sender",
                 recipientId: ['first'],
                 requestMessage: 'Message'
             };
 
-            authenticate(testUser)
-                .then(token => {
-                    request(app)
-                        .post(url)
-                        .set(bearerAuthHeader(token))
-                        .send(requestForm)
-                        .expect(200)
-                        .then(response => {
-                            modelValidator.validateRequest(response.body);
-                            done();
-                        });
-                });
+            const token = await authenticate(testUser);
+            const response = await request(app)
+                .post(url)
+                .set(bearerAuthHeader(token))
+                .send(requestForm)
+                .expect(201);
+            modelValidator.validateRequest(response.body);
         });
 
-        test("Should return 400 and error object if body is incorrect", done => {
+        test("Should return 400 and error object if body is incorrect", async () => {
             const incorrectRequestForm = {
                 senderId: "sender",
                 requestMessage: 'Message'
             };
-            authenticate(testUser)
-                .then(token => {
-                    request(app)
-                        .post(url)
-                        .set(bearerAuthHeader(token))
-                        .send(incorrectRequestForm)
-                        .expect(400)
-                        .then(response => {
-                            modelValidator.validateError(response.body);
-                            done();
-                        });
-                });
+            const token = await authenticate(testUser)
+            const response = await request(app)
+                .post(url)
+                .set(bearerAuthHeader(token))
+                .send(incorrectRequestForm)
+                .expect(400);
+            modelValidator.validateError(response.body);
         })
     });
 
     suite("Get all request for user", () => {
         const url = `/api/${orgId}/user/${userId}/requests`;
 
-        test("Should be able to get all request for user", done => {
-            authenticate(testUser)
-                .then(token => {
-                    request(app)
-                        .get(url)
-                        .set(bearerAuthHeader(token))
-                        .expect(200)
-                        .then(response => {
-                            expect(response.body).to.be.an.instanceOf(Array);
-                            assert(response.body.length >= 1, "Check if there's at least one element in the response array");
-                            response.body.forEach((requestObj: Request) => {
-                                modelValidator.validateRequest(requestObj);
-                            });
-                            done();
-                        }).catch((err) => done(err));
-                });
-        })
+        test("Should be able to get all request for user", async () => {
+            const token = await authenticate(testUser);
+            const response = await request(app)
+                .get(url)
+                .set(bearerAuthHeader(token))
+                .expect(200);
+            expect(response.body).to.be.an.instanceOf(Array);
+            assert(response.body.length >= 1, "Check if there's at least one element in the response array");
+            response.body.forEach((requestObj: Request) => {
+                modelValidator.validateRequest(requestObj);
+            });
+        });
     });
 
     suite("Get user's sent requests", () => {
         const url = `/api/${orgId}/user/${userId}/requests/sender`;
 
-        test("Should be able to get user's sent requests", done => {
-            authenticate(testUser)
-                .then(token => {
-                    request(app)
-                        .get(url)
-                        .set(bearerAuthHeader(token))
-                        .expect(200)
-                        .then(response => {
-                            expect(response.body).to.be.an.instanceOf(Array);
-                            assert(response.body.length >= 1, "Check if there's at least one element in the response array");
-                            response.body.forEach((requestObj: Request) => {
-                                modelValidator.validateRequest(requestObj);
-                                assert(requestObj.senderId === userId, 'senderId should be the same as the userId')
-                            });
-                            done();
-                        }).catch((err) => done(err));
-                });
+        test("Should be able to get user's sent requests", async () => {
+            const token = await authenticate(testUser);
+            const response = await request(app)
+                .get(url)
+                .set(bearerAuthHeader(token))
+                .expect(200);
+            expect(response.body).to.be.an.instanceOf(Array);
+            assert(response.body.length >= 1, "Check if there's at least one element in the response array");
+            response.body.forEach((requestObj: Request) => {
+                modelValidator.validateRequest(requestObj);
+                assert(requestObj.senderId === userId, 'senderId should be the same as the userId')
+            });
         })
     });
 
     suite("Get user's received requests", () => {
         const url = `/api/${orgId}/user/${userId}/requests/recipient`;
-        test("Should be able to get user's received requests", done => {
-            authenticate(testUser)
-                .then(token => {
-                    request(app)
-                        .get(url)
-                        .set(bearerAuthHeader(token))
-                        .expect(200)
-                        .then(response => {
-                            expect(response.body).to.be.an.instanceOf(Array);
-                            assert(response.body.length >= 1, "Check if there's at least one element in the response array");
-                            response.body.forEach((requestObj: Request) => {
-                                modelValidator.validateRequest(requestObj);
-                                assert(requestObj.recipientId.indexOf(userId) !== -1, 'senderId should be the same as the userId')
-                            });
-                            done();
-                        }).catch((err) => done(err));
-                });
+        test("Should be able to get user's received requests", async () => {
+            const token = await authenticate(testUser);
+            const response = await request(app)
+                .get(url)
+                .set(bearerAuthHeader(token))
+                .expect(200)
+            expect(response.body).to.be.an.instanceOf(Array);
+            assert(response.body.length >= 1, "Check if there's at least one element in the response array");
+            response.body.forEach((requestObj: Request) => {
+                modelValidator.validateRequest(requestObj);
+                assert(requestObj.recipientId.indexOf(userId) !== -1, 'senderId should be the same as the userId')
+            });
         })
     });
 
     suite("Get a single request", () => {
         const url = `/api/${orgId}/user/${userId}/requests/${requestId}`;
-        test("Should be able to get a single request", done => {
-            authenticate(testUser)
-                .then(token => {
-                    request(app)
-                        .get(url)
-                        .set(bearerAuthHeader(token))
-                        .expect(200)
-                        .then(response => {
-                            modelValidator.validateRequest(response.body);
-                            assert(response.body._id === requestId, "request's id should match with the url param id");
-                            done();
-                        }).catch((err) => done(err));
-                });
-        })
+        test("Should be able to get a single request", async () => {
+            const token = await authenticate(testUser);
+            const response = await request(app)
+                .get(url)
+                .set(bearerAuthHeader(token))
+                .expect(200);
+            modelValidator.validateRequest(response.body);
+            assert(response.body._id === requestId, "request's id should match with the url param id");
+        });
     });
 
     suite("Get the recipients of a request", () => {
         const url = `/api/${orgId}/user/${userId}/requests/${requestId}/recipients`;
-        test("Should be able to get the recipients of a request", done => {
-            authenticate(testUser)
-                .then(token => {
-                    request(app)
-                        .get(url)
-                        .set(bearerAuthHeader(token))
-                        .expect(200)
-                        .then(response => {
-                            expect(response.body).to.be.an.instanceOf(Array);
-                            assert(response.body.length >= 1, "Check if there's at least one element in the response array");
-                            response.body.forEach((user: any) => {
-                                modelValidator.validateUser(user);
-                            });
-                            done();
-                        }).catch((err) => done(err));
-                });
-        })
+        test("Should be able to get the recipients of a request", async () => {
+            const token = await authenticate(testUser)
+            const response = await request(app)
+                .get(url)
+                .set(bearerAuthHeader(token))
+                .expect(200);
+            expect(response.body).to.be.an.instanceOf(Array);
+            assert(response.body.length >= 1, "Check if there's at least one element in the response array");
+            response.body.forEach((user: any) => {
+                modelValidator.validateUser(user);
+            });
+        });
     });
 });

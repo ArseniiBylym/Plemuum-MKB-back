@@ -1,38 +1,42 @@
-import { Request, Response } from "express";
 import BaseController from "./base.controller";
 import FeedbackDataController from "../../data/datacontroller/feedback.datacontroller";
 import { formError } from "../../util/errorhandler";
-import Feedback from "../../data/models/organization/feedback.model";
 import * as StatusCodes from 'http-status-codes';
+import { validate } from "../../util/input.validator";
 
 export default class FeedbackController extends BaseController {
 
-    public async getFeedbacks(req: Request, res: Response,) {
+    async getFeedbacks(req: any, res: any,) {
         return FeedbackDataController.getAllFeedback(req.params.orgId, req.params.userId)
             .then((result) => res.status(StatusCodes.OK).send(result))
-            .catch((error) => res.status(StatusCodes.BAD_REQUEST).json(formError(error)));
+            .catch((err) => res.status(BaseController.getErrorStatus(err)).send(formError(err)));
     }
 
-    public async getSentFeedbacks(req: Request, res: Response,) {
+    async getSentFeedbacks(req: any, res: any,) {
         return FeedbackDataController.getSentFeedbacks(req.params.orgId, req.params.userId)
             .then((result) => res.status(StatusCodes.OK).send(result))
-            .catch((error) => res.status(StatusCodes.BAD_REQUEST).json(formError(error)));
+            .catch((err) => res.status(BaseController.getErrorStatus(err)).send(formError(err)));
     }
 
-    public async postFeedback(req: Request, res: Response) {
-        return FeedbackController.validateFeedback(req.body)
-            .then((feedback) => FeedbackDataController.saveFeedback(req.params.orgId, feedback))
-            .then((result) => res.status(StatusCodes.OK).send(result))
-            .catch((error) => res.status(StatusCodes.BAD_REQUEST).json(formError(error)));
+    async postFeedback(req: any, res: any) {
+        req.checkBody('senderId', 'Missing senderId').notEmpty();
+        req.checkBody('recipientId', 'Missing recipientId').notEmpty();
+        req.checkBody('context', 'Missing context').notEmpty();
+        req.checkBody('message', 'Missing message').notEmpty();
+        req.checkBody('type', 'Missing type').notEmpty();
+
+        if (!await validate(req, res)) {
+            return;
+        }
+
+        return FeedbackDataController.saveFeedback(req.params.orgId, req.body)
+            .then((result) => res.status(StatusCodes.CREATED).send(result))
+            .catch((err) => res.status(BaseController.getErrorStatus(err)).send(formError(err)));
     }
 
-    public async getIncomingFeedbacks(req: Request, res: Response,) {
+    async getIncomingFeedbacks(req: any, res: any,) {
         return FeedbackDataController.getIncomingFeedbacks(req.params.orgId, req.params.userId)
             .then((result) => res.status(StatusCodes.OK).send(result))
-            .catch((error) => res.status(StatusCodes.BAD_REQUEST).json(formError(error)));
-    }
-
-    public static validateFeedback(feedback: Feedback): Promise<Feedback> {
-        return feedback ? Promise.resolve(feedback) : Promise.reject("Invalid request")
+            .catch((err) => res.status(BaseController.getErrorStatus(err)).send(formError(err)));
     }
 }

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import BaseController from "./base.controller";
-import FileTransfer from "../../service/file/filetransfer.service";
+
 import { generateNewTokensForResetPassword } from "../../service/auth/token.manager";
 import { resetPasswordDataController } from "../../data/datacontroller/resetpassword.datacontroller";
 import UserDataController from "../../data/datacontroller/user.datacontroller";
@@ -8,141 +8,161 @@ import { User } from "../../data/models/common/user.model";
 import { UserModel } from "../../data/database/schema/common/user.schema";
 import UserManager from "../manager/user.manager";
 import { formError } from "../../util/errorhandler";
+import { promisify } from "util";
+import * as StatusCodes from 'http-status-codes';
+import { validate } from "../../util/input.validator";
 
 const formidable = require('formidable');
 
 export default class UserController extends BaseController {
 
-    fileTransferService: FileTransfer;
-    userManager: UserManager;
+    private userManager: UserManager;
 
-    constructor(fileTransferService: FileTransfer, userManager: UserManager) {
+    constructor(userManager: UserManager) {
         super();
-        this.fileTransferService = fileTransferService;
         this.userManager = userManager;
     }
 
-    static showRegistrationForm(req: Request, res: Response,) {
-        res.render("newUser", {
-            title: "Express", organizations: [{dbName: 'hipteam', name: 'hipteam'}, {dbName: 'other', name: 'other'}]
-        });
+    static showRegistrationForm(req: Request, res: Response) {
+        res.render("newUser", { title: "Express", organizations: [{ dbName: 'hipteam', name: 'hipteam' }, { dbName: 'other', name: 'other' }] });
     }
 
-    static showPictureUploadPage(req: Request, res: Response,) {
+    static showPictureUploadPage(req: Request, res: Response, ) {
         res.render("fileUploadTest", {});
     }
 
-    static showSetPasswordForm(req: Request, res: Response,) {
-        res.render("setPassword", {token: "toke"});
+    static showSetPasswordForm(req: Request, res: Response, ) {
+        res.render("setPassword", { token: "toke" });
     }
 
-    createNewUser(req: Request, res: Response,) {
-        const user: User = req.body;
-        if (user) {
-            this.callController(UserDataController.saveUser(user), res, 201, 400);
-        } else {
-            res.status(400).json({error: "invalid input"});
+    async createNewUser(req: any, res: Response) {
+        req.checkBody('firstName', 'Missing firstName').notEmpty();
+        req.checkBody('lastName', 'Missing lastName').notEmpty();
+        req.checkBody('email', 'Missing email').notEmpty();
+
+        if (!await validate(req, res)) {
+            return;
         }
+        return UserDataController.saveUser(req.body)
+            .then((result) => res.status(StatusCodes.CREATED).send(result))
+            .catch((err) => BaseController.handleError(err, res));
     }
 
-    getOrganizationUsers(req: any, res: Response,) {
-        this.callController(UserDataController.getOrganizationUsers(req.params.orgId), res, 200, 400);
+    async getOrganizationUsers(req: any, res: Response) {
+        return UserDataController.getOrganizationUsers(req.params.orgId)
+            .then((result) => res.status(StatusCodes.OK).send(result))
+            .catch((err) => BaseController.handleError(err, res));
     }
 
-    getUserByIdFromOrganization(req: Request, res: Response,) {
-        this.callController(UserDataController.getUserById(req.params.orgId, req.params.userId), res, 200, 400);
+    async getUserByIdFromOrganization(req: Request, res: Response) {
+        return UserDataController.getUserById(req.params.orgId, req.params.userId)
+            .then((result) => res.status(StatusCodes.OK).send(result))
+            .catch((err) => BaseController.handleError(err, res));
     }
 
-    resetPassword(req: Request, res: Response, next: Function) {
+    async resetPassword(req: Request, res: Response) {
+        req.checkBody('email', 'Missing email').notEmpty();
+        req.checkBody('email', 'Invalid email').isEmail();
+
+        if (!await validate(req, res)) {
+            return;
+        }
+
         return this.userManager.resetPassword(req.body.email, req.header('Origin'), req.query.welcome)
-            .then((result: any) => {
-                BaseController.send(res, 200, result.response);
+            .then((result) => {
+                res.status(StatusCodes.OK).send(result.response)
                 return result.resetPasswordToken;
             })
-            .catch((err) => BaseController.send(res, 400, formError(err)));
+            .catch((err) => BaseController.handleError(err, res));
     }
 
-    setPassword(req: Request, res: Response,) {
-        const data = req.body;
-        const token = data.token;
+    async setPassword(req: any, res: any) {
+        req.checkBody('token', 'Missing token').notEmpty();
+        req.checkBody('newPassword', 'Missing newPassword').notEmpty();
 
-        resetPasswordDataController.getResetPasswordByToken(token)
-            .then((resetedPassword: any) => {
-                return new Promise((resolve, reject) => {
-                    if (resetedPassword.token_expiry <= new Date()) {
-                        reject("Token expired");
-                        return;
-                    }
-                    const {tokenExpiry, tokenExpired} = generateNewTokensForResetPassword();
-                    resetPasswordDataController.updateResetPassword(resetedPassword._id, tokenExpired)
-                        .then((result) => resolve(result))
-                        .catch((err) => reject("Something went wrong, it was not possible to change your " +
-                            "password. Please start the process again!"))
-                });
-            })
-            .then((resetedPassword: any) =>
-                UserDataController.changeUserPasswordByUserId(resetedPassword.userId, data.newPassword))
-            .then((updatedUser) => {
-                if (!updatedUser) {
-                    res.status(404).json({error: "User not found"});
-                } else {
-                    res.json({
-                        successMessage: "Your password was successfully changed. You can now go to Plenuum " +
-                        "web app and log with new password"
-                    });
-                }
-            })
-            .catch((err: any) => res.json({error: err}));
+        if (!await validate(req, res)) {
+            return;
+        }
+
+        return this.userManager.setPassword(req.body.token, req.body.newPassword)
+            .then((result) => res.status(StatusCodes.OK).send(result))
+            .catch((err) => BaseController.handleError(err, res));
     }
 
-    changePassword(req: Request, res: Response,) {
-        UserDataController.changeUserPassword(req.body.email, req.body.newPassword)
+    async changePassword(req: Request, res: Response) {
+        req.checkBody('email', 'Missing email').notEmpty();
+        req.checkBody('email', 'Invalid email').isEmail();
+        req.checkBody('password', 'Missing password').notEmpty();
+        req.checkBody('newPassword', 'Missing newPassword').notEmpty();
+
+        if (!await validate(req, res)) {
+            return;
+        }
+
+        return UserDataController.changeUserPassword(req.body.email, req.body.newPassword)
             .then((updatedUser: UserModel) => res
                 .status(!updatedUser ? 404 : 200)
-                .send(!updatedUser ? {error: "User not found"} : updatedUser)
+                .send(!updatedUser ? { error: "User not found" } : updatedUser)
             )
-            .catch((error: any) => res.json({error: error}));
-
+            .catch((err) => BaseController.handleError(err, res));
     }
 
-    setPicture(req: any, res: Response,) {
-        this.handleProfilePictureUpload(req, req.user._id)
+    async setPicture(req: any, res: Response) {
+        return this.handleProfilePictureUpload(req, req.user._id)
             .then((result) => res.send(result))
             .catch((err: Error) => res.status(400).send(formError(err)))
     }
 
-    handleProfilePictureUpload(req: any, userId: string): Promise<any> {
+    async setNotificationDevice(req: any, res: Response) {
+        req.checkBody('token', 'Missing token').notEmpty();
+
+        if (!await validate(req, res)) {
+            return;
+        }
+
+        return UserDataController.setUserNotificationDevice(req.user._id, req.body.token)
+            .then((result) => res.send(result))
+            .catch((err) => BaseController.handleError(err, res));
+    }
+
+    async refreshNotificationDevice(req: any, res: Response) {
+        req.checkBody('oldToken', 'Missing oldToken').notEmpty();
+        req.checkBody('newToken', 'Missing newToken').notEmpty();
+
+        if (!await validate(req, res)) {
+            return;
+        }
+
+        return UserDataController.refreshNotificationDevice(req.user._id, req.body.oldToken, req.body.newToken)
+            .then((result) => res.send(result))
+            .catch((err) => BaseController.handleError(err, res));
+    }
+
+    async removeNotificationToken(req: any, res: Response) {
+        req.checkBody('token', 'Missing token').notEmpty();
+
+        if (!await validate(req, res)) {
+            return;
+        }
+        
+        return UserDataController.removeNotificationToken(req.user._id, req.body.token)
+            .then((result) => res.send(result))
+            .catch((err) => BaseController.handleError(err, res));
+    }
+
+    private async handleProfilePictureUpload(req: any, userId: string): Promise<any> {
+        const form = new formidable.IncomingForm();
+        form.keepExtensions = true;
+        const { parseError, fields, files } = await this.parseForm(req, form);
+        if (!parseError) {
+            return this.userManager.profilePictureUpload(files.avatar, req.user._id);
+        }
+        throw new Error("Profile picture could not be set");
+    }
+
+    private async parseForm(req: any, form: any): Promise<any> {
         return new Promise((resolve, reject) => {
-            const form = new formidable.IncomingForm();
-            form.keepExtensions = true;
-            form.parse(req, (parseError: any, fields: any, files: any) => {
-                if (!parseError) {
-                    this.fileTransferService.sendFile(files.avatar, req.user._id)
-                        .then((pictureUrl) => UserDataController.setUserPic(req.user._id, pictureUrl))
-                        .then((result) => resolve(result))
-                        .catch((err) => reject(err));
-                } else {
-                    throw new Error("Profile picture could not be set");
-                }
-            });
+            form.parse(req, (parseError: any, fields: any, files: any) => resolve({ parseError, fields, files }));
         });
-    }
-
-    setNotificationDevice(req: any, res: Response) {
-        UserDataController.setUserNotificationDevice(req.user._id, req.body.token)
-            .then( (result) => res.send(result))
-            .catch((err: Error) => res.status(400).send(formError(err)))
-    }
-
-    refreshNotificationDevice(req: any, res: Response) {
-        UserDataController.refreshNotificationDevice(req.user._id, req.body.oldToken, req.body.newToken)
-            .then((result) => res.send(result))
-            .catch((err: Error) => res.status(400).send(formError(err)))
-    }
-
-    removeNotificationToken(req: any, res: Response) {
-        UserDataController.removeNotificationToken(req.user._id, req.body.token)
-            .then((result) => res.send(result))
-            .catch((err: Error) => res.status(400).send(formError(err)))
     }
 }

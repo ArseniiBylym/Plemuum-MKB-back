@@ -1,15 +1,22 @@
 import { OrganizationCollection } from "../database/schema/organization/organization.schema";
 import Organization from "../models/organization/organization.model";
 
-const OrganizationDataController = {
+export interface OrganizationDataController {
+    getOrganizationByDbName: (dbName: string) => Promise<any>;
+    saveNewOrganization: (organization: Organization) => Promise<any>
+}
 
-    getOrganizationByDbName: function (dbName: string): Promise<any> {
-        return OrganizationCollection().findOne({dbName: dbName}).lean().exec();
-    },
+const getOrganizationDataController = (): OrganizationDataController => {
+    return {
+        getOrganizationByDbName: (dbName: string): Promise<any> => {
+            return OrganizationCollection().findOne({dbName: dbName}).lean().exec();
+        },
 
-    saveNewOrganization: function (organization: Organization): Promise<any> {
-        return new (OrganizationCollection())(organization).save();
+        saveNewOrganization: (organization: Organization): Promise<any> => {
+            return new (OrganizationCollection())(organization).save();
+        }
     }
+
 };
 
-export default OrganizationDataController
+export { getOrganizationDataController }
