@@ -2,8 +2,7 @@
   {
     "_id": "599e89e390adc5039fbc285b",
     "about": "5984342227cd340363dc84c7",
-    "recipient": "5984342227cd340363dc84af",
-    "createdBy": "5984342227cd340363dc84b0",
+    "owner": "5984342227cd340363dc84b0",
     "questions": [
       {
         "sentence": {

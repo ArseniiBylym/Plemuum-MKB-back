@@ -24,7 +24,7 @@ export default class CompassManager {
         this.organizationDataController = organizationDataController;
     }
 
-    async answerCard(aboutUserId: string, senderId: string, orgId: string, userId: string) {
+    async answerCard(aboutUserId: string, ownerId: string, orgId: string) {
         const organization = await this.organizationDataController.getOrganizationByDbName(orgId);
         CompassManager.checkOrganization(organization);
 
@@ -32,7 +32,7 @@ export default class CompassManager {
         CompassManager.checkAboutUser(aboutUser);
 
         const aboutUserGroups = await this.groupDataController.getUserGroups(orgId, aboutUserId);
-        const senderUserGroups = await this.groupDataController.getUserGroups(orgId, senderId);
+        const senderUserGroups = await this.groupDataController.getUserGroups(orgId, ownerId);
 
         const answerGroups: Group[] = [];
         const answerCardRelationGroups = senderUserGroups.forEach(
@@ -48,13 +48,16 @@ export default class CompassManager {
         let answerSkillIds: string[] = [];
         answerGroups.forEach((group) => answerSkillIds = answerSkillIds.concat(group.skills));
         const aboutUserSkills = await CompassDataController.getSkillsByIds(orgId, answerSkillIds);
-        return CompassManager.generateTodo(aboutUser, senderId, organization, userId, aboutUserSkills);
+        return CompassManager.buildUpNewTodoResponse(ownerId, organization, aboutUser, aboutUserSkills);
     }
 
-    static async generateTodo(aboutUser: UserModel, senderId: string, organization: Organization, userId: string,
-                              skills: SkillModel[]): Promise<any> {
-        const newTodo = CompassManager.buildUpNewTodoResponse(userId, senderId, organization, aboutUser, skills);
-        return CompassDataController.saveCompassTodo(organization.dbName, newTodo);
+    async autoGenerateTodo(orgId: string) {
+        const organizationGroups = await this.groupDataController.getGroups(orgId);
+        const groupsWithTodoRelations = organizationGroups.filter((group) => group.todoCardRelations.length > 0);
+
+        // CompassDataController.saveCompassTodo(organization.dbName, newTodo);
+
+        return groupsWithTodoRelations;
     }
 
     static checkAnswerCardRelation(answerGroups: Group[]) {
@@ -81,8 +84,7 @@ export default class CompassManager {
         return UserDataController.getUserById(orgId, userId, ['_id', 'firstName', 'lastName']);
     }
 
-    static buildUpNewTodoResponse(senderId: string, recipientId: string,
-                                  organization: Organization, aboutUser: UserModel, skills: SkillModel[]): any {
+    static buildUpNewTodoResponse(ownerId: string, organization: Organization, aboutUser: UserModel, skills: SkillModel[]): any {
         let numberOfSentences = organization.todoSentenceNumber;
         let possibleSentences: Sentence[] = [];
         const sentencesToBeAnswered: any[] = [];
@@ -108,8 +110,7 @@ export default class CompassManager {
 
         return {
             about: aboutUser._id,
-            recipient: recipientId,
-            createdBy: senderId,
+            owner: ownerId,
             questions: sentencesToBeAnswered
         };
     }

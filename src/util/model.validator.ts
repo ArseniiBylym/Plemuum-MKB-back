@@ -68,8 +68,7 @@ function validateGroup(group: any) {
 
 function validateCompassTodo(result: any, todoSentenceNumber: number) {
     expect(result).to.haveOwnProperty("about");
-    expect(result).to.haveOwnProperty("recipient");
-    expect(result).to.haveOwnProperty("createdBy");
+    expect(result).to.haveOwnProperty("owner");
     expect(result).to.haveOwnProperty("questions");
 
     expect(result.questions).to.be.instanceof(Array);
