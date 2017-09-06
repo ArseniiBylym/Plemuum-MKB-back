@@ -37,15 +37,13 @@ suite("Compass request test", () => {
                 .then(token => {
                     request(app)
                         .post(url)
-                        .send({aboutUserId: "5984342227cd340363dc84c7", senderId: "5984342227cd340363dc84aa"})
+                        .send({aboutUserId: "5984342227cd340363dc84c7"})
                         .set(bearerAuthHeader(token))
                         .expect(200)
                         .then(response => {
                             should().exist(response.body);
-                            expect(response.body).to.haveOwnProperty("_id");
-                            expect(response.body).to.haveOwnProperty("recipient");
-                            expect(response.body).to.haveOwnProperty("createdBy");
-                            expect(response.body).to.haveOwnProperty("questions");
+                            expect(response.body).to.haveOwnProperty("about");
+                            expect(response.body).to.haveOwnProperty("owner");
                             expect(response.body.questions).to.be.instanceof(Array);
                             expect(response.body.questions).to.have.lengthOf(3);
                             expect(response.body.questions[0]).to.haveOwnProperty("sentence");
@@ -62,7 +60,7 @@ suite("Compass request test", () => {
                     // That recipientId does not exist in the mock user list
                     request(app)
                         .post(url)
-                        .send({aboutUserId: "5984342227cd340363dd84ae", senderId: "5984342227cd340363dc84b3"})
+                        .send({aboutUserId: "5984342227cd340363dd84ae"})
                         .set(bearerAuthHeader(token))
                         .expect(404)
                         .then(response => {
@@ -81,7 +79,7 @@ suite("Compass request test", () => {
                 .then(token => {
                     request(app)
                         .post(urlWhatever)
-                        .send({aboutUserId: "5984342227cd340363dd84ac", senderId: "5984342227cd340363dc84b3"})
+                        .send({aboutUserId: "5984342227cd340363dd84ac"})
                         .set(bearerAuthHeader(token))
                         .expect(404)
                         .then(response => {

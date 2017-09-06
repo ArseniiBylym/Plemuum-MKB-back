@@ -13,6 +13,7 @@ import Group from "../../data/models/organization/group.model";
 import Sentence from "../../data/models/organization/compass/sentence.model";
 import { ErrorType, PlenuumError } from "../../util/errorhandler";
 import { OrganizationDataController } from "../../data/datacontroller/organization.datacontroller";
+import { getRandomItem } from "../../test/util/utils";
 
 export default class CompassManager {
 
@@ -24,7 +25,7 @@ export default class CompassManager {
         this.organizationDataController = organizationDataController;
     }
 
-    async answerCard(aboutUserId: string, senderId: string, orgId: string, userId: string) {
+    async answerCard(aboutUserId: string, ownerId: string, orgId: string) {
         const organization = await this.organizationDataController.getOrganizationByDbName(orgId);
         CompassManager.checkOrganization(organization);
 
@@ -32,7 +33,7 @@ export default class CompassManager {
         CompassManager.checkAboutUser(aboutUser);
 
         const aboutUserGroups = await this.groupDataController.getUserGroups(orgId, aboutUserId);
-        const senderUserGroups = await this.groupDataController.getUserGroups(orgId, senderId);
+        const senderUserGroups = await this.groupDataController.getUserGroups(orgId, ownerId);
 
         const answerGroups: Group[] = [];
         const answerCardRelationGroups = senderUserGroups.forEach(
@@ -48,13 +49,30 @@ export default class CompassManager {
         let answerSkillIds: string[] = [];
         answerGroups.forEach((group) => answerSkillIds = answerSkillIds.concat(group.skills));
         const aboutUserSkills = await CompassDataController.getSkillsByIds(orgId, answerSkillIds);
-        return CompassManager.generateTodo(aboutUser, senderId, organization, userId, aboutUserSkills);
+        return CompassManager.buildUpNewTodoResponse(ownerId, organization.todoSentenceNumber, aboutUserId, aboutUserSkills);
     }
 
-    static async generateTodo(aboutUser: UserModel, senderId: string, organization: Organization, userId: string,
-                              skills: SkillModel[]): Promise<any> {
-        const newTodo = CompassManager.buildUpNewTodoResponse(userId, senderId, organization, aboutUser, skills);
-        return CompassDataController.saveCompassTodo(organization.dbName, newTodo);
+    async autoGenerateTodo(orgId: string) {
+        const organization = await this.organizationDataController.getOrganizationByDbName(orgId);
+        const organizationGroups = await this.groupDataController.getGroups(orgId);
+        const groupsWithTodoRelations = organizationGroups.filter((group) => group.todoCardRelations.length > 0);
+
+        if(groupsWithTodoRelations.length === 0) {
+            throw new PlenuumError("Organization has no group with Todo relations", ErrorType.NOT_FOUND)
+        }
+
+        const randomGroup = getRandomItem(groupsWithTodoRelations);
+        const randomOwnerUserId = getRandomItem(randomGroup.users);
+
+        const randomAboutGroupId = getRandomItem(randomGroup.todoCardRelations);
+        const randomAboutGroup = await this.groupDataController.getGroupById(orgId, randomAboutGroupId);
+
+        const randomAboutUserId = getRandomItem(randomAboutGroup.users);
+        const skills = await CompassDataController.getSkillsByIds(orgId, randomAboutGroup.skills); 
+
+        const todo = CompassManager.buildUpNewTodoResponse(randomOwnerUserId, organization.todoSentenceNumber, randomAboutGroupId, skills)
+
+        return CompassDataController.saveCompassTodo(organization.dbName, todo);;
     }
 
     static checkAnswerCardRelation(answerGroups: Group[]) {
@@ -81,9 +99,7 @@ export default class CompassManager {
         return UserDataController.getUserById(orgId, userId, ['_id', 'firstName', 'lastName']);
     }
 
-    static buildUpNewTodoResponse(senderId: string, recipientId: string,
-                                  organization: Organization, aboutUser: UserModel, skills: SkillModel[]): any {
-        let numberOfSentences = organization.todoSentenceNumber;
+    static buildUpNewTodoResponse(ownerId: string, numberOfSentences: number, aboutUserId: string, skills: SkillModel[]): any {
         let possibleSentences: Sentence[] = [];
         const sentencesToBeAnswered: any[] = [];
         skills.forEach((skill) => possibleSentences = possibleSentences.concat(skill.sentences));
@@ -107,9 +123,8 @@ export default class CompassManager {
         }
 
         return {
-            about: aboutUser._id,
-            recipient: recipientId,
-            createdBy: senderId,
+            about: aboutUserId,
+            owner: ownerId,
             questions: sentencesToBeAnswered
         };
     }

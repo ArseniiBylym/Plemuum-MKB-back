@@ -15,13 +15,12 @@ export default class CompassController extends BaseController {
 
     async answerCard(req: any, res: any) {
         req.checkBody('aboutUserId', 'Missing about user\'s ID').notEmpty();
-        req.checkBody('senderId', 'Missing sender user\'s ID').notEmpty();
 
         if (!await validate(req, res)) {
             return;
         }
 
-        return this.compassManager.answerCard(req.body.aboutUserId, req.body.senderId, req.params.orgId, req.user._id)
+        return this.compassManager.answerCard(req.body.aboutUserId, req.user._id, req.params.orgId)
             .then(savedTodo => res.status(StatusCodes.OK).send(savedTodo))
             .catch((err) => res.status(BaseController.getErrorStatus(err)).send(formError(err)));
     }
