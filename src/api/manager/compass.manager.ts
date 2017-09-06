@@ -72,9 +72,7 @@ export default class CompassManager {
 
         const todo = CompassManager.buildUpNewTodoResponse(randomOwnerUserId, organization.todoSentenceNumber, randomAboutGroupId, skills)
 
-        // CompassDataController.saveCompassTodo(organization.dbName, newTodo);
-
-        return todo;
+        return CompassDataController.saveCompassTodo(organization.dbName, todo);;
     }
 
     static checkAnswerCardRelation(answerGroups: Group[]) {
