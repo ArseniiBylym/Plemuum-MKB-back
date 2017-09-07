@@ -5,7 +5,7 @@ const devConfig: Config = {
         return '5000';
     },
     get mongoUrl() {
-        return 'mongodb://localhost'
+        return 'mongodb://mongo:27017'
     },
     get adminPwd() {
         return 'incline diadem passed hoop'
