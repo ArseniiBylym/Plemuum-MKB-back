@@ -11,8 +11,6 @@ export default (app: Express, sessionController: SessionController) => {
      * This token can be used for future requests requiring authentication, as defined in RFC6750, e.g. it can be
      * placed in the Authorization header field with the following syntax:
      *
-     * Authorization: Bearer {token}
-     *
      * @apiParam {String} email Email address
      * @apiParam {String} password Password
      *
