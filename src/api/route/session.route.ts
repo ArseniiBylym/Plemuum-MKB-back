@@ -14,13 +14,14 @@ export default (app: Express, sessionController: SessionController) => {
      * @apiParam {String} email Email address
      * @apiParam {String} password Password
      *
-     * @apiSuccess (Success 200) {String} _id User id
+     * @apiSuccess (Success 200) {String} user Logged in user
+     * @apiSuccess (Success 200) {String} user.firstName User's first name
+     * @apiSuccess (Success 200) {String} user.lastName User's last name
+     * @apiSuccess (Success 200) {String} user.email User's email address
+     * @apiSuccess (Success 200) {String} user.pictureUrl User's profile picture URL
      * @apiSuccess (Success 200) {String} token Bearer token
      * @apiSuccess (Success 200) {String} token_expiry Expiration date of the token
-     * @apiSuccess (Success 200) {Object[]} orgData Organization specific data
-     * @apiSuccess (Success 200) {String} orgData.orgId ID of the organization
-     * @apiSuccess (Success 200) {String} orgData.managerId ID of the user's manager
-     * @apiSuccess (Success 200) {String} orgData.pictureUrl URL for the user profile picture
+     * @apiSuccess (Success 200) {String[]} orgIds Organization specific data
      */
 
     /**

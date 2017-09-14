@@ -19,7 +19,12 @@ export default class SessionManager {
         }
         const updatedUser = await UserDataController.updateUserToken(user._id, tokenObj);
         return {
-            _id: updatedUser._id,
+            user: {
+                firstName: updatedUser.firstName,
+                lastName: updatedUser.lastName,
+                email: updatedUser.email,
+                pictureUrl: updatedUser.pictureUrl
+            },
             token: updatedUser.token.token,
             token_expiry: updatedUser.token.token_expiry,
             orgIds: updatedUser.orgIds
