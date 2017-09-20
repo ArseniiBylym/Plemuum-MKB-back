@@ -28,23 +28,16 @@ suite("User request tests", () => {
     });
 
     suite('Create new user', () => {
-
         const url = `/api/register/user`;
 
         test("POST: Correct request response should contain a user and return 201", async () => {
+            const token = await authenticate(testUser);
             const response = await request(app)
                 .post(url)
-                .set(basicAuthHeader)
+                .set(bearerAuthHeader(token))
                 .send(TestObjectFactory.getRegisterJohnDoe())
                 .expect(201);
             modelValidator.validateUser(response.body);
-        });
-
-        test('GET: Should return 200', done => {
-            request(app)
-                .get(url)
-                .set(basicAuthHeader)
-                .expect(200, done);
         });
     });
     suite('Get all users from organization', () => {

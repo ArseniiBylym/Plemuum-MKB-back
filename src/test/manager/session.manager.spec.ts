@@ -28,7 +28,7 @@ suite("SessionManager tests", () => {
             getResetToken.withArgs(token).resolves(resetToken);
 
             const sessionManager = new SessionManager();
-            const result = await sessionManager.checkToken(token)
+            const result = await sessionManager.checkToken(token);
             getResetToken.restore();
 
             expect(result).to.be.deep.equal(expectedResult);
@@ -52,7 +52,7 @@ suite("SessionManager tests", () => {
             getResetToken.withArgs(token).resolves(resetToken);
 
             const sessionManager = new SessionManager();
-            const result = await sessionManager.checkToken(token)
+            const result = await sessionManager.checkToken(token);
             getResetToken.restore();
 
             expect(result).to.be.deep.equal(expectedResult);
@@ -76,7 +76,7 @@ suite("SessionManager tests", () => {
             getResetToken.withArgs(token).resolves(resetToken);
 
             const sessionManager = new SessionManager();
-            const result = await sessionManager.checkToken(token)
+            const result = await sessionManager.checkToken(token);
             getResetToken.restore();
 
             expect(result).to.be.deep.equal(expectedResult);
@@ -94,7 +94,7 @@ suite("SessionManager tests", () => {
             removeToken.withArgs(userId).resolves({ success: "success" });
 
             const sessionManager = new SessionManager();
-            const result = await sessionManager.logout(userId)
+            const result = await sessionManager.logout(userId);
             removeToken.restore();
 
             expect(result).to.be.deep.equal(expectedResult);
@@ -107,7 +107,7 @@ suite("SessionManager tests", () => {
 
             const sessionManager = new SessionManager();
             try {
-                const result = await sessionManager.logout(userId)
+                const result = await sessionManager.logout(userId);
                 fail("Should throw Plenuum error!")
             } catch (err) {
                 expect(err).to.be.instanceOf(PlenuumError);
@@ -131,14 +131,14 @@ suite("SessionManager tests", () => {
                     token_expiry: tokenExpiry
                 },
                 orgIds: ["orgId"]
-            }
+            };
 
             const mockUser = {
                 _id: userId,
-            }
+            };
 
             const mockTokenObj = {token: "asdasdtoken", token_expiry: tokenExpiry};
-            
+
             const generateNewTokenObject = sinon.stub(tokenManager, "generateNewTokenObject");
             const getUserByIdWithoutOrgId = sinon.stub(UserDataController, "getUserByIdWithoutOrgId");
             const updateUserToken = sinon.stub(UserDataController, "updateUserToken");
@@ -147,21 +147,28 @@ suite("SessionManager tests", () => {
             getUserByIdWithoutOrgId.withArgs(userId).resolves(mockUser);
             updateUserToken.withArgs(userId, mockTokenObj).resolves(updatedUser);
 
-            const expectedResult = {
-                _id: updatedUser._id,
-                token: updatedUser.token.token,
-                token_expiry: updatedUser.token.token_expiry,
-                orgIds: updatedUser.orgIds
-            }
-
             const sessionManager = new SessionManager();
-            const result = await sessionManager.login(userId)
+            const result = await sessionManager.login(userId);
 
             generateNewTokenObject.restore();
             getUserByIdWithoutOrgId.restore();
             updateUserToken.restore();
 
-            expect(result).to.be.deep.equal(expectedResult);
+            expect(result).to.haveOwnProperty("user");
+            expect(result).to.haveOwnProperty("token");
+            expect(result).to.haveOwnProperty("token_expiry");
+            expect(result).to.haveOwnProperty("orgIds");
+
+            expect(result.user).to.haveOwnProperty("firstName");
+            expect(result.user).to.haveOwnProperty("lastName");
+            expect(result.user).to.haveOwnProperty("email");
+
+            expect(result.user).to.not.haveOwnProperty("token");
+            expect(result.user).to.not.haveOwnProperty("notificationToken");
+
+            expect(result.token).to.be.equal(updatedUser.token.token);
+            expect(result.token_expiry).to.be.equal(updatedUser.token.token_expiry);
+            expect(result.orgIds).to.be.equal(updatedUser.orgIds);
         });
 
         test("Valid previous token available", async () => {
@@ -169,7 +176,7 @@ suite("SessionManager tests", () => {
 
             const tokenExpiry = new Date();
             tokenExpiry.setHours(tokenExpiry.getHours() + 1);
-            
+
             const updatedUser = {
                 _id: "updatedUserId",
                 token: {
@@ -177,7 +184,7 @@ suite("SessionManager tests", () => {
                     token_expiry: new Date()
                 },
                 orgIds: ["orgId"]
-            }
+            };
 
             const mockUser = {
                 _id: userId,
@@ -185,12 +192,12 @@ suite("SessionManager tests", () => {
                     token: "prevtoken",
                     token_expiry: tokenExpiry
                 }
-            }
+            };
 
             const tokenObExpiry = new Date();
             tokenExpiry.setHours(tokenExpiry.getHours() + 7);
             const mockTokenObj = {token: "asdasdtoken", token_expiry: tokenExpiry};
-            
+
             const generateNewTokenObject = sinon.stub(tokenManager, "generateNewTokenObject");
             const getUserByIdWithoutOrgId = sinon.stub(UserDataController, "getUserByIdWithoutOrgId");
             const updateUserToken = sinon.stub(UserDataController, "updateUserToken");
@@ -204,16 +211,30 @@ suite("SessionManager tests", () => {
                 token: mockUser.token.token,
                 token_expiry: tokenObExpiry,
                 orgIds: updatedUser.orgIds
-            }
+            };
 
             const sessionManager = new SessionManager();
-            const result = await sessionManager.login(userId)
+            const result = await sessionManager.login(userId);
 
             generateNewTokenObject.restore();
             getUserByIdWithoutOrgId.restore();
             updateUserToken.restore();
 
-            expect(result).to.be.deep.equal(expectedResult);
+            expect(result).to.haveOwnProperty("user");
+            expect(result).to.haveOwnProperty("token");
+            expect(result).to.haveOwnProperty("token_expiry");
+            expect(result).to.haveOwnProperty("orgIds");
+
+            expect(result.user).to.haveOwnProperty("firstName");
+            expect(result.user).to.haveOwnProperty("lastName");
+            expect(result.user).to.haveOwnProperty("email");
+
+            expect(result.user).to.not.haveOwnProperty("token");
+            expect(result.user).to.not.haveOwnProperty("notificationToken");
+
+            expect(result.token).to.be.equal(mockUser.token.token);
+            expect(result.token_expiry).to.be.deep.equal(tokenObExpiry);
+            expect(result.orgIds).to.be.equal(updatedUser.orgIds);
         });
     });
 });

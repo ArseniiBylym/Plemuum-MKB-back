@@ -60,26 +60,6 @@ suite("UserController", () => {
         })
     });
 
-    suite("showRegistrationForm", () => {
-
-        let renderWasCalled = false;
-        let renderPage: string;
-
-        const mockResponse: any = {
-            render: (page: string) => {
-                renderWasCalled = true;
-                renderPage = page;
-            }
-        };
-
-        test("Should call res.render with newUser", done => {
-            UserController.showRegistrationForm(dummy, mockResponse);
-            assert(renderWasCalled);
-            assert(renderPage === "newUser", "Render page does not match: " + renderPage);
-            done();
-        })
-    });
-
     suite("setNotificationDevice", () => {
 
         suite("Happy cases", () => {

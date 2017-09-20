@@ -33,7 +33,7 @@ function validateRequest(request: any) {
 }
 
 function validateLoginResponse(loginResponse: any) {
-    expect(loginResponse).have.property("_id");
+    expect(loginResponse).have.property("user");
     expect(loginResponse).have.property("token");
     expect(loginResponse).have.property("token_expiry");
     expect(loginResponse).have.property("orgIds");

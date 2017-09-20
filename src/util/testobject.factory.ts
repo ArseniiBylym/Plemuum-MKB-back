@@ -19,7 +19,8 @@ function getRegisterTestUser(firstName: string, lastName: string) {
         lastName: lastName,
         email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}${Util.getRandomInt(1, 1000)}@email.com`,
         pictureUrl: "",
-        password: "asd123"
+        password: "asd123",
+        orgIds: ['hipteam'],
     };
 }
 
