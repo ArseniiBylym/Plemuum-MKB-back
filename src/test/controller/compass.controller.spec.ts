@@ -175,7 +175,7 @@ suite("CompassController tests", () => {
 
         test("Should call CompassManager and send result with 200", async () => {
             const result = sinon.mock();
-            const updateSkill = sinon.stub(CompassManager, "createOrUpdateSkill").resolves(result);
+            const updateSkill = sinon.stub(CompassManager, "updateSkill").resolves(result);
             await compassController.updateSkill(req, res);
 
             updateSkill.restore();
@@ -185,7 +185,7 @@ suite("CompassController tests", () => {
         });
 
         test("Should handle CompassManager error", async () => {
-            const updateSkill = sinon.stub(CompassManager, "createOrUpdateSkill").rejects(new PlenuumError("Error", 404));
+            const updateSkill = sinon.stub(CompassManager, "updateSkill").rejects(new PlenuumError("Error", 404));
             await compassController.updateSkill(req, res);
 
             updateSkill.restore();
@@ -200,7 +200,7 @@ suite("CompassController tests", () => {
                 array: sinon.stub().returns(["Error hint"])
             });
 
-            const updateSkill = sinon.stub(CompassManager, "createOrUpdateSkill");
+            const updateSkill = sinon.stub(CompassManager, "updateSkill");
             await compassController.updateSkill(req, res);
 
             updateSkill.restore();
