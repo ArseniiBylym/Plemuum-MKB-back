@@ -24,7 +24,6 @@ export default (app: Express, tagController: TagController) => {
      * @apiUse tag_list_data
      */
     app.route("/api/:orgId/tag")
-        .get(passport.authenticate('basic', { session: false}), tagController.showNewTagForm.bind(tagController))
         .post(passport.authenticate('basic', { session: false}), tagController.addNewTag.bind(tagController));
 
 

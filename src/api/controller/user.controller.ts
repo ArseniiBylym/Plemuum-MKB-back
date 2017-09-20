@@ -19,14 +19,6 @@ export default class UserController extends BaseController {
         this.userManager = userManager;
     }
 
-    static showPictureUploadPage(req: Request, res: Response,) {
-        res.render("fileUploadTest", {});
-    }
-
-    static showSetPasswordForm(req: Request, res: Response,) {
-        res.render("setPassword", {token: "toke"});
-    }
-
     async createNewUser(req: any, res: Response) {
         req.checkBody('firstName', 'Missing firstName').notEmpty();
         req.checkBody('lastName', 'Missing lastName').notEmpty();

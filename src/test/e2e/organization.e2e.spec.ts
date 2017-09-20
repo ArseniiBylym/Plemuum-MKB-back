@@ -28,13 +28,6 @@ suite("Organization request tests", () => {
 
     suite("Create organization", () => {
         const url = "/api/organization";
-        test("GET: should return 200", done => {
-            request(app)
-                .get(url)
-                .set(basicAuthHeader)
-                .expect(200, done);
-        });
-
         test("Register new organization, should return 201", done => {
             request(app)
                 .post(url)

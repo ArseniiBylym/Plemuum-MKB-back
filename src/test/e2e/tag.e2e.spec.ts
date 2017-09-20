@@ -20,13 +20,6 @@ suite("Tag request tests", () => {
         const orgId = 'hipteam';
         const url = `/api/${orgId}/tag`;
 
-        test("GET: should return 200", async () => {
-            await request(app)
-                .get(url)
-                .set(basicAuthHeader)
-                .expect(200);
-        });
-
         test("POST: should return 201", async () => {
             const response = await request(app)
                 .post(url)

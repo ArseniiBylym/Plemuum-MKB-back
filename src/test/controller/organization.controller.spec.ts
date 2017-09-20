@@ -48,12 +48,4 @@ suite("OrganizationController", () => {
         })
 
     });
-
-    suite("showCreateOrganizationForm", () => {
-        test("Should render newOrganization with title", async () => {
-            const res: any = {render: sinon.stub()};
-            OrganizationController.showCreateOrganizationForm(dummy, res, dummy);
-            sinon.assert.calledWith(res.render, "newOrganization", sinon.match.has("title"))
-        })
-    })
 });

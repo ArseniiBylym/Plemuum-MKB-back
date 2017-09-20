@@ -1,6 +1,5 @@
 import BaseController from "./base.controller";
 import { Request, Response } from "express";
-import { TagDataController } from "../../data/datacontroller/tag.datacontroller";
 import TagManager from "../manager/tag.manager";
 import * as StatusCodes from 'http-status-codes';
 
@@ -11,10 +10,6 @@ export default class TagController extends BaseController {
     constructor(tagManager: TagManager) {
         super();
         this.tagManager = tagManager;
-    }
-
-    async showNewTagForm(req: Request, res: Response, next: Function) {
-        res.render("newTag", { title: "Add new tag", orgId: req.params.orgId });
     }
 
     async addNewTag(req: Request, res: Response, next: Function) {

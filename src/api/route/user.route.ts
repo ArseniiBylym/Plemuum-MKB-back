@@ -109,8 +109,7 @@ export default (app: Express, userController: UserController) => {
      */
 
     app.route("/api/setPassword")
-        .post(userController.setPassword.bind(userController))
-        .get(UserController.showSetPasswordForm.bind(userController));
+        .post(userController.setPassword.bind(userController));
 
     /**
      * @api {POST} /api/user/password Change user password
@@ -156,7 +155,6 @@ export default (app: Express, userController: UserController) => {
      * @apiSuccess (Success 200) {String} orgData.pictureUrl URL for the user profile picture
      */
     app.route("/api/profile/setpicture")
-        .get(UserController.showPictureUploadPage.bind(userController))
         .post(passport.authenticate('bearer', {session: false}), userController.setPicture.bind(userController));
 
     /**
