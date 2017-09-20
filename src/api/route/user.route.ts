@@ -2,7 +2,6 @@ import { Express } from 'express';
 import UserController from "../controller/user.controller";
 import * as passport from 'passport';
 
-
 /**
  * @apiDefine user_list_data
  * @apiSuccess (Success 200) {Object[]} users List of user profiles
@@ -25,16 +24,30 @@ export default (app: Express, userController: UserController) => {
      * @apiParam {String} firstName First name of user
      * @apiParam {String} lastName Last name of user
      * @apiParam {String} email Email address
-     * @apiParam {String} [orgId] Organization ID
-     * @apiParam {String} [managerId] ID of the user's manager
+     * @apiParam {String} orgId Organization ID
      * @apiParam {String} [pictureUrl] URL for the user profile picture
      *
      * @apiUse user_list_data
      * @apiSuccess (Success 200) {Object[]} tokens Empty list of tokens
      */
     app.route("/api/register/user")
-        .get(passport.authenticate('basic', {session: false}), UserController.showRegistrationForm.bind(userController))
-        .post(passport.authenticate('basic', {session: false}), userController.createNewUser.bind(userController));
+        .post(passport.authenticate('bearer', {session: false}), userController.createNewUser.bind(userController));
+
+    /**
+     * @api {POST} /api/modify/user Modify existing user
+     * @apiName modify
+     * @apiGroup User
+     *
+     * @apiParam {String} firstName First name of user
+     * @apiParam {String} lastName Last name of user
+     * @apiParam {String} email Email address
+     * @apiParam {String} orgId Organization ID
+     * @apiParam {String} [pictureUrl] URL for the user profile picture
+     *
+     * @apiUse user_list_data
+     */
+    app.route("/api/modify/user")
+        .post(passport.authenticate('bearer', {session: false}), userController.modifyUser.bind(userController));
 
     /**
      * @api {GET} /api/:orgId/users List users of organization
@@ -66,6 +79,9 @@ export default (app: Express, userController: UserController) => {
      */
     app.route("/api/:orgId/user/:userId")
         .get(passport.authenticate('bearer', {session: false}), userController.getUserByIdFromOrganization.bind(userController));
+
+    app.route("/api/users/self")
+        .get(passport.authenticate('bearer', {session: false}), userController.getUserByToken.bind(userController));
 
     /**
      * @api {POST} /api/resetPassword Reset user's password

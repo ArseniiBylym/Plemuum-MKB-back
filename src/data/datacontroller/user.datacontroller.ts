@@ -20,6 +20,10 @@ const UserDataController = {
             .findOne({$and: [{orgIds: {$in: [orgId]}}, {_id: userId}]}, fields.join(' ')).lean().exec() as Promise<UserModel>;
     },
 
+    updateUser: function (userId: string, user: UserModel): Promise<UserModel> {
+        return UserCollection().findOneAndUpdate({_id: userId}, user).lean().exec() as Promise<UserModel>;
+    },
+
     getUserByIdWithoutOrgId: function (userId: string): Promise<UserModel> {
         return UserCollection().findById(userId).exec() as Promise<UserModel>;
     },

@@ -3,7 +3,8 @@ import { resetPasswordDataController } from "../../data/datacontroller/resetpass
 import EmailService from "../../service/email/mail.service";
 import FileTransfer from "../../service/file/filetransfer.service";
 import { generateNewTokensForResetPassword } from "../../service/auth/token.manager";
-import { PlenuumError, ErrorType } from "../../util/errorhandler";
+import { ErrorType, PlenuumError } from "../../util/errorhandler";
+import { UserModel } from "../../data/database/schema/common/user.schema";
 
 export default class UserManager {
 
@@ -15,13 +16,19 @@ export default class UserManager {
         this.fileTransferService = fileTransferService;
     }
 
+    async updateUser(user: UserModel) {
+        const id = user._id;
+        delete user._id;
+        return UserDataController.updateUser(id, user);
+    }
+
     async setPassword(token: string, newPassword: string) {
         const resetedPassword: any = await resetPasswordDataController.getResetPasswordByToken(token);
         if (resetedPassword.token_expiry <= new Date()) {
             throw new PlenuumError("Token expired", ErrorType.FORBIDDEN);
         }
 
-        const { tokenExpiry, tokenExpired } = generateNewTokensForResetPassword();
+        const {tokenExpiry, tokenExpired} = generateNewTokensForResetPassword();
         await resetPasswordDataController.updateResetPassword(resetedPassword._id, tokenExpired);
 
         const updatedUser = await UserDataController.changeUserPasswordByUserId(resetedPassword.userId, newPassword)
@@ -36,17 +43,17 @@ export default class UserManager {
 
     async resetPassword(email: string, origin: string = '', isWelcome: boolean) {
         const user = await UserDataController.getUserByEmail(email);
-        const { token, token_expiry } = UserDataController.generateToken(1);
-        const data = { userId: String(user._id), token: token, token_expiry: token_expiry, reseted: false };
+        const {token, token_expiry} = UserDataController.generateToken(1);
+        const data = {userId: String(user._id), token: token, token_expiry: token_expiry, reseted: false};
 
         const resetPassword = await resetPasswordDataController.saveResetPassword(data);
         const link = origin + "/set_new_password?token=" + resetPassword.token + "&email="
             + user.email + (isWelcome ? "&welcome=true" : "");
         const resetPasswordToken = resetPassword.token;
-        const response = { email: user.email, link: link };
+        const response = {email: user.email, link: link};
 
         await this.emailService.sendResetEmail(user.email, link);
-        return { resetPasswordToken: resetPasswordToken, response: response };
+        return {resetPasswordToken: resetPasswordToken, response: response};
     }
 
     async profilePictureUpload(avatar: any, userId: string) {

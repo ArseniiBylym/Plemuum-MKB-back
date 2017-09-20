@@ -4,6 +4,7 @@ import config from '../config/config';
 import { getDatabaseManager } from "./factory/database.factory";
 
 const server: http.Server = http.createServer(app);
+
 getDatabaseManager().openConnection(config.mongoUrl)
     .then(() => {
         server.listen(config.port);

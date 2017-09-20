@@ -1,16 +1,12 @@
 import { Request, Response } from "express";
 import BaseController from "./base.controller";
-
-import { generateNewTokensForResetPassword } from "../../service/auth/token.manager";
-import { resetPasswordDataController } from "../../data/datacontroller/resetpassword.datacontroller";
 import UserDataController from "../../data/datacontroller/user.datacontroller";
-import { User } from "../../data/models/common/user.model";
 import { UserModel } from "../../data/database/schema/common/user.schema";
 import UserManager from "../manager/user.manager";
 import { formError } from "../../util/errorhandler";
-import { promisify } from "util";
 import * as StatusCodes from 'http-status-codes';
 import { validate } from "../../util/input.validator";
+import * as crypto from 'crypto';
 
 const formidable = require('formidable');
 
@@ -23,28 +19,45 @@ export default class UserController extends BaseController {
         this.userManager = userManager;
     }
 
-    static showRegistrationForm(req: Request, res: Response) {
-        res.render("newUser", { title: "Express", organizations: [{ dbName: 'hipteam', name: 'hipteam' }, { dbName: 'other', name: 'other' }] });
-    }
-
-    static showPictureUploadPage(req: Request, res: Response, ) {
+    static showPictureUploadPage(req: Request, res: Response,) {
         res.render("fileUploadTest", {});
     }
 
-    static showSetPasswordForm(req: Request, res: Response, ) {
-        res.render("setPassword", { token: "toke" });
+    static showSetPasswordForm(req: Request, res: Response,) {
+        res.render("setPassword", {token: "toke"});
     }
 
     async createNewUser(req: any, res: Response) {
         req.checkBody('firstName', 'Missing firstName').notEmpty();
         req.checkBody('lastName', 'Missing lastName').notEmpty();
         req.checkBody('email', 'Missing email').notEmpty();
+        req.checkBody('orgIds', 'User must be part of an organization (orgIds is missing or empty)').notEmpty();
 
         if (!await validate(req, res)) {
             return;
         }
+
+        if (!req.body.password) {
+            req.body.password = crypto.randomBytes(16).toString('hex');
+        }
+
         return UserDataController.saveUser(req.body)
             .then((result) => res.status(StatusCodes.CREATED).send(result))
+            .catch((err) => BaseController.handleError(err, res));
+    }
+
+    async modifyUser(req: any, res: Response) {
+        req.checkBody('firstName', 'Missing firstName').notEmpty();
+        req.checkBody('lastName', 'Missing lastName').notEmpty();
+        req.checkBody('email', 'Missing email').notEmpty();
+        req.checkBody('orgIds', 'User must be part of an organization (orgIds is missing or empty)').notEmpty();
+
+        if (!await validate(req, res)) {
+            return;
+        }
+
+        return this.userManager.updateUser(req.body)
+            .then((result) => res.status(StatusCodes.OK).send(result))
             .catch((err) => BaseController.handleError(err, res));
     }
 
@@ -58,6 +71,23 @@ export default class UserController extends BaseController {
         return UserDataController.getUserById(req.params.orgId, req.params.userId)
             .then((result) => res.status(StatusCodes.OK).send(result))
             .catch((err) => BaseController.handleError(err, res));
+    }
+
+    async getUserByToken(req: any, res: any) {
+        try {
+            console.log(req.user);
+            const result = {
+                _id: req.user._id,
+                firstName: req.user.firstName,
+                lastName: req.user.lastName,
+                email: req.user.email,
+                pictureUrl: req.user.pictureUrl,
+                orgIds: req.user.orgIds
+            };
+            res.status(StatusCodes.OK).send(result);
+        } catch (err) {
+            BaseController.handleError(err, res)
+        }
     }
 
     async resetPassword(req: Request, res: Response) {
@@ -102,7 +132,7 @@ export default class UserController extends BaseController {
         return UserDataController.changeUserPassword(req.body.email, req.body.newPassword)
             .then((updatedUser: UserModel) => res
                 .status(!updatedUser ? 404 : 200)
-                .send(!updatedUser ? { error: "User not found" } : updatedUser)
+                .send(!updatedUser ? {error: "User not found"} : updatedUser)
             )
             .catch((err) => BaseController.handleError(err, res));
     }
@@ -144,7 +174,7 @@ export default class UserController extends BaseController {
         if (!await validate(req, res)) {
             return;
         }
-        
+
         return UserDataController.removeNotificationToken(req.user._id, req.body.token)
             .then((result) => res.send(result))
             .catch((err) => BaseController.handleError(err, res));
@@ -153,7 +183,7 @@ export default class UserController extends BaseController {
     private async handleProfilePictureUpload(req: any, userId: string): Promise<any> {
         const form = new formidable.IncomingForm();
         form.keepExtensions = true;
-        const { parseError, fields, files } = await this.parseForm(req, form);
+        const {parseError, fields, files} = await this.parseForm(req, form);
         if (!parseError) {
             return this.userManager.profilePictureUpload(files.avatar, req.user._id);
         }
@@ -162,7 +192,7 @@ export default class UserController extends BaseController {
 
     private async parseForm(req: any, form: any): Promise<any> {
         return new Promise((resolve, reject) => {
-            form.parse(req, (parseError: any, fields: any, files: any) => resolve({ parseError, fields, files }));
+            form.parse(req, (parseError: any, fields: any, files: any) => resolve({parseError, fields, files}));
         });
     }
 }
