@@ -95,8 +95,9 @@ export default (app: Express, compassController: CompassController) => {
      * @apiSuccess (Success 200) {Skill} - skill object
      */
     app.route("/api/:orgId/skills")
-        .patch(passport.authenticate('basic', {session: false}), compassController.updateSkill.bind(compassController))
-        .post(passport.authenticate('basic', {session: false}), compassController.createNewSkill.bind(compassController));
+        .get(passport.authenticate('bearer', {session: false}), compassController.getSkills.bind(compassController))
+        .patch(passport.authenticate('bearer', {session: false}), compassController.updateSkill.bind(compassController))
+        .post(passport.authenticate('bearer', {session: false}), compassController.createNewSkill.bind(compassController));
 
     /**
      * @api {GET} /api/:orgId/user/:userId/compassstatistics User Statistics

@@ -40,8 +40,13 @@ export default class CompassController extends BaseController {
             .catch((err) => res.status(BaseController.getErrorStatus(err)).send(formError(err)));
     }
 
+    async getSkills(req: any, res: any) {
+        return this.compassManager.getSkills(req.params.orgId)
+            .then(result => res.status(StatusCodes.OK).send(result))
+            .catch((err) => res.status(BaseController.getErrorStatus(err)).send(formError(err)));
+    }
+
     async updateSkill(req: any, res: any) {
-        req.checkBody('_id', 'Missing skill id').notEmpty();
         req.checkBody('name', 'Missing skill name').notEmpty();
         req.checkBody('sentences', 'Missing skill sentence').notEmpty();
         req.checkBody('sentences', 'Skill must contain at least one sentence').len({min: 1});

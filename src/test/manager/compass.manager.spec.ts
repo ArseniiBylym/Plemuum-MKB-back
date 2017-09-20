@@ -358,12 +358,12 @@ suite("CompassManager tests", () => {
         })
     });
 
-    suite("updateSkill", () => {
+    suite("createOrUpdateSkill", () => {
         test("Should be able to update a skill", async () => {
             const mockOrgId = "org";
             const mockSkill: any = sinon.mock();
 
-            const updateSkill = sinon.stub(CompassDataController, 'updateSkill').resolves(true);
+            const updateSkill = sinon.stub(CompassDataController, 'createOrUpdateSkill').resolves(true);
             const getSkillById = sinon.stub(CompassDataController, 'getSkillById').resolves(mockSkill);
             const result = await CompassManager.updateSkill(mockOrgId, mockSkill);
             updateSkill.restore();
@@ -378,7 +378,7 @@ suite("CompassManager tests", () => {
             const mockOrgId = "org";
             const mockSkill: any = sinon.mock();
 
-            const updateSkill = sinon.stub(CompassDataController, 'updateSkill').throws(new Error("mock error"));
+            const updateSkill = sinon.stub(CompassDataController, 'createOrUpdateSkill').throws(new Error("mock error"));
             CompassManager.updateSkill(mockOrgId, mockSkill)
                 .catch(reason => {
                     updateSkill.restore();
