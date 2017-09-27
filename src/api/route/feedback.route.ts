@@ -9,12 +9,12 @@ import * as passport from 'passport';
  * @apiSuccess (Success 200) {String} feedbacks.recipientId ID of the recipient user
  * @apiSuccess (Success 200) {String} feedbacks.context Context of the feedback
  * @apiSuccess (Success 200) {String} feedbacks.message Feedback message
- * @apiSuccess (Success 200) {String[]} [feedbacks.privacy] Optional privacy flags. Accepted values: PRIVATE / ANONYMOUS
- * @apiSuccess (Success 200) {String} feedbacks.type Type of the feedback. Accepted values: CONSIDER / CONTINUE
+ * @apiSuccess (Success 200) {String[]="PRIVATE","ANONYMOUS"} [privacy] Optional privacy flags.
+ * @apiSuccess (Success 200) {String="CONSIDER","CONTINUE"} type Type of the feedback.
  * @apiSuccess (Success 200) {String} feedbacks.createdAt Date of creation
  * @apiSuccess (Success 200) {String} feedbacks.updatedAt Date of update
  * @apiSuccess (Success 200) {String} [feedbacks.requestId] Associated request, if applicable
- * @apiSuccess (Success 200) {Tag[]} tags [tag] Associated tags of feedback
+ * @apiSuccess (Success 200) {String[]} tags [tag] Associated tag ids of feedback
  */
 export default (app: Express, feedbackController: FeedbackController) => {
     /**
@@ -27,10 +27,45 @@ export default (app: Express, feedbackController: FeedbackController) => {
      * @apiDescription Get the feedbacks sent or received by a user
      *
      * @apiUse feedback_list_data
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     *
+     * [
+     *     {
+     *         "_id": "59843630e7e093038ed331b5",
+     *         "updatedAt": "2017-08-04T08:54:08.198Z",
+     *         "createdAt": "2017-08-04T08:54:08.198Z",
+     *         "senderId": "5984342227cd340363dc84c7",
+     *         "recipientId": "5984342227cd340363dc84af",
+     *         "context": "Mock context",
+     *         "message": "Chuck Norris doesn't use GUI, he prefers COMMAND line.",
+     *         "type": "CONTINUE",
+     *         "requestId": "",
+     *         "tags": [],
+     *         "privacy": []
+     *     },
+     *     {
+     *         "_id": "59843630e7e093038ed331bb",
+     *         "updatedAt": "2017-08-04T08:54:08.199Z",
+     *         "createdAt": "2017-08-04T08:54:08.199Z",
+     *         "senderId": "5984342227cd340363dc84c7",
+     *         "recipientId": "5984342227cd340363dc84c1",
+     *         "context": "Mock context",
+     *         "message": "Chuck Norris uses canvas in IE.",
+     *         "type": "CONTINUE",
+     *         "requestId": "",
+     *         "tags": [],
+     *         "privacy": []
+     *     },
+     *
+     *     ...
+     * ]
+     *
      */
 
     /**
-     * @api {POST} /api/:orgId/feedback Create new feedback
+     * @api {POST} /api/:orgId/feedback Send feedback
      * @apiVersion 2.0.0
      * @apiName createFeedback
      * @apiGroup Feedback
@@ -41,43 +76,125 @@ export default (app: Express, feedbackController: FeedbackController) => {
      * @apiParam {String} recipientId ID of the recipient user
      * @apiParam {String} context Context of the feedback
      * @apiParam {String} message Feedback message
-     * @apiParam {String[]} [privacy] Optional privacy flags. Accepted values: PRIVATE / ANONYMOUS
-     * @apiParam {String} type Type of the feedback. Accepted values: CONSIDER / CONTINUE
+     * @apiParam {String[]="PRIVATE","ANONYMOUS"} [privacy] Optional privacy flags.
+     * @apiParam {String="CONSIDER","CONTINUE"} type Type of the feedback.
      * @apiParam {String} [requestId] Associated request, if applicable
-     * @apiParam {Tag[]} [tags] array of Tag Object Associated array of tag id.
+     * @apiParam {String[]} [tags] array of Tag Object Associated array of tag id.
      *
      * @apiUse feedback_list_data
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 201 CREATED
+     * {
+     *     "updatedAt": "2017-09-27T09:58:16.406Z",
+     *     "createdAt": "2017-09-27T09:58:16.406Z",
+     *     "senderId": "5984342227cd340363dc84c7",
+     *     "recipientId": "5984342227cd340363dc84a9",
+     *     "context": "Context",
+     *     "message": "Message text ",
+     *     "type": "CONSIDER",
+     *     "_id": "59cb763878ee0108d5e68ac2",
+     *     "tags": [],
+     *     "privacy": []
+     * }
+     *
      */
     app.route("/api/:orgId/feedbacks")
         .get(passport.authenticate('bearer', {session: false}), feedbackController.getFeedbacks.bind(feedbackController))
         .post(passport.authenticate('bearer', {session: false}), feedbackController.postFeedback.bind(feedbackController));
 
     /**
-     * @api {GET} /api/:orgId/user/:userId/feedbacks/sent Get user's sent feedbacks
+     * @api {GET} /api/:orgId/feedbacks/sent Get user's sent feedbacks
      * @apiVersion 2.0.0
      * @apiName getSentFeedbacks
      * @apiGroup Feedback
      * @apiHeader {String} Authorization Bearer token
      * @apiParam {String} orgId Organization id
-     * @apiParam {String} userId User unique id
      * @apiDescription Get the feedbacks sent by a user
      *
      * @apiUse feedback_list_data
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     * [
+     *     {
+     *         "_id": "59843630e7e093038ed331b5",
+     *         "updatedAt": "2017-08-04T08:54:08.198Z",
+     *         "createdAt": "2017-08-04T08:54:08.198Z",
+     *         "senderId": "5984342227cd340363dc84c7",
+     *         "recipientId": "5984342227cd340363dc84af",
+     *         "context": "Mock context",
+     *         "message": "Chuck Norris doesn't use GUI, he prefers COMMAND line.",
+     *         "type": "CONTINUE",
+     *         "requestId": "",
+     *         "tags": [],
+     *         "privacy": []
+     *     },
+     *     {
+     *         "_id": "59843630e7e093038ed331bb",
+     *         "updatedAt": "2017-08-04T08:54:08.199Z",
+     *         "createdAt": "2017-08-04T08:54:08.199Z",
+     *         "senderId": "5984342227cd340363dc84c7",
+     *         "recipientId": "5984342227cd340363dc84c1",
+     *         "context": "Mock context",
+     *         "message": "Chuck Norris uses canvas in IE.",
+     *         "type": "CONTINUE",
+     *         "requestId": "",
+     *         "tags": [],
+     *         "privacy": []
+     *     },
+     *
+     *     ...
+     * ]
+     *
      */
     app.route("/api/:orgId/feedbacks/sent")
         .get(passport.authenticate('bearer', {session: false}), feedbackController.getSentFeedbacks.bind(feedbackController));
 
     /**
-     * @api {GET} /api/:orgId/user/:userId/feedbacks/incoming Get user's received feedbacks
+     * @api {GET} /api/:orgId/feedbacks/incoming Get user's incoming feedbacks
      * @apiVersion 2.0.0
      * @apiName getIncomingFeedbacks
      * @apiGroup Feedback
      * @apiHeader {String} Authorization Bearer token
      * @apiParam {String} orgId Organization id
-     * @apiParam {String} userId User unique id
      * @apiDescription Get the feedbacks received by a user
      *
      * @apiUse feedback_list_data
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     * [
+     *     {
+     *         "_id": "59843630e7e093038ed33179",
+     *         "updatedAt": "2017-08-04T08:54:08.178Z",
+     *         "createdAt": "2017-08-04T08:54:08.178Z",
+     *         "senderId": "5984342227cd340363dc84be",
+     *         "recipientId": "5984342227cd340363dc84c7",
+     *         "context": "Mock context",
+     *         "message": "Chuck Norris's first program was kill -9.",
+     *         "type": "CONTINUE",
+     *         "requestId": "",
+     *         "tags": [],
+     *         "privacy": []
+     *     },
+     *     {
+     *         "_id": "59843630e7e093038ed3317c",
+     *         "updatedAt": "2017-08-04T08:54:08.180Z",
+     *         "createdAt": "2017-08-04T08:54:08.180Z",
+     *         "senderId": "5984342227cd340363dc84bc",
+     *         "recipientId": "5984342227cd340363dc84c7",
+     *         "context": "Mock context",
+     *         "message": "MySpace actually isn't your space, it's Chuck's (he just lets you use it).",
+     *         "type": "CONTINUE",
+     *         "requestId": "",
+     *         "tags": [],
+     *         "privacy": []
+     *     },
+     *
+     *     ...
+     * ]
+     *
      */
     app.route("/api/:orgId/feedbacks/incoming")
         .get(passport.authenticate('bearer', {session: false}), feedbackController.getIncomingFeedbacks.bind(feedbackController));

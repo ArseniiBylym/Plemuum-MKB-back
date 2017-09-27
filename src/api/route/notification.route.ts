@@ -49,6 +49,7 @@ export default (app: Express, notificationController: NotificationController) =>
 
     /**
      * @api {DELETE} /api/user/setNotificationDevice Delete a token
+     * @apiVersion 2.0.0
      * @apiName delete notification token
      * @apiGroup Notification
      * @apiDescription Delete a token when the device is subscribed
