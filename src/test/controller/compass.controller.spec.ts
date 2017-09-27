@@ -2,6 +2,7 @@ import CompassController from "../../api/controller/compass.controller";
 import * as sinon from 'sinon';
 import { ErrorType, PlenuumError } from "../../util/errorhandler";
 import CompassManager from "../../api/manager/compass.manager";
+import { getRequestObject } from "../util/testutil";
 
 suite("CompassController tests", () => {
 
@@ -142,7 +143,7 @@ suite("CompassController tests", () => {
         })
     });
 
-    suite("updateSkill", () => {
+    suite("createOrUpdateSkill", () => {
         let res: any;
         let compassController: CompassController;
         let compassManager: any;
@@ -175,8 +176,8 @@ suite("CompassController tests", () => {
 
         test("Should call CompassManager and send result with 200", async () => {
             const result = sinon.mock();
-            const updateSkill = sinon.stub(CompassManager, "updateSkill").resolves(result);
-            await compassController.updateSkill(req, res);
+            const updateSkill = sinon.stub(CompassManager, "createOrUpdateSkill").resolves(result);
+            await compassController.createOrUpdateSkill(req, res);
 
             updateSkill.restore();
 
@@ -185,8 +186,8 @@ suite("CompassController tests", () => {
         });
 
         test("Should handle CompassManager error", async () => {
-            const updateSkill = sinon.stub(CompassManager, "updateSkill").rejects(new PlenuumError("Error", 404));
-            await compassController.updateSkill(req, res);
+            const updateSkill = sinon.stub(CompassManager, "createOrUpdateSkill").rejects(new PlenuumError("Error", 404));
+            await compassController.createOrUpdateSkill(req, res);
 
             updateSkill.restore();
 
@@ -200,8 +201,8 @@ suite("CompassController tests", () => {
                 array: sinon.stub().returns(["Error hint"])
             });
 
-            const updateSkill = sinon.stub(CompassManager, "updateSkill");
-            await compassController.updateSkill(req, res);
+            const updateSkill = sinon.stub(CompassManager, "createOrUpdateSkill");
+            await compassController.createOrUpdateSkill(req, res);
 
             updateSkill.restore();
 
@@ -242,20 +243,20 @@ suite("CompassController tests", () => {
             req.body.sentencesAnswer = ["sentencesAnswer"];
         });
 
-        test("Should call CompassManager and send result with 201", async () => {
+        test("Should call CompassManager and send result with 200", async () => {
             const result = sinon.mock();
-            const createNewSkill = sinon.stub(CompassManager, "createNewSkill").resolves(result);
-            await compassController.createNewSkill(req, res);
+            const createNewSkill = sinon.stub(CompassManager, "createOrUpdateSkill").resolves(result);
+            await compassController.createOrUpdateSkill(req, res);
 
             createNewSkill.restore();
 
-            sinon.assert.calledWith(res.status, 201);
+            sinon.assert.calledWith(res.status, 200);
             sinon.assert.calledWith(res.send, result);
         });
 
         test("Should handle CompassManager error", async () => {
-            const createNewSkill = sinon.stub(CompassManager, "createNewSkill").rejects(new PlenuumError("Error", 404));
-            await compassController.createNewSkill(req, res);
+            const createNewSkill = sinon.stub(CompassManager, "createOrUpdateSkill").rejects(new PlenuumError("Error", 404));
+            await compassController.createOrUpdateSkill(req, res);
 
             createNewSkill.restore();
 
@@ -269,8 +270,8 @@ suite("CompassController tests", () => {
                 array: sinon.stub().returns(["Error hint"])
             });
 
-            const createNewSkill = sinon.stub(CompassManager, "createNewSkill");
-            await compassController.createNewSkill(req, res);
+            const createNewSkill = sinon.stub(CompassManager, "createOrUpdateSkill");
+            await compassController.createOrUpdateSkill(req, res);
 
             createNewSkill.restore();
 
@@ -293,18 +294,8 @@ suite("CompassController tests", () => {
                 status: sinon.stub().callsFake(() => res),
                 send: sinon.stub()
             };
-            req = {
-                params: {},
-                body: {},
-                checkBody: sinon.stub().returns({
-                    notEmpty: sinon.stub(),
-                    len: sinon.stub()
-                })
-            };
+            req = getRequestObject(true);
 
-            req.getValidationResult = sinon.stub().resolves({
-                isEmpty: sinon.stub().returns(true)
-            });
             req.params.orgId = "orgId";
             req.params.userId = "userId";
             req.body.compassTodo = "compassTodo";

@@ -40,8 +40,13 @@ export default class CompassController extends BaseController {
             .catch((err) => res.status(BaseController.getErrorStatus(err)).send(formError(err)));
     }
 
-    async updateSkill(req: any, res: any) {
-        req.checkBody('_id', 'Missing skill id').notEmpty();
+    async getSkills(req: any, res: any) {
+        return this.compassManager.getSkills(req.params.orgId)
+            .then(result => res.status(StatusCodes.OK).send(result))
+            .catch((err) => res.status(BaseController.getErrorStatus(err)).send(formError(err)));
+    }
+
+    async createOrUpdateSkill(req: any, res: any) {
         req.checkBody('name', 'Missing skill name').notEmpty();
         req.checkBody('sentences', 'Missing skill sentence').notEmpty();
         req.checkBody('sentences', 'Skill must contain at least one sentence').len({min: 1});
@@ -50,31 +55,13 @@ export default class CompassController extends BaseController {
             return;
         }
 
-        return CompassManager.updateSkill(req.params.orgId, req.body)
+        return CompassManager.createOrUpdateSkill(req.params.orgId, req.body)
             .then(updatedSkill => res.status(StatusCodes.OK).send(updatedSkill))
             .catch((err) => res.status(BaseController.getErrorStatus(err)).send(formError(err)));
     }
 
-    async createNewSkill(req: any, res: any) {
-        req.checkBody('name', 'Missing skill name').notEmpty();
-        req.checkBody('sentences', 'Missing skill sentence').notEmpty();
-        req.checkBody('sentences', 'Skill must contain at least one sentence').len({min: 1});
-
-        if (!await validate(req, res)) {
-            return;
-        }
-
-        return CompassManager.createNewSkill(req.params.orgId, req.body)
-            .then(savedSkill => res.status(StatusCodes.CREATED).send(savedSkill))
-            .catch((err) => res.status(BaseController.getErrorStatus(err)).send(formError(err)));
-    }
-
-    static createNewSkillForm(req: any, res: any): void {
-        res.render("newSkill", {title: "Add new competence", orgId: req.params.orgId});
-    }
-
     async getStatistics(req: any, res: any) {
-        return this.compassManager.getStatistics(req.params.orgId, req.params.userId)
+        return this.compassManager.getStatistics(req.params.orgId, req.user._id)
             .then(statistics => res.status(StatusCodes.OK).send(statistics))
             .catch((err) => res.status(BaseController.getErrorStatus(err)).send(formError(err)));
     }

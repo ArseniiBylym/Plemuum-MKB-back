@@ -1,10 +1,5 @@
 import BaseController from "./base.controller";
-import * as tokenManager from "../../service/auth/token.manager";
-import { TokenObject } from "../../service/auth/token.manager";
 import { Request, Response } from "express";
-import UserDataController from "../../data/datacontroller/user.datacontroller";
-import { User } from "../../data/models/common/user.model";
-import { UserModel } from "../../data/database/schema/common/user.schema";
 import SessionManager from "../manager/session.manager";
 import * as StatusCodes from 'http-status-codes';
 

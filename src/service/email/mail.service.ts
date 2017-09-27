@@ -40,10 +40,10 @@ export default class EmailService {
         const message = "This is an automated answer, there is no need to reply!";
         return {
             from: 'bot@plenuum.com',
-            to: html,
+            to: email,
             subject: 'Pleenum Change password step 2',
             text: message,
-            html: email
+            html: html
         };
     };
 

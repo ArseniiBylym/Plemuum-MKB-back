@@ -214,11 +214,12 @@ suite("Compass request test", () => {
         };
 
         test("Should be able to create a new skill, it should return 201 and the created skill object", async () => {
+            const token = await authenticate(testUser);
             const response = await request(app)
-                .post(url)
-                .set(basicAuthHeader)
+                .patch(url)
+                .set(bearerAuthHeader(token))
                 .send(newSkill)
-                .expect(201);
+                .expect(200);
 
             expect(response.body).to.haveOwnProperty('name');
             expect(response.body).to.haveOwnProperty('sentences');
@@ -234,9 +235,10 @@ suite("Compass request test", () => {
         });
 
         test("Should get and error with status 400 if request body is empty", async () => {
+            const token = await authenticate(testUser);
             const response = await request(app)
-                .post(url)
-                .set(basicAuthHeader)
+                .patch(url)
+                .set(bearerAuthHeader(token))
                 .expect(400);
 
             expect(response.body).to.haveOwnProperty("error");
@@ -250,9 +252,10 @@ suite("Compass request test", () => {
                 sentences: [],
                 inactiveSentences: []
             };
+            const token = await authenticate(testUser);
             const response = await request(app)
-                .post(url)
-                .set(basicAuthHeader)
+                .patch(url)
+                .set(bearerAuthHeader(token))
                 .send(newSkill)
                 .expect(400);
 
@@ -285,10 +288,10 @@ suite("Compass request test", () => {
                     },
                 ]
             };
-
+            const token = await authenticate(testUser);
             const response = await request(app)
                 .patch(url)
-                .set(basicAuthHeader)
+                .set(bearerAuthHeader(token))
                 .send(newSkill)
                 .expect(200);
             expect(response.body.name).to.be.deep.equal(newSkill.name);

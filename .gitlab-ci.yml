@@ -27,7 +27,7 @@ stages:
 testing:
   script:
     - docker-compose up -d
-    - docker exec -i plenuumbe npm test
+    - docker exec -i plenuumbe npm run start-ci-test
     - docker-compose stop
   stage: test
   environment:

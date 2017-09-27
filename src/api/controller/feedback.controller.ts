@@ -7,13 +7,19 @@ import { validate } from "../../util/input.validator";
 export default class FeedbackController extends BaseController {
 
     async getFeedbacks(req: any, res: any,) {
-        return FeedbackDataController.getAllFeedback(req.params.orgId, req.params.userId)
+        return FeedbackDataController.getAllFeedback(req.params.orgId, req.user._id)
             .then((result) => res.status(StatusCodes.OK).send(result))
             .catch((err) => res.status(BaseController.getErrorStatus(err)).send(formError(err)));
     }
 
     async getSentFeedbacks(req: any, res: any,) {
-        return FeedbackDataController.getSentFeedbacks(req.params.orgId, req.params.userId)
+        return FeedbackDataController.getSentFeedbacks(req.params.orgId, req.user._id)
+            .then((result) => res.status(StatusCodes.OK).send(result))
+            .catch((err) => res.status(BaseController.getErrorStatus(err)).send(formError(err)));
+    }
+
+    async getIncomingFeedbacks(req: any, res: any,) {
+        return FeedbackDataController.getIncomingFeedbacks(req.params.orgId, req.user._id)
             .then((result) => res.status(StatusCodes.OK).send(result))
             .catch((err) => res.status(BaseController.getErrorStatus(err)).send(formError(err)));
     }
@@ -31,12 +37,6 @@ export default class FeedbackController extends BaseController {
 
         return FeedbackDataController.saveFeedback(req.params.orgId, req.body)
             .then((result) => res.status(StatusCodes.CREATED).send(result))
-            .catch((err) => res.status(BaseController.getErrorStatus(err)).send(formError(err)));
-    }
-
-    async getIncomingFeedbacks(req: any, res: any,) {
-        return FeedbackDataController.getIncomingFeedbacks(req.params.orgId, req.params.userId)
-            .then((result) => res.status(StatusCodes.OK).send(result))
             .catch((err) => res.status(BaseController.getErrorStatus(err)).send(formError(err)));
     }
 }

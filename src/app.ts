@@ -20,6 +20,10 @@ const sessionOptions = {
 const app = (): Express => {
     const app = express();
 
+    //https://helmetjs.github.io/
+    app.use(require('helmet')());
+    app.disable('x-powered-by');
+
     app.set("views", viewsPath);
     app.set("view engine", "ejs");
     if (process.env.NODE_ENV == "dev") {
@@ -28,15 +32,13 @@ const app = (): Express => {
 
     // TODO finish and use this before release!
     const corsOptions = {
-        origin: 'http://example.com',
         optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
     };
-
-    app.use(cors());
+    app.use(cors(corsOptions));
 
     app.use(require('cookie-parser')());
     app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({extended: true}));
+    app.use(bodyParser.urlencoded({ extended: true }));
     app.use(require('express-device').capture());
     app.use(session(sessionOptions));
     app.use(passport.initialize());

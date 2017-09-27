@@ -9,8 +9,8 @@ import config from "../../../config/config";
 import { bearerAuthHeader } from "../util/header.helper";
 
 const orgId = "hipteam";
-const userId = "5984342227cd340363dc84ac";
-const requestId = "59844c1cd0b5d006da3c9620";
+const userId = testUser._id;
+const requestId = "59844c1cd0b5d006da3c961d";
 
 suite("Request entity related request tests", () => {
 
@@ -22,7 +22,7 @@ suite("Request entity related request tests", () => {
     after(async () => await getDatabaseManager().closeConnection());
 
     suite("Create new request", () => {
-        const url = `/api/${orgId}/request`;
+        const url = `/api/${orgId}/requests`;
 
         test("Should be able to post a request", async () => {
             const requestForm = {
@@ -45,7 +45,7 @@ suite("Request entity related request tests", () => {
                 senderId: "sender",
                 requestMessage: 'Message'
             };
-            const token = await authenticate(testUser)
+            const token = await authenticate(testUser);
             const response = await request(app)
                 .post(url)
                 .set(bearerAuthHeader(token))
@@ -56,7 +56,7 @@ suite("Request entity related request tests", () => {
     });
 
     suite("Get all request for user", () => {
-        const url = `/api/${orgId}/user/${userId}/requests`;
+        const url = `/api/${orgId}/requests`;
 
         test("Should be able to get all request for user", async () => {
             const token = await authenticate(testUser);
@@ -73,7 +73,7 @@ suite("Request entity related request tests", () => {
     });
 
     suite("Get user's sent requests", () => {
-        const url = `/api/${orgId}/user/${userId}/requests/sender`;
+        const url = `/api/${orgId}/requests/sender`;
 
         test("Should be able to get user's sent requests", async () => {
             const token = await authenticate(testUser);
@@ -91,13 +91,13 @@ suite("Request entity related request tests", () => {
     });
 
     suite("Get user's received requests", () => {
-        const url = `/api/${orgId}/user/${userId}/requests/recipient`;
+        const url = `/api/${orgId}/requests/recipient`;
         test("Should be able to get user's received requests", async () => {
             const token = await authenticate(testUser);
             const response = await request(app)
                 .get(url)
                 .set(bearerAuthHeader(token))
-                .expect(200)
+                .expect(200);
             expect(response.body).to.be.an.instanceOf(Array);
             assert(response.body.length >= 1, "Check if there's at least one element in the response array");
             response.body.forEach((requestObj: Request) => {
@@ -108,7 +108,7 @@ suite("Request entity related request tests", () => {
     });
 
     suite("Get a single request", () => {
-        const url = `/api/${orgId}/user/${userId}/requests/${requestId}`;
+        const url = `/api/${orgId}/requests/${requestId}`;
         test("Should be able to get a single request", async () => {
             const token = await authenticate(testUser);
             const response = await request(app)
@@ -121,9 +121,9 @@ suite("Request entity related request tests", () => {
     });
 
     suite("Get the recipients of a request", () => {
-        const url = `/api/${orgId}/user/${userId}/requests/${requestId}/recipients`;
+        const url = `/api/${orgId}/requests/${requestId}/recipients`;
         test("Should be able to get the recipients of a request", async () => {
-            const token = await authenticate(testUser)
+            const token = await authenticate(testUser);
             const response = await request(app)
                 .get(url)
                 .set(bearerAuthHeader(token))

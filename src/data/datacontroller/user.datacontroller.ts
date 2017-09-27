@@ -1,35 +1,61 @@
 import { Model } from 'mongoose';
 import { TokenObject } from "../../service/auth/token.manager";
 import * as crypto from 'crypto';
-import { User} from "../models/common/user.model";
+import { User } from "../models/common/user.model";
 import { UserCollection, UserModel } from "../database/schema/common/user.schema";
 import { ResetPasswordCollection, ResetPasswordModel } from "../database/schema/common/resetpassword.schema";
 
+const selectableFields = ['_id', 'firstName', 'lastName', 'email', 'orgIds', 'pictureUrl'];
+
 const UserDataController = {
+
     saveUser: function (user: User): Promise<UserModel> {
         return new (UserCollection())(user).save()
             .then((savedUser) => UserCollection().findById(savedUser._id).lean().exec() as Promise<UserModel>)
     },
 
     getOrganizationUsers: function (orgId: string): Promise<UserModel> {
-        return UserCollection().find({orgIds: {$in: [orgId]}}).lean().exec() as Promise<UserModel>;
+        return UserCollection().find({orgIds: {$in: [orgId]}})
+            .select(selectableFields.join(' '))
+            .lean()
+            .exec() as Promise<UserModel>;
     },
 
     getUserById: function (orgId: string, userId: string, fields: string[] = []): Promise<UserModel> {
         return UserCollection()
-            .findOne({$and: [{orgIds: {$in: [orgId]}}, {_id: userId}]}, fields.join(' ')).lean().exec() as Promise<UserModel>;
+            .findOne({$and: [{orgIds: {$in: [orgId]}}, {_id: userId}]}, fields.join(' '))
+            .lean()
+            .exec() as Promise<UserModel>;
+    },
+
+    getUsersByIds: function(orgId: string, userIds: string[]): Promise<UserModel[]> {
+        return UserCollection().find({_id: {$in: userIds}})
+            .select(selectableFields.join(' '))
+            .lean()
+            .exec() as Promise<UserModel[]>;
+    },
+
+    updateUser: function (userId: string, user: UserModel): Promise<UserModel> {
+        return UserCollection().findOneAndUpdate({_id: userId}, user, {new: true})
+            .select(selectableFields.join(' '))
+            .lean()
+            .exec() as Promise<UserModel>;
     },
 
     getUserByIdWithoutOrgId: function (userId: string): Promise<UserModel> {
-        return UserCollection().findById(userId).exec() as Promise<UserModel>;
+        return UserCollection().findById(userId)
+            .exec() as Promise<UserModel>;
     },
 
     getUserByToken: function (token: string): Promise<UserModel> {
-        return UserCollection().findOne({'token.token': token}).lean().exec() as Promise<UserModel>;
+        return UserCollection().findOne({'token.token': token})
+            .lean()
+            .exec() as Promise<UserModel>;
     },
 
     getUserByEmail: function (email: string): Promise<UserModel> {
-        return UserCollection().findOne({email: email}).exec() as Promise<UserModel>;
+        return UserCollection().findOne({email: email})
+            .exec() as Promise<UserModel>;
     },
 
     updateUserToken: function (userId: string, tokenObj: TokenObject): Promise<UserModel> {
@@ -41,27 +67,44 @@ const UserDataController = {
                 issued_at: new Date(),
             }
         };
-        return UserCollection().findByIdAndUpdate(userId, query, {"new": true}).lean().exec() as Promise<UserModel>;
+        return UserCollection().findByIdAndUpdate(userId, query, {"new": true})
+            .lean()
+            .exec() as Promise<UserModel>;
     },
 
     removeToken: (userId: string): Promise<any> => {
-        return UserCollection().findByIdAndUpdate(userId, {$set: {token: {}}}).lean().exec();
+        return UserCollection().findByIdAndUpdate(userId, {$set: {token: {}}})
+            .select(selectableFields.join(' '))
+            .lean()
+            .exec();
     },
 
     changeTokens: function (userId: string, tokens: any): Promise<UserModel> {
-        return UserCollection().findByIdAndUpdate(userId, {$set: {tokens: tokens}}, {'new': true}).lean().exec() as Promise<UserModel>;
+        return UserCollection().findByIdAndUpdate(userId, {$set: {tokens: tokens}}, {'new': true})
+            .select(selectableFields.join(' '))
+            .lean()
+            .exec() as Promise<UserModel>;
     },
 
     getResetToken: function (token: any): Promise<ResetPasswordModel> {
-        return ResetPasswordCollection().findOne({token: token}).lean().exec() as Promise<ResetPasswordModel>;
+        return ResetPasswordCollection().findOne({token: token})
+            .select(selectableFields.join(' '))
+            .lean()
+            .exec() as Promise<ResetPasswordModel>;
     },
 
     changeUserPassword: function (email: string, newPassword: string): Promise<UserModel> {
-        return UserCollection().findOneAndUpdate({email: email}, {password: newPassword}).lean().exec() as Promise<UserModel>;
+        return UserCollection().findOneAndUpdate({email: email}, {password: newPassword})
+            .select(selectableFields.join(' '))
+            .lean()
+            .exec() as Promise<UserModel>;
     },
 
     changeUserPasswordByUserId: function (userId: string, newPassword: string): Promise<UserModel> {
-        return UserCollection().findByIdAndUpdate(userId, {password: newPassword}).lean().exec() as Promise<UserModel>;
+        return UserCollection().findByIdAndUpdate(userId, {password: newPassword})
+            .select(selectableFields.join(' '))
+            .lean()
+            .exec() as Promise<UserModel>;
     },
 
     generateToken: function (days: number): any {
@@ -73,20 +116,30 @@ const UserDataController = {
     },
 
     setUserPic: function (userId: string, pictureUrl: string): Promise<UserModel> {
-        return UserCollection().findByIdAndUpdate(userId, {pictureUrl: pictureUrl},
-            {"new": true, "select": "_is firstName lastName email orgData"}).lean().exec() as Promise<UserModel>;
+        return UserCollection().findByIdAndUpdate(userId, {pictureUrl: pictureUrl}, {"new": true})
+            .select(selectableFields.join(' '))
+            .lean()
+            .exec() as Promise<UserModel>;
     },
 
     setUserNotificationDevice: function (userId: string, notificationToken: string): Promise<UserModel> {
-        const query = { $push: { notificationToken: notificationToken}};
-        return UserCollection().findByIdAndUpdate(userId, query, {"new": true}).lean().exec() as Promise<UserModel>;
+        const query = {$push: {notificationToken: notificationToken}};
+        return UserCollection().findByIdAndUpdate(userId, query, {"new": true})
+            .lean()
+            .exec() as Promise<UserModel>;
     },
 
     refreshNotificationDevice: function (userId: string, oldToken: string, newToken: string): Promise<UserModel> {
-        return UserCollection().findById(userId).lean().exec()
+        return UserCollection().findById(userId)
+            .lean()
+            .exec()
             .then((user: any) => {
                 const modifiedToken = user.notificationToken.map((token: string) => {
-                   if (token === oldToken) { return newToken } else { return token }
+                    if (token === oldToken) {
+                        return newToken
+                    } else {
+                        return token
+                    }
                 });
                 return UserCollection().findByIdAndUpdate({_id: userId}, {$set: {notificationToken: modifiedToken}}, {"new": true}).lean().exec() as Promise<UserModel>;
             });

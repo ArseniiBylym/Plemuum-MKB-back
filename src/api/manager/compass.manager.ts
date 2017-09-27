@@ -70,9 +70,9 @@ export default class CompassManager {
         const randomAboutUserId = getRandomItem(randomAboutGroup.users);
         const skills = await CompassDataController.getSkillsByIds(orgId, randomAboutGroup.skills); 
 
-        const todo = CompassManager.buildUpNewTodoResponse(randomOwnerUserId, organization.todoSentenceNumber, randomAboutGroupId, skills)
+        const todo = CompassManager.buildUpNewTodoResponse(randomOwnerUserId, organization.todoSentenceNumber, randomAboutGroupId, skills);
 
-        return CompassDataController.saveCompassTodo(organization.dbName, todo);;
+        return CompassDataController.saveCompassTodo(organization.dbName, todo);
     }
 
     static checkAnswerCardRelation(answerGroups: Group[]) {
@@ -140,9 +140,12 @@ export default class CompassManager {
         return CompassDataController.saveSkill(orgId, skill);
     }
 
-    static async updateSkill(orgId: string, skill: SkillModel): Promise<SkillModel> {
-        await CompassDataController.updateSkill(orgId, skill);
-        return CompassDataController.getSkillById(orgId, skill._id);
+    static async createOrUpdateSkill(orgId: string, skill: SkillModel): Promise<SkillModel> {
+        return CompassDataController.createOrUpdateSkill(orgId, skill);
+    }
+
+    async getSkills(orgId: string) {
+        return CompassDataController.getAllSkills(orgId);
     }
 
     async getStatistics(orgId: string, userId: string) {

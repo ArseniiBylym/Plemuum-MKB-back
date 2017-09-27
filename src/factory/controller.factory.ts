@@ -18,6 +18,8 @@ import RequestManager from "../api/manager/request.manager";
 import SessionManager from "../api/manager/session.manager";
 import TagManager from "../api/manager/tag.manager";
 import FirebaseStorageManager from "../service/file/firebase.storage.manager";
+import NotificationController from "../api/controller/notification.controller";
+import NotificationManager from "../api/manager/notification.manager";
 
 let userController: UserController;
 let feedbackController: FeedbackController;
@@ -26,6 +28,7 @@ let organizationController: OrganizationController;
 let requestController: RequestController;
 let sessionController: SessionController;
 let groupController: GroupController;
+let notificationController: NotificationController;
 
 /* #########################     PUBLIC      ########################## */
 
@@ -49,6 +52,9 @@ const getSessionController = (): SessionController => getController(sessionContr
 const getGroupController = (): GroupController => getController(groupController, GroupController,
     new GroupManager(getGroupDataController()));
 
+const getNotificationController = (): NotificationController => getController(notificationController, NotificationController,
+    new NotificationManager());
+
 /* #########################     PRIVATE      ########################## */
 
 function getController(instance: any, controller: any, ...dependencies: any[]) {
@@ -60,5 +66,5 @@ function getController(instance: any, controller: any, ...dependencies: any[]) {
 
 export {
     getUserController, getFeedbackController, getTagController, getOrganizationController,
-    getRequestController, getSessionController, getGroupController
+    getRequestController, getSessionController, getGroupController, getNotificationController
 }

@@ -51,8 +51,7 @@ suite("Group request test", () => {
     suite("Get groups for user", () => {
         test("Should be able to get all groups a user participates in", async () => {
 
-            const userID = "5984342227cd340363dc84af";
-            const url = `/api/${orgId}/groups/user/${userID}`;
+            const url = `/api/${orgId}/mygroups`;
 
             const token = await authenticate(testUser);
             const response = await request(app)

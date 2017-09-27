@@ -36,14 +36,16 @@ const CompassDataController = {
         return new (SkillCollection(orgId))(skill).save();
     },
 
-    updateSkill: (orgId: string, skill: any): Promise<boolean> => {
-        return SkillCollection(orgId).update({_id: skill._id}, skill).exec()
-            .then((result) => {
-                if (result.nModified === 0) {
-                    throw new Error('Group was not found');
-                }
-                return true;
-            });
+    createOrUpdateSkill: (orgId: string, skill: any): Promise<any> => {
+        return skill._id
+            ? SkillCollection(orgId).update({_id: skill._id}, skill).exec()
+                .then((result) => {
+                    if (result.nModified === 0) {
+                        throw new Error('Group was not found');
+                    }
+                    return SkillCollection(orgId).findById(skill._id).lean().exec();
+                })
+            : new (SkillCollection(orgId))(skill).save()
     }
 };
 

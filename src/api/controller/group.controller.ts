@@ -13,13 +13,13 @@ export default class GroupController extends BaseController {
         this.groupManager = groupManager;
     }
 
-    async getGroups(req: any, res: any, next?: Function) {
+    async getGroups(req: any, res: any) {
         this.groupManager.getGroups(req.params.orgId)
             .then((groups: any[]) => res.status(StatusCodes.CREATED).send(groups))
             .catch((err: any) => BaseController.handleError(err, res));
     };
 
-    async createGroup(req: any, res: any, next?: Function) {
+    async createGroup(req: any, res: any) {
         req.checkBody('name', 'Missing group name').notEmpty();
 
         if (!await validate(req, res)) {
@@ -31,19 +31,19 @@ export default class GroupController extends BaseController {
             .catch((err: any) => BaseController.handleError(err, res));
     }
 
-    async getGroupById(req: any, res: any, next?: Function) {
+    async getGroupById(req: any, res: any) {
         return this.groupManager.getGroupById(req.params.orgId, req.params.groupId)
             .then((group: GroupModel) => res.status(StatusCodes.OK).send(group))
             .catch((err: any) => BaseController.handleError(err, res));
     }
 
-    async getUserGroups(req: any, res: any, next?: Function) {
-        return this.groupManager.getUserGroups(req.params.orgId, req.params.userId)
+    async getUserGroups(req: any, res: any) {
+        return this.groupManager.getUserGroups(req.params.orgId, req.user._id)
             .then((groups: GroupModel[]) => res.status(StatusCodes.OK).send(groups))
             .catch((err: any) => BaseController.handleError(err, res));
     }
 
-    async putUserIntoGroup(req: any, res: any, next?: Function) {
+    async putUserIntoGroup(req: any, res: any) {
         req.checkBody('userId', 'Missing userId').notEmpty();
 
         if (!await validate(req, res)) {
@@ -55,7 +55,7 @@ export default class GroupController extends BaseController {
             .catch((err: any) => BaseController.handleError(err, res));
     }
 
-    async removeUserFromGroup(req: any, res: any, next?: Function) {
+    async removeUserFromGroup(req: any, res: any) {
         req.checkBody('userId', 'Missing userId').notEmpty();
 
         if (!await validate(req, res)) {
@@ -67,7 +67,7 @@ export default class GroupController extends BaseController {
             .catch((err: any) => BaseController.handleError(err, res));
     }
 
-    async updateGroup(req: any, res: any, next?: Function) {
+    async updateGroup(req: any, res: any) {
         req.checkBody('name', 'Missing group name').notEmpty();
 
         if (!await validate(req, res)) {
