@@ -18,12 +18,12 @@ import * as passport from 'passport';
  */
 export default (app: Express, feedbackController: FeedbackController) => {
     /**
-     * @api {GET} /api/:orgId/user/:userId/feedbacks Get user feedbacks
+     * @api {GET} /api/:orgId/feedbacks Get user feedbacks
+     * @apiVersion 2.0.0
      * @apiName getFeedbacks
      * @apiGroup Feedback
      * @apiHeader {String} Authorization Bearer token
      * @apiParam {String} orgId Organization id
-     * @apiParam {String} userId User unique id
      * @apiDescription Get the feedbacks sent or received by a user
      *
      * @apiUse feedback_list_data
@@ -31,6 +31,7 @@ export default (app: Express, feedbackController: FeedbackController) => {
 
     /**
      * @api {POST} /api/:orgId/feedback Create new feedback
+     * @apiVersion 2.0.0
      * @apiName createFeedback
      * @apiGroup Feedback
      * @apiHeader {String} Authorization Bearer token
@@ -47,12 +48,13 @@ export default (app: Express, feedbackController: FeedbackController) => {
      *
      * @apiUse feedback_list_data
      */
-    app.route("/api/:orgId/user/:userId/feedbacks")
+    app.route("/api/:orgId/feedbacks")
         .get(passport.authenticate('bearer', {session: false}), feedbackController.getFeedbacks.bind(feedbackController))
         .post(passport.authenticate('bearer', {session: false}), feedbackController.postFeedback.bind(feedbackController));
 
     /**
      * @api {GET} /api/:orgId/user/:userId/feedbacks/sent Get user's sent feedbacks
+     * @apiVersion 2.0.0
      * @apiName getSentFeedbacks
      * @apiGroup Feedback
      * @apiHeader {String} Authorization Bearer token
@@ -62,11 +64,12 @@ export default (app: Express, feedbackController: FeedbackController) => {
      *
      * @apiUse feedback_list_data
      */
-    app.route("/api/:orgId/user/:userId/feedbacks/sent")
+    app.route("/api/:orgId/feedbacks/sent")
         .get(passport.authenticate('bearer', {session: false}), feedbackController.getSentFeedbacks.bind(feedbackController));
 
     /**
      * @api {GET} /api/:orgId/user/:userId/feedbacks/incoming Get user's received feedbacks
+     * @apiVersion 2.0.0
      * @apiName getIncomingFeedbacks
      * @apiGroup Feedback
      * @apiHeader {String} Authorization Bearer token
@@ -76,6 +79,6 @@ export default (app: Express, feedbackController: FeedbackController) => {
      *
      * @apiUse feedback_list_data
      */
-    app.route("/api/:orgId/user/:userId/feedbacks/incoming")
+    app.route("/api/:orgId/feedbacks/incoming")
         .get(passport.authenticate('bearer', {session: false}), feedbackController.getIncomingFeedbacks.bind(feedbackController));
 }

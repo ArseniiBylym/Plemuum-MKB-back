@@ -4,6 +4,8 @@ import RequestManager from "../manager/request.manager";
 import * as StatusCodes from 'http-status-codes';
 import { User } from "../../data/models/common/user.model";
 import { validate } from "../../util/input.validator";
+import { NOT_FOUND } from "http-status-codes";
+import { ErrorType, formError, PlenuumError } from "../../util/errorhandler";
 
 export default class RequestController extends BaseController {
 
@@ -29,31 +31,31 @@ export default class RequestController extends BaseController {
     }
 
     async getSenderRequests(req: Request, res: Response) {
-        this.requestManager.getSenderRequests(req.params.orgId, req.params.userId)
+        this.requestManager.getSenderRequests(req.params.orgId, req.user._id)
             .then((requests: Request[]) => res.status(StatusCodes.OK).send(requests))
             .catch((error: any) => BaseController.handleError(error, res));
     }
 
     async getRecipientRequests(req: Request, res: Response) {
-        this.requestManager.getRecipientRequests(req.params.orgId, req.params.userId)
+        this.requestManager.getRecipientRequests(req.params.orgId, req.user._id)
             .then((requests: Request[]) => res.status(StatusCodes.OK).send(requests))
             .catch((error: any) => BaseController.handleError(error, res));
     }
 
     async getRequests(req: Request, res: Response) {
-        this.requestManager.getRequests(req.params.orgId, req.params.userId)
+        this.requestManager.getRequests(req.params.orgId, req.user._id)
             .then((requests: Request[]) => res.status(StatusCodes.OK).send(requests))
             .catch((error: any) => BaseController.handleError(error, res));
     }
 
     async getRequest(req: Request, res: Response) {
-        this.requestManager.getRequest(req.params.orgId, req.params.userId, req.params.requestId)
+        this.requestManager.getRequest(req.params.orgId, req.user._id, req.params.requestId)
             .then((request: Request) => res.status(StatusCodes.OK).send(request))
             .catch((error: any) => BaseController.handleError(error, res));
     }
 
     async getRecipientUsersFromRequest(req: Request, res: Response) {
-        this.requestManager.getRecipientUsersFromRequest(req.params.orgId, req.params.userId, req.params.requestId)
+        this.requestManager.getRecipientUsersFromRequest(req.params.orgId, req.user._id, req.params.requestId)
             .then((users: User[]) => res.status(StatusCodes.OK).send(users))
             .catch((error: any) => BaseController.handleError(error, res));
     }

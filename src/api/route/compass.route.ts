@@ -12,6 +12,7 @@ export default (app: Express, compassController: CompassController) => {
     /** TODO: finish this
      * 
      * @api {POST} /api/:orgId/compasstodo CompassTodo for a user
+     * @apiVersion 2.0.0
      * @apiName compasstodo
      * @apiGroup Compass Assesment
      * @apiDescription Generate and answer card (CompassTodo).
@@ -29,6 +30,7 @@ export default (app: Express, compassController: CompassController) => {
 
     /**
      * @api {POST} /api/:orgId/compassanswers Send CompassTodo answer
+     * @apiVersion 2.0.0
      * @apiName compassanswers
      * @apiGroup Compass Assesment
      * @apiDescription ost answers based in a CompassTODO. This api will trigger an update
@@ -54,12 +56,9 @@ export default (app: Express, compassController: CompassController) => {
     app.route("/api/:orgId/compassanswers")
         .post(passport.authenticate('bearer', {session: false}), compassController.answerCompass.bind(compassController));
 
-
-    app.route("/api/create/skill/:orgId")
-        .get(CompassController.createNewSkillForm);
-
     /**
      * @api {POST} /api/:orgId/skills Create Skill
+     * @apiVersion 2.0.0
      * @apiName create skill
      * @apiGroup Compass Assesment
      * @apiDescription Create a new skill object with at least one active sentence
@@ -77,6 +76,7 @@ export default (app: Express, compassController: CompassController) => {
 
     /**
      * @api {PATCH} /api/:orgId/skills Update Skill
+     * @apiVersion 2.0.0
      * @apiName create skill
      * @apiGroup Compass Assesment
      * @apiDescription Update an existing skill
@@ -96,11 +96,11 @@ export default (app: Express, compassController: CompassController) => {
      */
     app.route("/api/:orgId/skills")
         .get(passport.authenticate('bearer', {session: false}), compassController.getSkills.bind(compassController))
-        .patch(passport.authenticate('bearer', {session: false}), compassController.updateSkill.bind(compassController))
-        .post(passport.authenticate('bearer', {session: false}), compassController.createNewSkill.bind(compassController));
+        .patch(passport.authenticate('bearer', {session: false}), compassController.updateSkill.bind(compassController));
 
     /**
-     * @api {GET} /api/:orgId/user/:userId/compassstatistics User Statistics
+     * @api {GET} /api/:orgId/compassstatistics User Statistics
+     * @apiVersion 2.0.0
      * @apiName CompassStatistics
      * @apiGroup Compass Assesment
      * @apiHeader {String} Authorization Bearer token Optional for web
@@ -119,6 +119,6 @@ export default (app: Express, compassController: CompassController) => {
      * @apiSuccess (Success 200) {Number} competencesScore.sentencesScore.score The score for this particular sentence.
      */
     //Just related to the user independent of the organization
-    app.route("/api/:orgId/user/:userId/compassstatistics")
+    app.route("/api/:orgId/compassstatistics")
         .get(passport.authenticate('bearer', {session: false}), compassController.getStatistics.bind(compassController));
 }

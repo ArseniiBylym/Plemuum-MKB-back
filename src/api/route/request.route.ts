@@ -15,7 +15,8 @@ import * as passport from 'passport';
 export default (app: Express, requestController: RequestController) => {
 
     /**
-     * @api {POST} /api/:orgId/request Create new request
+     * @api {POST} /api/:orgId/requests Create new request
+     * @apiVersion 2.0.0
      * @apiName createRequest
      * @apiGroup Request
      * @apiHeader {String} Authorization Bearer token
@@ -27,80 +28,80 @@ export default (app: Express, requestController: RequestController) => {
      *
      * @apiUse request_list_data
      */
-    app.route("/api/:orgId/request")
-        .post(passport.authenticate('bearer', {session: false}), requestController.createRequest.bind(requestController));
 
     /**
-     * @api {GET} /api/:orgId/user/:userId/requests Get user requests
+     * @api {GET} /api/:orgId/requests Get user requests
+     * @apiVersion 2.0.0
      * @apiName getRequests
      * @apiGroup Request
      * @apiHeader {String} Authorization Bearer token
      * @apiDescription Get the requests sent or received by a user
      * @apiParam {String} orgId Organization id
-     * @apiParam {String} userId User unique id
      * @apiParam {Boolean} [showReplied=false] Show already replied incoming requests or not.
      *
      * @apiUse request_list_data
      */
-    app.route("/api/:orgId/user/:userId/requests")
-        .get(passport.authenticate('bearer', {session: false}), requestController.getRequests.bind(requestController));
+
+    app.route("/api/:orgId/requests")
+        .get(passport.authenticate('bearer', {session: false}), requestController.getRequests.bind(requestController))
+        .post(passport.authenticate('bearer', {session: false}), requestController.createRequest.bind(requestController));
 
     /**
-     * @api {GET} /api/:orgId/user/:userId/requests/sender Get user's sent requests
+     * @api {GET} /api/:orgId/requests/sender Get user's sent requests
+     * @apiVersion 2.0.0
      * @apiName getSenderRequests
      * @apiGroup Request
      * @apiHeader {String} Authorization Bearer token
      * @apiParam {String} orgId Organization id
-     * @apiParam {String} userId User unique id
      * @apiDescription Get the requests sent by a user
      *
      * @apiUse request_list_data
      */
-    app.route("/api/:orgId/user/:userId/requests/sender")
+    app.route("/api/:orgId/requests/sender")
         .get(passport.authenticate('bearer', {session: false}), requestController.getSenderRequests.bind(requestController));
 
     /**
-     * @api {GET} /api/:orgId/user/:userId/requests/recipient Get user's received requests
+     * @api {GET} /api/:orgId/requests/recipient Get user's received requests
+     * @apiVersion 2.0.0
      * @apiName getRecipientRequests
      * @apiGroup Request
      * @apiHeader {String} Authorization Bearer token
      * @apiDescription Get the requests received by a user
      * @apiParam {String} orgId Organization id
-     * @apiParam {String} userId User unique id
      * @apiParam {Boolean} [showReplied=false] Show already replied requests or not.
      *
      * @apiUse request_list_data
      */
-    app.route("/api/:orgId/user/:userId/requests/recipient")
+    app.route("/api/:orgId/requests/recipient")
         .get(passport.authenticate('bearer', {session: false}), requestController.getRecipientRequests.bind(requestController));
 
     /**
-     * @api {GET} /api/:orgId/user/:userId/requests/:requestId Get a specific request
+     * @api {GET} /api/:orgId/requests/:requestId Get a specific request
+     * @apiVersion 2.0.0
      * @apiName getRequest
      * @apiGroup Request
      * @apiHeader {String} Authorization Bearer token
      * @apiParam {String} orgId Organization id
-     * @apiParam {String} userId User unique id
      * @apiParam {String} requestId Request unique id
      *
      * @apiSuccess (Success 200) {String} senderId ID of the sender user
      * @apiSuccess (Success 200) {String[]} recipientId List of recipient user IDs
      * @apiSuccess (Success 200) {String} requestMessage Request message
      */
-    app.route("/api/:orgId/user/:userId/requests/:requestId")
+    app.route("/api/:orgId/requests/:requestId")
         .get(passport.authenticate('bearer', {session: false}), requestController.getRequest.bind(requestController));
 
     /**
-     * @api {GET} /api/:orgId/user/:userId/requests/:requestId/recipients Get the recipients of a request
+     * @api {GET} /api/:orgId/requests/:requestId/recipients Get the recipients of a request
+     * @apiVersion 2.0.0
      * @apiName getRecipientUsersFromRequest
      * @apiGroup Request
      * @apiHeader {String} Authorization Bearer token
      * @apiParam {String} orgId Organization id
-     * @apiParam {String} userId User unique id
      * @apiParam {String} requestId Request unique id
      *
      */
-    app.route("/api/:orgId/user/:userId/requests/:requestId/recipients")
+    app.route("/api/:orgId/requests/:requestId/recipients")
         .get(passport.authenticate('bearer', {session: false}), requestController.getRecipientUsersFromRequest.bind(requestController));
 
 }

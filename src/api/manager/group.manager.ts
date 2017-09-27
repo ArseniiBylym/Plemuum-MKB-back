@@ -2,6 +2,7 @@ import { GroupDataController } from "../../data/datacontroller/group.datacontrol
 import { GroupModel } from "../../data/database/schema/organization/group.schema";
 import UserDataController from "../../data/datacontroller/user.datacontroller";
 import CompassDataController from "../../data/datacontroller/compass.datacontroller";
+import { ErrorType, PlenuumError } from "../../util/errorhandler";
 
 export default class GroupManager {
 
@@ -30,7 +31,11 @@ export default class GroupManager {
     }
 
     async getGroupById(orgId: string, groupId: string) {
-        return this.groupDataController.getGroupById(orgId, groupId)
+        const group = await this.groupDataController.getGroupById(orgId, groupId);
+        if (!group) {
+            throw new PlenuumError("Group not found", ErrorType.NOT_FOUND);
+        }
+        return group;
     }
 
     async getUserGroups(orgId: string, userId: string) {

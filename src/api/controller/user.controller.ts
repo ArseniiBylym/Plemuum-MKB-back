@@ -124,52 +124,15 @@ export default class UserController extends BaseController {
         return UserDataController.changeUserPassword(req.body.email, req.body.newPassword)
             .then((updatedUser: UserModel) => res
                 .status(!updatedUser ? 404 : 200)
-                .send(!updatedUser ? {error: "User not found"} : updatedUser)
+                .send(!updatedUser ? {error: "User not found"} : {message: "Password has been changed"})
             )
             .catch((err) => BaseController.handleError(err, res));
     }
 
     async setPicture(req: any, res: Response) {
         return this.handleProfilePictureUpload(req, req.user._id)
-            .then((result) => res.send(result))
+            .then((result) => res.status(StatusCodes.OK).send(result))
             .catch((err: Error) => res.status(400).send(formError(err)))
-    }
-
-    async setNotificationDevice(req: any, res: Response) {
-        req.checkBody('token', 'Missing token').notEmpty();
-
-        if (!await validate(req, res)) {
-            return;
-        }
-
-        return UserDataController.setUserNotificationDevice(req.user._id, req.body.token)
-            .then((result) => res.send(result))
-            .catch((err) => BaseController.handleError(err, res));
-    }
-
-    async refreshNotificationDevice(req: any, res: Response) {
-        req.checkBody('oldToken', 'Missing oldToken').notEmpty();
-        req.checkBody('newToken', 'Missing newToken').notEmpty();
-
-        if (!await validate(req, res)) {
-            return;
-        }
-
-        return UserDataController.refreshNotificationDevice(req.user._id, req.body.oldToken, req.body.newToken)
-            .then((result) => res.send(result))
-            .catch((err) => BaseController.handleError(err, res));
-    }
-
-    async removeNotificationToken(req: any, res: Response) {
-        req.checkBody('token', 'Missing token').notEmpty();
-
-        if (!await validate(req, res)) {
-            return;
-        }
-
-        return UserDataController.removeNotificationToken(req.user._id, req.body.token)
-            .then((result) => res.send(result))
-            .catch((err) => BaseController.handleError(err, res));
     }
 
     private async handleProfilePictureUpload(req: any, userId: string): Promise<any> {

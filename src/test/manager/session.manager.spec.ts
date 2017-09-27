@@ -89,7 +89,7 @@ suite("SessionManager tests", () => {
 
         test("Token was removed successfully", async () => {
             const userId = "userId";
-            const expectedResult = { message: "User Logged out successfully!" };
+            const expectedResult = { message: "User logged out successfully" };
             const removeToken = sinon.stub(UserDataController, "removeToken");
             removeToken.withArgs(userId).resolves({ success: "success" });
 
@@ -154,21 +154,11 @@ suite("SessionManager tests", () => {
             getUserByIdWithoutOrgId.restore();
             updateUserToken.restore();
 
-            expect(result).to.haveOwnProperty("user");
             expect(result).to.haveOwnProperty("token");
             expect(result).to.haveOwnProperty("token_expiry");
-            expect(result).to.haveOwnProperty("orgIds");
-
-            expect(result.user).to.haveOwnProperty("firstName");
-            expect(result.user).to.haveOwnProperty("lastName");
-            expect(result.user).to.haveOwnProperty("email");
-
-            expect(result.user).to.not.haveOwnProperty("token");
-            expect(result.user).to.not.haveOwnProperty("notificationToken");
 
             expect(result.token).to.be.equal(updatedUser.token.token);
             expect(result.token_expiry).to.be.equal(updatedUser.token.token_expiry);
-            expect(result.orgIds).to.be.equal(updatedUser.orgIds);
         });
 
         test("Valid previous token available", async () => {
@@ -220,21 +210,11 @@ suite("SessionManager tests", () => {
             getUserByIdWithoutOrgId.restore();
             updateUserToken.restore();
 
-            expect(result).to.haveOwnProperty("user");
             expect(result).to.haveOwnProperty("token");
             expect(result).to.haveOwnProperty("token_expiry");
-            expect(result).to.haveOwnProperty("orgIds");
-
-            expect(result.user).to.haveOwnProperty("firstName");
-            expect(result.user).to.haveOwnProperty("lastName");
-            expect(result.user).to.haveOwnProperty("email");
-
-            expect(result.user).to.not.haveOwnProperty("token");
-            expect(result.user).to.not.haveOwnProperty("notificationToken");
 
             expect(result.token).to.be.equal(mockUser.token.token);
             expect(result.token_expiry).to.be.deep.equal(tokenObExpiry);
-            expect(result.orgIds).to.be.equal(updatedUser.orgIds);
         });
     });
 });

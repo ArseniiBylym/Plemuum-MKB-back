@@ -20,7 +20,6 @@ suite("User request tests", () => {
             })
     });
 
-
     after(done => {
         getDatabaseManager().closeConnection()
             .then(() => done())
@@ -40,6 +39,7 @@ suite("User request tests", () => {
             modelValidator.validateUser(response.body);
         });
     });
+
     suite('Get all users from organization', () => {
         const orgId = "hipteam";
         const url = `/api/${orgId}/users`;
@@ -59,6 +59,7 @@ suite("User request tests", () => {
                 });
         })
     });
+
     suite('Get one user from organization', () => {
         const orgId = "hipteam";
         const userId = "5984342227cd340363dc84ab";

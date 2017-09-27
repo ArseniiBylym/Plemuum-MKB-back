@@ -59,7 +59,6 @@ suite("FeedbackController unit tests", () => {
         });
 
         after(done => {
-
             done();
         })
 

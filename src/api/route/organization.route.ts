@@ -5,6 +5,7 @@ import * as passport from 'passport';
 export default (app: Express, organizationController: OrganizationController) => {
     /**
      * @api {POST} /api/organization Add new organization
+     * @apiVersion 2.0.0
      * @apiName organization
      * @apiGroup Organization
      * @apiDescription Add a new organization to plenuum.
@@ -12,8 +13,9 @@ export default (app: Express, organizationController: OrganizationController) =>
      * @apiPermission basic
      *
      * @apiParam {String} name The name of the organization.
-     * @apiParam {Number} todoSentenceNumber The name of sentences that will be send on generated todo.
      * @apiParam {String} dbName The name of the database. Can not contain (' ', *, !).
+     * @apiParam {Number} todoSentenceNumber The name of sentences that will be send on generated todo.
+     * @apiParam {Number} compassGenerationTime Time between to COMPASS generations.
      *
      * @apiSuccess (Success 200) {String} name The name of the organization created.
      * @apiSuccess (Success 200) {Number} todoSentenceNumber The number of sentences to be used by the organization created.

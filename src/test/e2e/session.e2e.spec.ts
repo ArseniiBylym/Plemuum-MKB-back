@@ -41,7 +41,7 @@ suite("Session request tests", () => {
                 .set(bearerAuthHeader(token))
                 .expect(200);
             expect(response.body).to.haveOwnProperty('message');
-            expect(response.body.message).to.be.string("User Logged out successfully!");
+            expect(response.body.message).to.be.string("User logged out successfully");
         });
 
         test("Should get 401 if the token is invalid for logout", async () => {

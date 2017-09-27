@@ -21,7 +21,7 @@ const UserDataController = {
     },
 
     updateUser: function (userId: string, user: UserModel): Promise<UserModel> {
-        return UserCollection().findOneAndUpdate({_id: userId}, user).lean().exec() as Promise<UserModel>;
+        return UserCollection().findOneAndUpdate({_id: userId}, user, {new: true}).lean().exec() as Promise<UserModel>;
     },
 
     getUserByIdWithoutOrgId: function (userId: string): Promise<UserModel> {
@@ -78,7 +78,7 @@ const UserDataController = {
 
     setUserPic: function (userId: string, pictureUrl: string): Promise<UserModel> {
         return UserCollection().findByIdAndUpdate(userId, {pictureUrl: pictureUrl},
-            {"new": true, "select": "_is firstName lastName email orgData"}).lean().exec() as Promise<UserModel>;
+            {"new": true}).lean().exec() as Promise<UserModel>;
     },
 
     setUserNotificationDevice: function (userId: string, notificationToken: string): Promise<UserModel> {

@@ -19,7 +19,11 @@ export default class UserManager {
     async updateUser(user: UserModel) {
         const id = user._id;
         delete user._id;
-        return UserDataController.updateUser(id, user);
+        const updatedUser = await UserDataController.updateUser(id, user);
+        if (!updatedUser) {
+            throw new PlenuumError("User not found", ErrorType.NOT_FOUND);
+        }
+        return updatedUser;
     }
 
     async setPassword(token: string, newPassword: string) {
@@ -31,7 +35,7 @@ export default class UserManager {
         const {tokenExpiry, tokenExpired} = generateNewTokensForResetPassword();
         await resetPasswordDataController.updateResetPassword(resetedPassword._id, tokenExpired);
 
-        const updatedUser = await UserDataController.changeUserPasswordByUserId(resetedPassword.userId, newPassword)
+        const updatedUser = await UserDataController.changeUserPasswordByUserId(resetedPassword.userId, newPassword);
         if (!updatedUser) {
             throw new PlenuumError("User not found", ErrorType.NOT_FOUND);
         }
@@ -58,7 +62,12 @@ export default class UserManager {
 
     async profilePictureUpload(avatar: any, userId: string) {
         const pictureUrl = await this.fileTransferService.uploadUserPicture(avatar, userId);
-        return await UserDataController.setUserPic(userId, pictureUrl);
+        const updatedUser = await UserDataController.setUserPic(userId, pictureUrl);
+
+        if (!updatedUser) {
+            throw new PlenuumError("User not found", ErrorType.NOT_FOUND);
+        }
+        return {message: "Profile picture has been updated"}
     }
 
 }

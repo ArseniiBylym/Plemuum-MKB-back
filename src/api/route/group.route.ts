@@ -5,9 +5,10 @@ import * as passport from 'passport';
 export default (app: Express, groupController: GroupController) => {
 
     /**
-     * @api {POST} /api/:orgId/groups Add new group
+     * @api {POST} /api/:orgId/groups Group - Add new group
+     * @apiVersion 2.0.0
      * @apiName New Group
-     * @apiGroup Group
+     * @apiGroup Admin
      * @apiDescription Add a new groups to organization.
      *
      * @apiPermission basic
@@ -26,8 +27,6 @@ export default (app: Express, groupController: GroupController) => {
      * @apiSuccess (Success 201) {Date} createdAt The creation date of the organization created.
      * @apiSuccess (Success 201) {Date} updatedAt The update date of the organization created.
      *
-     * @apiVersion 2.0.0
-     *
      */
 
     /**
@@ -39,6 +38,7 @@ export default (app: Express, groupController: GroupController) => {
 
     /**
      * @api {GET} /api/:orgId/groups/:groupId Get a specific group by ID
+     * @apiVersion 2.0.0
      * @apiName Get Group By ID
      * @apiGroup Group
      * @apiDescription Get a specific group by ID
@@ -55,13 +55,13 @@ export default (app: Express, groupController: GroupController) => {
      *
      * @apiError (Error 400) {Error} CouldNotFind Could not find the group by the given ID, or request was incorrect
      *
-     * @apiVersion 2.0.0
      */
 
     /**
-     * @api {PATCH} /api/:orgId/groups/:groupId Update a group
+     * @api {PATCH} /api/:orgId/groups/:groupId Group - Update a group
+     * @apiVersion 2.0.0
      * @apiName Update a group
-     * @apiGroup Group
+     * @apiGroup Admin
      * @apiDescription Update a group
      *
      * @apiPermission basic
@@ -75,14 +75,14 @@ export default (app: Express, groupController: GroupController) => {
      *
      * @apiError (Error 400) {Error} CouldNotFind Could not find the group by the given ID, or request was incorrect
      *
-     * @apiVersion 2.0.0
      */
     app.route('/api/:orgId/groups/:groupId')
         .get(passport.authenticate('bearer', {session: false}), groupController.getGroupById.bind(groupController))
         .patch(passport.authenticate('basic', {session: false}), groupController.updateGroup.bind(groupController));
 
     /**
-     * @api {GET} /api/:orgId/groups/user/:userId Get all groups a user participates in
+     * @api {GET} /api/:orgId/mygroups Get all groups a user participates in
+     * @apiVersion 2.0.0
      * @apiName Get all groups a user participates in
      * @apiGroup Group
      * @apiDescription Get all groups a user participates in
@@ -91,15 +91,15 @@ export default (app: Express, groupController: GroupController) => {
      * @apiHeader {String} Authorization Bearer token
      *
      * @apiSuccess (Success 200) {Group[]} - An array of group object.
-     * @apiVersion 2.0.0
+     *
      */
-    app.route('/api/:orgId/groups/user/:userId')
+    app.route('/api/:orgId/mygroups')
         .get(passport.authenticate('bearer', {session: false}), groupController.getUserGroups.bind(groupController));
 
     /**
-     * @api {POST} /api/:orgId/groups/:groupId/user Put a user into a group
+     * @api {POST} /api/:orgId/groups/:groupId/user Group - Put a user into a group
      * @apiName Put a user into a group
-     * @apiGroup Group
+     * @apiGroup Admin
      * @apiDescription Put a user into a group
      *
      * @apiPermission basic
@@ -110,9 +110,9 @@ export default (app: Express, groupController: GroupController) => {
      */
 
     /**
-     * @api {DELETE} /api/:orgId/groups/:groupId/user Remove a user from a group
+     * @api {DELETE} /api/:orgId/groups/:groupId/user Group - Remove a user from a group
      * @apiName Remove a user from a group
-     * @apiGroup Group
+     * @apiGroup Admin
      * @apiDescription Remove a user from a group
      *
      * @apiPermission basic

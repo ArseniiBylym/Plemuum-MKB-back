@@ -70,9 +70,9 @@ export default class CompassManager {
         const randomAboutUserId = getRandomItem(randomAboutGroup.users);
         const skills = await CompassDataController.getSkillsByIds(orgId, randomAboutGroup.skills); 
 
-        const todo = CompassManager.buildUpNewTodoResponse(randomOwnerUserId, organization.todoSentenceNumber, randomAboutGroupId, skills)
+        const todo = CompassManager.buildUpNewTodoResponse(randomOwnerUserId, organization.todoSentenceNumber, randomAboutGroupId, skills);
 
-        return CompassDataController.saveCompassTodo(organization.dbName, todo);;
+        return CompassDataController.saveCompassTodo(organization.dbName, todo);
     }
 
     static checkAnswerCardRelation(answerGroups: Group[]) {
