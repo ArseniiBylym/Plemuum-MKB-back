@@ -38,7 +38,7 @@ const app = (): Express => {
 
     app.use(require('cookie-parser')());
     app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(bodyParser.urlencoded({extended: true}));
     app.use(require('express-device').capture());
     app.use(session(sessionOptions));
     app.use(passport.initialize());
@@ -47,6 +47,13 @@ const app = (): Express => {
 
     passportInit();
     Routes(app);
+
+    /* Serve API docs */
+    app.use('/api', passport.authenticate('basic', {session: false}));
+    app.use('/api', express.static(path.join(__dirname, '../docs/api')));
+    app.use('/api', (req, res) => {
+        res.sendFile('index.html', express.static(path.join(__dirname, '../docs/api')));
+    });
 
     return app;
 };
