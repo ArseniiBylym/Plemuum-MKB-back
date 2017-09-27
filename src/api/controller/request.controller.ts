@@ -42,6 +42,7 @@ export default class RequestController extends BaseController {
             .catch((error: any) => BaseController.handleError(error, res));
     }
 
+    //TODO implement showReplied
     async getRequests(req: Request, res: Response) {
         this.requestManager.getRequests(req.params.orgId, req.user._id)
             .then((requests: Request[]) => res.status(StatusCodes.OK).send(requests))
