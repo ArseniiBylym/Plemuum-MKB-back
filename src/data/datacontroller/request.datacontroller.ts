@@ -1,6 +1,7 @@
 import { RequestCollection } from "../database/schema/organization/request.schema";
 import { Model, Types } from 'mongoose';
 import { UserCollection } from "../database/schema/common/user.schema";
+import UserDataController from "./user.datacontroller";
 
 
 interface RequestDataController {
@@ -40,7 +41,7 @@ const requestDataController: RequestDataController = {
         return this.getSpecificRequestForUser(organizationId, userId, requestId)
             .then(request => {
                 const arrayOfIds = request.recipientId.map((idStr: any) => Types.ObjectId(idStr));
-                return UserCollection().find({_id: {$in: arrayOfIds}}).lean().exec();
+                return UserDataController.getUsersByIds(organizationId, arrayOfIds);
             })
     }
 };

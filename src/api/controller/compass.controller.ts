@@ -46,7 +46,7 @@ export default class CompassController extends BaseController {
             .catch((err) => res.status(BaseController.getErrorStatus(err)).send(formError(err)));
     }
 
-    async updateSkill(req: any, res: any) {
+    async createOrUpdateSkill(req: any, res: any) {
         req.checkBody('name', 'Missing skill name').notEmpty();
         req.checkBody('sentences', 'Missing skill sentence').notEmpty();
         req.checkBody('sentences', 'Skill must contain at least one sentence').len({min: 1});
@@ -55,7 +55,7 @@ export default class CompassController extends BaseController {
             return;
         }
 
-        return CompassManager.updateSkill(req.params.orgId, req.body)
+        return CompassManager.createOrUpdateSkill(req.params.orgId, req.body)
             .then(updatedSkill => res.status(StatusCodes.OK).send(updatedSkill))
             .catch((err) => res.status(BaseController.getErrorStatus(err)).send(formError(err)));
     }

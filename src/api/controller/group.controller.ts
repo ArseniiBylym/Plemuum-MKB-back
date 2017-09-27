@@ -38,7 +38,6 @@ export default class GroupController extends BaseController {
     }
 
     async getUserGroups(req: any, res: any) {
-        console.log(req);
         return this.groupManager.getUserGroups(req.params.orgId, req.user._id)
             .then((groups: GroupModel[]) => res.status(StatusCodes.OK).send(groups))
             .catch((err: any) => BaseController.handleError(err, res));

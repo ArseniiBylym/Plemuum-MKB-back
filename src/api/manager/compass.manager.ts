@@ -140,7 +140,7 @@ export default class CompassManager {
         return CompassDataController.saveSkill(orgId, skill);
     }
 
-    static async updateSkill(orgId: string, skill: SkillModel): Promise<SkillModel> {
+    static async createOrUpdateSkill(orgId: string, skill: SkillModel): Promise<SkillModel> {
         return CompassDataController.createOrUpdateSkill(orgId, skill);
     }
 

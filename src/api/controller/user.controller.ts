@@ -67,7 +67,6 @@ export default class UserController extends BaseController {
 
     async getUserByToken(req: any, res: any) {
         try {
-            console.log(req.user);
             const result = {
                 _id: req.user._id,
                 firstName: req.user.firstName,

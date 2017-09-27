@@ -1,7 +1,6 @@
 import { getRequestObject } from "../util/testutil";
 import * as sinon from "sinon";
 import RequestController from "../../api/controller/request.controller";
-import { PlenuumError, ErrorType } from "../../util/errorhandler";
 
 suite("RequestController tests", () => {
     const orgId = "orgId";
@@ -13,7 +12,7 @@ suite("RequestController tests", () => {
             const res: any = {
                 status: sinon.stub().callsFake(() => res),
                 send: sinon.stub()
-            }
+            };
             const request: any = {request: "request"};
 
             req.params.orgId = orgId;
@@ -23,7 +22,7 @@ suite("RequestController tests", () => {
             saveNewRequest.withArgs(orgId, request).resolves(request);
             const requestManager: any = {
                 saveNewRequest: saveNewRequest
-            }
+            };
 
             const requestController = new RequestController(requestManager);
             await requestController.createRequest(req, res);
@@ -38,7 +37,7 @@ suite("RequestController tests", () => {
             const res: any = {
                 status: sinon.stub().callsFake(() => res),
                 send: sinon.stub()
-            }
+            };
             const request: any = {request: "request"};
 
             req.params.orgId = orgId;
@@ -46,7 +45,7 @@ suite("RequestController tests", () => {
 
             const requestManager: any = {
                 saveNewRequest: sinon.stub()
-            }
+            };
 
             const requestController = new RequestController(requestManager);
             await requestController.createRequest(req, res);

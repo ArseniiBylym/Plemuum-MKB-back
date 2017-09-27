@@ -95,7 +95,7 @@ export default (app: Express, compassController: CompassController) => {
      */
     app.route("/api/:orgId/skills")
         .get(passport.authenticate('bearer', {session: false}), compassController.getSkills.bind(compassController))
-        .patch(passport.authenticate('bearer', {session: false}), compassController.updateSkill.bind(compassController));
+        .patch(passport.authenticate('bearer', {session: false}), compassController.createOrUpdateSkill.bind(compassController));
 
     /**
      * @api {GET} /api/:orgId/compassstatistics Get COMPASS statistics
