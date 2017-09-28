@@ -2,7 +2,6 @@ import { Connection, Document, Model, Schema } from "mongoose";
 import { getDatabaseManager } from "../../../../factory/database.factory"
 import { User } from "../../../models/common/user.model";
 
-
 const USER_COLLECTION = "users";
 const TOKEN_COLLECTION = "tokens";
 
@@ -17,7 +16,7 @@ let UserSchema = new Schema({
     firstName: {required: true, type: String, index: true},
     lastName: {required: true, type: String, index: true},
     email: {required: true, type: String, index: {unique: true}},
-    orgIds: [String],
+    orgIds: {required: true, type: [String], select: false},
     password: {required: true, type: String, select: false},
     pictureUrl: {required: false, type: String},
     token: {required: false, type: TokenSchema, select: false},

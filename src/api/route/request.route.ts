@@ -131,6 +131,7 @@ export default (app: Express, requestController: RequestController) => {
 
     /**
      * @api {GET} /api/:orgId/requests/recipient Get user's received requests
+     * @apiDeprecated Unused endpoint. Will be removed before version release.
      * @apiVersion 2.0.0
      * @apiName getRecipientRequests
      * @apiGroup Request
@@ -211,6 +212,7 @@ export default (app: Express, requestController: RequestController) => {
 
     /**
      * @api {GET} /api/:orgId/requests/:requestId/recipients Get the recipients of a request
+     * @apiDeprecated Unused endpoint. Will be removed before version release.
      * @apiVersion 2.0.0
      * @apiName getRecipientUsersFromRequest
      * @apiGroup Request

@@ -13,20 +13,24 @@ export default (app: Express, sessionController: SessionController, userControll
      * This token can be used for future requests requiring authentication, as defined in RFC6750, e.g. it can be
      * placed in the Authorization header field with the following syntax: Bearer <token>
      *
-     * @apiParam {String} email Email address
-     * @apiParam {String} password Password
+     * @apiParam (Body){String} email       Email address
+     * @apiParam (Body){String} password    Password
      *
-     * @apiSuccess (Success 200) {String} token Bearer token
-     * @apiSuccess (Success 200) {String} token_expiry Expiration date of the token
+     * @apiSuccess (Success 200) {String}       token Bearer    token
+     * @apiSuccess (Success 200) {String}       token_expiry    Expiration date of the token
+     * @apiSuccess (Success 200) {String[]}     orgIds          Array of organization IDs the user participates in
      *
      * @apiSampleRequest /api/session
      *
      * @apiSuccessExample {json} Success-Response:
-     *     HTTP/1.1 200 OK
-     *     {
-     *         "token": "f3179baac48c3ab502abdae36c5bff0855050bb8e592f0bea26ab372558fdb1e92f515d0330397df02b2492cb7dd8b1320cda31b80f338452dd7ab525fccb62d",
-     *         "token_expiry": "2017-10-03T12:19:05.017Z"
-     *     }
+     * HTTP/1.1 200 OK
+     * {
+     *     "token": "8a815f8f8ac2084c3594951368b0abc47749f28323251f293f06a902654b12502cd1feac7efde70bc123969ec5de7e52bfb809d8393b6cd5c5fcba80f1dd3761",
+     *     "token_expiry": "2017-10-05T14:58:11.596Z",
+     *     "orgIds": [
+     *         "hipteam"
+     *     ]
+     * }
      */
 
     /**

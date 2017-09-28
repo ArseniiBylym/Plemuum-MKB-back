@@ -6,7 +6,7 @@ function validateUser(user: any) {
     expect(user).have.property('lastName');
     expect(user).have.property('email');
     expect(user).have.property('pictureUrl');
-    expect(user).have.property('orgIds');
+    expect(user).not.have.property('orgIds');
     expect(user).not.have.property('token');
     expect(user).not.have.property('password');
     expect(user).not.have.property('notificationToken');
@@ -36,6 +36,7 @@ function validateRequest(request: any) {
 function validateLoginResponse(loginResponse: any) {
     expect(loginResponse).have.property("token");
     expect(loginResponse).have.property("token_expiry");
+    expect(loginResponse).have.property("orgIds");
 }
 
 function validateTagResponse(tagResponse: any) {

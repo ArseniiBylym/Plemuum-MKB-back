@@ -184,7 +184,6 @@ suite("SessionManager tests", () => {
                 }
             };
 
-            const tokenObExpiry = new Date();
             tokenExpiry.setHours(tokenExpiry.getHours() + 7);
             const mockTokenObj = {token: "asdasdtoken", token_expiry: tokenExpiry};
 
@@ -195,6 +194,8 @@ suite("SessionManager tests", () => {
             generateNewTokenObject.returns(mockTokenObj);
             getUserByIdWithoutOrgId.withArgs(userId).resolves(mockUser);
             updateUserToken.resolves(updatedUser);
+
+            const tokenObExpiry = new Date();
 
             const expectedResult = {
                 _id: updatedUser._id,
@@ -214,7 +215,7 @@ suite("SessionManager tests", () => {
             expect(result).to.haveOwnProperty("token_expiry");
 
             expect(result.token).to.be.equal(mockUser.token.token);
-            expect(result.token_expiry).to.be.deep.equal(tokenObExpiry);
+            expect(result.token_expiry.getHours()).to.be.deep.equal(tokenObExpiry.getHours());
         });
     });
 });

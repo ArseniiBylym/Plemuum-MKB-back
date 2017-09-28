@@ -19,12 +19,13 @@ export default class SessionManager {
         return {
             token: updatedUser.token.token,
             token_expiry: updatedUser.token.token_expiry,
+            orgIds: updatedUser.orgIds
         }
     }
 
     async logout(userId: string) {
         try {
-            const result = await UserDataController.removeToken(userId);
+            await UserDataController.removeToken(userId);
             return {message: "User logged out successfully"}
         } catch (err) {
             throw new PlenuumError("User could not be logged out.", ErrorType.UNKNOWN);
