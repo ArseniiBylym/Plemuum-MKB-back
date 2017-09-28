@@ -1,0 +1,10 @@
+FROM arm32v7/node:latest
+
+WORKDIR /app
+
+COPY . ./
+
+RUN npm install
+RUN npm run generate-api-docs
+
+CMD ["npm","run","start-staging"]
