@@ -28,7 +28,7 @@ const UserDataController = {
             .exec() as Promise<UserModel>;
     },
 
-    getUsersByIds: function(orgId: string, userIds: string[]): Promise<UserModel[]> {
+    getUsersByIds: function (orgId: string, userIds: string[]): Promise<UserModel[]> {
         return UserCollection().find({_id: {$in: userIds}})
             .select(selectableFields.join(' '))
             .lean()
@@ -42,20 +42,27 @@ const UserDataController = {
             .exec() as Promise<UserModel>;
     },
 
-    getUserByIdWithoutOrgId: function (userId: string): Promise<UserModel> {
-        return UserCollection().findById(userId)
-            .exec() as Promise<UserModel>;
+    getUserByIdWithoutOrgId: function (userId: string, showToken: boolean = false): Promise<UserModel> {
+        const queryCmd = UserCollection().findById(userId);
+        if (showToken) {
+            queryCmd.select('+token')
+        }
+        return queryCmd.exec() as Promise<UserModel>;
     },
 
     getUserByToken: function (token: string): Promise<UserModel> {
         return UserCollection().findOne({'token.token': token})
+            .select('+token')
             .lean()
             .exec() as Promise<UserModel>;
     },
 
-    getUserByEmail: function (email: string): Promise<UserModel> {
-        return UserCollection().findOne({email: email})
-            .exec() as Promise<UserModel>;
+    getUserByEmail: function (email: string, showNotificationTokens: boolean = false): Promise<UserModel> {
+        const queryCmd = UserCollection().findOne({email: email});
+        if (showNotificationTokens) {
+            queryCmd.select('+notificationToken')
+        }
+        return queryCmd.exec() as Promise<UserModel>;
     },
 
     updateUserToken: function (userId: string, tokenObj: TokenObject): Promise<UserModel> {
@@ -68,6 +75,7 @@ const UserDataController = {
             }
         };
         return UserCollection().findByIdAndUpdate(userId, query, {"new": true})
+            .select('+token')
             .lean()
             .exec() as Promise<UserModel>;
     },

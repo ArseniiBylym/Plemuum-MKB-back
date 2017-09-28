@@ -5,10 +5,11 @@ function validateUser(user: any) {
     expect(user).have.property('firstName');
     expect(user).have.property('lastName');
     expect(user).have.property('email');
-    expect(user).not.have.property('token');
     expect(user).have.property('pictureUrl');
     expect(user).have.property('orgIds');
+    expect(user).not.have.property('token');
     expect(user).not.have.property('password');
+    expect(user).not.have.property('notificationToken');
 }
 
 function validateFeedback(feedback: any) {
@@ -73,7 +74,7 @@ function validateCompassTodo(result: any, todoSentenceNumber: number) {
     expect(result.questions).to.have.lengthOf(todoSentenceNumber);
     expect(result.questions[0]).to.haveOwnProperty("sentence");
     expect(result.questions[0]).to.haveOwnProperty("skill");
-};
+}
 
 export {
     validateUser,

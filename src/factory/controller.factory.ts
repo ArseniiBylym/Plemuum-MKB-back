@@ -20,6 +20,8 @@ import TagManager from "../api/manager/tag.manager";
 import FirebaseStorageManager from "../service/file/firebase.storage.manager";
 import NotificationController from "../api/controller/notification.controller";
 import NotificationManager from "../api/manager/notification.manager";
+import FirebaseNotification from "../service/notification/firebase.notification";
+import config from "../../config/config";
 
 let userController: UserController;
 let feedbackController: FeedbackController;
@@ -53,7 +55,7 @@ const getGroupController = (): GroupController => getController(groupController,
     new GroupManager(getGroupDataController()));
 
 const getNotificationController = (): NotificationController => getController(notificationController, NotificationController,
-    new NotificationManager());
+    new NotificationManager(new FirebaseNotification(require(`../../res/${config.firebaseConfig.keyFileName}`), config.firebaseConfig.databaseUrl)));
 
 /* #########################     PRIVATE      ########################## */
 

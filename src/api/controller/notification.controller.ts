@@ -50,4 +50,17 @@ export default class NotificationController extends BaseController {
             .catch((err) => BaseController.handleError(err, res));
     }
 
+    async sendNotification(req: any, res: Response) {
+        req.checkBody('email', 'Missing email').notEmpty();
+        req.checkBody('message', 'Missing message').notEmpty();
+
+        if (!await validate(req, res)) {
+            return;
+        }
+
+        return this.notificationManager.sendNotification(req.body.email, req.body.message)
+            .then((result) => res.status(StatusCodes.OK).send(result))
+            .catch((err) => BaseController.handleError(err, res));
+    }
+
 }

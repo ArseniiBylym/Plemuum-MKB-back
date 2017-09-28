@@ -7,7 +7,7 @@ export default class SessionManager {
 
     async login(userId: string) {
         let tokenObj: TokenObject = tokenManager.generateNewTokenObject();
-        const user = await UserDataController.getUserByIdWithoutOrgId(userId);
+        const user = await UserDataController.getUserByIdWithoutOrgId(userId, true);
         const now = new Date();
         if (user && user.token && user.token.token_expiry > now) {
             tokenObj = {

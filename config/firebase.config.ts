@@ -3,6 +3,7 @@ interface FirebaseConfig {
     keyFileName: string,
     bucketName: string,
     baseUrl: string;
+    databaseUrl: string;
 }
 
 export default FirebaseConfig

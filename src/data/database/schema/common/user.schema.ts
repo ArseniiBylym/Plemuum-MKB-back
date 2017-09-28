@@ -18,14 +18,12 @@ let UserSchema = new Schema({
     lastName: {required: true, type: String, index: true},
     email: {required: true, type: String, index: {unique: true}},
     orgIds: [String],
-    password: {required: true, type: String},
+    password: {required: true, type: String, select: false},
     pictureUrl: {required: false, type: String},
-    token: {required: false, type: TokenSchema},
-    notificationToken: [String]
+    token: {required: false, type: TokenSchema, select: false},
+    notificationToken: {required: false, type: [String], select: false}
 
 }, {versionKey: false, collection: USER_COLLECTION});
-
-UserSchema.path("password").select(false);
 
 if (process.env.NODE_ENV == "prod") {
     UserSchema.plugin(require('mongoose-bcrypt'));
@@ -36,10 +34,6 @@ if (process.env.NODE_ENV == "prod") {
 }
 
 interface UserModel extends User, Document {
-    verifyPasswordSync(rec_password: string): boolean
-}
-
-interface TokenModel extends User, Document {
     verifyPasswordSync(rec_password: string): boolean
 }
 

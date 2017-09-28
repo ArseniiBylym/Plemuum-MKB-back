@@ -24,7 +24,8 @@ const devConfig: Config = {
             projectId: 'plenuumbackend',
             keyFileName: 'PlenuumBackend-25b19e804e20.json',
             bucketName: 'plenuumbackend.appspot.com',
-            baseUrl: 'http://storage.googleapis.com/plenuumbackend.appspot.com/'
+            baseUrl: 'http://storage.googleapis.com/plenuumbackend.appspot.com/',
+            databaseUrl: 'https://plenuumbackend.firebaseio.com/'
         };
     }
 };

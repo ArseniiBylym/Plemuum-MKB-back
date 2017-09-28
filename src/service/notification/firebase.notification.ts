@@ -3,10 +3,10 @@ import * as admin from "firebase-admin";
 
 export default class FirebaseNotification implements NotificationInterface {
 
-    constructor(serviceAccount: string, url: string){
+    constructor(serviceAccount: string, databaseURL: string){
         admin.initializeApp({
             credential: admin.credential.cert(serviceAccount),
-            databaseURL: url
+            databaseURL: databaseURL
         });
     }
 
