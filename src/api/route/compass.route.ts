@@ -56,10 +56,10 @@ export default (app: Express, compassController: CompassController) => {
         .post(passport.authenticate('bearer', {session: false}), compassController.answerCompass.bind(compassController));
 
     /**
-     * @api {POST} /api/:orgId/skills Create Skill
+     * @api {POST} /api/:orgId/skills Skill - Create Skill
      * @apiVersion 2.0.0
      * @apiName create skill
-     * @apiGroup Compass Assessment
+     * @apiGroup Admin
      * @apiDescription Create a new skill object with at least one active sentence
      *
      * @apiHeader {String} Authorization Basic username:password
@@ -74,10 +74,10 @@ export default (app: Express, compassController: CompassController) => {
      */
 
     /**
-     * @api {PATCH} /api/:orgId/skills Update Skill
+     * @api {PATCH} /api/:orgId/skills Skill - Update Skill
      * @apiVersion 2.0.0
-     * @apiName create skill
-     * @apiGroup Compass Assessment
+     * @apiName update skill
+     * @apiGroup Admin
      * @apiDescription Update an existing skill
      *
      * @apiHeader {String} Authorization Basic username:password
