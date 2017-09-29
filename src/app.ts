@@ -32,10 +32,11 @@ const app = (): Express => {
 
     // TODO finish and use this before release!
     const corsOptions = {
-        optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+        "origin": ["http://localhost:3000", "http://localhost:8081"],
+        "optionsSuccessStatus": 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+        "credentials": true,
     };
     app.use(cors(corsOptions));
-
     app.use(require('cookie-parser')());
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended: true}));
@@ -44,6 +45,13 @@ const app = (): Express => {
     app.use(passport.initialize());
     app.use(passport.session());
     app.use(validator());
+
+    app.use((req, res, next) => {
+        if (req.cookies.token) {
+            req.headers.authorization = `Bearer ${req.cookies.token}`;
+        }
+        next();
+    });
 
     passportInit();
     Routes(app);
