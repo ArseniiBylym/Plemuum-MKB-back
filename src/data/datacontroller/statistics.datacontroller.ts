@@ -7,7 +7,9 @@ const StatisticsDataController = {
 
     saveOrUpdateStatistics(orgId: string, statistics: any): Promise<any> {
         if (statistics._id) {
-            return StatisticsCollection(orgId).update({_id: statistics._id}, statistics).lean().exec();
+            const id = statistics._id;
+            delete statistics._id;
+            return StatisticsCollection(orgId).update({_id: id}, statistics).lean().exec();
         } else {
             return new (StatisticsCollection(orgId))(statistics).save();
         }
