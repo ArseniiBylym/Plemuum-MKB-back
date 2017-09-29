@@ -15,11 +15,9 @@ function validateUser(user: any) {
 function validateFeedback(feedback: any) {
     expect(feedback).have.property("senderId");
     expect(feedback).have.property("recipientId");
-    expect(feedback).have.property("context");
     expect(feedback).have.property("message");
     expect(feedback).have.property("privacy");
     expect(feedback).have.property("type");
-    expect(feedback).have.property("requestId");
     expect(feedback).have.property("tags");
 }
 

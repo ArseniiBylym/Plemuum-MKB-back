@@ -22,6 +22,7 @@ import NotificationController from "../api/controller/notification.controller";
 import NotificationManager from "../api/manager/notification.manager";
 import FirebaseNotification from "../service/notification/firebase.notification";
 import config from "../../config/config";
+import FeedbackManager from "../api/manager/feedback.manager";
 
 let userController: UserController;
 let feedbackController: FeedbackController;
@@ -38,7 +39,8 @@ const getUserController = (): UserController => getController(userController, Us
     new UserManager(new EmailService(), new FileTransferService(new FirebaseStorageManager()))
 );
 
-const getFeedbackController = (): FeedbackController => getController(feedbackController, FeedbackController);
+const getFeedbackController = (): FeedbackController => getController(feedbackController, FeedbackController,
+    new FeedbackManager());
 
 const getTagController = (): TagController => getController(tagController, TagController,
     new TagManager(tagDataController));

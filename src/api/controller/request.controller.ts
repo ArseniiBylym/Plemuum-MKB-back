@@ -14,14 +14,15 @@ export default class RequestController extends BaseController {
         this.requestManager = requestManager;
     }
 
-    async createRequest(req: Request, res: Response) {
-        req.checkBody('senderId', 'Missing senderId').notEmpty();
+    async createRequest(req: any, res: Response) {
         req.checkBody('recipientId', 'recipientId').notEmpty();
         req.checkBody('requestMessage', 'requestMessage').notEmpty();
 
         if (!await validate(req, res)) {
             return;
         }
+
+        req.body.senderId = req.user._id;
 
         this.requestManager.saveNewRequest(req.params.orgId, req.body)
             .then((savedRequest: Request) => res.status(StatusCodes.CREATED).send(savedRequest))

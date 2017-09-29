@@ -26,8 +26,7 @@ suite("Request entity related request tests", () => {
 
         test("Should be able to post a request", async () => {
             const requestForm = {
-                senderId: "sender",
-                recipientId: ['first'],
+                recipientId: ['5984342227cd340363dc84ac'],
                 requestMessage: 'Message'
             };
 

@@ -22,9 +22,8 @@ export default (app: Express, requestController: RequestController) => {
      * @apiHeader {String} Authorization Bearer token
      * @apiParam (URL){String} orgId Organization id
      *
-     * @apiParam (Body){String} senderId ID of the sender user
-     * @apiParam (Body){String[]} recipientId List of recipient user IDs
-     * @apiParam (Body){String} requestMessage Request message
+     * @apiParam (Body){String[]}   recipientId     List of recipient user IDs
+     * @apiParam (Body){String}     requestMessage  Request message
      *
      * @apiSuccess (Success 201) {Object[]}     requests Array of user requests
      * @apiSuccess (Success 201) {String}       requests._id ID of the request
@@ -58,8 +57,8 @@ export default (app: Express, requestController: RequestController) => {
      * @apiHeader {String} Authorization Bearer token
      * @apiHeader {Boolean} [showReplied=false] Show already replied incoming requests or not. NOT IMPLEMENTED YET!
      *
-     *  @apiDescription Get the requests sent or received by a user
-     * @apiParam {String} orgId Organization id
+     * @apiDescription Get the requests sent or received by a user
+     * @apiParam (URL){String} orgId Organization id
      *
      * @apiUse request_list_data
      *

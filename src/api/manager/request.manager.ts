@@ -1,4 +1,6 @@
 import { RequestDataController } from "../../data/datacontroller/request.datacontroller";
+import UserDataController from "../../data/datacontroller/user.datacontroller";
+import { ErrorType, PlenuumError } from "../../util/errorhandler";
 
 export default class RequestManager {
 
@@ -9,6 +11,10 @@ export default class RequestManager {
     }
 
     async saveNewRequest(orgId: string, request: any) {
+        const user = await UserDataController.getUserById(orgId, request.recipientId);
+        if (!user) {
+            throw new PlenuumError("Recipient user not found", ErrorType.NOT_FOUND);
+        }
         return this.requestDataController.saveNewRequest(orgId, request);
     }
 

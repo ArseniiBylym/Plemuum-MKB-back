@@ -10,8 +10,6 @@ import StatisticsDataController from "../../data/datacontroller/statistics.datac
 import Group from "../../data/models/organization/group.model";
 import { skills } from "../util/statistics.manager.util";
 import { validateCompassTodo } from "../../util/model.validator";
-import { getGroupDataController } from "../../data/datacontroller/group.datacontroller";
-import { getOrganizationDataController } from "../../data/datacontroller/organization.datacontroller";
 import { fail } from "assert";
 import { PlenuumError } from "../../util/errorhandler";
 
@@ -23,7 +21,6 @@ suite("CompassManager tests", () => {
         const aboutUserId = "5984342227cd340363dc84c7";
         const senderId = "5984342227cd340363dc84aa";
         const orgId = "hipteam";
-        const userId = "5984342227cd340363dc84aa";
 
         test("Should get the correct skills and call generateTodo", async () => {
             const aboutUserGroups: any = [
@@ -66,10 +63,10 @@ suite("CompassManager tests", () => {
 
             getUserGroups.withArgs(orgId, "5984342227cd340363dc84c7").resolves(aboutUserGroups);
             getUserGroups.withArgs(orgId, "5984342227cd340363dc84aa").resolves(senderUserGroups);
-            getOrganizationByDbName.withArgs(orgId).resolves({ dbName: orgId, todoSentenceNumber: 3 });
+            getOrganizationByDbName.withArgs(orgId).resolves({dbName: orgId, todoSentenceNumber: 3});
 
-            const groupDataController: any = { getUserGroups: getUserGroups };
-            const organizationDataController: any = { getOrganizationByDbName: getOrganizationByDbName };
+            const groupDataController: any = {getUserGroups: getUserGroups};
+            const organizationDataController: any = {getOrganizationByDbName: getOrganizationByDbName};
 
             const getSkillsByIds = sinon.stub(CompassDataController, "getSkillsByIds");
             const getAboutUser = sinon.stub(CompassManager, "getAboutUser");
@@ -81,7 +78,7 @@ suite("CompassManager tests", () => {
                 .resolves(mockSkills);
 
             const compassManager = new CompassManager(groupDataController, organizationDataController);
-            const result = await compassManager.answerCard(aboutUserId, senderId, orgId);
+            await compassManager.answerCard(aboutUserId, senderId, orgId);
 
             getSkillsByIds.restore();
             buildUpNewTodoResponse.restore();
@@ -120,10 +117,10 @@ suite("CompassManager tests", () => {
 
             getUserGroups.withArgs(orgId, "5984342227cd340363dc84c7").resolves(aboutUserGroups);
             getUserGroups.withArgs(orgId, "5984342227cd340363dc84aa").resolves(senderUserGroups);
-            getOrganizationByDbName.withArgs(orgId).resolves({ dbName: orgId });
+            getOrganizationByDbName.withArgs(orgId).resolves({dbName: orgId});
 
-            const groupDataController: any = { getUserGroups: getUserGroups };
-            const organizationDataController: any = { getOrganizationByDbName: getOrganizationByDbName };
+            const groupDataController: any = {getUserGroups: getUserGroups};
+            const organizationDataController: any = {getOrganizationByDbName: getOrganizationByDbName};
 
             const getSkillsByIds = sinon.stub(CompassDataController, "getSkillsByIds");
             const generateTodo = sinon.stub(CompassManager, "buildUpNewTodoResponse");
@@ -166,7 +163,7 @@ suite("CompassManager tests", () => {
         test("Should throw any exception", done => {
             try {
                 let organization: any = undefined;
-                const result = CompassManager.checkOrganization(organization);
+                CompassManager.checkOrganization(organization);
                 done(new Error('This should fail!'));
             } catch (err) {
                 expect(err.message).to.be.equal("Organization nonexistent!");
@@ -197,7 +194,7 @@ suite("CompassManager tests", () => {
         test("Should throw any exception", done => {
             try {
                 let user: any = undefined;
-                const result = CompassManager.checkAboutUser(user);
+                CompassManager.checkAboutUser(user);
                 done(new Error('This should fail!'))
             } catch (err) {
                 expect(err.message).to.be.equal("User could not be found");
@@ -229,25 +226,25 @@ suite("CompassManager tests", () => {
                 {
                     name: "skill 1",
                     sentences: [
-                        { message: "message 1" },
-                        { message: "message 1" },
-                        { message: "message 1" },
+                        {message: "message 1"},
+                        {message: "message 1"},
+                        {message: "message 1"},
                     ]
                 },
                 {
                     name: "skill 2",
                     sentences: [
-                        { message: "message 2" },
-                        { message: "message 2" },
-                        { message: "message 2" },
+                        {message: "message 2"},
+                        {message: "message 2"},
+                        {message: "message 2"},
                     ]
                 },
                 {
                     name: "skill 3",
                     sentences: [
-                        { message: "message 3" },
-                        { message: "message 3" },
-                        { message: "message 3" },
+                        {message: "message 3"},
+                        {message: "message 3"},
+                        {message: "message 3"},
                     ]
                 }
             ];
@@ -264,17 +261,17 @@ suite("CompassManager tests", () => {
                 {
                     name: "skill 1",
                     sentences: [
-                        { message: "message 1" },
-                        { message: "message 1" },
-                        { message: "message 1" },
+                        {message: "message 1"},
+                        {message: "message 1"},
+                        {message: "message 1"},
                     ]
                 },
                 {
                     name: "skill 2",
                     sentences: [
-                        { message: "message 2" },
-                        { message: "message 2" },
-                        { message: "message 2" },
+                        {message: "message 2"},
+                        {message: "message 2"},
+                        {message: "message 2"},
                     ]
                 }
             ];
@@ -291,13 +288,13 @@ suite("CompassManager tests", () => {
                 {
                     name: "skill 1",
                     sentences: [
-                        { message: "message 1" },
+                        {message: "message 1"},
                     ]
                 },
                 {
                     name: "skill 2",
                     sentences: [
-                        { message: "message 2" },
+                        {message: "message 2"},
                     ]
                 }
             ];
@@ -431,7 +428,7 @@ suite("CompassManager tests", () => {
             sinon.assert.calledWith(groupDataController.getUserGroups, orgId, userId);
             expect(result).to.be.deep.equal(mockStatistics);
         })
-    })
+    });
 
     suite("autoGenerateTodo", () => {
         test("Should get parts send them to build a todo and call save", async () => {
@@ -460,7 +457,7 @@ suite("CompassManager tests", () => {
                     skills: ["skill7"],
                     todoCardRelations: []
                 },
-            ]
+            ];
 
             const groupDataController: any = {
                 getGroups: sinon.stub().resolves(testGroups),
@@ -480,17 +477,17 @@ suite("CompassManager tests", () => {
             const saveCompassTodo = sinon.stub(CompassDataController, "saveCompassTodo");
 
             const buildUpNewTodoResponse = sinon.stub(CompassManager, "buildUpNewTodoResponse");
-            buildUpNewTodoResponse.returns({ todo: "todo" });
+            buildUpNewTodoResponse.returns({todo: "todo"});
 
-            const compassManager = new CompassManager(groupDataController, organizationDataController)
-            const result: any = await compassManager.autoGenerateTodo("orgName");
+            const compassManager = new CompassManager(groupDataController, organizationDataController);
+            await compassManager.autoGenerateTodo("orgName");
 
             buildUpNewTodoResponse.restore();
             getSkillsByIds.restore();
             saveCompassTodo.restore();
 
             sinon.assert.calledWith(buildUpNewTodoResponse, sinon.match.defined, 3, sinon.match.defined, sinon.match.array);
-            sinon.assert.calledWith(saveCompassTodo, "orgName", { todo: "todo" });
+            sinon.assert.calledWith(saveCompassTodo, "orgName", {todo: "todo"});
         });
 
         test("Should throw and error if there's no group with todo relation", async () => {
@@ -519,11 +516,12 @@ suite("CompassManager tests", () => {
                     skills: ["skill7"],
                     todoCardRelations: []
                 },
-            ]
+            ];
 
             const groupDataController: any = {
                 getGroups: sinon.stub().resolves(testGroups),
-                getGroupById: sinon.stub().callsFake((orgId, groupId) => Promise.resolve(testGroups.filter((g) => g._id === groupId)[0]))
+                getGroupById: sinon.stub().callsFake((orgId, groupId) => Promise.resolve(
+                    testGroups.filter((g) => g._id === groupId)[0]))
             };
 
             const organizationDataController: any = {
@@ -533,7 +531,7 @@ suite("CompassManager tests", () => {
                 })
             };
 
-            const compassManager = new CompassManager(groupDataController, organizationDataController)
+            const compassManager = new CompassManager(groupDataController, organizationDataController);
             try {
                 await compassManager.autoGenerateTodo("orgName");
                 fail("Should throw and exception")

@@ -1,5 +1,5 @@
 import * as Util from "./util";
-import { default as Feedback } from "../data/models/organization/feedback.model";
+import { default as Feedback, PRIVACY, TYPE } from "../data/models/organization/feedback.model";
 import { User } from "../data/models/common/user.model";
 
 function getTestUser(firstName: string, lastName: string): any {
@@ -43,16 +43,12 @@ function getRegisterJohnDoe() {
     return getRegisterTestUser("John", "Doe");
 }
 
-function getTestFeedback(): Feedback {
+function getTestFeedback(): any {
     return {
-        senderId: 'senderId',
-        recipientId: 'recipientId',
-        context: 'context',
+        recipientId: '5984342227cd340363dc84aa',
         message: 'message',
-        creationDate: Date.now().toString(),
-        privacy: ['ANONYMOUS'],
-        type: Math.random() > .5 ? 'CONSIDER' : 'CONTINUE',
-        requestId: '',
+        privacy: [PRIVACY.ANONYMOUS],
+        type: Math.random() > .5 ? TYPE.CONSIDER : TYPE.CONTINUE,
         tags: []
     }
 }

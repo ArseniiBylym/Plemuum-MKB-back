@@ -22,13 +22,10 @@ const app = (): Express => {
 
     //https://helmetjs.github.io/
     app.use(require('helmet')());
-    app.disable('x-powered-by');
 
     app.set("views", viewsPath);
     app.set("view engine", "ejs");
-    if (process.env.NODE_ENV == "dev") {
-        app.use(logger("dev"));
-    }
+    app.use(logger("dev"));
 
     // TODO finish and use this before release!
     const corsOptions = {

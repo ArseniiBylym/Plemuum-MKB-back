@@ -1,17 +1,23 @@
 import Tag from './tag.model';
 
-export type TYPE = "CONSIDER" | "CONTINUE"
+export enum TYPE {
+    CONSIDER = "CONSIDER",
+    CONTINUE = "CONTINUE"
+}
+
+export enum PRIVACY {
+    PRIVATE = "PRIVATE",
+    ANONYMOUS = "ANONYMOUS"
+}
 
 interface Feedback {
     senderId: string;
     recipientId: string;
-    context: string;
     message: string;
-    creationDate: string;
-    privacy: string[];
-    type: TYPE;
-    requestId: string;
-    tags: Tag[];
+    privacy?: string[];
+    type: string;
+    requestId?: string;
+    tags?: Tag[];
 }
 
 export default Feedback
