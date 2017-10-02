@@ -60,6 +60,13 @@ const app = (): Express => {
         res.sendFile('index.html', express.static(path.join(__dirname, '../docs/api')));
     });
 
+    /* Serve Postman collection */
+    app.route('/docs/postman')
+        .get(passport.authenticate('basic', {session: false}), (req, res) => {
+            const file = path.join(__dirname, '../docs/postman/', 'api-v2.postman.json');
+            res.download(file.toString());
+        });
+
     return app;
 };
 

@@ -1,0 +1,2573 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Plenuum",
+		"_postman_id": "7c8bbd27-1932-9d6a-0cd5-d1ca9bb0f6a5",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "LOCAL",
+			"description": "",
+			"item": [
+				{
+					"name": "ADMIN",
+					"description": "",
+					"item": [
+						{
+							"name": "User",
+							"description": "",
+							"item": [
+								{
+									"name": "Register user",
+									"request": {
+										"url": "http://localhost:5000/api/register/user",
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"description": ""
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer bbfce401fc21ac012d4ff36cebe1cbee4e4bbbd432b51e0edf0dcf49fb01f40926650bd224447cf118b2c549e1963e2d33b7f10d82d0235e7a4b81665ccfc693",
+												"description": ""
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "firstName",
+													"value": "John",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "lastName",
+													"value": "Doe",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "email",
+													"value": "john.doe@hipteam.io",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "orgIds[0]",
+													"value": "hipteam",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "pictureUrl",
+													"value": "optional",
+													"description": "",
+													"type": "text",
+													"disabled": true
+												}
+											]
+										},
+										"description": ""
+									},
+									"response": []
+								},
+								{
+									"name": "Modify user",
+									"request": {
+										"url": "http://localhost:5000/api/modify/user",
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"description": ""
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer c16d2b6455535e6d2b9f94739fc4e8ee7b0c9913ba00ca513e3a6e051c51644f68b2fcdc7186119fda254b7315e355affe13653550865c4a883641e0d1ab17e9",
+												"description": ""
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "_id",
+													"value": "59cb5832dccfe0061fcbec49",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "firstName",
+													"value": "Johnny",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "lastName",
+													"value": "Doe",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "email",
+													"value": "john.doe@hipteam.io",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "orgIds[0]",
+													"value": "hipteam",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "pictureUrl",
+													"value": "optional",
+													"description": "",
+													"type": "text",
+													"disabled": true
+												}
+											]
+										},
+										"description": ""
+									},
+									"response": []
+								}
+							],
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "Group",
+							"description": "",
+							"item": [
+								{
+									"name": "Add user to group",
+									"request": {
+										"url": "http://localhost:5000/api/hipteam/groups/599312a31b31d008b6bd2782/user",
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"description": ""
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic YWRtaW46aW5jbGluZSBkaWFkZW0gcGFzc2VkIGhvb3A=",
+												"description": ""
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "userId",
+													"value": "5984342227cd340363dc84b5",
+													"description": "",
+													"type": "text"
+												}
+											]
+										},
+										"description": ""
+									},
+									"response": []
+								},
+								{
+									"name": "Update group",
+									"request": {
+										"url": "http://localhost:5000/api/hipteam/groups/599312971b31d008b6bd2781",
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"description": ""
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic YWRtaW46aW5jbGluZSBkaWFkZW0gcGFzc2VkIGhvb3A=",
+												"description": ""
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "name",
+													"value": "Updated group name",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "users[0]",
+													"value": "user_id_1",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "users[1]",
+													"value": "user_id_2",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "skills[0]",
+													"value": "skill_id_1",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "answerCardRelations[0]",
+													"value": "group_id_1",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "todoCardRelations[0]",
+													"value": "group_id_2",
+													"description": "",
+													"type": "text"
+												}
+											]
+										},
+										"description": ""
+									},
+									"response": []
+								},
+								{
+									"name": "Create group",
+									"request": {
+										"url": "http://localhost:5000/api/hipteam/groups",
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"description": ""
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic YWRtaW46aW5jbGluZSBkaWFkZW0gcGFzc2VkIGhvb3A=",
+												"description": ""
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "name",
+													"value": "Group name",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "users[0]",
+													"value": "first_user_id",
+													"description": "",
+													"type": "text",
+													"disabled": true
+												},
+												{
+													"key": "users[1]",
+													"value": "second_user_id",
+													"description": "",
+													"disabled": true
+												},
+												{
+													"key": "answerCardRelations[0]",
+													"value": "groupid",
+													"description": "",
+													"type": "text",
+													"disabled": true
+												},
+												{
+													"key": "todoCardRelations[0]",
+													"value": "groupid",
+													"description": "",
+													"type": "text",
+													"disabled": true
+												}
+											]
+										},
+										"description": ""
+									},
+									"response": []
+								},
+								{
+									"name": "Get groups",
+									"request": {
+										"url": "http://localhost:5000/api/hipteam/groups",
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Basic YWRtaW46aW5jbGluZSBkaWFkZW0gcGFzc2VkIGhvb3A=",
+												"description": ""
+											}
+										],
+										"body": {},
+										"description": ""
+									},
+									"response": []
+								},
+								{
+									"name": "Remove user from group",
+									"request": {
+										"url": "http://localhost:5000/api/hipteam/groups/599312a31b31d008b6bd2782/user",
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"description": ""
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic YWRtaW46aW5jbGluZSBkaWFkZW0gcGFzc2VkIGhvb3A=",
+												"description": ""
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "userId",
+													"value": "5984342227cd340363dc84b5",
+													"description": "",
+													"type": "text"
+												}
+											]
+										},
+										"description": ""
+									},
+									"response": []
+								}
+							],
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "Skill",
+							"description": "",
+							"item": [
+								{
+									"name": "Get skills",
+									"request": {
+										"url": "http://localhost:5000/api/hipteam/skills",
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer f3179baac48c3ab502abdae36c5bff0855050bb8e592f0bea26ab372558fdb1e92f515d0330397df02b2492cb7dd8b1320cda31b80f338452dd7ab525fccb62d",
+												"description": ""
+											}
+										],
+										"body": {},
+										"description": ""
+									},
+									"response": []
+								},
+								{
+									"name": "Create/Update skill",
+									"request": {
+										"url": "http://localhost:5000/api/hipteam/skills",
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer f3179baac48c3ab502abdae36c5bff0855050bb8e592f0bea26ab372558fdb1e92f515d0330397df02b2492cb7dd8b1320cda31b80f338452dd7ab525fccb62d",
+												"description": ""
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"description": ""
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\"_id\":\"59ca403c39f12a0ab5b3f79f\", \"name\":\"Updated skill\",\"sentences\":[{\"message\":\"First sentence\"}],\"inactiveSentences\":[{\"message\":\"Second sentence\"}]}"
+										},
+										"description": ""
+									},
+									"response": []
+								}
+							],
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "Other",
+							"description": "",
+							"item": [
+								{
+									"name": "Create new tag",
+									"request": {
+										"url": "http://localhost:5000/api/hipteam/tag",
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"description": ""
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic YWRtaW46aW5jbGluZSBkaWFkZW0gcGFzc2VkIGhvb3A=",
+												"description": ""
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "title",
+													"value": "New tag",
+													"description": "",
+													"type": "text"
+												}
+											]
+										},
+										"description": ""
+									},
+									"response": []
+								},
+								{
+									"name": "Create organization",
+									"request": {
+										"url": "http://localhost:5000/api/organization",
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"description": ""
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic YWRtaW46aW5jbGluZSBkaWFkZW0gcGFzc2VkIGhvb3A=",
+												"description": ""
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "name",
+													"value": "New organization",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "dbName",
+													"value": "new_organization",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "todoSentenceNumber",
+													"value": "3",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "compassGenerationTime",
+													"value": "60",
+													"description": "",
+													"type": "text"
+												}
+											]
+										},
+										"description": ""
+									},
+									"response": []
+								}
+							],
+							"_postman_isSubFolder": true
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Session",
+					"description": "Session handler endpoints",
+					"item": [
+						{
+							"name": "Login",
+							"request": {
+								"url": "http://localhost:5000/api/session",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "email",
+											"value": "peter.szabo@hipteam.io",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "asd1234",
+											"description": "",
+											"type": "text"
+										}
+									]
+								},
+								"description": "Login with email and password"
+							},
+							"response": []
+						},
+						{
+							"name": "Logout",
+							"request": {
+								"url": "http://localhost:5000/api/session",
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer f7aa911f6acf72c91241a4c16539660e852e0ed83f409b36543cb711ef80829ea0f96d9af7b67604a55cef320f7ff3df4d1e74b0b607c85fa8c8bfabc7f80482",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Valid token",
+							"request": {
+								"url": "http://localhost:5000/api/session/validtoken",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "token",
+											"value": "5f3ac6768655d0cf5c736b858201bafca3f5eb3b31d6abb6be93979ebf33bbd140e7b79b0eecdf2944b8b6a7e8ad49ea6a7f150fabdab5f4a7cfef96f1ed1711",
+											"description": "",
+											"type": "text"
+										}
+									]
+								},
+								"description": "Check if a reset password token is valid"
+							},
+							"response": []
+						},
+						{
+							"name": "Reset password",
+							"request": {
+								"url": "http://localhost:5000/api/resetPassword",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "email",
+											"value": "peter.szabo@hipteam.io",
+											"description": "",
+											"type": "text"
+										}
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Set password",
+							"request": {
+								"url": "http://localhost:5000/api/setPassword",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "token",
+											"value": "af78e211e644a29572f1228a9eed01840f301bd1544639947f9539f8c6d0c9ff0e830f9214cd5156c87c700eff48477eca2787680ffdd4ccb53a994efebdf00f",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "newPassword",
+											"value": "asd1234",
+											"description": "",
+											"type": "text"
+										}
+									]
+								},
+								"description": "Set new password\nAuth: none\nInput:\t- Reset password token\n\t\t- New password"
+							},
+							"response": []
+						},
+						{
+							"name": "Change password",
+							"request": {
+								"url": "http://localhost:5000/api/user/password",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "email",
+											"value": "peter.szabo@hipteam.io",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "asd1234",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "newPassword",
+											"value": "asd1234",
+											"description": "",
+											"type": "text"
+										}
+									]
+								},
+								"description": "Auth: None\nInput:\t- Email\n\t\t- Current password\n\t\t- New password"
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Notification",
+					"description": "",
+					"item": [
+						{
+							"name": "Add new notification token",
+							"request": {
+								"url": "http://localhost:5000/api/user/set_notification_device",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer bbfce401fc21ac012d4ff36cebe1cbee4e4bbbd432b51e0edf0dcf49fb01f40926650bd224447cf118b2c549e1963e2d33b7f10d82d0235e7a4b81665ccfc693",
+										"description": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "token",
+											"value": "notification_token",
+											"description": "",
+											"type": "text"
+										}
+									]
+								},
+								"description": "Auth: Bearer token\nInput: Notification token from notification provider (Firebase, OneSignal, etc.)"
+							},
+							"response": []
+						},
+						{
+							"name": "Replace old notification token",
+							"request": {
+								"url": "http://localhost:5000/api/user/set_notification_device",
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer bbfce401fc21ac012d4ff36cebe1cbee4e4bbbd432b51e0edf0dcf49fb01f40926650bd224447cf118b2c549e1963e2d33b7f10d82d0235e7a4b81665ccfc693",
+										"description": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "oldToken",
+											"value": "notification_token",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "newToken",
+											"value": "notification_token",
+											"description": "",
+											"type": "text"
+										}
+									]
+								},
+								"description": "Auth: Bearer token\nInput:\t- Old token\n\t\t- New token"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete existing notification token",
+							"request": {
+								"url": "http://localhost:5000/api/user/set_notification_device",
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer bbfce401fc21ac012d4ff36cebe1cbee4e4bbbd432b51e0edf0dcf49fb01f40926650bd224447cf118b2c549e1963e2d33b7f10d82d0235e7a4b81665ccfc693",
+										"description": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "token",
+											"value": "notification_token",
+											"description": "",
+											"type": "text"
+										}
+									]
+								},
+								"description": "Auth: Bearer token\nInput:\t- Existing token"
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Compass",
+					"description": "",
+					"item": [
+						{
+							"name": "Generate answer card",
+							"request": {
+								"url": "http://localhost:5000/api/hipteam/compasstodo",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer f3179baac48c3ab502abdae36c5bff0855050bb8e592f0bea26ab372558fdb1e92f515d0330397df02b2492cb7dd8b1320cda31b80f338452dd7ab525fccb62d",
+										"description": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "aboutUserId",
+											"value": "5984342227cd340363dc84af",
+											"description": "",
+											"type": "text"
+										}
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Send COMPASS answer",
+							"request": {
+								"url": "http://localhost:5000/api/hipteam/compassanswers",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer f3179baac48c3ab502abdae36c5bff0855050bb8e592f0bea26ab372558fdb1e92f515d0330397df02b2492cb7dd8b1320cda31b80f338452dd7ab525fccb62d",
+										"description": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"compassTodo\":\"599e89e390adc5039fbc285b\",\"sender\":\"5984342227cd340363dc84af\",\"sentencesAnswer\":[{\"answer\":\"AGREE\",\"sentence\":{\"message\":\"Its willing to admit own mistakes\",\"_id\":\"599e88721a6ec6039715b541\"},\"skill\":{\"_id\":\"5940f5f44d0d550007d863dc\",\"name\":\"Integrity\",\"inactiveSentences\":[],\"sentences\":[{\"message\":\"Takes responsibility for own decisions and behavior.\",\"_id\":\"599e88721a6ec6039715b542\"},{\"message\":\"Its willing to admit own mistakes\",\"_id\":\"599e88721a6ec6039715b541\"},{\"message\":\"Questions practices which might violate rules of fairness.\",\"_id\":\"599e88721a6ec6039715b540\"}]}},{\"answer\":\"AGREE\",\"sentence\":{\"message\":\"Supports the development of their colleagues. Gives frequent, detailed feedback.\",\"_id\":\"599e88721a6ec6039715b544\"},\"skill\":{\"_id\":\"5940f6044d0d550007d863df\",\"name\":\"Performance Management\",\"inactiveSentences\":[],\"sentences\":[{\"message\":\"Defines clear and measurable objectives.\",\"_id\":\"599e88721a6ec6039715b546\"},{\"message\":\"Recognize great performance.\",\"_id\":\"599e88721a6ec6039715b545\"},{\"message\":\"Supports the development of their colleagues. Gives frequent, detailed feedback.\",\"_id\":\"599e88721a6ec6039715b544\"},{\"message\":\"Supports the develment of their colleagues.\",\"_id\":\"599e88721a6ec6039715b543\"}]}},{\"answer\":\"DISAGREE\",\"sentence\":{\"message\":\"Supports the develment of their colleagues.\",\"_id\":\"599e88721a6ec6039715b543\"},\"skill\":{\"_id\":\"5940f6044d0d550007d863df\",\"name\":\"Performance Management\",\"inactiveSentences\":[],\"sentences\":[{\"message\":\"Defines clear and measurable objectives.\",\"_id\":\"599e88721a6ec6039715b546\"},{\"message\":\"Recognize great performance.\",\"_id\":\"599e88721a6ec6039715b545\"},{\"message\":\"Supports the development of their colleagues. Gives frequent, detailed feedback.\",\"_id\":\"599e88721a6ec6039715b544\"},{\"message\":\"Supports the develment of their colleagues.\",\"_id\":\"599e88721a6ec6039715b543\"}]}}]}"
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get COMPASS statistics",
+							"request": {
+								"url": "http://localhost:5000/api/hipteam/compassstatistics",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer f3179baac48c3ab502abdae36c5bff0855050bb8e592f0bea26ab372558fdb1e92f515d0330397df02b2492cb7dd8b1320cda31b80f338452dd7ab525fccb62d",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Tag",
+					"description": "",
+					"item": [
+						{
+							"name": "Get tags",
+							"request": {
+								"url": "http://localhost:5000/api/hipteam/tags",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer bbfce401fc21ac012d4ff36cebe1cbee4e4bbbd432b51e0edf0dcf49fb01f40926650bd224447cf118b2c549e1963e2d33b7f10d82d0235e7a4b81665ccfc693",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": "Auth: Bearer token"
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Group",
+					"description": "",
+					"item": [
+						{
+							"name": "Get group by ID",
+							"request": {
+								"url": "http://localhost:5000/api/hipteam/groups/599312971b31d008b6bd2781",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer f3179baac48c3ab502abdae36c5bff0855050bb8e592f0bea26ab372558fdb1e92f515d0330397df02b2492cb7dd8b1320cda31b80f338452dd7ab525fccb62d",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get my groups",
+							"request": {
+								"url": "http://localhost:5000/api/hipteam/mygroups",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer 8917fe804d644f9e2233fd01f6c41ddca62a0399e84dcfab6aa491120306e4686591857958be4855425a033cc7298450b3825025a8d8ebfe9a65d29828101f2a",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Request",
+					"description": "",
+					"item": [
+						{
+							"name": "Send request",
+							"request": {
+								"url": "http://localhost:5000/api/hipteam/requests",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer d00c413695b97163d35c748056cb8aa4fc8591b05c3d7227a8a04cb36f8d4d1c629fdeaec0564e87d1db26924626d07cf08e3a2c123532ada5ed25aa431313d8",
+										"description": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "recipientId[0]",
+											"value": "5984342227cd340363dc84af",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "requestMessage",
+											"value": "Request message",
+											"description": "",
+											"type": "text"
+										}
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get requests",
+							"request": {
+								"url": "http://localhost:5000/api/hipteam/requests",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer c16d2b6455535e6d2b9f94739fc4e8ee7b0c9913ba00ca513e3a6e051c51644f68b2fcdc7186119fda254b7315e355affe13653550865c4a883641e0d1ab17e9",
+										"description": ""
+									},
+									{
+										"key": "showReplied",
+										"value": "true",
+										"description": "",
+										"disabled": true
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get sender requests",
+							"request": {
+								"url": "http://localhost:5000/api/hipteam/requests/sender",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer 54a420a4a3541a6129064db2f0aebfeef23366eab7a8bc1b7a40cc5209dc6aa9359205b07a4d597bef8edb7d5aef45af0821cfbcabdff536431178e288d1d772",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get recipient requests",
+							"request": {
+								"url": "http://localhost:5000/api/hipteam/requests/recipient",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer 8917fe804d644f9e2233fd01f6c41ddca62a0399e84dcfab6aa491120306e4686591857958be4855425a033cc7298450b3825025a8d8ebfe9a65d29828101f2a",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get request by ID",
+							"request": {
+								"url": "http://localhost:5000/api/hipteam/requests/59844c1cd0b5d006da3c9620",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer 8917fe804d644f9e2233fd01f6c41ddca62a0399e84dcfab6aa491120306e4686591857958be4855425a033cc7298450b3825025a8d8ebfe9a65d29828101f2a",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get recipient users for request",
+							"request": {
+								"url": "http://localhost:5000/api/hipteam/requests/59844c1cd0b5d006da3c9620/recipients",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer 8917fe804d644f9e2233fd01f6c41ddca62a0399e84dcfab6aa491120306e4686591857958be4855425a033cc7298450b3825025a8d8ebfe9a65d29828101f2a",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Feedback",
+					"description": "",
+					"item": [
+						{
+							"name": "Get all feedback",
+							"request": {
+								"url": "http://localhost:5000/api/hipteam/feedbacks",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer 85ed2a436482192ac7b8e1e9a744d609436bc6ff718d7fcacb91f9f899ee2edf15fe57fa5cc8ea45a4c940e782bd8c52e4ce977fa314e8e0d306e6c6fda0b808",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Send feedback",
+							"request": {
+								"url": "http://localhost:5000/api/hipteam/feedbacks",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"description": ""
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer 29c71f0cec89b22564ee261900fa7376323a121d7a8454fb3fdb03790df1d80082a5aea1cbd05f182dab1e4196e404c81f1dae5c749b2250bc2ac346fcbeb230",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "recipientId",
+											"value": "5984342227cd340363dc84a9",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "message",
+											"value": "Message text ",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "privacy[0]",
+											"value": "PRIVATE",
+											"description": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "privacy[1]",
+											"value": "ANONYMOUS",
+											"description": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "type",
+											"value": "CONSIDER",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "requestId",
+											"value": "",
+											"description": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "tags",
+											"value": "",
+											"description": "",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"description": "Auth: Bearer token"
+							},
+							"response": []
+						},
+						{
+							"name": "Get sent feedbacks",
+							"request": {
+								"url": "http://localhost:5000/api/hipteam/feedbacks/sent",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer 54a420a4a3541a6129064db2f0aebfeef23366eab7a8bc1b7a40cc5209dc6aa9359205b07a4d597bef8edb7d5aef45af0821cfbcabdff536431178e288d1d772",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get incoming feedbacks",
+							"request": {
+								"url": "http://localhost:5000/api/hipteam/feedbacks/incoming",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer 54a420a4a3541a6129064db2f0aebfeef23366eab7a8bc1b7a40cc5209dc6aa9359205b07a4d597bef8edb7d5aef45af0821cfbcabdff536431178e288d1d772",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "User",
+					"description": "",
+					"item": [
+						{
+							"name": "Get organization users",
+							"request": {
+								"url": "http://localhost:5000/api/hipteam/users",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer bbfce401fc21ac012d4ff36cebe1cbee4e4bbbd432b51e0edf0dcf49fb01f40926650bd224447cf118b2c549e1963e2d33b7f10d82d0235e7a4b81665ccfc693",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get user from organization by ID",
+							"request": {
+								"url": "http://localhost:5000/api/hipteam/user/5984342227cd340363dc84c7",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer bbfce401fc21ac012d4ff36cebe1cbee4e4bbbd432b51e0edf0dcf49fb01f40926650bd224447cf118b2c549e1963e2d33b7f10d82d0235e7a4b81665ccfc693",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": "Auth: Bearer token\nInput:\t- Organization ID\n\t\t- User ID\n"
+							},
+							"response": []
+						},
+						{
+							"name": "Get self user by token",
+							"request": {
+								"url": "http://localhost:5000/api/users/self",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer bbfce401fc21ac012d4ff36cebe1cbee4e4bbbd432b51e0edf0dcf49fb01f40926650bd224447cf118b2c549e1963e2d33b7f10d82d0235e7a4b81665ccfc693",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": "Auth: Bearer\n\nGet owner user of the given token"
+							},
+							"response": []
+						},
+						{
+							"name": "Set profile picture",
+							"request": {
+								"url": "http://localhost:5000/api/profile/setpicture",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer bbfce401fc21ac012d4ff36cebe1cbee4e4bbbd432b51e0edf0dcf49fb01f40926650bd224447cf118b2c549e1963e2d33b7f10d82d0235e7a4b81665ccfc693",
+										"description": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "avatar",
+											"value": "",
+											"description": "",
+											"type": "file"
+										}
+									]
+								},
+								"description": "Auth: Bearer token\nInput:\t- profile picture file"
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "STAGING",
+			"description": "",
+			"item": [
+				{
+					"name": "ADMIN",
+					"description": "",
+					"item": [
+						{
+							"name": "User",
+							"description": "",
+							"item": [
+								{
+									"name": "Register user",
+									"request": {
+										"url": "http://188.142.231.10:5000/api/register/user",
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"description": ""
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer bbfce401fc21ac012d4ff36cebe1cbee4e4bbbd432b51e0edf0dcf49fb01f40926650bd224447cf118b2c549e1963e2d33b7f10d82d0235e7a4b81665ccfc693",
+												"description": ""
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "firstName",
+													"value": "John",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "lastName",
+													"value": "Doe",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "email",
+													"value": "john.doe@hipteam.io",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "orgIds[0]",
+													"value": "hipteam",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "pictureUrl",
+													"value": "optional",
+													"description": "",
+													"type": "text",
+													"disabled": true
+												}
+											]
+										},
+										"description": ""
+									},
+									"response": []
+								},
+								{
+									"name": "Modify user",
+									"request": {
+										"url": "http://188.142.231.10:5000/api/modify/user",
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"description": ""
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer c16d2b6455535e6d2b9f94739fc4e8ee7b0c9913ba00ca513e3a6e051c51644f68b2fcdc7186119fda254b7315e355affe13653550865c4a883641e0d1ab17e9",
+												"description": ""
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "_id",
+													"value": "59cb5832dccfe0061fcbec49",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "firstName",
+													"value": "Johnny",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "lastName",
+													"value": "Doe",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "email",
+													"value": "john.doe@hipteam.io",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "orgIds[0]",
+													"value": "hipteam",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "pictureUrl",
+													"value": "optional",
+													"description": "",
+													"type": "text",
+													"disabled": true
+												}
+											]
+										},
+										"description": ""
+									},
+									"response": []
+								}
+							],
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "Group",
+							"description": "",
+							"item": [
+								{
+									"name": "Add user to group",
+									"request": {
+										"url": "http://188.142.231.10:5000/api/hipteam/groups/599312a31b31d008b6bd2782/user",
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"description": ""
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic YWRtaW46aW5jbGluZSBkaWFkZW0gcGFzc2VkIGhvb3A=",
+												"description": ""
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "userId",
+													"value": "5984342227cd340363dc84b5",
+													"description": "",
+													"type": "text"
+												}
+											]
+										},
+										"description": ""
+									},
+									"response": []
+								},
+								{
+									"name": "Update group",
+									"request": {
+										"url": "http://188.142.231.10:5000/api/hipteam/groups/599312971b31d008b6bd2781",
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"description": ""
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic YWRtaW46aW5jbGluZSBkaWFkZW0gcGFzc2VkIGhvb3A=",
+												"description": ""
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "name",
+													"value": "Updated group name",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "users[0]",
+													"value": "user_id_1",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "users[1]",
+													"value": "user_id_2",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "skills[0]",
+													"value": "skill_id_1",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "answerCardRelations[0]",
+													"value": "group_id_1",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "todoCardRelations[0]",
+													"value": "group_id_2",
+													"description": "",
+													"type": "text"
+												}
+											]
+										},
+										"description": ""
+									},
+									"response": []
+								},
+								{
+									"name": "Create group",
+									"request": {
+										"url": "http://188.142.231.10:5000/api/hipteam/groups",
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"description": ""
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic YWRtaW46aW5jbGluZSBkaWFkZW0gcGFzc2VkIGhvb3A=",
+												"description": ""
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "name",
+													"value": "Group name",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "users[0]",
+													"value": "first_user_id",
+													"description": "",
+													"type": "text",
+													"disabled": true
+												},
+												{
+													"key": "users[1]",
+													"value": "second_user_id",
+													"description": "",
+													"disabled": true
+												},
+												{
+													"key": "answerCardRelations[0]",
+													"value": "groupid",
+													"description": "",
+													"type": "text",
+													"disabled": true
+												},
+												{
+													"key": "todoCardRelations[0]",
+													"value": "groupid",
+													"description": "",
+													"type": "text",
+													"disabled": true
+												}
+											]
+										},
+										"description": ""
+									},
+									"response": []
+								},
+								{
+									"name": "Get groups",
+									"request": {
+										"url": "http://188.142.231.10:5000/api/hipteam/groups",
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Basic YWRtaW46aW5jbGluZSBkaWFkZW0gcGFzc2VkIGhvb3A=",
+												"description": ""
+											}
+										],
+										"body": {},
+										"description": ""
+									},
+									"response": []
+								},
+								{
+									"name": "Remove user from group",
+									"request": {
+										"url": "http://188.142.231.10:5000/api/hipteam/groups/599312a31b31d008b6bd2782/user",
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"description": ""
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic YWRtaW46aW5jbGluZSBkaWFkZW0gcGFzc2VkIGhvb3A=",
+												"description": ""
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "userId",
+													"value": "5984342227cd340363dc84b5",
+													"description": "",
+													"type": "text"
+												}
+											]
+										},
+										"description": ""
+									},
+									"response": []
+								}
+							],
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "Skill",
+							"description": "",
+							"item": [
+								{
+									"name": "Get skills",
+									"request": {
+										"url": "http://188.142.231.10:5000/api/hipteam/skills",
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer f3179baac48c3ab502abdae36c5bff0855050bb8e592f0bea26ab372558fdb1e92f515d0330397df02b2492cb7dd8b1320cda31b80f338452dd7ab525fccb62d",
+												"description": ""
+											}
+										],
+										"body": {},
+										"description": ""
+									},
+									"response": []
+								},
+								{
+									"name": "Create/Update skill",
+									"request": {
+										"url": "http://188.142.231.10:5000/api/hipteam/skills",
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer f3179baac48c3ab502abdae36c5bff0855050bb8e592f0bea26ab372558fdb1e92f515d0330397df02b2492cb7dd8b1320cda31b80f338452dd7ab525fccb62d",
+												"description": ""
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"description": ""
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\"_id\":\"59ca403c39f12a0ab5b3f79f\", \"name\":\"Updated skill\",\"sentences\":[{\"message\":\"First sentence\"}],\"inactiveSentences\":[{\"message\":\"Second sentence\"}]}"
+										},
+										"description": ""
+									},
+									"response": []
+								}
+							],
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "Other",
+							"description": "",
+							"item": [
+								{
+									"name": "Create new tag",
+									"request": {
+										"url": "http://188.142.231.10:5000/api/hipteam/tag",
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"description": ""
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic YWRtaW46aW5jbGluZSBkaWFkZW0gcGFzc2VkIGhvb3A=",
+												"description": ""
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "title",
+													"value": "New tag",
+													"description": "",
+													"type": "text"
+												}
+											]
+										},
+										"description": ""
+									},
+									"response": []
+								},
+								{
+									"name": "Create organization",
+									"request": {
+										"url": "http://188.142.231.10:5000/api/organization",
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"description": ""
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic YWRtaW46aW5jbGluZSBkaWFkZW0gcGFzc2VkIGhvb3A=",
+												"description": ""
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "name",
+													"value": "New organization",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "dbName",
+													"value": "new_organization",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "todoSentenceNumber",
+													"value": "3",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "compassGenerationTime",
+													"value": "60",
+													"description": "",
+													"type": "text"
+												}
+											]
+										},
+										"description": ""
+									},
+									"response": []
+								}
+							],
+							"_postman_isSubFolder": true
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "User",
+					"description": "",
+					"item": [
+						{
+							"name": "Get organization users",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/hipteam/users",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer bbfce401fc21ac012d4ff36cebe1cbee4e4bbbd432b51e0edf0dcf49fb01f40926650bd224447cf118b2c549e1963e2d33b7f10d82d0235e7a4b81665ccfc693",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get user from organization by ID",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/hipteam/user/5984342227cd340363dc84c7",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer bbfce401fc21ac012d4ff36cebe1cbee4e4bbbd432b51e0edf0dcf49fb01f40926650bd224447cf118b2c549e1963e2d33b7f10d82d0235e7a4b81665ccfc693",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": "Auth: Bearer token\nInput:\t- Organization ID\n\t\t- User ID\n"
+							},
+							"response": []
+						},
+						{
+							"name": "Get self user by token",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/users/self",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer bbfce401fc21ac012d4ff36cebe1cbee4e4bbbd432b51e0edf0dcf49fb01f40926650bd224447cf118b2c549e1963e2d33b7f10d82d0235e7a4b81665ccfc693",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": "Auth: Bearer\n\nGet owner user of the given token"
+							},
+							"response": []
+						},
+						{
+							"name": "Set profile picture",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/profile/setpicture",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer bbfce401fc21ac012d4ff36cebe1cbee4e4bbbd432b51e0edf0dcf49fb01f40926650bd224447cf118b2c549e1963e2d33b7f10d82d0235e7a4b81665ccfc693",
+										"description": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "avatar",
+											"value": "",
+											"description": "",
+											"type": "file"
+										}
+									]
+								},
+								"description": "Auth: Bearer token\nInput:\t- profile picture file"
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Feedback",
+					"description": "",
+					"item": [
+						{
+							"name": "Get all feedback",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/hipteam/feedbacks",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer 85ed2a436482192ac7b8e1e9a744d609436bc6ff718d7fcacb91f9f899ee2edf15fe57fa5cc8ea45a4c940e782bd8c52e4ce977fa314e8e0d306e6c6fda0b808",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Send feedback",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/hipteam/feedbacks",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"description": ""
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer 85ed2a436482192ac7b8e1e9a744d609436bc6ff718d7fcacb91f9f899ee2edf15fe57fa5cc8ea45a4c940e782bd8c52e4ce977fa314e8e0d306e6c6fda0b808",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "recipientId",
+											"value": "5984342227cd340363dc84a9",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "message",
+											"value": "Message text ",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "privacy[0]",
+											"value": "PRIVATE",
+											"description": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "privacy[1]",
+											"value": "ANONYMOUS",
+											"description": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "type",
+											"value": "CONSIDER",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "requestId",
+											"value": "",
+											"description": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "tags",
+											"value": "",
+											"description": "",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"description": "Auth: Bearer token"
+							},
+							"response": []
+						},
+						{
+							"name": "Get sent feedbacks",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/hipteam/feedbacks/sent",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer 54a420a4a3541a6129064db2f0aebfeef23366eab7a8bc1b7a40cc5209dc6aa9359205b07a4d597bef8edb7d5aef45af0821cfbcabdff536431178e288d1d772",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get incoming feedbacks",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/hipteam/feedbacks/incoming",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer 54a420a4a3541a6129064db2f0aebfeef23366eab7a8bc1b7a40cc5209dc6aa9359205b07a4d597bef8edb7d5aef45af0821cfbcabdff536431178e288d1d772",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Request",
+					"description": "",
+					"item": [
+						{
+							"name": "Send request",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/hipteam/requests",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer c16d2b6455535e6d2b9f94739fc4e8ee7b0c9913ba00ca513e3a6e051c51644f68b2fcdc7186119fda254b7315e355affe13653550865c4a883641e0d1ab17e9",
+										"description": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "recipientId[0]",
+											"value": "5984342227cd340363dc84af",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "requestMessage",
+											"value": "Request message",
+											"description": "",
+											"type": "text"
+										}
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get requests",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/hipteam/requests",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer c16d2b6455535e6d2b9f94739fc4e8ee7b0c9913ba00ca513e3a6e051c51644f68b2fcdc7186119fda254b7315e355affe13653550865c4a883641e0d1ab17e9",
+										"description": ""
+									},
+									{
+										"key": "showReplied",
+										"value": "true",
+										"description": "",
+										"disabled": true
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get sender requests",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/hipteam/requests/sender",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer 54a420a4a3541a6129064db2f0aebfeef23366eab7a8bc1b7a40cc5209dc6aa9359205b07a4d597bef8edb7d5aef45af0821cfbcabdff536431178e288d1d772",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get recipient requests",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/hipteam/requests/recipient",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer 8917fe804d644f9e2233fd01f6c41ddca62a0399e84dcfab6aa491120306e4686591857958be4855425a033cc7298450b3825025a8d8ebfe9a65d29828101f2a",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get request by ID",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/hipteam/requests/59844c1cd0b5d006da3c9620",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer 8917fe804d644f9e2233fd01f6c41ddca62a0399e84dcfab6aa491120306e4686591857958be4855425a033cc7298450b3825025a8d8ebfe9a65d29828101f2a",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get recipient users for request",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/hipteam/requests/59844c1cd0b5d006da3c9620/recipients",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer 8917fe804d644f9e2233fd01f6c41ddca62a0399e84dcfab6aa491120306e4686591857958be4855425a033cc7298450b3825025a8d8ebfe9a65d29828101f2a",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Group",
+					"description": "",
+					"item": [
+						{
+							"name": "Get group by ID",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/hipteam/groups/599312971b31d008b6bd2781",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer f3179baac48c3ab502abdae36c5bff0855050bb8e592f0bea26ab372558fdb1e92f515d0330397df02b2492cb7dd8b1320cda31b80f338452dd7ab525fccb62d",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get my groups",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/hipteam/mygroups",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer 8917fe804d644f9e2233fd01f6c41ddca62a0399e84dcfab6aa491120306e4686591857958be4855425a033cc7298450b3825025a8d8ebfe9a65d29828101f2a",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Tag",
+					"description": "",
+					"item": [
+						{
+							"name": "Get tags",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/hipteam/tags",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer bbfce401fc21ac012d4ff36cebe1cbee4e4bbbd432b51e0edf0dcf49fb01f40926650bd224447cf118b2c549e1963e2d33b7f10d82d0235e7a4b81665ccfc693",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": "Auth: Bearer token"
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Compass",
+					"description": "",
+					"item": [
+						{
+							"name": "Generate answer card",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/hipteam/compasstodo",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer f3179baac48c3ab502abdae36c5bff0855050bb8e592f0bea26ab372558fdb1e92f515d0330397df02b2492cb7dd8b1320cda31b80f338452dd7ab525fccb62d",
+										"description": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "aboutUserId",
+											"value": "5984342227cd340363dc84af",
+											"description": "",
+											"type": "text"
+										}
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Send COMPASS answer",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/hipteam/compassanswers",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer f3179baac48c3ab502abdae36c5bff0855050bb8e592f0bea26ab372558fdb1e92f515d0330397df02b2492cb7dd8b1320cda31b80f338452dd7ab525fccb62d",
+										"description": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"compassTodo\":\"599e89e390adc5039fbc285b\",\"sender\":\"5984342227cd340363dc84af\",\"sentencesAnswer\":[{\"answer\":\"AGREE\",\"sentence\":{\"message\":\"Its willing to admit own mistakes\",\"_id\":\"599e88721a6ec6039715b541\"},\"skill\":{\"_id\":\"5940f5f44d0d550007d863dc\",\"name\":\"Integrity\",\"inactiveSentences\":[],\"sentences\":[{\"message\":\"Takes responsibility for own decisions and behavior.\",\"_id\":\"599e88721a6ec6039715b542\"},{\"message\":\"Its willing to admit own mistakes\",\"_id\":\"599e88721a6ec6039715b541\"},{\"message\":\"Questions practices which might violate rules of fairness.\",\"_id\":\"599e88721a6ec6039715b540\"}]}},{\"answer\":\"AGREE\",\"sentence\":{\"message\":\"Supports the development of their colleagues. Gives frequent, detailed feedback.\",\"_id\":\"599e88721a6ec6039715b544\"},\"skill\":{\"_id\":\"5940f6044d0d550007d863df\",\"name\":\"Performance Management\",\"inactiveSentences\":[],\"sentences\":[{\"message\":\"Defines clear and measurable objectives.\",\"_id\":\"599e88721a6ec6039715b546\"},{\"message\":\"Recognize great performance.\",\"_id\":\"599e88721a6ec6039715b545\"},{\"message\":\"Supports the development of their colleagues. Gives frequent, detailed feedback.\",\"_id\":\"599e88721a6ec6039715b544\"},{\"message\":\"Supports the develment of their colleagues.\",\"_id\":\"599e88721a6ec6039715b543\"}]}},{\"answer\":\"DISAGREE\",\"sentence\":{\"message\":\"Supports the develment of their colleagues.\",\"_id\":\"599e88721a6ec6039715b543\"},\"skill\":{\"_id\":\"5940f6044d0d550007d863df\",\"name\":\"Performance Management\",\"inactiveSentences\":[],\"sentences\":[{\"message\":\"Defines clear and measurable objectives.\",\"_id\":\"599e88721a6ec6039715b546\"},{\"message\":\"Recognize great performance.\",\"_id\":\"599e88721a6ec6039715b545\"},{\"message\":\"Supports the development of their colleagues. Gives frequent, detailed feedback.\",\"_id\":\"599e88721a6ec6039715b544\"},{\"message\":\"Supports the develment of their colleagues.\",\"_id\":\"599e88721a6ec6039715b543\"}]}}]}"
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get COMPASS statistics",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/hipteam/compassstatistics",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer f3179baac48c3ab502abdae36c5bff0855050bb8e592f0bea26ab372558fdb1e92f515d0330397df02b2492cb7dd8b1320cda31b80f338452dd7ab525fccb62d",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Notification",
+					"description": "",
+					"item": [
+						{
+							"name": "Add new notification token",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/user/set_notification_device",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer bbfce401fc21ac012d4ff36cebe1cbee4e4bbbd432b51e0edf0dcf49fb01f40926650bd224447cf118b2c549e1963e2d33b7f10d82d0235e7a4b81665ccfc693",
+										"description": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "token",
+											"value": "notification_token",
+											"description": "",
+											"type": "text"
+										}
+									]
+								},
+								"description": "Auth: Bearer token\nInput: Notification token from notification provider (Firebase, OneSignal, etc.)"
+							},
+							"response": []
+						},
+						{
+							"name": "Replace old notification token",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/user/set_notification_device",
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer bbfce401fc21ac012d4ff36cebe1cbee4e4bbbd432b51e0edf0dcf49fb01f40926650bd224447cf118b2c549e1963e2d33b7f10d82d0235e7a4b81665ccfc693",
+										"description": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "oldToken",
+											"value": "notification_token",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "newToken",
+											"value": "notification_token",
+											"description": "",
+											"type": "text"
+										}
+									]
+								},
+								"description": "Auth: Bearer token\nInput:\t- Old token\n\t\t- New token"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete existing notification token",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/user/set_notification_device",
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer bbfce401fc21ac012d4ff36cebe1cbee4e4bbbd432b51e0edf0dcf49fb01f40926650bd224447cf118b2c549e1963e2d33b7f10d82d0235e7a4b81665ccfc693",
+										"description": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "token",
+											"value": "notification_token",
+											"description": "",
+											"type": "text"
+										}
+									]
+								},
+								"description": "Auth: Bearer token\nInput:\t- Existing token"
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Session",
+					"description": "Session handler endpoints",
+					"item": [
+						{
+							"name": "Login",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/session",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "email",
+											"value": "peter.szabo@hipteam.io",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "asd1234",
+											"description": "",
+											"type": "text"
+										}
+									]
+								},
+								"description": "Login with email and password"
+							},
+							"response": []
+						},
+						{
+							"name": "Logout",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/session",
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer f7aa911f6acf72c91241a4c16539660e852e0ed83f409b36543cb711ef80829ea0f96d9af7b67604a55cef320f7ff3df4d1e74b0b607c85fa8c8bfabc7f80482",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Valid token",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/session/validtoken",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "token",
+											"value": "5f3ac6768655d0cf5c736b858201bafca3f5eb3b31d6abb6be93979ebf33bbd140e7b79b0eecdf2944b8b6a7e8ad49ea6a7f150fabdab5f4a7cfef96f1ed1711",
+											"description": "",
+											"type": "text"
+										}
+									]
+								},
+								"description": "Check if a reset password token is valid"
+							},
+							"response": []
+						},
+						{
+							"name": "Reset password",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/resetPassword",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "email",
+											"value": "peter.szabo@hipteam.io",
+											"description": "",
+											"type": "text"
+										}
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Set password",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/setPassword",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "token",
+											"value": "af78e211e644a29572f1228a9eed01840f301bd1544639947f9539f8c6d0c9ff0e830f9214cd5156c87c700eff48477eca2787680ffdd4ccb53a994efebdf00f",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "newPassword",
+											"value": "asd1234",
+											"description": "",
+											"type": "text"
+										}
+									]
+								},
+								"description": "Set new password\nAuth: none\nInput:\t- Reset password token\n\t\t- New password"
+							},
+							"response": []
+						},
+						{
+							"name": "Change password",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/user/password",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "email",
+											"value": "peter.szabo@hipteam.io",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "asd1234",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "newPassword",
+											"value": "asd1234",
+											"description": "",
+											"type": "text"
+										}
+									]
+								},
+								"description": "Auth: None\nInput:\t- Email\n\t\t- Current password\n\t\t- New password"
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		}
+	]
+}
