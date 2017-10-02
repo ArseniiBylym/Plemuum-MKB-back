@@ -117,6 +117,7 @@ suite("CompassManager tests", () => {
             const getSkillsByIds = sinon.stub(CompassDataController, "getSkillsByIds");
             const getAboutUser = sinon.stub(CompassManager, "getAboutUser");
             const buildUpNewTodoResponse = sinon.stub(CompassManager, "buildUpNewTodoResponse");
+            const saveCompassTodo = sinon.stub(CompassDataController, "saveCompassTodo").resolves();
 
             getAboutUser.withArgs(orgId, aboutUserId).resolves(aboutUserId);
 
@@ -129,6 +130,7 @@ suite("CompassManager tests", () => {
             getSkillsByIds.restore();
             buildUpNewTodoResponse.restore();
             getAboutUser.restore();
+            saveCompassTodo.restore();
 
             sinon.assert.calledWith(buildUpNewTodoResponse, senderId, 3, aboutUserId, mockSkills);
         });
