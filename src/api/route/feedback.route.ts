@@ -62,7 +62,7 @@ export default (app: Express, feedbackController: FeedbackController) => {
      */
 
     /**
-     * @api {POST} /api/:orgId/feedback Send feedback
+     * @api {POST} /api/:orgId/feedbacks Send feedback
      * @apiVersion 2.0.0
      * @apiName createFeedback
      * @apiGroup Feedback

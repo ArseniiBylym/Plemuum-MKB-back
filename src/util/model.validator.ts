@@ -58,21 +58,36 @@ function validateGroup(group: any) {
     expect(group).to.haveOwnProperty('skills');
     expect(group).to.haveOwnProperty('todoCardRelations');
     expect(group).to.haveOwnProperty('answerCardRelations');
+
     expect(group.users).to.be.an.instanceOf(Array);
     expect(group.skills).to.be.an.instanceOf(Array);
     expect(group.todoCardRelations).to.be.an.instanceOf(Array);
     expect(group.answerCardRelations).to.be.an.instanceOf(Array);
 }
 
-function validateCompassTodo(result: any, todoSentenceNumber: number) {
+function validateCompassTodo(result: any, todoSentenceNumber: number, hasAnsweredFlag: boolean) {
     expect(result).to.haveOwnProperty("about");
     expect(result).to.haveOwnProperty("owner");
     expect(result).to.haveOwnProperty("questions");
+
+    if (hasAnsweredFlag) {
+        expect(result).to.haveOwnProperty("answered");
+    } else {
+        expect(result).not.to.haveOwnProperty("answered");
+    }
 
     expect(result.questions).to.be.instanceof(Array);
     expect(result.questions).to.have.lengthOf(todoSentenceNumber);
     expect(result.questions[0]).to.haveOwnProperty("sentence");
     expect(result.questions[0]).to.haveOwnProperty("skill");
+}
+
+function validateTodosResponse(result: any) {
+    expect(result).to.haveOwnProperty("requests");
+    expect(result).to.haveOwnProperty("compassTodo");
+
+    expect(result.requests).to.be.instanceof(Array);
+    expect(result.compassTodo).to.be.instanceof(Array);
 }
 
 export {

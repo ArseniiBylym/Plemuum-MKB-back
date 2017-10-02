@@ -14,16 +14,35 @@ import Sentence from "../../data/models/organization/compass/sentence.model";
 import { ErrorType, PlenuumError } from "../../util/errorhandler";
 import { OrganizationDataController } from "../../data/datacontroller/organization.datacontroller";
 import { getRandomItem } from "../../test/util/utils";
+import { RequestDataController } from "../../data/datacontroller/request.datacontroller";
+import FeedbackDataController from "../../data/datacontroller/feedback.datacontroller";
+import filterAsync from '../../util/asyncFilter';
 
 export default class CompassManager {
 
     groupDataController: GroupDataController;
     organizationDataController: OrganizationDataController;
+    requestDataController: RequestDataController;
 
-    constructor(groupDataController: GroupDataController, organizationDataController: OrganizationDataController) {
+    constructor(groupDataController: GroupDataController, organizationDataController: OrganizationDataController,
+                requestDataController: RequestDataController) {
         this.groupDataController = groupDataController;
+        this.requestDataController = requestDataController;
         this.organizationDataController = organizationDataController;
     }
+
+    async getTodos(orgId: string, userId: string) {
+        const recipientRequests = await this.requestDataController.getRecipientRequests(orgId, userId);
+        const activeRequests = await filterAsync(recipientRequests, async (request: any) => {
+            const feedbacks = await FeedbackDataController.getFeedbacksForRequest(orgId, request._id, userId);
+            if (feedbacks.length === 0) return request
+        });
+        const compassTodos = await CompassDataController.getTodosForOwner(orgId, userId);
+        return {
+            requests: activeRequests,
+            compassTodo: compassTodos
+        }
+    };
 
     async answerCard(aboutUserId: string, ownerId: string, orgId: string) {
         const organization = await this.organizationDataController.getOrganizationByDbName(orgId);
@@ -36,13 +55,12 @@ export default class CompassManager {
         const senderUserGroups = await this.groupDataController.getUserGroups(orgId, ownerId);
 
         const answerGroups: Group[] = [];
-        const answerCardRelationGroups = senderUserGroups.forEach(
-            (senderGroup) => senderGroup.answerCardRelations.forEach((relationGroupId) => {
-                const found = aboutUserGroups.find((aboutGroup) => aboutGroup._id.toString() === relationGroupId);
-                if (found) {
-                    answerGroups.push(found);
-                }
-            }));
+        senderUserGroups.forEach((senderGroup) => senderGroup.answerCardRelations.forEach((relationGroupId) => {
+            const found = aboutUserGroups.find((aboutGroup) => aboutGroup._id.toString() === relationGroupId);
+            if (found) {
+                answerGroups.push(found);
+            }
+        }));
 
         CompassManager.checkAnswerCardRelation(answerGroups);
 
@@ -57,7 +75,7 @@ export default class CompassManager {
         const organizationGroups = await this.groupDataController.getGroups(orgId);
         const groupsWithTodoRelations = organizationGroups.filter((group) => group.todoCardRelations.length > 0);
 
-        if(groupsWithTodoRelations.length === 0) {
+        if (groupsWithTodoRelations.length === 0) {
             throw new PlenuumError("Organization has no group with Todo relations", ErrorType.NOT_FOUND)
         }
 
@@ -68,7 +86,7 @@ export default class CompassManager {
         const randomAboutGroup = await this.groupDataController.getGroupById(orgId, randomAboutGroupId);
 
         const randomAboutUserId = getRandomItem(randomAboutGroup.users);
-        const skills = await CompassDataController.getSkillsByIds(orgId, randomAboutGroup.skills); 
+        const skills = await CompassDataController.getSkillsByIds(orgId, randomAboutGroup.skills);
 
         const todo = CompassManager.buildUpNewTodoResponse(randomOwnerUserId, organization.todoSentenceNumber, randomAboutGroupId, skills);
 
@@ -125,11 +143,18 @@ export default class CompassManager {
         return {
             about: aboutUserId,
             owner: ownerId,
-            questions: sentencesToBeAnswered
+            questions: sentencesToBeAnswered,
+            answered: false
         };
     }
 
     static async answerCompass(orgId: string, answer: CompassAnswer): Promise<CompassAnswer> {
+        const compassTodo = await CompassDataController.getTodoById(orgId, answer.compassTodo);
+        if (!compassTodo) {
+            throw new PlenuumError("COMPASS Todo not found", ErrorType.NOT_FOUND);
+        }
+        compassTodo.answered = true;
+        await CompassDataController.updateCompassTodo(orgId, compassTodo);
         const savedAnswer = await CompassDataController.saveCompassAnswer(orgId, answer);
         const statistics = await StatisticsManager.createOrUpdateStatistics(orgId, answer);
         await StatisticsDataController.saveOrUpdateStatistics(orgId, statistics);

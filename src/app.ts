@@ -54,9 +54,9 @@ const app = (): Express => {
     Routes(app);
 
     /* Serve API docs */
-    app.use('/api', passport.authenticate('basic', {session: false}));
-    app.use('/api', express.static(path.join(__dirname, '../docs/api')));
-    app.use('/api', (req, res) => {
+    app.use('/docs/api', passport.authenticate('basic', {session: false}));
+    app.use('/docs/api', express.static(path.join(__dirname, '../docs/api')));
+    app.use('/docs/api', (req, res) => {
         res.sendFile('index.html', express.static(path.join(__dirname, '../docs/api')));
     });
 
