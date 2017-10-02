@@ -3,6 +3,7 @@ interface CompassTodo {
     recipient: string;
     createdBy: string;
     message: string;
+    answered?: boolean;
     questions: Array<Object>;
 }
 

@@ -12,10 +12,56 @@ import { skills } from "../util/statistics.manager.util";
 import { validateCompassTodo } from "../../util/model.validator";
 import { fail } from "assert";
 import { PlenuumError } from "../../util/errorhandler";
+import FeedbackDataController from "../../data/datacontroller/feedback.datacontroller";
 
 const dummy: any = {};
 
 suite("CompassManager tests", () => {
+
+    suite("getTodos", () => {
+
+        const mockRequests = [
+            {_id: 0},
+            {_id: 10},
+            {_id: 20},
+            {_id: 0},
+        ];
+
+        let getTodosForOwner: any;
+        let getFeedbacksForRequest: any;
+        beforeEach(() => {
+            getTodosForOwner = sinon.stub(CompassDataController, 'getTodosForOwner')
+                .resolves([{dummy: "dummy"}, {dummy: "dummy"}, {dummy: "dummy"}]);
+            getFeedbacksForRequest = sinon.stub(FeedbackDataController, 'getFeedbacksForRequest')
+                .callsFake((orgId, requestId, userId) => requestId > 0 ? [{}, {}] : []);
+        });
+
+        afterEach(() => {
+            getTodosForOwner.restore();
+            getFeedbacksForRequest.restore();
+        });
+
+        test("Should have request and todo in the response", async () => {
+            const requestDataController: any = {
+                getRecipientRequests: sinon.stub().resolves(mockRequests)
+            };
+            const compassManager = new CompassManager(dummy, dummy, requestDataController);
+            const result = await compassManager.getTodos("orgId", "userId");
+
+            sinon.assert.called(getFeedbacksForRequest);
+            sinon.assert.called(getTodosForOwner);
+
+            expect(result).to.haveOwnProperty('requests');
+            expect(result).to.haveOwnProperty('compassTodo');
+
+            expect(result.requests).to.be.instanceof(Array);
+            expect(result.compassTodo).to.be.instanceof(Array);
+
+            expect(result.requests).lengthOf(2);
+            expect(result.compassTodo).lengthOf(3);
+
+        });
+    });
 
     suite("answerCard", () => {
         const aboutUserId = "5984342227cd340363dc84c7";
@@ -77,7 +123,7 @@ suite("CompassManager tests", () => {
             getSkillsByIds.withArgs(orgId, ["5940f6044d0d550007d863df", "5940f5f44d0d550007d863dc"])
                 .resolves(mockSkills);
 
-            const compassManager = new CompassManager(groupDataController, organizationDataController);
+            const compassManager = new CompassManager(groupDataController, organizationDataController, dummy);
             await compassManager.answerCard(aboutUserId, senderId, orgId);
 
             getSkillsByIds.restore();
@@ -125,7 +171,7 @@ suite("CompassManager tests", () => {
             const getSkillsByIds = sinon.stub(CompassDataController, "getSkillsByIds");
             const generateTodo = sinon.stub(CompassManager, "buildUpNewTodoResponse");
 
-            const compassManager = new CompassManager(groupDataController, organizationDataController);
+            const compassManager = new CompassManager(groupDataController, organizationDataController, dummy);
 
             compassManager.answerCard(aboutUserId, senderId, orgId)
                 .then(() => {
@@ -253,7 +299,7 @@ suite("CompassManager tests", () => {
 
             expect(result.about).to.be.equal(aboutUser._id);
             expect(result.owner).to.be.equal(ownerId);
-            validateCompassTodo(result, organization.todoSentenceNumber);
+            validateCompassTodo(result, organization.todoSentenceNumber, true);
         });
 
         test("Should work even if there's less skill then the todoSentenceNumber", () => {
@@ -280,7 +326,7 @@ suite("CompassManager tests", () => {
 
             expect(result.about).to.be.equal(aboutUser._id);
             expect(result.owner).to.be.equal(ownerId);
-            validateCompassTodo(result, organization.todoSentenceNumber);
+            validateCompassTodo(result, organization.todoSentenceNumber, true);
         });
 
         test("If the number of possible sentences is less than the todoSentenceNumber, then return less sentence", () => {
@@ -303,7 +349,7 @@ suite("CompassManager tests", () => {
 
             expect(result.about).to.be.equal(aboutUser._id);
             expect(result.owner).to.be.equal(ownerId);
-            validateCompassTodo(result, 2);
+            validateCompassTodo(result, 2, true);
         })
     });
 
@@ -313,6 +359,9 @@ suite("CompassManager tests", () => {
             const savedAnswer: any = sinon.mock;
             const mockOrgId: any = sinon.mock;
             const mockStatistics: any = sinon.mock;
+            const getTodoById = sinon.stub(CompassDataController, 'getTodoById').resolves({});
+            const updateCompassTodo = sinon.stub(CompassDataController, 'updateCompassTodo').resolves();
+
             const saveCompassAnswer = sinon.stub(CompassDataController, 'saveCompassAnswer');
             saveCompassAnswer
                 .withArgs(mockOrgId, mockAnswer)
@@ -330,6 +379,8 @@ suite("CompassManager tests", () => {
 
             const result = await CompassManager.answerCompass(mockOrgId, mockAnswer);
 
+            getTodoById.restore();
+            updateCompassTodo.restore();
             saveCompassAnswer.restore();
             createOrUpdateStatistics.restore();
             saveOrUpdateStatistics.restore();
@@ -419,7 +470,7 @@ suite("CompassManager tests", () => {
             const getStatisticsByUserId = sinon.stub(StatisticsDataController, 'getStatisticsByUserId');
             getStatisticsByUserId.withArgs(orgId, userId).resolves(mockStatistics);
 
-            const compassManager = new CompassManager(groupDataController, dummy);
+            const compassManager = new CompassManager(groupDataController, dummy, dummy);
             const result = await compassManager.getStatistics(orgId, userId);
 
             getStatistics.restore();
@@ -479,7 +530,7 @@ suite("CompassManager tests", () => {
             const buildUpNewTodoResponse = sinon.stub(CompassManager, "buildUpNewTodoResponse");
             buildUpNewTodoResponse.returns({todo: "todo"});
 
-            const compassManager = new CompassManager(groupDataController, organizationDataController);
+            const compassManager = new CompassManager(groupDataController, organizationDataController, dummy);
             await compassManager.autoGenerateTodo("orgName");
 
             buildUpNewTodoResponse.restore();
@@ -531,7 +582,7 @@ suite("CompassManager tests", () => {
                 })
             };
 
-            const compassManager = new CompassManager(groupDataController, organizationDataController);
+            const compassManager = new CompassManager(groupDataController, organizationDataController, dummy);
             try {
                 await compassManager.autoGenerateTodo("orgName");
                 fail("Should throw and exception")

@@ -18,6 +18,10 @@ const FeedbackDataController = {
 
     saveFeedback: function (organizationId: string, feedback: Feedback): Promise<any> {
         return new (FeedbackCollection(organizationId))(feedback).save();
+    },
+
+    getFeedbacksForRequest: (organizationId: string, requestId: string, userId: string): Promise<any> => {
+        return FeedbackCollection(organizationId).find({requestId: requestId, senderId: userId},).lean().exec();
     }
 };
 

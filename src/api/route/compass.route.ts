@@ -9,8 +9,43 @@ import * as passport from 'passport';
  */
 export default (app: Express, compassController: CompassController) => {
 
-    /** TODO: finish this
+    /**
+     * @api {GET} /api/:orgId/todo Interact todos
+     * @apiName todo
+     * @apiGroup Compass Assessment
+     * @apiHeader   {String}    Authorization       Bearer token Optional for web
      *
+     * @apiParam    (URL)   {String}    orgId               Organization id
+     * @apiParam    (Body)  {Boolean}   [showReplied=false] Show already replied incoming requests and todos or not.
+     *
+     * @apiDescription Get an object of todos, which includes Feedback request and Compass Todo.
+     *
+     * @apiSuccess (Success 200) {Object[]} [requests] List of feedback request.
+     * @apiSuccess (Success 200) {Object[]} [compassTodo] List of compass Todo.
+     *
+     *  @apiSuccessExample {json} Success-Response:
+     *  HTTP/1.1 200 OK
+     *  {
+     *      "requests": [
+     *           {
+     *            ...
+     *           },
+     *           ...
+     *      ],
+     *      "compassTodo": [
+     *           {
+     *              ...
+     *           },
+     *           ...
+     *      ]
+     *  }
+     *
+     */
+    app.route("/api/:orgId/todo")
+        .get(passport.authenticate('bearer', {session: false}), compassController.getTodos.bind(compassController));
+
+    //TODO: finish this
+    /**
      * @api {POST} /api/:orgId/compasstodo CompassTodo for a user
      * @apiVersion 2.0.0
      * @apiName compasstodo
@@ -72,7 +107,6 @@ export default (app: Express, compassController: CompassController) => {
      * @apiSuccess (Success 200) {Sentence[]}       sentences           Active sentences. You need to add at least one.
      * @apiSuccess (Success 200) {Sentence[]}       inactivesentences   Inactive sentences. Should be part of the object, but can be empty.
      */
-
     /**
      * @api {PATCH} /api/:orgId/skills Skill - Update Skill
      * @apiVersion 2.0.0
