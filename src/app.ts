@@ -9,6 +9,8 @@ import passportInit from "./service/auth/passport.manager";
 import * as session from 'express-session';
 import * as cors from 'cors';
 import { validator } from "./util/input.validator";
+import OrganizationChecker from "./middleware/organization.checker";
+import { getOrganizationDataController } from "./data/datacontroller/organization.datacontroller";
 
 const viewsPath = [path.join(__dirname, "./view"), path.join(__dirname, "./email/raw")];
 const sessionOptions = {
@@ -51,6 +53,9 @@ const app = (): Express => {
     });
 
     passportInit();
+
+    app.use("/api/:orgId",OrganizationChecker(getOrganizationDataController()));
+
     Routes(app);
 
     /* Serve API docs */
