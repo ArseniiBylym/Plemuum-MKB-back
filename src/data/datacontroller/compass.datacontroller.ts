@@ -23,15 +23,19 @@ const CompassDataController = {
     },
 
     getTodosForOwner: (orgId: string, ownerId: string): Promise<CompassTodoModel[]> => {
-        return CompassTodoCollection(orgId).find({owner: ownerId, answered: false}).lean().exec() as Promise<CompassTodoModel[]>
+        return CompassTodoCollection(orgId).find({
+            owner: ownerId,
+            answered: false
+        }).lean().exec() as Promise<CompassTodoModel[]>
     },
 
     updateCompassTodo: (orgId: string, updatedTodo: any): Promise<any> => {
-      return CompassTodoCollection(orgId).findByIdAndUpdate(updatedTodo._id, updatedTodo).lean().exec();
+        return CompassTodoCollection(orgId).findByIdAndUpdate(updatedTodo._id, updatedTodo).lean().exec();
     },
 
     saveCompassTodo: (orgId: string, newTodo: any): Promise<any> => {
-        return new (CompassTodoCollection(orgId))(newTodo).save();
+        return new (CompassTodoCollection(orgId))(newTodo).save().then(
+            (todo) => CompassTodoCollection(orgId).findById(todo._id).lean().exec());
     },
 
     saveCompassAnswer: (orgId: string, data: CompassAnswer): Promise<CompassAnswer> => {

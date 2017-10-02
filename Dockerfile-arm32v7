@@ -7,4 +7,7 @@ COPY . ./
 RUN npm install
 RUN npm run generate-api-docs
 
+# Replace ApiDoc's favicon with Plenuum's
+COPY ./res/img/favicon.ico ./docs/api/img
+
 CMD ["npm","run","start-staging"]
