@@ -65,13 +65,13 @@
 
 /api/users                                                          - GET       get all users                                           (ADMIN)
 /api/users                                                          - POST      register a user                                         (ADMIN)
-/api/users/me                                                       - GET       get user by token                                       (CLIENT)
 /api/users/:userId                                                  - GET       get user by ID                                          (ADMIN)
 /api/users/:userId                                                  - PATCH     modify user                                             (ADMIN)
-/api/users/:userId/avatar                                           - POST      Upload user avatar                                      (ADMIN)
-/api/users/:userId/notification                                     - POST      add new notification token                              (ADMIN)
-/api/users/:userId/notification                                     - PATCH     update notification token                               (ADMIN)
-/api/users/:userId/notification                                     - DELETE    update notification token                               (ADMIN)
+/api/users/me                                                       - GET       get user by token                                       (CLIENT)
+/api/users/me/avatar                                                - POST      Upload user avatar                                      (ADMIN)
+/api/users/me/notification                                          - POST      add new notification token                              (ADMIN)
+/api/users/me/notification                                          - PATCH     update notification token                               (ADMIN)
+/api/users/me/notification                                          - DELETE    remove notification token                               (ADMIN)
 
 /api/session                                                        - POST      log-in user                                             (CLIENT)
 /api/session                                                        - DELETE    log-out user                                            (CLIENT)
