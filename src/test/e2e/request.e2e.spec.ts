@@ -22,7 +22,7 @@ suite("Request entity related request tests", () => {
     after(async () => await getDatabaseManager().closeConnection());
 
     suite("Create new request", () => {
-        const url = `/api/${orgId}/requests`;
+        const url = `/api/organizations/${orgId}/requests`;
 
         test("Should be able to post a request", async () => {
             const requestForm = {
@@ -55,7 +55,7 @@ suite("Request entity related request tests", () => {
     });
 
     suite("Get all request for user", () => {
-        const url = `/api/${orgId}/requests`;
+        const url = `/api/organizations/${orgId}/users/me/requests`;
 
         test("Should be able to get all request for user", async () => {
             const token = await authenticate(testUser);
@@ -72,7 +72,7 @@ suite("Request entity related request tests", () => {
     });
 
     suite("Get user's sent requests", () => {
-        const url = `/api/${orgId}/requests/sender`;
+        const url = `/api/organizations/${orgId}/users/me/requests/sent`;
 
         test("Should be able to get user's sent requests", async () => {
             const token = await authenticate(testUser);
@@ -90,7 +90,7 @@ suite("Request entity related request tests", () => {
     });
 
     suite("Get user's received requests", () => {
-        const url = `/api/${orgId}/requests/recipient`;
+        const url = `/api/organizations/${orgId}/users/me/requests/received`;
         test("Should be able to get user's received requests", async () => {
             const token = await authenticate(testUser);
             const response = await request(app)
@@ -107,7 +107,7 @@ suite("Request entity related request tests", () => {
     });
 
     suite("Get a single request", () => {
-        const url = `/api/${orgId}/requests/${requestId}`;
+        const url = `/api/organizations/${orgId}/users/me/requests/${requestId}`;
         test("Should be able to get a single request", async () => {
             const token = await authenticate(testUser);
             const response = await request(app)
@@ -120,7 +120,7 @@ suite("Request entity related request tests", () => {
     });
 
     suite("Get the recipients of a request", () => {
-        const url = `/api/${orgId}/requests/${requestId}/recipients`;
+        const url = `/api/organizations/${orgId}/users/me/requests/${requestId}/recipients`;
         test("Should be able to get the recipients of a request", async () => {
             const token = await authenticate(testUser);
             const response = await request(app)

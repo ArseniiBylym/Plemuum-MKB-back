@@ -51,6 +51,7 @@
 /api/organizations/:orgId/feedbacks                                 - GET       all feedback from organization                          (ADMIN)
 /api/organizations/:orgId/feedbacks                                 - POST      post new feedback                                       (CLIENT)
 /api/organizations/:orgId/requests                                  - GET       get all requests from organization                      (ADMIN)
+/api/organizations/:orgId/requests                                  - POST      post new request                                        (CLIENT)
 
 /api/organizations/:orgId/users                                     - GET       get users from organization                             (CLIENT)
 /api/organizations/:orgId/users/:userid                             - GET       get specific user from organization                     (CLIENT)
