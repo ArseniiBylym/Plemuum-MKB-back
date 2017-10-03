@@ -68,13 +68,14 @@ export default class GroupController extends BaseController {
     }
 
     async updateGroup(req: any, res: any) {
+        req.checkBody('_id', 'Missing _id').notEmpty();
         req.checkBody('name', 'Missing group name').notEmpty();
 
         if (!await validate(req, res)) {
             return;
         }
 
-        return this.groupManager.updateGroup(req.params.orgId, req.params.groupId, req.body)
+        return this.groupManager.updateGroup(req.params.orgId, req.body)
             .then((result: any) => res.status(StatusCodes.OK).send(result))
             .catch((err: any) => BaseController.handleError(err, res));
     }

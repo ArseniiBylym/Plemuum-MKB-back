@@ -52,8 +52,8 @@ export default class GroupManager {
             .then((group: GroupModel) => ({success: "User has been removed"}))
     }
 
-    async updateGroup(orgId: string, groupId: string, group: any) {
-        return this.groupDataController.updateGroup(orgId, groupId, group)
+    async updateGroup(orgId: string, group: any) {
+        return this.groupDataController.updateGroup(orgId, group._id, group)
             .then((group: GroupModel) => ({success: "Group has been updated"}))
     }
 }

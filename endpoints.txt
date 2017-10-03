@@ -38,10 +38,10 @@
 /api/organizations/:orgId/tags                                      - POST      create new tag                                          (ADMIN)
 /api/organizations/:orgId/skills                                    - GET       get organization skills                                 (CLIENT)
 
-/api/organizations/:orgId/groups/                                   - GET       get every group in organization                         (ADMIN)
-/api/organizations/:orgId/mygroups                                  - GET       get user's group(s)                                     (CLIENT)
+/api/organizations/:orgId/groups                                    - GET       get every group in organization                         (ADMIN)
+/api/organizations/:orgId/groups                                    - POST      create new group                                        (ADMIN)
 /api/organizations/:orgId/groups/:groupId                           - GET       get group by ID                                         (CLIENT)
-/api/organizations/:orgId/groups/:groupId/user                      - GET       get users from specific group                           (CLIENT)
+/api/organizations/:orgId/groups/:groupId/users                     - GET       get users from specific group                           (CLIENT)
 
 /api/organizations/:orgId/interacts                                 - GET       get interact page elements (requests and todos)         (CLIENT)
 /api/organizations/:orgId/compass/todos                             - POST      Generate a todo (answer card)                           (CLIENT)
@@ -49,6 +49,7 @@
 /api/organizations/:orgId/compass/statistics                        - GET       get COMPASS statistics for user
 
 /api/organizations/:orgId/feedbacks                                 - GET       all feedback from organization                          (ADMIN)
+/api/organizations/:orgId/feedbacks                                 - POST      post new feedback                                       (CLIENT)
 /api/organizations/:orgId/requests                                  - GET       get all requests from organization                      (ADMIN)
 
 /api/organizations/:orgId/users                                     - GET       get users from organization                             (CLIENT)
@@ -62,6 +63,8 @@
 /api/organizations/:orgId/users/me/requests/sent                    - GET       get sent requests for user                              (CLIENT)
 /api/organizations/:orgId/users/me/requests/received                - GET       get received requests for user                          (CLIENT)
 /api/organizations/:orgId/users/me/requests/:requestId              - GET       get request by ID                                       (CLIENT)
+
+/api/organizations/:orgId/users/me/groups                           - GET       get user's group(s)                                     (CLIENT)
 
 /api/users                                                          - GET       get all users                                           (ADMIN)
 /api/users                                                          - POST      register a user                                         (ADMIN)

@@ -22,7 +22,7 @@ suite("Feedback request test", () => {
     after(async () => await getDatabaseManager().closeConnection());
 
     suite("Fetch feedbacks", () => {
-        const url = `/api/${orgId}/feedbacks`;
+        const url = `/api/organizations/${orgId}/users/me/feedbacks`;
 
         test("response should be an array and return 200", async () => {
             const token = await authenticate(testUser);
@@ -35,9 +35,8 @@ suite("Feedback request test", () => {
         });
     });
 
-
     suite("Create a feedback", () => {
-        const url = `/api/${orgId}/feedbacks`;
+        const url = `/api/organizations/${orgId}/feedbacks`;
 
         test("response should contain a feedback object and return 201", async () => {
             const token = await authenticate(testUser);
@@ -51,7 +50,7 @@ suite("Feedback request test", () => {
     });
 
     suite("Create a feedback without form", () => {
-        const url = `/api/${orgId}/feedbacks`;
+        const url = `/api/organizations/${orgId}/feedbacks`;
         const feedbackForm = {};
 
         test("response should contain an error object and return 400", async () => {
@@ -66,7 +65,7 @@ suite("Feedback request test", () => {
     });
 
     suite("Create a feedback with invalid form", () => {
-        const url = `/api/${orgId}/feedbacks`;
+        const url = `/api/organizations/${orgId}/feedbacks`;
         const feedbackForm = {
             senderId: 'senderId',
             recipientId: 'recipientId',
@@ -90,7 +89,7 @@ suite("Feedback request test", () => {
     });
 
     suite("Fetch sent feedbacks and return 200", () => {
-        const url = `/api/${orgId}/feedbacks/sent`;
+        const url = `/api/organizations/${orgId}/users/me/feedbacks/sent`;
 
         test("response should be an array", async () => {
             const token = await authenticate(testUser);
@@ -107,7 +106,7 @@ suite("Feedback request test", () => {
     });
 
     suite("Fetch incoming feedbacks and return 200", () => {
-        const url = `/api/${orgId}/feedbacks/incoming`;
+        const url = `/api/organizations/${orgId}/users/me/feedbacks/received`;
 
         test("response should be an array", async () => {
             const token = await authenticate(testUser);

@@ -21,11 +21,12 @@ suite("Group request test", () => {
 
     suite("Create group", () => {
         test("Should be able to create a group, response should contain a group object, return 201", async () => {
-            const url = `/api/${orgId}/groups`;
+            const url = `/api/organizations/${orgId}/groups`;
+            const token = await authenticate(testUser);
             const response = await request(app)
                 .post(url)
                 .send(getTestGroup())
-                .set(basicAuthHeader)
+                .set(bearerAuthHeader(token))
                 .expect(201);
             validateGroup(response.body);
         });
@@ -34,7 +35,7 @@ suite("Group request test", () => {
     suite("Get group by ID", () => {
         test("Should be able to get a group by its id", async () => {
             const groupID = "599312971b31d008b6bd2781";
-            const url = `/api/${orgId}/groups/${groupID}`;
+            const url = `/api/organizations/${orgId}/groups/${groupID}`;
             const token = await authenticate(testUser);
             const response = await request(app)
                 .get(url)
@@ -51,7 +52,7 @@ suite("Group request test", () => {
     suite("Get groups for user", () => {
         test("Should be able to get all groups a user participates in", async () => {
 
-            const url = `/api/${orgId}/mygroups`;
+            const url = `/api/organizations/${orgId}/users/me/groups`;
 
             const token = await authenticate(testUser);
             const response = await request(app)
@@ -69,12 +70,13 @@ suite("Group request test", () => {
         test("Should be able to put a user in a group", async () => {
             const userID = "5984342227cd340363dc84af";
             const groupID = "599312a81b31d008b6bd2783";
-            const url = `/api/${orgId}/groups/${groupID}/user`;
+            const url = `/api/organizations/${orgId}/groups/${groupID}/users`;
 
+            const token = await authenticate(testUser);
             const response = await request(app)
                 .post(url)
                 .send({userId: userID})
-                .set(basicAuthHeader)
+                .set(bearerAuthHeader(token))
                 .expect(200);
             should().exist(response.body);
             expect(response.body).to.haveOwnProperty('success');
@@ -84,12 +86,13 @@ suite("Group request test", () => {
         test("Should not be able to put a user in a group if the user is already part of that group", async () => {
             const userID = "5984342227cd340363dc84b2";
             const groupID = "599312a31b31d008b6bd2782";
-            const url = `/api/${orgId}/groups/${groupID}/user`;
+            const url = `/api/organizations/${orgId}/groups/${groupID}/users`;
 
+            const token = await authenticate(testUser);
             const response = await request(app)
                 .post(url)
                 .send({userId: userID})
-                .set(basicAuthHeader)
+                .set(bearerAuthHeader(token))
                 .expect(405);
 
             should().exist(response.body);
@@ -102,12 +105,13 @@ suite("Group request test", () => {
 
             const userID = "5984342227cd340363dc84c6";
             const groupID = "599312971b31d008b6bd2781";
-            const url = `/api/${orgId}/groups/${groupID}/user`;
+            const url = `/api/organizations/${orgId}/groups/${groupID}/users`;
 
+            const token = await authenticate(testUser);
             const response = await request(app)
                 .delete(url)
                 .send({userId: userID})
-                .set(basicAuthHeader)
+                .set(bearerAuthHeader(token))
                 .expect(200);
 
             should().exist(response.body);
@@ -118,12 +122,13 @@ suite("Group request test", () => {
         test("Should not be able to remove a user from a group if the user is not part of that group", async () => {
             const userID = "5984342227cd340363dc84af";
             const groupID = "599312aa1b31d008b6bd2784";
-            const url = `/api/${orgId}/groups/${groupID}/user`;
+            const url = `/api/organizations/${orgId}/groups/${groupID}/users`;
 
+            const token = await authenticate(testUser);
             const response = await request(app)
                 .delete(url)
                 .send({userId: userID})
-                .set(basicAuthHeader)
+                .set(bearerAuthHeader(token))
                 .expect(405);
             should().exist(response.body);
             expect(response.body).to.haveOwnProperty('error');
@@ -140,12 +145,13 @@ suite("Group request test", () => {
                 "todoCardRelations": [],
                 "answerCardRelations": []
             };
-            const url = `/api/${orgId}/groups/${testGroup._id}`;
+            const url = `/api/organizations/${orgId}/groups`;
 
+            const token = await authenticate(testUser);
             const response = await request(app)
                 .patch(url)
                 .send(testGroup)
-                .set(basicAuthHeader)
+                .set(bearerAuthHeader(token))
                 .expect(200);
 
             should().exist(response.body);
@@ -162,16 +168,16 @@ suite("Group request test", () => {
                 "todoCardRelations": [],
                 "answerCardRelations": []
             };
-            const url = `/api/${orgId}/groups/${testGroup._id}`;
+            const url = `/api/organizations/${orgId}/groups`;
 
+            const token = await authenticate(testUser);
             const response = await request(app)
                 .patch(url)
                 .send(testGroup)
-                .set(basicAuthHeader)
+                .set(bearerAuthHeader(token))
                 .expect(404);
             should().exist(response.body);
             expect(response.body).to.haveOwnProperty('error');
         });
     })
-})
-;
+});
