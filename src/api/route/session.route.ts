@@ -125,8 +125,6 @@ export default (app: Express, sessionController: SessionController, userControll
      * @apiGroup Session
      * @apiDescription Change the password of the user in side the app.
      *
-     * Authorization: Bearer {token}
-     *
      * @apiParam {String} email User's email
      * @apiParam {String} password User's password
      * @apiParam {String} newPassword The new desired password
