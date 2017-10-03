@@ -1,9 +1,9 @@
 import * as request from 'supertest';
 import app from "../../app";
-import { basicAuthHeader } from "../util/header.helper";
+import { bearerAuthHeader } from "../util/header.helper";
 import { getTestOrganization } from "../../util/testobject.factory";
 import { getDatabaseManager } from "../../factory/database.factory";
-import { fixtureLoader } from "../mock/fixture.loader";
+import { authenticate, fixtureLoader, testUser } from "../mock/fixture.loader";
 import config from "../../../config/config";
 import { validateOrganization } from "../../util/model.validator";
 import { expect } from 'chai';
@@ -27,34 +27,30 @@ suite("Organization request tests", () => {
     });
 
     suite("Create organization", () => {
-        const url = "/api/organization";
-        test("Register new organization, should return 201", done => {
-            request(app)
+        const url = "/api/organizations";
+        test("Register new organization, should return 201", async () => {
+            const token = await authenticate(testUser);
+            const response = await request(app)
                 .post(url)
-                .set(basicAuthHeader)
+                .set(bearerAuthHeader(token))
                 .send(getTestOrganization())
-                .expect(201)
-                .then((response) => {
-                    validateOrganization(response.body);
-                    done();
-                }).catch((err) => done(err));
+                .expect(201);
+            validateOrganization(response.body);
         });
 
-        test("Register organization with reserved dbName, should return 400 and proper error message", done => {
+        test("Register organization with reserved dbName, should return 400 and proper error message", async () => {
             const newOrg = getTestOrganization();
             newOrg.dbName = "hipteam"; // this organization is part of the mocks
 
-            request(app)
+            const token = await authenticate(testUser);
+            const response = await request(app)
                 .post(url)
-                .set(basicAuthHeader)
+                .set(bearerAuthHeader(token))
                 .send(newOrg)
-                .expect(400)
-                .then((response) => {
-                    expect(response.body).to.haveOwnProperty("error");
-                    expect(response.body.error).to.be.string(
-                        "The organization could not be added. Check if the dbName contains any forbidden character");
-                    done();
-                }).catch((err) => done(err));
+                .expect(400);
+            expect(response.body).to.haveOwnProperty("error");
+            expect(response.body.error).to.be.string(
+                "The organization could not be added. Check if the dbName contains any forbidden character");
         })
     })
 });
