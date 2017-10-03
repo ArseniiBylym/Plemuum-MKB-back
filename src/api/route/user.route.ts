@@ -75,7 +75,7 @@ export default (app: Express, userController: UserController) => {
         .post(passport.authenticate('bearer', {session: false}), userController.createNewUser.bind(userController));
 
     /**
-     * @api {PATCH} /api/organizations/:orgId/users/:userId User - Modify existing user
+     * @api {PATCH} /api/users User - Modify existing user
      * @apiVersion 2.0.1
      * @apiName modify
      * @apiGroup Admin
@@ -127,8 +127,8 @@ export default (app: Express, userController: UserController) => {
      *     ]
      * }
      */
-    app.route("/api/organizations/:orgId/users/:userId")
-        .post(passport.authenticate('bearer', {session: false}), userController.modifyUser.bind(userController));
+    app.route("/api/users")
+        .patch(passport.authenticate('bearer', {session: false}), userController.modifyUser.bind(userController));
 
     /**
      * @api {GET} /api/organizations/:orgId/users  Get organization users

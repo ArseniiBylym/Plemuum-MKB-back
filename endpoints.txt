@@ -65,8 +65,8 @@
 
 /api/users                                                          - GET       get all users                                           (ADMIN)
 /api/users                                                          - POST      register a user                                         (ADMIN)
+/api/users                                                          - PATCH     modify user                                             (ADMIN)
 /api/users/:userId                                                  - GET       get user by ID                                          (ADMIN)
-/api/users/:userId                                                  - PATCH     modify user                                             (ADMIN)
 /api/users/me                                                       - GET       get user by token                                       (CLIENT)
 /api/users/me/avatar                                                - POST      Upload user avatar                                      (ADMIN)
 /api/users/me/notification                                          - POST      add new notification token                              (ADMIN)
