@@ -80,6 +80,7 @@
 /api/session                                                        - POST      log-in user                                             (CLIENT)
 /api/session                                                        - DELETE    log-out user                                            (CLIENT)
 /api/session/password                                               - POST      change password                                         (CLIENT)
+/api/session/password                                               - POST      change password                                         (CLIENT)
 /api/session/reset-password                                         - POST      resets user password                                    (CLIENT)
 /api/session/validtoken                                             - POST      validate reset password token                           (CLIENT)
 

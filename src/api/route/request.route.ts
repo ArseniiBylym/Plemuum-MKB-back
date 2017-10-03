@@ -201,7 +201,6 @@ export default (app: Express, requestController: RequestController) => {
      *     },
      *     ...
      * ]
-     *
      */
 
     /**
@@ -251,7 +250,6 @@ export default (app: Express, requestController: RequestController) => {
      *
      * @apiSuccessExample {json} Success-Response:
      * HTTP/1.1 200 OK
-     *
      * [
      *     {
      *         "_id": "59844c1cd0b5d006da3c9620",

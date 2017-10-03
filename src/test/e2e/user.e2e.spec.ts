@@ -93,7 +93,7 @@ suite("User request tests", () => {
     });
 
     suite('Set password', () => {
-        const url = `/api/setPassword`;
+        const url = `/api/session/set-password`;
 
         test('Should return 200 with a success message', async () => {
             const token = await resetPassword(testUser._id);
@@ -106,7 +106,7 @@ suite("User request tests", () => {
     });
 
     suite('Change password', () => {
-        const url = `/api/user/password`;
+        const url = `/api/session/password`;
 
         test('Should return 200', done => {
             request(app)
