@@ -67,7 +67,7 @@ export default (app: Express, compassController: CompassController) => {
      * @apiVersion 2.0.0
      * @apiName compassanswers
      * @apiGroup Compass Assessment
-     * @apiDescription ost answers based in a CompassTODO. This api will trigger an update
+     * @apiDescription Post answers based in a CompassTODO. This api will trigger an update
      * of the user statistics (No response from that must be received on the client side)
      *
      * @apiHeader {String} Authorization Bearer token
