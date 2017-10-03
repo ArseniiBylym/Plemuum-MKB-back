@@ -204,7 +204,7 @@ export default (app: Express, userController: UserController) => {
      * @apiSuccessExample {json} Success-Response:
      * HTTP/1.1 200 OK
      * {
-     *     "message": "Profile picture has been updated"
+     *     "avatar": "http://storage.googleapis.com/plenuumbackend.appspot.com/plenuum/userPictures/5984342227cd340363dc84c7"
      * }
      *
      */

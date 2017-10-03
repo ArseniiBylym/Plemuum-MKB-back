@@ -67,7 +67,7 @@ export default class UserManager {
         if (!updatedUser) {
             throw new PlenuumError("User not found", ErrorType.NOT_FOUND);
         }
-        return {message: "Profile picture has been updated"}
+        return {avatar: pictureUrl}
     }
 
 }
