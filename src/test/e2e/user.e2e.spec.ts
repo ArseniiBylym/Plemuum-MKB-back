@@ -113,7 +113,7 @@ suite("User request tests", () => {
                 .post(url)
                 .send({
                     email: testUser.email,
-                    password: testUser.password,
+                    password: "asd1234",
                     newPassword: "321dsa",
                 })
                 .expect(200, done);

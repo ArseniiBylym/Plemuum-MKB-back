@@ -22,7 +22,7 @@ suite("Session request tests", () => {
         test("Login with valid credentials, should get 200", async () => {
             const response = await request(app)
                 .post(url)
-                .query({ email: testUser.email, password: testUser.password })
+                .query({ email: testUser.email, password: "asd1234" })
                 .expect(200);
             responseValidator.validateLoginResponse(response.body);
         });

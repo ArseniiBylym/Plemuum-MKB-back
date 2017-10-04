@@ -56,4 +56,17 @@ export default class GroupManager {
         return this.groupDataController.updateGroup(orgId, group._id, group)
             .then((group: GroupModel) => ({success: "Group has been updated"}))
     }
+
+    async getAnswerCardUsers(orgId: string, userId: string) {
+        const userGroups = await this.getUserGroups(orgId, userId);
+
+        let answerCardGroupIds: string[] = [];
+        userGroups.forEach((group) => answerCardGroupIds = answerCardGroupIds.concat(group.answerCardRelations));
+
+        const answerCardGroups = await Promise.all(answerCardGroupIds.map(async (groupId) => await this.getGroupById(orgId, groupId)));
+        let userIds: string[] = [];
+        answerCardGroups.forEach((group) => userIds = userIds.concat(group.users));
+
+        return Promise.all(userIds.map(async (userId) => await UserDataController.getUserById(orgId, userId)));
+    }
 }

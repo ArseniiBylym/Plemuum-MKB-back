@@ -19,13 +19,8 @@ const testUser = {
     "firstName": "sheryl",
     "lastName": "grant",
     "email": "sheryl.grant@hipteam.io",
-    "password": "asd1234",
     "pictureUrl": "https://randomuser.me/api/portraits/women/85.jpg",
     "_id": "5984342227cd340363dc84af",
-    "tokens": [],
-    "orgIds": [
-        "hipteam"
-    ]
 };
 
 function fixtureLoader(): Promise<any> {
