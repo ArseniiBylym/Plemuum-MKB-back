@@ -7,7 +7,7 @@ import { getDatabaseManager } from "../../factory/database.factory";
 import config from "../../../config/config";
 import { basicAuthHeader, bearerAuthHeader } from "../util/header.helper";
 
-suite("Tag request tests", () => {
+suite.only("Tag request tests", () => {
 
     before(async () => {
         await getDatabaseManager().openConnection(config.mongoUrl);
@@ -18,7 +18,7 @@ suite("Tag request tests", () => {
 
     suite("New Tag", () => {
         const orgId = 'hipteam';
-        const url = `/api/${orgId}/tag`;
+        const url = `/api/organizations/${orgId}/tags`;
 
         test("POST: should return 201", async () => {
             const response = await request(app)
@@ -42,9 +42,9 @@ suite("Tag request tests", () => {
 
     suite("Get tags", () => {
         const orgId = 'hipteam';
-        const url = `/api/${orgId}/tags`;
+        const url = `/api/organizations/${orgId}/tags`;
         test("Response should contain an array and return 200", async () => {
-            const token = await authenticate(testUser)
+            const token = await authenticate(testUser);
             const response = await request(app)
                 .get(url)
                 .set(bearerAuthHeader(token))
