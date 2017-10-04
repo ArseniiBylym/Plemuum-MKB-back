@@ -22,7 +22,7 @@
 								{
 									"name": "Register user",
 									"request": {
-										"url": "http://localhost:5000/api/register/user",
+										"url": "http://localhost:5000/api/users",
 										"method": "POST",
 										"header": [
 											{
@@ -79,8 +79,8 @@
 								{
 									"name": "Modify user",
 									"request": {
-										"url": "http://localhost:5000/api/modify/user",
-										"method": "POST",
+										"url": "http://localhost:5000/api/users",
+										"method": "PATCH",
 										"header": [
 											{
 												"key": "Content-Type",
@@ -98,7 +98,7 @@
 											"urlencoded": [
 												{
 													"key": "_id",
-													"value": "59cb5832dccfe0061fcbec49",
+													"value": "59d36b8661eae21821361c50",
 													"description": "",
 													"type": "text"
 												},
@@ -149,7 +149,7 @@
 								{
 									"name": "Add user to group",
 									"request": {
-										"url": "http://localhost:5000/api/hipteam/groups/599312a31b31d008b6bd2782/user",
+										"url": "http://localhost:5000/api/organizations/hipteam/groups/599312a31b31d008b6bd2782/users",
 										"method": "POST",
 										"header": [
 											{
@@ -159,7 +159,7 @@
 											},
 											{
 												"key": "Authorization",
-												"value": "Basic YWRtaW46aW5jbGluZSBkaWFkZW0gcGFzc2VkIGhvb3A=",
+												"value": "Bearer afa1d6dcc5d9a4298d8b768b939d7b56ee7fc64ba53b383b59a5ae9e2845b62a33b0e439ae3b0ef77c637a2a49a9394fc0a245b8a9eb569d696e2f85ae4f0893=",
 												"description": ""
 											}
 										],
@@ -181,7 +181,7 @@
 								{
 									"name": "Update group",
 									"request": {
-										"url": "http://localhost:5000/api/hipteam/groups/599312971b31d008b6bd2781",
+										"url": "http://localhost:5000/api/organizations/hipteam/groups",
 										"method": "PATCH",
 										"header": [
 											{
@@ -191,13 +191,19 @@
 											},
 											{
 												"key": "Authorization",
-												"value": "Basic YWRtaW46aW5jbGluZSBkaWFkZW0gcGFzc2VkIGhvb3A=",
+												"value": "Bearer afa1d6dcc5d9a4298d8b768b939d7b56ee7fc64ba53b383b59a5ae9e2845b62a33b0e439ae3b0ef77c637a2a49a9394fc0a245b8a9eb569d696e2f85ae4f0893=",
 												"description": ""
 											}
 										],
 										"body": {
 											"mode": "urlencoded",
 											"urlencoded": [
+												{
+													"key": "_id",
+													"value": "599312971b31d008b6bd2781",
+													"description": "",
+													"type": "text"
+												},
 												{
 													"key": "name",
 													"value": "Updated group name",
@@ -243,7 +249,7 @@
 								{
 									"name": "Create group",
 									"request": {
-										"url": "http://localhost:5000/api/hipteam/groups",
+										"url": "http://localhost:5000/api/organizations/hipteam/groups",
 										"method": "POST",
 										"header": [
 											{
@@ -253,7 +259,7 @@
 											},
 											{
 												"key": "Authorization",
-												"value": "Basic YWRtaW46aW5jbGluZSBkaWFkZW0gcGFzc2VkIGhvb3A=",
+												"value": "Bearer afa1d6dcc5d9a4298d8b768b939d7b56ee7fc64ba53b383b59a5ae9e2845b62a33b0e439ae3b0ef77c637a2a49a9394fc0a245b8a9eb569d696e2f85ae4f0893=",
 												"description": ""
 											}
 										],
@@ -302,12 +308,12 @@
 								{
 									"name": "Get groups",
 									"request": {
-										"url": "http://localhost:5000/api/hipteam/groups",
+										"url": "http://localhost:5000/api/organizations/hipteam/groups",
 										"method": "GET",
 										"header": [
 											{
 												"key": "Authorization",
-												"value": "Basic YWRtaW46aW5jbGluZSBkaWFkZW0gcGFzc2VkIGhvb3A=",
+												"value": "Bearer afa1d6dcc5d9a4298d8b768b939d7b56ee7fc64ba53b383b59a5ae9e2845b62a33b0e439ae3b0ef77c637a2a49a9394fc0a245b8a9eb569d696e2f85ae4f0893=",
 												"description": ""
 											}
 										],
@@ -319,7 +325,7 @@
 								{
 									"name": "Remove user from group",
 									"request": {
-										"url": "http://localhost:5000/api/hipteam/groups/599312a31b31d008b6bd2782/user",
+										"url": "http://localhost:5000/api/organizations/hipteam/groups/599312a31b31d008b6bd2782/users",
 										"method": "DELETE",
 										"header": [
 											{
@@ -329,7 +335,7 @@
 											},
 											{
 												"key": "Authorization",
-												"value": "Basic YWRtaW46aW5jbGluZSBkaWFkZW0gcGFzc2VkIGhvb3A=",
+												"value": "Bearer afa1d6dcc5d9a4298d8b768b939d7b56ee7fc64ba53b383b59a5ae9e2845b62a33b0e439ae3b0ef77c637a2a49a9394fc0a245b8a9eb569d696e2f85ae4f0893=",
 												"description": ""
 											}
 										],
@@ -358,7 +364,7 @@
 								{
 									"name": "Get skills",
 									"request": {
-										"url": "http://localhost:5000/api/hipteam/skills",
+										"url": "http://localhost:5000/api/organizations/hipteam/skills",
 										"method": "GET",
 										"header": [
 											{
@@ -375,7 +381,7 @@
 								{
 									"name": "Create/Update skill",
 									"request": {
-										"url": "http://localhost:5000/api/hipteam/skills",
+										"url": "http://localhost:5000/api/organizations/hipteam/skills",
 										"method": "PATCH",
 										"header": [
 											{
@@ -391,7 +397,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\"_id\":\"59ca403c39f12a0ab5b3f79f\", \"name\":\"Updated skill\",\"sentences\":[{\"message\":\"First sentence\"}],\"inactiveSentences\":[{\"message\":\"Second sentence\"}]}"
+											"raw": "{\"_id\":\"5940f61e4d0d550007d863e5\", \"name\":\"Updated skill\",\"sentences\":[{\"message\":\"First sentence\"}],\"inactiveSentences\":[{\"message\":\"Second sentence\"}]}"
 										},
 										"description": ""
 									},
@@ -407,7 +413,7 @@
 								{
 									"name": "Create new tag",
 									"request": {
-										"url": "http://localhost:5000/api/hipteam/tag",
+										"url": "http://localhost:5000/api/organizations/hipteam/tags",
 										"method": "POST",
 										"header": [
 											{
@@ -439,7 +445,7 @@
 								{
 									"name": "Create organization",
 									"request": {
-										"url": "http://localhost:5000/api/organization",
+										"url": "http://localhost:5000/api/organizations",
 										"method": "POST",
 										"header": [
 											{
@@ -563,7 +569,7 @@
 									"urlencoded": [
 										{
 											"key": "token",
-											"value": "5f3ac6768655d0cf5c736b858201bafca3f5eb3b31d6abb6be93979ebf33bbd140e7b79b0eecdf2944b8b6a7e8ad49ea6a7f150fabdab5f4a7cfef96f1ed1711",
+											"value": "6f845fd2037a6fdf93fd620418edefe0cede4c2d4320c78323a375f4a682be12217146acf364857aa9c4cbe5058da593e5c8360fa3d81de8df7a226aba355d12",
 											"description": "",
 											"type": "text"
 										}
@@ -576,7 +582,7 @@
 						{
 							"name": "Reset password",
 							"request": {
-								"url": "http://localhost:5000/api/resetPassword",
+								"url": "http://localhost:5000/api/session/reset-password",
 								"method": "POST",
 								"header": [
 									{
@@ -603,7 +609,7 @@
 						{
 							"name": "Set password",
 							"request": {
-								"url": "http://localhost:5000/api/setPassword",
+								"url": "http://localhost:5000/api/session/set-password",
 								"method": "POST",
 								"header": [
 									{
@@ -617,7 +623,7 @@
 									"urlencoded": [
 										{
 											"key": "token",
-											"value": "af78e211e644a29572f1228a9eed01840f301bd1544639947f9539f8c6d0c9ff0e830f9214cd5156c87c700eff48477eca2787680ffdd4ccb53a994efebdf00f",
+											"value": "6f845fd2037a6fdf93fd620418edefe0cede4c2d4320c78323a375f4a682be12217146acf364857aa9c4cbe5058da593e5c8360fa3d81de8df7a226aba355d12",
 											"description": "",
 											"type": "text"
 										},
@@ -636,7 +642,7 @@
 						{
 							"name": "Change password",
 							"request": {
-								"url": "http://localhost:5000/api/user/password",
+								"url": "http://localhost:5000/api/session/password",
 								"method": "POST",
 								"header": [
 									{
@@ -682,12 +688,12 @@
 						{
 							"name": "Add new notification token",
 							"request": {
-								"url": "http://localhost:5000/api/user/set_notification_device",
+								"url": "http://localhost:5000/api/users/me/notification",
 								"method": "POST",
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "Bearer bbfce401fc21ac012d4ff36cebe1cbee4e4bbbd432b51e0edf0dcf49fb01f40926650bd224447cf118b2c549e1963e2d33b7f10d82d0235e7a4b81665ccfc693",
+										"value": "Bearer f71d078ba8f5da163dc2ef587bcfc7beb4745eacae4944d0d24e55963e69b524015f541f740af58f5b9e2e40f943d1cdafcf70be2f1ca39bd844be96199ad935",
 										"description": ""
 									},
 									{
@@ -714,7 +720,7 @@
 						{
 							"name": "Replace old notification token",
 							"request": {
-								"url": "http://localhost:5000/api/user/set_notification_device",
+								"url": "http://localhost:5000/api/users/me/notification",
 								"method": "PATCH",
 								"header": [
 									{
@@ -752,7 +758,7 @@
 						{
 							"name": "Delete existing notification token",
 							"request": {
-								"url": "http://localhost:5000/api/user/set_notification_device",
+								"url": "http://localhost:5000/api/users/me/notification",
 								"method": "DELETE",
 								"header": [
 									{
@@ -791,7 +797,7 @@
 						{
 							"name": "Generate answer card",
 							"request": {
-								"url": "http://localhost:5000/api/hipteam/compasstodo",
+								"url": "http://localhost:5000/api/organizations/hipteam/compass/todos",
 								"method": "POST",
 								"header": [
 									{
@@ -823,7 +829,7 @@
 						{
 							"name": "Send COMPASS answer",
 							"request": {
-								"url": "http://localhost:5000/api/hipteam/compassanswers",
+								"url": "http://localhost:5000/api/organizations/hipteam/compass/answers",
 								"method": "POST",
 								"header": [
 									{
@@ -839,7 +845,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\"compassTodo\":\"599e89e390adc5039fbc285b\",\"sender\":\"5984342227cd340363dc84af\",\"sentencesAnswer\":[{\"answer\":\"AGREE\",\"sentence\":{\"message\":\"Its willing to admit own mistakes\",\"_id\":\"599e88721a6ec6039715b541\"},\"skill\":{\"_id\":\"5940f5f44d0d550007d863dc\",\"name\":\"Integrity\",\"inactiveSentences\":[],\"sentences\":[{\"message\":\"Takes responsibility for own decisions and behavior.\",\"_id\":\"599e88721a6ec6039715b542\"},{\"message\":\"Its willing to admit own mistakes\",\"_id\":\"599e88721a6ec6039715b541\"},{\"message\":\"Questions practices which might violate rules of fairness.\",\"_id\":\"599e88721a6ec6039715b540\"}]}},{\"answer\":\"AGREE\",\"sentence\":{\"message\":\"Supports the development of their colleagues. Gives frequent, detailed feedback.\",\"_id\":\"599e88721a6ec6039715b544\"},\"skill\":{\"_id\":\"5940f6044d0d550007d863df\",\"name\":\"Performance Management\",\"inactiveSentences\":[],\"sentences\":[{\"message\":\"Defines clear and measurable objectives.\",\"_id\":\"599e88721a6ec6039715b546\"},{\"message\":\"Recognize great performance.\",\"_id\":\"599e88721a6ec6039715b545\"},{\"message\":\"Supports the development of their colleagues. Gives frequent, detailed feedback.\",\"_id\":\"599e88721a6ec6039715b544\"},{\"message\":\"Supports the develment of their colleagues.\",\"_id\":\"599e88721a6ec6039715b543\"}]}},{\"answer\":\"DISAGREE\",\"sentence\":{\"message\":\"Supports the develment of their colleagues.\",\"_id\":\"599e88721a6ec6039715b543\"},\"skill\":{\"_id\":\"5940f6044d0d550007d863df\",\"name\":\"Performance Management\",\"inactiveSentences\":[],\"sentences\":[{\"message\":\"Defines clear and measurable objectives.\",\"_id\":\"599e88721a6ec6039715b546\"},{\"message\":\"Recognize great performance.\",\"_id\":\"599e88721a6ec6039715b545\"},{\"message\":\"Supports the development of their colleagues. Gives frequent, detailed feedback.\",\"_id\":\"599e88721a6ec6039715b544\"},{\"message\":\"Supports the develment of their colleagues.\",\"_id\":\"599e88721a6ec6039715b543\"}]}}]}"
+									"raw": "{\"compassTodo\":\"59d4a8647efd4e09b8c172e3\",\"sender\":\"5984342227cd340363dc84af\",\"sentencesAnswer\":[{\"answer\":\"AGREE\",\"sentence\":{\"message\":\"Its willing to admit own mistakes\",\"_id\":\"599e88721a6ec6039715b541\"},\"skill\":{\"_id\":\"5940f5f44d0d550007d863dc\",\"name\":\"Integrity\",\"inactiveSentences\":[],\"sentences\":[{\"message\":\"Takes responsibility for own decisions and behavior.\",\"_id\":\"599e88721a6ec6039715b542\"},{\"message\":\"Its willing to admit own mistakes\",\"_id\":\"599e88721a6ec6039715b541\"},{\"message\":\"Questions practices which might violate rules of fairness.\",\"_id\":\"599e88721a6ec6039715b540\"}]}},{\"answer\":\"AGREE\",\"sentence\":{\"message\":\"Supports the development of their colleagues. Gives frequent, detailed feedback.\",\"_id\":\"599e88721a6ec6039715b544\"},\"skill\":{\"_id\":\"5940f6044d0d550007d863df\",\"name\":\"Performance Management\",\"inactiveSentences\":[],\"sentences\":[{\"message\":\"Defines clear and measurable objectives.\",\"_id\":\"599e88721a6ec6039715b546\"},{\"message\":\"Recognize great performance.\",\"_id\":\"599e88721a6ec6039715b545\"},{\"message\":\"Supports the development of their colleagues. Gives frequent, detailed feedback.\",\"_id\":\"599e88721a6ec6039715b544\"},{\"message\":\"Supports the develment of their colleagues.\",\"_id\":\"599e88721a6ec6039715b543\"}]}},{\"answer\":\"DISAGREE\",\"sentence\":{\"message\":\"Supports the develment of their colleagues.\",\"_id\":\"599e88721a6ec6039715b543\"},\"skill\":{\"_id\":\"5940f6044d0d550007d863df\",\"name\":\"Performance Management\",\"inactiveSentences\":[],\"sentences\":[{\"message\":\"Defines clear and measurable objectives.\",\"_id\":\"599e88721a6ec6039715b546\"},{\"message\":\"Recognize great performance.\",\"_id\":\"599e88721a6ec6039715b545\"},{\"message\":\"Supports the development of their colleagues. Gives frequent, detailed feedback.\",\"_id\":\"599e88721a6ec6039715b544\"},{\"message\":\"Supports the develment of their colleagues.\",\"_id\":\"599e88721a6ec6039715b543\"}]}}]}"
 								},
 								"description": ""
 							},
@@ -848,12 +854,29 @@
 						{
 							"name": "Get COMPASS statistics",
 							"request": {
-								"url": "http://localhost:5000/api/hipteam/compassstatistics",
+								"url": "http://localhost:5000/api/organizations/hipteam/compass/statistics",
 								"method": "GET",
 								"header": [
 									{
 										"key": "Authorization",
 										"value": "Bearer f3179baac48c3ab502abdae36c5bff0855050bb8e592f0bea26ab372558fdb1e92f515d0330397df02b2492cb7dd8b1320cda31b80f338452dd7ab525fccb62d",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get interacts",
+							"request": {
+								"url": "http://localhost:5000/api/organizations/hipteam/interacts",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer 02a5d3675f5675c4bf14ada187cc86479b84bed85016448d975008dbc088f9867eb44dc6413c7e8cb27146174badc5fd8b402cdd8ea6a9ac5dbaf63a1a953426",
 										"description": ""
 									}
 								],
@@ -872,7 +895,7 @@
 						{
 							"name": "Get tags",
 							"request": {
-								"url": "http://localhost:5000/api/hipteam/tags",
+								"url": "http://localhost:5000/api/organizations/hipteam/tags",
 								"method": "GET",
 								"header": [
 									{
@@ -896,7 +919,7 @@
 						{
 							"name": "Get group by ID",
 							"request": {
-								"url": "http://localhost:5000/api/hipteam/groups/599312971b31d008b6bd2781",
+								"url": "http://localhost:5000/api/organizations/hipteam/groups/599312971b31d008b6bd2781",
 								"method": "GET",
 								"header": [
 									{
@@ -913,7 +936,7 @@
 						{
 							"name": "Get my groups",
 							"request": {
-								"url": "http://localhost:5000/api/hipteam/mygroups",
+								"url": "http://localhost:5000/api/organizations/hipteam/users/me/groups",
 								"method": "GET",
 								"header": [
 									{
@@ -922,6 +945,17 @@
 										"description": ""
 									}
 								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get answer card users",
+							"request": {
+								"url": "http://localhost:5000/api/organizations/hipteam/users/me/groups/answer-card-users",
+								"method": "GET",
+								"header": [],
 								"body": {},
 								"description": ""
 							},
@@ -937,7 +971,7 @@
 						{
 							"name": "Send request",
 							"request": {
-								"url": "http://localhost:5000/api/hipteam/requests",
+								"url": "http://localhost:5000/api/organizations/hipteam/requests",
 								"method": "POST",
 								"header": [
 									{
@@ -975,7 +1009,7 @@
 						{
 							"name": "Get requests",
 							"request": {
-								"url": "http://localhost:5000/api/hipteam/requests",
+								"url": "http://localhost:5000/api/organizations/hipteam/users/me/requests",
 								"method": "GET",
 								"header": [
 									{
@@ -996,9 +1030,9 @@
 							"response": []
 						},
 						{
-							"name": "Get sender requests",
+							"name": "Get sent requests",
 							"request": {
-								"url": "http://localhost:5000/api/hipteam/requests/sender",
+								"url": "http://localhost:5000/api/organizations/hipteam/users/me/requests/sent",
 								"method": "GET",
 								"header": [
 									{
@@ -1013,9 +1047,9 @@
 							"response": []
 						},
 						{
-							"name": "Get recipient requests",
+							"name": "Get recieved requests",
 							"request": {
-								"url": "http://localhost:5000/api/hipteam/requests/recipient",
+								"url": "http://localhost:5000/api/organizations/hipteam/users/me/requests/received",
 								"method": "GET",
 								"header": [
 									{
@@ -1032,7 +1066,7 @@
 						{
 							"name": "Get request by ID",
 							"request": {
-								"url": "http://localhost:5000/api/hipteam/requests/59844c1cd0b5d006da3c9620",
+								"url": "http://localhost:5000/api/organizations/hipteam/users/me/requests/59844c1cd0b5d006da3c9620",
 								"method": "GET",
 								"header": [
 									{
@@ -1049,7 +1083,7 @@
 						{
 							"name": "Get recipient users for request",
 							"request": {
-								"url": "http://localhost:5000/api/hipteam/requests/59844c1cd0b5d006da3c9620/recipients",
+								"url": "http://localhost:5000/api/organizations/hipteam/users/me/requests/59844c1cd0b5d006da3c9620/recipients",
 								"method": "GET",
 								"header": [
 									{
@@ -1073,7 +1107,7 @@
 						{
 							"name": "Get all feedback",
 							"request": {
-								"url": "http://localhost:5000/api/hipteam/feedbacks",
+								"url": "http://localhost:5000/api/organizations/hipteam/users/me/feedbacks",
 								"method": "GET",
 								"header": [
 									{
@@ -1090,7 +1124,7 @@
 						{
 							"name": "Send feedback",
 							"request": {
-								"url": "http://localhost:5000/api/hipteam/feedbacks",
+								"url": "http://localhost:5000/api/organizations/hipteam/feedbacks",
 								"method": "POST",
 								"header": [
 									{
@@ -1162,7 +1196,7 @@
 						{
 							"name": "Get sent feedbacks",
 							"request": {
-								"url": "http://localhost:5000/api/hipteam/feedbacks/sent",
+								"url": "http://localhost:5000/api/organizations/hipteam/users/me/feedbacks/sent",
 								"method": "GET",
 								"header": [
 									{
@@ -1179,7 +1213,7 @@
 						{
 							"name": "Get incoming feedbacks",
 							"request": {
-								"url": "http://localhost:5000/api/hipteam/feedbacks/incoming",
+								"url": "http://localhost:5000/api/organizations/hipteam/users/me/feedbacks/received",
 								"method": "GET",
 								"header": [
 									{
@@ -1203,12 +1237,12 @@
 						{
 							"name": "Get organization users",
 							"request": {
-								"url": "http://localhost:5000/api/hipteam/users",
+								"url": "http://localhost:5000/api/organizations/hipteam/users",
 								"method": "GET",
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "Bearer bbfce401fc21ac012d4ff36cebe1cbee4e4bbbd432b51e0edf0dcf49fb01f40926650bd224447cf118b2c549e1963e2d33b7f10d82d0235e7a4b81665ccfc693",
+										"value": "Bearer 2f803aa49568956f91b103e4ab3a0e8aef85158cce38a1bd7378ebc368f6a95471c9e114ad5067a12b24f4aada20d34c9848d597021a642e89fd6996408fd259",
 										"description": ""
 									}
 								],
@@ -1220,7 +1254,7 @@
 						{
 							"name": "Get user from organization by ID",
 							"request": {
-								"url": "http://localhost:5000/api/hipteam/user/5984342227cd340363dc84c7",
+								"url": "http://localhost:5000/api/organizations/hipteam/users/5984342227cd340363dc84c7",
 								"method": "GET",
 								"header": [
 									{
@@ -1237,7 +1271,7 @@
 						{
 							"name": "Get self user by token",
 							"request": {
-								"url": "http://localhost:5000/api/users/self",
+								"url": "http://localhost:5000/api/users/me",
 								"method": "GET",
 								"header": [
 									{
@@ -1254,7 +1288,7 @@
 						{
 							"name": "Set profile picture",
 							"request": {
-								"url": "http://localhost:5000/api/profile/setpicture",
+								"url": "http://localhost:5000/api/users/me/avatar",
 								"method": "POST",
 								"header": [
 									{
@@ -1303,7 +1337,7 @@
 								{
 									"name": "Register user",
 									"request": {
-										"url": "http://188.142.231.10:5000/api/register/user",
+										"url": "http:///188.142.231.10:5000/api/users",
 										"method": "POST",
 										"header": [
 											{
@@ -1360,8 +1394,8 @@
 								{
 									"name": "Modify user",
 									"request": {
-										"url": "http://188.142.231.10:5000/api/modify/user",
-										"method": "POST",
+										"url": "http://188.142.231.10:5000/api/users",
+										"method": "PATCH",
 										"header": [
 											{
 												"key": "Content-Type",
@@ -1379,7 +1413,7 @@
 											"urlencoded": [
 												{
 													"key": "_id",
-													"value": "59cb5832dccfe0061fcbec49",
+													"value": "59d36b8661eae21821361c50",
 													"description": "",
 													"type": "text"
 												},
@@ -1430,7 +1464,7 @@
 								{
 									"name": "Add user to group",
 									"request": {
-										"url": "http://188.142.231.10:5000/api/hipteam/groups/599312a31b31d008b6bd2782/user",
+										"url": "http://188.142.231.10:5000/api/organizations/hipteam/groups/599312a31b31d008b6bd2782/users",
 										"method": "POST",
 										"header": [
 											{
@@ -1440,7 +1474,7 @@
 											},
 											{
 												"key": "Authorization",
-												"value": "Basic YWRtaW46aW5jbGluZSBkaWFkZW0gcGFzc2VkIGhvb3A=",
+												"value": "Bearer afa1d6dcc5d9a4298d8b768b939d7b56ee7fc64ba53b383b59a5ae9e2845b62a33b0e439ae3b0ef77c637a2a49a9394fc0a245b8a9eb569d696e2f85ae4f0893=",
 												"description": ""
 											}
 										],
@@ -1462,7 +1496,7 @@
 								{
 									"name": "Update group",
 									"request": {
-										"url": "http://188.142.231.10:5000/api/hipteam/groups/599312971b31d008b6bd2781",
+										"url": "http://188.142.231.10:5000/api/organizations/hipteam/groups",
 										"method": "PATCH",
 										"header": [
 											{
@@ -1472,13 +1506,19 @@
 											},
 											{
 												"key": "Authorization",
-												"value": "Basic YWRtaW46aW5jbGluZSBkaWFkZW0gcGFzc2VkIGhvb3A=",
+												"value": "Bearer afa1d6dcc5d9a4298d8b768b939d7b56ee7fc64ba53b383b59a5ae9e2845b62a33b0e439ae3b0ef77c637a2a49a9394fc0a245b8a9eb569d696e2f85ae4f0893=",
 												"description": ""
 											}
 										],
 										"body": {
 											"mode": "urlencoded",
 											"urlencoded": [
+												{
+													"key": "_id",
+													"value": "599312971b31d008b6bd2781",
+													"description": "",
+													"type": "text"
+												},
 												{
 													"key": "name",
 													"value": "Updated group name",
@@ -1524,7 +1564,7 @@
 								{
 									"name": "Create group",
 									"request": {
-										"url": "http://188.142.231.10:5000/api/hipteam/groups",
+										"url": "http://188.142.231.10:5000/api/organizations/hipteam/groups",
 										"method": "POST",
 										"header": [
 											{
@@ -1534,7 +1574,7 @@
 											},
 											{
 												"key": "Authorization",
-												"value": "Basic YWRtaW46aW5jbGluZSBkaWFkZW0gcGFzc2VkIGhvb3A=",
+												"value": "Bearer afa1d6dcc5d9a4298d8b768b939d7b56ee7fc64ba53b383b59a5ae9e2845b62a33b0e439ae3b0ef77c637a2a49a9394fc0a245b8a9eb569d696e2f85ae4f0893=",
 												"description": ""
 											}
 										],
@@ -1583,12 +1623,12 @@
 								{
 									"name": "Get groups",
 									"request": {
-										"url": "http://188.142.231.10:5000/api/hipteam/groups",
+										"url": "http://188.142.231.10:5000/api/organizations/hipteam/groups",
 										"method": "GET",
 										"header": [
 											{
 												"key": "Authorization",
-												"value": "Basic YWRtaW46aW5jbGluZSBkaWFkZW0gcGFzc2VkIGhvb3A=",
+												"value": "Bearer afa1d6dcc5d9a4298d8b768b939d7b56ee7fc64ba53b383b59a5ae9e2845b62a33b0e439ae3b0ef77c637a2a49a9394fc0a245b8a9eb569d696e2f85ae4f0893=",
 												"description": ""
 											}
 										],
@@ -1600,7 +1640,7 @@
 								{
 									"name": "Remove user from group",
 									"request": {
-										"url": "http://188.142.231.10:5000/api/hipteam/groups/599312a31b31d008b6bd2782/user",
+										"url": "http://188.142.231.10:5000/api/organizations/hipteam/groups/599312a31b31d008b6bd2782/users",
 										"method": "DELETE",
 										"header": [
 											{
@@ -1610,7 +1650,7 @@
 											},
 											{
 												"key": "Authorization",
-												"value": "Basic YWRtaW46aW5jbGluZSBkaWFkZW0gcGFzc2VkIGhvb3A=",
+												"value": "Bearer afa1d6dcc5d9a4298d8b768b939d7b56ee7fc64ba53b383b59a5ae9e2845b62a33b0e439ae3b0ef77c637a2a49a9394fc0a245b8a9eb569d696e2f85ae4f0893=",
 												"description": ""
 											}
 										],
@@ -1637,26 +1677,9 @@
 							"description": "",
 							"item": [
 								{
-									"name": "Get skills",
-									"request": {
-										"url": "http://188.142.231.10:5000/api/hipteam/skills",
-										"method": "GET",
-										"header": [
-											{
-												"key": "Authorization",
-												"value": "Bearer f3179baac48c3ab502abdae36c5bff0855050bb8e592f0bea26ab372558fdb1e92f515d0330397df02b2492cb7dd8b1320cda31b80f338452dd7ab525fccb62d",
-												"description": ""
-											}
-										],
-										"body": {},
-										"description": ""
-									},
-									"response": []
-								},
-								{
 									"name": "Create/Update skill",
 									"request": {
-										"url": "http://188.142.231.10:5000/api/hipteam/skills",
+										"url": "http://188.142.231.10:5000/api/organizations/hipteam/skills",
 										"method": "PATCH",
 										"header": [
 											{
@@ -1672,7 +1695,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\"_id\":\"59ca403c39f12a0ab5b3f79f\", \"name\":\"Updated skill\",\"sentences\":[{\"message\":\"First sentence\"}],\"inactiveSentences\":[{\"message\":\"Second sentence\"}]}"
+											"raw": "{\"_id\":\"5940f61e4d0d550007d863e5\", \"name\":\"Updated skill\",\"sentences\":[{\"message\":\"First sentence\"}],\"inactiveSentences\":[{\"message\":\"Second sentence\"}]}"
 										},
 										"description": ""
 									},
@@ -1688,7 +1711,7 @@
 								{
 									"name": "Create new tag",
 									"request": {
-										"url": "http://188.142.231.10:5000/api/hipteam/tag",
+										"url": "http://188.142.231.10:5000/api/organizations/hipteam/tags",
 										"method": "POST",
 										"header": [
 											{
@@ -1720,7 +1743,7 @@
 								{
 									"name": "Create organization",
 									"request": {
-										"url": "http://188.142.231.10:5000/api/organization",
+										"url": "http://188.142.231.10:5000/api/organizations",
 										"method": "POST",
 										"header": [
 											{
@@ -1769,617 +1792,6 @@
 								}
 							],
 							"_postman_isSubFolder": true
-						}
-					],
-					"_postman_isSubFolder": true
-				},
-				{
-					"name": "User",
-					"description": "",
-					"item": [
-						{
-							"name": "Get organization users",
-							"request": {
-								"url": "http://188.142.231.10:5000/api/hipteam/users",
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer bbfce401fc21ac012d4ff36cebe1cbee4e4bbbd432b51e0edf0dcf49fb01f40926650bd224447cf118b2c549e1963e2d33b7f10d82d0235e7a4b81665ccfc693",
-										"description": ""
-									}
-								],
-								"body": {},
-								"description": ""
-							},
-							"response": []
-						},
-						{
-							"name": "Get user from organization by ID",
-							"request": {
-								"url": "http://188.142.231.10:5000/api/hipteam/user/5984342227cd340363dc84c7",
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer bbfce401fc21ac012d4ff36cebe1cbee4e4bbbd432b51e0edf0dcf49fb01f40926650bd224447cf118b2c549e1963e2d33b7f10d82d0235e7a4b81665ccfc693",
-										"description": ""
-									}
-								],
-								"body": {},
-								"description": "Auth: Bearer token\nInput:\t- Organization ID\n\t\t- User ID\n"
-							},
-							"response": []
-						},
-						{
-							"name": "Get self user by token",
-							"request": {
-								"url": "http://188.142.231.10:5000/api/users/self",
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer bbfce401fc21ac012d4ff36cebe1cbee4e4bbbd432b51e0edf0dcf49fb01f40926650bd224447cf118b2c549e1963e2d33b7f10d82d0235e7a4b81665ccfc693",
-										"description": ""
-									}
-								],
-								"body": {},
-								"description": "Auth: Bearer\n\nGet owner user of the given token"
-							},
-							"response": []
-						},
-						{
-							"name": "Set profile picture",
-							"request": {
-								"url": "http://188.142.231.10:5000/api/profile/setpicture",
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer bbfce401fc21ac012d4ff36cebe1cbee4e4bbbd432b51e0edf0dcf49fb01f40926650bd224447cf118b2c549e1963e2d33b7f10d82d0235e7a4b81665ccfc693",
-										"description": ""
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/x-www-form-urlencoded",
-										"description": ""
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "avatar",
-											"value": "",
-											"description": "",
-											"type": "file"
-										}
-									]
-								},
-								"description": "Auth: Bearer token\nInput:\t- profile picture file"
-							},
-							"response": []
-						}
-					],
-					"_postman_isSubFolder": true
-				},
-				{
-					"name": "Feedback",
-					"description": "",
-					"item": [
-						{
-							"name": "Get all feedback",
-							"request": {
-								"url": "http://188.142.231.10:5000/api/hipteam/feedbacks",
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer 85ed2a436482192ac7b8e1e9a744d609436bc6ff718d7fcacb91f9f899ee2edf15fe57fa5cc8ea45a4c940e782bd8c52e4ce977fa314e8e0d306e6c6fda0b808",
-										"description": ""
-									}
-								],
-								"body": {},
-								"description": ""
-							},
-							"response": []
-						},
-						{
-							"name": "Send feedback",
-							"request": {
-								"url": "http://188.142.231.10:5000/api/hipteam/feedbacks",
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/x-www-form-urlencoded",
-										"description": ""
-									},
-									{
-										"key": "Authorization",
-										"value": "Bearer 85ed2a436482192ac7b8e1e9a744d609436bc6ff718d7fcacb91f9f899ee2edf15fe57fa5cc8ea45a4c940e782bd8c52e4ce977fa314e8e0d306e6c6fda0b808",
-										"description": ""
-									}
-								],
-								"body": {
-									"mode": "urlencoded",
-									"urlencoded": [
-										{
-											"key": "recipientId",
-											"value": "5984342227cd340363dc84a9",
-											"description": "",
-											"type": "text"
-										},
-										{
-											"key": "message",
-											"value": "Message text ",
-											"description": "",
-											"type": "text"
-										},
-										{
-											"key": "privacy[0]",
-											"value": "PRIVATE",
-											"description": "",
-											"type": "text",
-											"disabled": true
-										},
-										{
-											"key": "privacy[1]",
-											"value": "ANONYMOUS",
-											"description": "",
-											"type": "text",
-											"disabled": true
-										},
-										{
-											"key": "type",
-											"value": "CONSIDER",
-											"description": "",
-											"type": "text"
-										},
-										{
-											"key": "requestId",
-											"value": "",
-											"description": "",
-											"type": "text",
-											"disabled": true
-										},
-										{
-											"key": "tags",
-											"value": "",
-											"description": "",
-											"type": "text",
-											"disabled": true
-										}
-									]
-								},
-								"description": "Auth: Bearer token"
-							},
-							"response": []
-						},
-						{
-							"name": "Get sent feedbacks",
-							"request": {
-								"url": "http://188.142.231.10:5000/api/hipteam/feedbacks/sent",
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer 54a420a4a3541a6129064db2f0aebfeef23366eab7a8bc1b7a40cc5209dc6aa9359205b07a4d597bef8edb7d5aef45af0821cfbcabdff536431178e288d1d772",
-										"description": ""
-									}
-								],
-								"body": {},
-								"description": ""
-							},
-							"response": []
-						},
-						{
-							"name": "Get incoming feedbacks",
-							"request": {
-								"url": "http://188.142.231.10:5000/api/hipteam/feedbacks/incoming",
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer 54a420a4a3541a6129064db2f0aebfeef23366eab7a8bc1b7a40cc5209dc6aa9359205b07a4d597bef8edb7d5aef45af0821cfbcabdff536431178e288d1d772",
-										"description": ""
-									}
-								],
-								"body": {},
-								"description": ""
-							},
-							"response": []
-						}
-					],
-					"_postman_isSubFolder": true
-				},
-				{
-					"name": "Request",
-					"description": "",
-					"item": [
-						{
-							"name": "Send request",
-							"request": {
-								"url": "http://188.142.231.10:5000/api/hipteam/requests",
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer c16d2b6455535e6d2b9f94739fc4e8ee7b0c9913ba00ca513e3a6e051c51644f68b2fcdc7186119fda254b7315e355affe13653550865c4a883641e0d1ab17e9",
-										"description": ""
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/x-www-form-urlencoded",
-										"description": ""
-									}
-								],
-								"body": {
-									"mode": "urlencoded",
-									"urlencoded": [
-										{
-											"key": "recipientId[0]",
-											"value": "5984342227cd340363dc84af",
-											"description": "",
-											"type": "text"
-										},
-										{
-											"key": "requestMessage",
-											"value": "Request message",
-											"description": "",
-											"type": "text"
-										}
-									]
-								},
-								"description": ""
-							},
-							"response": []
-						},
-						{
-							"name": "Get requests",
-							"request": {
-								"url": "http://188.142.231.10:5000/api/hipteam/requests",
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer c16d2b6455535e6d2b9f94739fc4e8ee7b0c9913ba00ca513e3a6e051c51644f68b2fcdc7186119fda254b7315e355affe13653550865c4a883641e0d1ab17e9",
-										"description": ""
-									},
-									{
-										"key": "showReplied",
-										"value": "true",
-										"description": "",
-										"disabled": true
-									}
-								],
-								"body": {},
-								"description": ""
-							},
-							"response": []
-						},
-						{
-							"name": "Get sender requests",
-							"request": {
-								"url": "http://188.142.231.10:5000/api/hipteam/requests/sender",
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer 54a420a4a3541a6129064db2f0aebfeef23366eab7a8bc1b7a40cc5209dc6aa9359205b07a4d597bef8edb7d5aef45af0821cfbcabdff536431178e288d1d772",
-										"description": ""
-									}
-								],
-								"body": {},
-								"description": ""
-							},
-							"response": []
-						},
-						{
-							"name": "Get recipient requests",
-							"request": {
-								"url": "http://188.142.231.10:5000/api/hipteam/requests/recipient",
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer 8917fe804d644f9e2233fd01f6c41ddca62a0399e84dcfab6aa491120306e4686591857958be4855425a033cc7298450b3825025a8d8ebfe9a65d29828101f2a",
-										"description": ""
-									}
-								],
-								"body": {},
-								"description": ""
-							},
-							"response": []
-						},
-						{
-							"name": "Get request by ID",
-							"request": {
-								"url": "http://188.142.231.10:5000/api/hipteam/requests/59844c1cd0b5d006da3c9620",
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer 8917fe804d644f9e2233fd01f6c41ddca62a0399e84dcfab6aa491120306e4686591857958be4855425a033cc7298450b3825025a8d8ebfe9a65d29828101f2a",
-										"description": ""
-									}
-								],
-								"body": {},
-								"description": ""
-							},
-							"response": []
-						},
-						{
-							"name": "Get recipient users for request",
-							"request": {
-								"url": "http://188.142.231.10:5000/api/hipteam/requests/59844c1cd0b5d006da3c9620/recipients",
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer 8917fe804d644f9e2233fd01f6c41ddca62a0399e84dcfab6aa491120306e4686591857958be4855425a033cc7298450b3825025a8d8ebfe9a65d29828101f2a",
-										"description": ""
-									}
-								],
-								"body": {},
-								"description": ""
-							},
-							"response": []
-						}
-					],
-					"_postman_isSubFolder": true
-				},
-				{
-					"name": "Group",
-					"description": "",
-					"item": [
-						{
-							"name": "Get group by ID",
-							"request": {
-								"url": "http://188.142.231.10:5000/api/hipteam/groups/599312971b31d008b6bd2781",
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer f3179baac48c3ab502abdae36c5bff0855050bb8e592f0bea26ab372558fdb1e92f515d0330397df02b2492cb7dd8b1320cda31b80f338452dd7ab525fccb62d",
-										"description": ""
-									}
-								],
-								"body": {},
-								"description": ""
-							},
-							"response": []
-						},
-						{
-							"name": "Get my groups",
-							"request": {
-								"url": "http://188.142.231.10:5000/api/hipteam/mygroups",
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer 8917fe804d644f9e2233fd01f6c41ddca62a0399e84dcfab6aa491120306e4686591857958be4855425a033cc7298450b3825025a8d8ebfe9a65d29828101f2a",
-										"description": ""
-									}
-								],
-								"body": {},
-								"description": ""
-							},
-							"response": []
-						}
-					],
-					"_postman_isSubFolder": true
-				},
-				{
-					"name": "Tag",
-					"description": "",
-					"item": [
-						{
-							"name": "Get tags",
-							"request": {
-								"url": "http://188.142.231.10:5000/api/hipteam/tags",
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer bbfce401fc21ac012d4ff36cebe1cbee4e4bbbd432b51e0edf0dcf49fb01f40926650bd224447cf118b2c549e1963e2d33b7f10d82d0235e7a4b81665ccfc693",
-										"description": ""
-									}
-								],
-								"body": {},
-								"description": "Auth: Bearer token"
-							},
-							"response": []
-						}
-					],
-					"_postman_isSubFolder": true
-				},
-				{
-					"name": "Compass",
-					"description": "",
-					"item": [
-						{
-							"name": "Generate answer card",
-							"request": {
-								"url": "http://188.142.231.10:5000/api/hipteam/compasstodo",
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer f3179baac48c3ab502abdae36c5bff0855050bb8e592f0bea26ab372558fdb1e92f515d0330397df02b2492cb7dd8b1320cda31b80f338452dd7ab525fccb62d",
-										"description": ""
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/x-www-form-urlencoded",
-										"description": ""
-									}
-								],
-								"body": {
-									"mode": "urlencoded",
-									"urlencoded": [
-										{
-											"key": "aboutUserId",
-											"value": "5984342227cd340363dc84af",
-											"description": "",
-											"type": "text"
-										}
-									]
-								},
-								"description": ""
-							},
-							"response": []
-						},
-						{
-							"name": "Send COMPASS answer",
-							"request": {
-								"url": "http://188.142.231.10:5000/api/hipteam/compassanswers",
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer f3179baac48c3ab502abdae36c5bff0855050bb8e592f0bea26ab372558fdb1e92f515d0330397df02b2492cb7dd8b1320cda31b80f338452dd7ab525fccb62d",
-										"description": ""
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json",
-										"description": ""
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\"compassTodo\":\"599e89e390adc5039fbc285b\",\"sender\":\"5984342227cd340363dc84af\",\"sentencesAnswer\":[{\"answer\":\"AGREE\",\"sentence\":{\"message\":\"Its willing to admit own mistakes\",\"_id\":\"599e88721a6ec6039715b541\"},\"skill\":{\"_id\":\"5940f5f44d0d550007d863dc\",\"name\":\"Integrity\",\"inactiveSentences\":[],\"sentences\":[{\"message\":\"Takes responsibility for own decisions and behavior.\",\"_id\":\"599e88721a6ec6039715b542\"},{\"message\":\"Its willing to admit own mistakes\",\"_id\":\"599e88721a6ec6039715b541\"},{\"message\":\"Questions practices which might violate rules of fairness.\",\"_id\":\"599e88721a6ec6039715b540\"}]}},{\"answer\":\"AGREE\",\"sentence\":{\"message\":\"Supports the development of their colleagues. Gives frequent, detailed feedback.\",\"_id\":\"599e88721a6ec6039715b544\"},\"skill\":{\"_id\":\"5940f6044d0d550007d863df\",\"name\":\"Performance Management\",\"inactiveSentences\":[],\"sentences\":[{\"message\":\"Defines clear and measurable objectives.\",\"_id\":\"599e88721a6ec6039715b546\"},{\"message\":\"Recognize great performance.\",\"_id\":\"599e88721a6ec6039715b545\"},{\"message\":\"Supports the development of their colleagues. Gives frequent, detailed feedback.\",\"_id\":\"599e88721a6ec6039715b544\"},{\"message\":\"Supports the develment of their colleagues.\",\"_id\":\"599e88721a6ec6039715b543\"}]}},{\"answer\":\"DISAGREE\",\"sentence\":{\"message\":\"Supports the develment of their colleagues.\",\"_id\":\"599e88721a6ec6039715b543\"},\"skill\":{\"_id\":\"5940f6044d0d550007d863df\",\"name\":\"Performance Management\",\"inactiveSentences\":[],\"sentences\":[{\"message\":\"Defines clear and measurable objectives.\",\"_id\":\"599e88721a6ec6039715b546\"},{\"message\":\"Recognize great performance.\",\"_id\":\"599e88721a6ec6039715b545\"},{\"message\":\"Supports the development of their colleagues. Gives frequent, detailed feedback.\",\"_id\":\"599e88721a6ec6039715b544\"},{\"message\":\"Supports the develment of their colleagues.\",\"_id\":\"599e88721a6ec6039715b543\"}]}}]}"
-								},
-								"description": ""
-							},
-							"response": []
-						},
-						{
-							"name": "Get COMPASS statistics",
-							"request": {
-								"url": "http://188.142.231.10:5000/api/hipteam/compassstatistics",
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer f3179baac48c3ab502abdae36c5bff0855050bb8e592f0bea26ab372558fdb1e92f515d0330397df02b2492cb7dd8b1320cda31b80f338452dd7ab525fccb62d",
-										"description": ""
-									}
-								],
-								"body": {},
-								"description": ""
-							},
-							"response": []
-						}
-					],
-					"_postman_isSubFolder": true
-				},
-				{
-					"name": "Notification",
-					"description": "",
-					"item": [
-						{
-							"name": "Add new notification token",
-							"request": {
-								"url": "http://188.142.231.10:5000/api/user/set_notification_device",
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer bbfce401fc21ac012d4ff36cebe1cbee4e4bbbd432b51e0edf0dcf49fb01f40926650bd224447cf118b2c549e1963e2d33b7f10d82d0235e7a4b81665ccfc693",
-										"description": ""
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/x-www-form-urlencoded",
-										"description": ""
-									}
-								],
-								"body": {
-									"mode": "urlencoded",
-									"urlencoded": [
-										{
-											"key": "token",
-											"value": "notification_token",
-											"description": "",
-											"type": "text"
-										}
-									]
-								},
-								"description": "Auth: Bearer token\nInput: Notification token from notification provider (Firebase, OneSignal, etc.)"
-							},
-							"response": []
-						},
-						{
-							"name": "Replace old notification token",
-							"request": {
-								"url": "http://188.142.231.10:5000/api/user/set_notification_device",
-								"method": "PATCH",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer bbfce401fc21ac012d4ff36cebe1cbee4e4bbbd432b51e0edf0dcf49fb01f40926650bd224447cf118b2c549e1963e2d33b7f10d82d0235e7a4b81665ccfc693",
-										"description": ""
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/x-www-form-urlencoded",
-										"description": ""
-									}
-								],
-								"body": {
-									"mode": "urlencoded",
-									"urlencoded": [
-										{
-											"key": "oldToken",
-											"value": "notification_token",
-											"description": "",
-											"type": "text"
-										},
-										{
-											"key": "newToken",
-											"value": "notification_token",
-											"description": "",
-											"type": "text"
-										}
-									]
-								},
-								"description": "Auth: Bearer token\nInput:\t- Old token\n\t\t- New token"
-							},
-							"response": []
-						},
-						{
-							"name": "Delete existing notification token",
-							"request": {
-								"url": "http://188.142.231.10:5000/api/user/set_notification_device",
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer bbfce401fc21ac012d4ff36cebe1cbee4e4bbbd432b51e0edf0dcf49fb01f40926650bd224447cf118b2c549e1963e2d33b7f10d82d0235e7a4b81665ccfc693",
-										"description": ""
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/x-www-form-urlencoded",
-										"description": ""
-									}
-								],
-								"body": {
-									"mode": "urlencoded",
-									"urlencoded": [
-										{
-											"key": "token",
-											"value": "notification_token",
-											"description": "",
-											"type": "text"
-										}
-									]
-								},
-								"description": "Auth: Bearer token\nInput:\t- Existing token"
-							},
-							"response": []
 						}
 					],
 					"_postman_isSubFolder": true
@@ -2455,7 +1867,7 @@
 									"urlencoded": [
 										{
 											"key": "token",
-											"value": "5f3ac6768655d0cf5c736b858201bafca3f5eb3b31d6abb6be93979ebf33bbd140e7b79b0eecdf2944b8b6a7e8ad49ea6a7f150fabdab5f4a7cfef96f1ed1711",
+											"value": "6f845fd2037a6fdf93fd620418edefe0cede4c2d4320c78323a375f4a682be12217146acf364857aa9c4cbe5058da593e5c8360fa3d81de8df7a226aba355d12",
 											"description": "",
 											"type": "text"
 										}
@@ -2468,7 +1880,7 @@
 						{
 							"name": "Reset password",
 							"request": {
-								"url": "http://188.142.231.10:5000/api/resetPassword",
+								"url": "http://188.142.231.10:5000/api/session/reset-password",
 								"method": "POST",
 								"header": [
 									{
@@ -2495,7 +1907,7 @@
 						{
 							"name": "Set password",
 							"request": {
-								"url": "http://188.142.231.10:5000/api/setPassword",
+								"url": "http://188.142.231.10:5000/api/session/set-password",
 								"method": "POST",
 								"header": [
 									{
@@ -2509,7 +1921,7 @@
 									"urlencoded": [
 										{
 											"key": "token",
-											"value": "af78e211e644a29572f1228a9eed01840f301bd1544639947f9539f8c6d0c9ff0e830f9214cd5156c87c700eff48477eca2787680ffdd4ccb53a994efebdf00f",
+											"value": "6f845fd2037a6fdf93fd620418edefe0cede4c2d4320c78323a375f4a682be12217146acf364857aa9c4cbe5058da593e5c8360fa3d81de8df7a226aba355d12",
 											"description": "",
 											"type": "text"
 										},
@@ -2528,7 +1940,7 @@
 						{
 							"name": "Change password",
 							"request": {
-								"url": "http://188.142.231.10:5000/api/user/password",
+								"url": "http://188.142.231.10:5000/api/session/password",
 								"method": "POST",
 								"header": [
 									{
@@ -2561,6 +1973,645 @@
 									]
 								},
 								"description": "Auth: None\nInput:\t- Email\n\t\t- Current password\n\t\t- New password"
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Notification",
+					"description": "",
+					"item": [
+						{
+							"name": "Add new notification token",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/users/me/notification",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer f71d078ba8f5da163dc2ef587bcfc7beb4745eacae4944d0d24e55963e69b524015f541f740af58f5b9e2e40f943d1cdafcf70be2f1ca39bd844be96199ad935",
+										"description": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "token",
+											"value": "notification_token",
+											"description": "",
+											"type": "text"
+										}
+									]
+								},
+								"description": "Auth: Bearer token\nInput: Notification token from notification provider (Firebase, OneSignal, etc.)"
+							},
+							"response": []
+						},
+						{
+							"name": "Replace old notification token",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/users/me/notification",
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer bbfce401fc21ac012d4ff36cebe1cbee4e4bbbd432b51e0edf0dcf49fb01f40926650bd224447cf118b2c549e1963e2d33b7f10d82d0235e7a4b81665ccfc693",
+										"description": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "oldToken",
+											"value": "notification_token",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "newToken",
+											"value": "notification_token",
+											"description": "",
+											"type": "text"
+										}
+									]
+								},
+								"description": "Auth: Bearer token\nInput:\t- Old token\n\t\t- New token"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete existing notification token",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/users/me/notification",
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer bbfce401fc21ac012d4ff36cebe1cbee4e4bbbd432b51e0edf0dcf49fb01f40926650bd224447cf118b2c549e1963e2d33b7f10d82d0235e7a4b81665ccfc693",
+										"description": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "token",
+											"value": "notification_token",
+											"description": "",
+											"type": "text"
+										}
+									]
+								},
+								"description": "Auth: Bearer token\nInput:\t- Existing token"
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Compass",
+					"description": "",
+					"item": [
+						{
+							"name": "Generate answer card",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/organizations/hipteam/compass/todos",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer f3179baac48c3ab502abdae36c5bff0855050bb8e592f0bea26ab372558fdb1e92f515d0330397df02b2492cb7dd8b1320cda31b80f338452dd7ab525fccb62d",
+										"description": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "aboutUserId",
+											"value": "5984342227cd340363dc84af",
+											"description": "",
+											"type": "text"
+										}
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Send COMPASS answer",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/organizations/hipteam/compass/answers",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer f3179baac48c3ab502abdae36c5bff0855050bb8e592f0bea26ab372558fdb1e92f515d0330397df02b2492cb7dd8b1320cda31b80f338452dd7ab525fccb62d",
+										"description": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"compassTodo\":\"59d4a8647efd4e09b8c172e3\",\"sender\":\"5984342227cd340363dc84af\",\"sentencesAnswer\":[{\"answer\":\"AGREE\",\"sentence\":{\"message\":\"Its willing to admit own mistakes\",\"_id\":\"599e88721a6ec6039715b541\"},\"skill\":{\"_id\":\"5940f5f44d0d550007d863dc\",\"name\":\"Integrity\",\"inactiveSentences\":[],\"sentences\":[{\"message\":\"Takes responsibility for own decisions and behavior.\",\"_id\":\"599e88721a6ec6039715b542\"},{\"message\":\"Its willing to admit own mistakes\",\"_id\":\"599e88721a6ec6039715b541\"},{\"message\":\"Questions practices which might violate rules of fairness.\",\"_id\":\"599e88721a6ec6039715b540\"}]}},{\"answer\":\"AGREE\",\"sentence\":{\"message\":\"Supports the development of their colleagues. Gives frequent, detailed feedback.\",\"_id\":\"599e88721a6ec6039715b544\"},\"skill\":{\"_id\":\"5940f6044d0d550007d863df\",\"name\":\"Performance Management\",\"inactiveSentences\":[],\"sentences\":[{\"message\":\"Defines clear and measurable objectives.\",\"_id\":\"599e88721a6ec6039715b546\"},{\"message\":\"Recognize great performance.\",\"_id\":\"599e88721a6ec6039715b545\"},{\"message\":\"Supports the development of their colleagues. Gives frequent, detailed feedback.\",\"_id\":\"599e88721a6ec6039715b544\"},{\"message\":\"Supports the develment of their colleagues.\",\"_id\":\"599e88721a6ec6039715b543\"}]}},{\"answer\":\"DISAGREE\",\"sentence\":{\"message\":\"Supports the develment of their colleagues.\",\"_id\":\"599e88721a6ec6039715b543\"},\"skill\":{\"_id\":\"5940f6044d0d550007d863df\",\"name\":\"Performance Management\",\"inactiveSentences\":[],\"sentences\":[{\"message\":\"Defines clear and measurable objectives.\",\"_id\":\"599e88721a6ec6039715b546\"},{\"message\":\"Recognize great performance.\",\"_id\":\"599e88721a6ec6039715b545\"},{\"message\":\"Supports the development of their colleagues. Gives frequent, detailed feedback.\",\"_id\":\"599e88721a6ec6039715b544\"},{\"message\":\"Supports the develment of their colleagues.\",\"_id\":\"599e88721a6ec6039715b543\"}]}}]}"
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get COMPASS statistics",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/organizations/hipteam/compass/statistics",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer f3179baac48c3ab502abdae36c5bff0855050bb8e592f0bea26ab372558fdb1e92f515d0330397df02b2492cb7dd8b1320cda31b80f338452dd7ab525fccb62d",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get interacts",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/organizations/hipteam/interacts",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer 02a5d3675f5675c4bf14ada187cc86479b84bed85016448d975008dbc088f9867eb44dc6413c7e8cb27146174badc5fd8b402cdd8ea6a9ac5dbaf63a1a953426",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Tag",
+					"description": "",
+					"item": [
+						{
+							"name": "Get tags",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/organizations/hipteam/tags",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer bbfce401fc21ac012d4ff36cebe1cbee4e4bbbd432b51e0edf0dcf49fb01f40926650bd224447cf118b2c549e1963e2d33b7f10d82d0235e7a4b81665ccfc693",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": "Auth: Bearer token"
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Group",
+					"description": "",
+					"item": [
+						{
+							"name": "Get group by ID",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/organizations/hipteam/groups/599312971b31d008b6bd2781",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer f3179baac48c3ab502abdae36c5bff0855050bb8e592f0bea26ab372558fdb1e92f515d0330397df02b2492cb7dd8b1320cda31b80f338452dd7ab525fccb62d",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get my groups",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/organizations/hipteam/users/me/groups",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer 8917fe804d644f9e2233fd01f6c41ddca62a0399e84dcfab6aa491120306e4686591857958be4855425a033cc7298450b3825025a8d8ebfe9a65d29828101f2a",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get answer card users",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/organizations/hipteam/users/me/groups/answer-card-users",
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Request",
+					"description": "",
+					"item": [
+						{
+							"name": "Send request",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/organizations/hipteam/requests",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer d00c413695b97163d35c748056cb8aa4fc8591b05c3d7227a8a04cb36f8d4d1c629fdeaec0564e87d1db26924626d07cf08e3a2c123532ada5ed25aa431313d8",
+										"description": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "recipientId[0]",
+											"value": "5984342227cd340363dc84af",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "requestMessage",
+											"value": "Request message",
+											"description": "",
+											"type": "text"
+										}
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get requests",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/organizations/hipteam/users/me/requests",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer c16d2b6455535e6d2b9f94739fc4e8ee7b0c9913ba00ca513e3a6e051c51644f68b2fcdc7186119fda254b7315e355affe13653550865c4a883641e0d1ab17e9",
+										"description": ""
+									},
+									{
+										"key": "showReplied",
+										"value": "true",
+										"description": "",
+										"disabled": true
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get sent requests",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/organizations/hipteam/users/me/requests/sent",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer 54a420a4a3541a6129064db2f0aebfeef23366eab7a8bc1b7a40cc5209dc6aa9359205b07a4d597bef8edb7d5aef45af0821cfbcabdff536431178e288d1d772",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get recieved requests",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/organizations/hipteam/users/me/requests/received",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer 8917fe804d644f9e2233fd01f6c41ddca62a0399e84dcfab6aa491120306e4686591857958be4855425a033cc7298450b3825025a8d8ebfe9a65d29828101f2a",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get request by ID",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/organizations/hipteam/users/me/requests/59844c1cd0b5d006da3c9620",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer 8917fe804d644f9e2233fd01f6c41ddca62a0399e84dcfab6aa491120306e4686591857958be4855425a033cc7298450b3825025a8d8ebfe9a65d29828101f2a",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get recipient users for request",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/organizations/hipteam/users/me/requests/59844c1cd0b5d006da3c9620/recipients",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer 8917fe804d644f9e2233fd01f6c41ddca62a0399e84dcfab6aa491120306e4686591857958be4855425a033cc7298450b3825025a8d8ebfe9a65d29828101f2a",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Feedback",
+					"description": "",
+					"item": [
+						{
+							"name": "Get all feedback",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/organizations/hipteam/users/me/feedbacks",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer 85ed2a436482192ac7b8e1e9a744d609436bc6ff718d7fcacb91f9f899ee2edf15fe57fa5cc8ea45a4c940e782bd8c52e4ce977fa314e8e0d306e6c6fda0b808",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Send feedback",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/organizations/hipteam/feedbacks",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"description": ""
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer 29c71f0cec89b22564ee261900fa7376323a121d7a8454fb3fdb03790df1d80082a5aea1cbd05f182dab1e4196e404c81f1dae5c749b2250bc2ac346fcbeb230",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "recipientId",
+											"value": "5984342227cd340363dc84a9",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "message",
+											"value": "Message text ",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "privacy[0]",
+											"value": "PRIVATE",
+											"description": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "privacy[1]",
+											"value": "ANONYMOUS",
+											"description": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "type",
+											"value": "CONSIDER",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "requestId",
+											"value": "",
+											"description": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "tags",
+											"value": "",
+											"description": "",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"description": "Auth: Bearer token"
+							},
+							"response": []
+						},
+						{
+							"name": "Get sent feedbacks",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/organizations/hipteam/users/me/feedbacks/sent",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer 54a420a4a3541a6129064db2f0aebfeef23366eab7a8bc1b7a40cc5209dc6aa9359205b07a4d597bef8edb7d5aef45af0821cfbcabdff536431178e288d1d772",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get incoming feedbacks",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/organizations/hipteam/users/me/feedbacks/received",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer 54a420a4a3541a6129064db2f0aebfeef23366eab7a8bc1b7a40cc5209dc6aa9359205b07a4d597bef8edb7d5aef45af0821cfbcabdff536431178e288d1d772",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "User",
+					"description": "",
+					"item": [
+						{
+							"name": "Get organization users",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/organizations/hipteam/users",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer 2f803aa49568956f91b103e4ab3a0e8aef85158cce38a1bd7378ebc368f6a95471c9e114ad5067a12b24f4aada20d34c9848d597021a642e89fd6996408fd259",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get user from organization by ID",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/organizations/hipteam/users/5984342227cd340363dc84c7",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer bbfce401fc21ac012d4ff36cebe1cbee4e4bbbd432b51e0edf0dcf49fb01f40926650bd224447cf118b2c549e1963e2d33b7f10d82d0235e7a4b81665ccfc693",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": "Auth: Bearer token\nInput:\t- Organization ID\n\t\t- User ID\n"
+							},
+							"response": []
+						},
+						{
+							"name": "Get self user by token",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/users/me",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer bbfce401fc21ac012d4ff36cebe1cbee4e4bbbd432b51e0edf0dcf49fb01f40926650bd224447cf118b2c549e1963e2d33b7f10d82d0235e7a4b81665ccfc693",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": "Auth: Bearer\n\nGet owner user of the given token"
+							},
+							"response": []
+						},
+						{
+							"name": "Set profile picture",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/users/me/avatar",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer bbfce401fc21ac012d4ff36cebe1cbee4e4bbbd432b51e0edf0dcf49fb01f40926650bd224447cf118b2c549e1963e2d33b7f10d82d0235e7a4b81665ccfc693",
+										"description": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "avatar",
+											"value": "",
+											"description": "",
+											"type": "file"
+										}
+									]
+								},
+								"description": "Auth: Bearer token\nInput:\t- profile picture file"
 							},
 							"response": []
 						}

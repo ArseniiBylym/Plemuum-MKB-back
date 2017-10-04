@@ -79,4 +79,10 @@ export default class GroupController extends BaseController {
             .then((result: any) => res.status(StatusCodes.OK).send(result))
             .catch((err: any) => BaseController.handleError(err, res));
     }
+
+    async getAnswerCardUsers(req: any, res: any) {
+        return this.groupManager.getAnswerCardUsers(req.params.orgId, req.user._id)
+            .then((result: any) => res.status(StatusCodes.OK).send(result))
+            .catch((err: any) => BaseController.handleError(err, res));
+    }
 }
