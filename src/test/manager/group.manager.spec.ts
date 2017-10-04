@@ -8,7 +8,7 @@ import { testUser } from "../mock/fixture.loader";
 
 suite("Group manager", () => {
 
-    suite("Get answer card users", () => {
+    suite.only("Get answer card users", () => {
 
         test("Should return a list of user objects", async () => {
             const orgId = "hipteam";
@@ -26,10 +26,13 @@ suite("Group manager", () => {
             getUserById.restore();
 
             assert.isArray(result);
-            expect(result.length).to.be.equal(6);
+            expect(result.length).to.be.greaterThan(0);
             modelValidator.validateUser(result[0]);
+
+            result.forEach((element: any) => {
+                const filtered = result.filter((user: any) => user._id === element._id);
+                expect(filtered.length).to.be.equal(1);
+            });
         })
-
     });
-
 });

@@ -3,6 +3,7 @@ import { GroupModel } from "../../data/database/schema/organization/group.schema
 import UserDataController from "../../data/datacontroller/user.datacontroller";
 import CompassDataController from "../../data/datacontroller/compass.datacontroller";
 import { ErrorType, PlenuumError } from "../../util/errorhandler";
+import { UserModel } from "../../data/database/schema/common/user.schema";
 
 export default class GroupManager {
 
@@ -67,6 +68,19 @@ export default class GroupManager {
         let userIds: string[] = [];
         answerCardGroups.forEach((group) => userIds = userIds.concat(group.users));
 
-        return Promise.all(userIds.map(async (userId) => await UserDataController.getUserById(orgId, userId)));
+        const users = await Promise.all(userIds.map(async (userId) => await UserDataController.getUserById(orgId, userId)));
+
+        return this.filterUserDoubling(users).filter((user) => user._id.toString() !== userId.toString());
     }
+
+    filterUserDoubling(array: UserModel[]): UserModel[] {
+        const result: any[] = [];
+        array.forEach((element) => {
+            const index = result.findIndex((e) => e._id.toString() === element._id.toString());
+            if (index === -1) {
+                result.push(element)
+            }
+        });
+        return result;
+    };
 }

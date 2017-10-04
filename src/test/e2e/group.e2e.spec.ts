@@ -179,5 +179,30 @@ suite("Group request test", () => {
             should().exist(response.body);
             expect(response.body).to.haveOwnProperty('error');
         });
-    })
+    });
+
+    suite.only("Get answer card users", () => {
+        test("Should return a list of users without doubling and the current user", async () => {
+            const url = `/api/organizations/${orgId}/users/me/groups/answer-card-users`;
+
+            const self = {
+                "_id": testUser._id,
+                "firstName": testUser.firstName,
+                "lastName": testUser.lastName,
+                "email": testUser.email,
+                "pictureUrl": testUser.pictureUrl
+            };
+
+            const token = await authenticate(testUser);
+            const response = await request(app)
+                .get(url)
+                .set(bearerAuthHeader(token))
+                .expect(200);
+
+            should().exist(response.body);
+            expect(response.body).to.be.instanceOf(Array);
+            expect(response.body).length(4);
+            expect(response.body).not.contain(self);
+        })
+    });
 });

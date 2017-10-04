@@ -352,6 +352,40 @@ export default (app: Express, groupController: GroupController) => {
         .get(passport.authenticate('bearer', {session: false}), groupController.getUserGroups.bind(groupController));
 
     /**
+     * @api {GET} /api/organizations/:orgId/users/me/groups/answer-card-users Get user list for answer card
+     * @apiVersion 2.0.1
+     * @apiName answer-card-users
+     * @apiGroup Group
+     *
+     * @apiPermission bearer
+     * @apiHeader {String} Authorization Bearer token
+     *
+     * @apiParam (URL){String} orgId    Organization ID
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     * [
+     *     {
+     *         "_id": "5984342227cd340363dc84b2",
+     *         "firstName": "wyatt",
+     *         "lastName": "hunter",
+     *         "email": "wyatt.hunter@example.com",
+     *         "pictureUrl": "https://randomuser.me/api/portraits/men/96.jpg"
+     *     },
+     *     {
+     *         "_id": "5984342227cd340363dc84c6",
+     *         "firstName": "sebastian",
+     *         "lastName": "washington",
+     *         "email": "sebastian.washington@example.com",
+     *         "pictureUrl": "https://randomuser.me/api/portraits/men/30.jpg"
+     *     },
+     *     ...
+     * ]
+     */
+    app.route('/api/organizations/:orgId/users/me/groups/answer-card-users')
+        .get(passport.authenticate('bearer', {session: false}), groupController.getAnswerCardUsers.bind(groupController));
+
+    /**
      * @api {POST} /api/organizations/:orgId/groups/:groupId/users Group - Add user to group
      * @apiVersion 2.0.1
      * @apiName Add user to group
