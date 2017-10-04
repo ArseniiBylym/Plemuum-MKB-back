@@ -949,6 +949,17 @@
 								"description": ""
 							},
 							"response": []
+						},
+						{
+							"name": "Get answer card users",
+							"request": {
+								"url": "http://localhost:5000/api/organizations/hipteam/users/me/groups/answer-card-users",
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"description": ""
+							},
+							"response": []
 						}
 					],
 					"_postman_isSubFolder": true
@@ -2232,6 +2243,17 @@
 										"description": ""
 									}
 								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get answer card users",
+							"request": {
+								"url": "http://188.142.231.10:5000/api/organizations/hipteam/users/me/groups/answer-card-users",
+								"method": "GET",
+								"header": [],
 								"body": {},
 								"description": ""
 							},
