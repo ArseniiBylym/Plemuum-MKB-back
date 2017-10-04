@@ -31,6 +31,46 @@ import * as passport from 'passport';
 export default (app: Express, groupController: GroupController) => {
 
     /**
+     * @api {POST} /api/organizations/:orgId/groups Group - Create group
+     * @apiVersion 2.0.1
+     * @apiName New Group
+     * @apiGroup Admin
+     * @apiDescription Add a new groups to organization.
+     *
+     * @apiPermission basic
+     * @apiHeader {String} Authorization Basic username:password
+     *
+     * @apiParam {String}                           name The name of the group.
+     * @apiParam {String[]} [users]                 The participant user ids in a string array.
+     * @apiParam {String[]} [skills]                Group skill ids.
+     * @apiParam {String[]} [answerCardRelations]   Group answer card relations with other groups (group ids).
+     * @apiParam {String[]} [todoCardRelations]     Group todo card relations with other groups (group ids).
+     *
+     * @apiSuccess (Success 201) {String}    _id                     Group ID.
+     * @apiSuccess (Success 201) {String}    name                    The name of the group.
+     * @apiSuccess (Success 201) {String[]} [users]                 The participant user ids in a string array.
+     * @apiSuccess (Success 201) {String[]} [skills]                Group skill ids.
+     * @apiSuccess (Success 201) {String[]} [answerCardRelations]   Group answer card relations with other groups (group ids)
+     * @apiSuccess (Success 201) {String[]} [todoCardRelations]     Group todo card relations with other groups (group ids)
+     * @apiSuccess (Success 201) {Date}     createdAt               The creation date of the organization created.
+     * @apiSuccess (Success 201) {Date}     updatedAt               The update date of the organization created.
+     *
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 201 CREATED
+     * {
+     *     "updatedAt": "2017-09-27T11:35:03.590Z",
+     *     "createdAt": "2017-09-27T11:35:03.590Z",
+     *     "name": "Group name",
+     *     "_id": "59cb8ce778ee0108d5e68ac5",
+     *     "skills": [],
+     *     "todoCardRelations": [],
+     *     "answerCardRelations": [],
+     *     "users": []
+     * }
+     */
+
+    /**
      * @api {POST} /api/:orgId/groups Group - Create group
      * @apiVersion 2.0.0
      * @apiName New Group
@@ -58,7 +98,6 @@ export default (app: Express, groupController: GroupController) => {
      *
      * @apiSuccessExample {json} Success-Response:
      * HTTP/1.1 201 CREATED
-     *
      * {
      *     "updatedAt": "2017-09-27T11:35:03.590Z",
      *     "createdAt": "2017-09-27T11:35:03.590Z",
@@ -69,7 +108,19 @@ export default (app: Express, groupController: GroupController) => {
      *     "answerCardRelations": [],
      *     "users": []
      * }
+     */
+
+    /**
+     * @api {GET} /api/organizations/:orgId/groups Group - Get organization groups
+     * @apiVersion 2.0.1
+     * @apiName get groups
+     * @apiGroup Admin
+     * @apiDescription Get all organization group
      *
+     * @apiPermission basic
+     * @apiHeader {String} Authorization Basic username:password
+     *
+     * @apiUse group_array_response
      */
 
     /**
@@ -83,11 +134,74 @@ export default (app: Express, groupController: GroupController) => {
      * @apiHeader {String} Authorization Basic username:password
      *
      * @apiUse group_array_response
-     *
      */
-    app.route('/api/:orgId/groups')
-        .get(passport.authenticate('basic', {session: false}), groupController.getGroups.bind(groupController))
-        .post(passport.authenticate('basic', {session: false}), groupController.createGroup.bind(groupController));
+
+    /**
+     * @api {PATCH} /api/organizations/:orgId/groups Group - Update a group
+     * @apiVersion 2.0.1
+     * @apiName Update a group
+     * @apiGroup Admin
+     * @apiDescription Update a group
+     *
+     * @apiPermission basic
+     * @apiHeader {String} Authorization Basic username:password
+     *
+     * @apiParam (Body){String}   _id                     Group ID
+     * @apiParam (Body){String}   name                    The name of the group.
+     * @apiParam (Body){String[]} [users]                 The participant user ids in a string array.
+     * @apiParam (Body){String[]} [skills]                Group skill ids.
+     * @apiParam (Body){String[]} [answerCardRelations]   Group answer card relations with other groups (group ids).
+     * @apiParam (Body){String[]} [todoCardRelations]     Group todo card relations with other groups (group ids).
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     * {
+     *     "success": "Group has been updated"
+     * }
+     */
+    app.route('/api/organizations/:orgId/groups')
+        .get(passport.authenticate('bearer', {session: false}), groupController.getGroups.bind(groupController))
+        .post(passport.authenticate('bearer', {session: false}), groupController.createGroup.bind(groupController))
+        .patch(passport.authenticate('bearer', {session: false}), groupController.updateGroup.bind(groupController));
+
+    /**
+     * @api {GET} /api/organizations/:orgId/groups/:groupId Get a specific group by ID
+     * @apiVersion 2.0.1
+     * @apiName Get Group By ID
+     * @apiGroup Group
+     * @apiDescription Get a specific group by ID
+     *
+     * @apiPermission bearer
+     * @apiHeader {String} Authorization Bearer token
+     *
+     * @apiParam (URL){String} orgId    Organization ID
+     * @apiParam (URL){String} groupId  Group ID
+     *
+     * @apiUse group_entity_response
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     * {
+     *     "_id": "599312971b31d008b6bd2781",
+     *     "updatedAt": "2017-09-26T11:27:45.314Z",
+     *     "createdAt": "2017-09-26T11:27:45.314Z",
+     *     "name": "Developers",
+     *     "skills": [
+     *         "5940f6044d0d550007d863df",
+     *         "5940f5f44d0d550007d863dc"
+     *     ],
+     *     "todoCardRelations": [],
+     *     "answerCardRelations": [
+     *         "599312a31b31d008b6bd2782",
+     *         "599312971b31d008b6bd2781"
+     *     ],
+     *     "users": [
+     *         "5984342227cd340363dc84af",
+     *         "5984342227cd340363dc84c6",
+     *         "5984342227cd340363dc84c7"
+     *     ]
+     * }
+     */
 
     /**
      * @api {GET} /api/:orgId/groups/:groupId Get a specific group by ID
@@ -126,7 +240,6 @@ export default (app: Express, groupController: GroupController) => {
      *         "5984342227cd340363dc84c7"
      *     ]
      * }
-     *
      */
 
     /**
@@ -139,7 +252,7 @@ export default (app: Express, groupController: GroupController) => {
      * @apiPermission basic
      * @apiHeader {String} Authorization Basic username:password
      *
-     * @apiParam (Body){String}                           name The name of the group.
+     * @apiParam (Body){String}   name                    The name of the group.
      * @apiParam (Body){String[]} [users]                 The participant user ids in a string array.
      * @apiParam (Body){String[]} [skills]                Group skill ids.
      * @apiParam (Body){String[]} [answerCardRelations]   Group answer card relations with other groups (group ids).
@@ -150,11 +263,50 @@ export default (app: Express, groupController: GroupController) => {
      * {
      *     "success": "Group has been updated"
      * }
-     *
      */
-    app.route('/api/:orgId/groups/:groupId')
-        .get(passport.authenticate('bearer', {session: false}), groupController.getGroupById.bind(groupController))
-        .patch(passport.authenticate('basic', {session: false}), groupController.updateGroup.bind(groupController));
+    app.route('/api/organizations/:orgId/groups/:groupId')
+        .get(passport.authenticate('bearer', {session: false}), groupController.getGroupById.bind(groupController));
+
+    /**
+     * @api {GET} /api/organizations/:orgId/users/me/groups Get all groups a user participates in
+     * @apiVersion 2.0.1
+     * @apiName Get all groups a user participates in
+     * @apiGroup Group
+     * @apiDescription Get all groups a user participates in
+     *
+     * @apiPermission bearer
+     * @apiHeader {String} Authorization Bearer token
+     *
+     * @apiParam (URL){String} orgId    Organization ID
+     *
+     * @apiUse group_array_response
+     *
+     *  @apiSuccessExample {json} Success-Response:
+     *  HTTP/1.1 200 OK
+     *  [
+     *      {
+     *          "_id": "599312971b31d008b6bd2781",
+     *          "updatedAt": "2017-09-26T11:27:45.314Z",
+     *          "createdAt": "2017-09-26T11:27:45.314Z",
+     *          "name": "Developers",
+     *          "skills": [
+     *              "5940f6044d0d550007d863df",
+     *              "5940f5f44d0d550007d863dc"
+     *          ],
+     *          "todoCardRelations": [],
+     *          "answerCardRelations": [
+     *              "599312a31b31d008b6bd2782",
+     *              "599312971b31d008b6bd2781"
+     *          ],
+     *          "users": [
+     *              "5984342227cd340363dc84af",
+     *              "5984342227cd340363dc84c6",
+     *              "5984342227cd340363dc84c7"
+     *          ]
+     *      },
+     *      ...
+     *  ]
+     */
 
     /**
      * @api {GET} /api/:orgId/mygroups Get all groups a user participates in
@@ -195,10 +347,50 @@ export default (app: Express, groupController: GroupController) => {
      *      },
      *      ...
      *  ]
-     *
      */
-    app.route('/api/:orgId/mygroups')
+    app.route('/api/organizations/:orgId/users/me/groups')
         .get(passport.authenticate('bearer', {session: false}), groupController.getUserGroups.bind(groupController));
+
+    /**
+     * @api {POST} /api/organizations/:orgId/groups/:groupId/users Group - Add user to group
+     * @apiVersion 2.0.1
+     * @apiName Add user to group
+     * @apiGroup Admin
+     *
+     * @apiPermission basic
+     * @apiHeader {String} Authorization Basic username:password
+     *
+     * @apiParam (URL)  {String}    orgId       User ID
+     * @apiParam (URL)  {String}    groupId     Group ID
+     * @apiParam (Body) {String}    userId      User ID
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     * {
+     *     "success": "User has been added"
+     * }
+     */
+
+    /**
+     * @api {DELETE} /api/organizations/:orgId/groups/:groupId/users Group - Remove a user from a group
+     * @apiVersion 2.0.1
+     * @apiName Remove a user from a group
+     * @apiGroup Admin
+     * @apiDescription Remove a user from a group
+     *
+     * @apiPermission basic
+     * @apiHeader {String} Authorization Basic username:password
+     *
+     * @apiParam (URL)  {String}    orgId       User ID
+     * @apiParam (URL)  {String}    groupId     Group ID
+     * @apiParam (Body) {String}    userId      User ID
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     * {
+     *     "success": "User has been removed"
+     * }
+     */
 
     /**
      * @api {POST} /api/:orgId/groups/:groupId/user Group - Add user to group
@@ -218,7 +410,6 @@ export default (app: Express, groupController: GroupController) => {
      * {
      *     "success": "User has been added"
      * }
-     *
      */
 
     /**
@@ -240,9 +431,8 @@ export default (app: Express, groupController: GroupController) => {
      * {
      *     "success": "User has been removed"
      * }
-     *
      */
-    app.route('/api/:orgId/groups/:groupId/user')
-        .post(passport.authenticate('basic', {session: false}), groupController.putUserIntoGroup.bind(groupController))
-        .delete(passport.authenticate('basic', {session: false}), groupController.removeUserFromGroup.bind(groupController))
+    app.route('/api/organizations/:orgId/groups/:groupId/users')
+        .post(passport.authenticate('bearer', {session: false}), groupController.putUserIntoGroup.bind(groupController))
+        .delete(passport.authenticate('bearer', {session: false}), groupController.removeUserFromGroup.bind(groupController))
 }

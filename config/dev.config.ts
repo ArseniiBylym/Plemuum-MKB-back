@@ -8,7 +8,7 @@ const devConfig: Config = {
         return 'mongodb://localhost:27017'
     },
     get adminPwd() {
-        return 'Cocobongo1'
+        return 'incline diadem passed hoop'
     },
     get plenuumBotEmail() {
         return "bot@plenuum.com"

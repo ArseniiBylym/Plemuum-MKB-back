@@ -4,6 +4,7 @@ import * as crypto from 'crypto';
 import { User } from "../models/common/user.model";
 import { UserCollection, UserModel } from "../database/schema/common/user.schema";
 import { ResetPasswordCollection, ResetPasswordModel } from "../database/schema/common/resetpassword.schema";
+import { ErrorType, PlenuumError } from "../../util/errorhandler";
 
 
 const UserDataController = {
@@ -129,9 +130,13 @@ const UserDataController = {
 
     refreshNotificationDevice: function (userId: string, oldToken: string, newToken: string): Promise<UserModel> {
         return UserCollection().findById(userId)
+            .select('+notificationToken')
             .lean()
             .exec()
             .then((user: any) => {
+                if (!user.notificationToken || user.notificationToken.length === 0) {
+                    throw new PlenuumError("Old token not found", ErrorType.NOT_FOUND);
+                }
                 const modifiedToken = user.notificationToken.map((token: string) => {
                     if (token === oldToken) {
                         return newToken
@@ -144,7 +149,7 @@ const UserDataController = {
     },
 
     removeNotificationToken: function (userId: string, token: string): Promise<UserModel> {
-        return UserCollection().findById(userId).lean().exec()
+        return UserCollection().findById(userId).select('+notificationToken').lean().exec()
             .then((user: any) => {
                 const modifiedToken = user.notificationToken.filter((currentToken: string) => {
                     return currentToken !== token;

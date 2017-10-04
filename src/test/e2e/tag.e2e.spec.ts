@@ -18,21 +18,23 @@ suite("Tag request tests", () => {
 
     suite("New Tag", () => {
         const orgId = 'hipteam';
-        const url = `/api/${orgId}/tag`;
+        const url = `/api/organizations/${orgId}/tags`;
 
         test("POST: should return 201", async () => {
+            const token = await authenticate(testUser);
             const response = await request(app)
                 .post(url)
-                .set(basicAuthHeader)
+                .set(bearerAuthHeader(token))
                 .send({ title: "TestTagTitle" })
                 .expect(201);
             modelValidator.validateTagResponse(response.body);
         });
 
         test("POST: should not be able to post a tag with an already existing title", async () => {
+            const token = await authenticate(testUser);
             const response = await request(app)
                 .post(url)
-                .set(basicAuthHeader)
+                .set(bearerAuthHeader(token))
                 .send({ title: "TestTitle" })
                 .expect(405);
             expect(response.body).to.haveOwnProperty("error");
@@ -42,9 +44,9 @@ suite("Tag request tests", () => {
 
     suite("Get tags", () => {
         const orgId = 'hipteam';
-        const url = `/api/${orgId}/tags`;
+        const url = `/api/organizations/${orgId}/tags`;
         test("Response should contain an array and return 200", async () => {
-            const token = await authenticate(testUser)
+            const token = await authenticate(testUser);
             const response = await request(app)
                 .get(url)
                 .set(bearerAuthHeader(token))

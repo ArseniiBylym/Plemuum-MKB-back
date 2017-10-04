@@ -27,7 +27,7 @@ suite("User request tests", () => {
     });
 
     suite('Create new user', () => {
-        const url = `/api/register/user`;
+        const url = `/api/users`;
 
         test("POST: Correct request response should contain a user and return 201", async () => {
             const token = await authenticate(testUser);
@@ -42,7 +42,7 @@ suite("User request tests", () => {
 
     suite('Get all users from organization', () => {
         const orgId = "hipteam";
-        const url = `/api/${orgId}/users`;
+        const url = `/api/organizations/${orgId}/users`;
 
         test('Response should return an array of users and status 200', done => {
             authenticate(testUser)
@@ -63,7 +63,7 @@ suite("User request tests", () => {
     suite('Get one user from organization', () => {
         const orgId = "hipteam";
         const userId = "5984342227cd340363dc84ab";
-        const url = `/api/${orgId}/user/${userId}`;
+        const url = `/api/organizations/${orgId}/users/${userId}`;
 
         test('Should return 200', done => {
             authenticate(testUser)
@@ -93,7 +93,7 @@ suite("User request tests", () => {
     });
 
     suite('Set password', () => {
-        const url = `/api/setPassword`;
+        const url = `/api/session/set-password`;
 
         test('Should return 200 with a success message', async () => {
             const token = await resetPassword(testUser._id);
@@ -106,7 +106,7 @@ suite("User request tests", () => {
     });
 
     suite('Change password', () => {
-        const url = `/api/user/password`;
+        const url = `/api/session/password`;
 
         test('Should return 200', done => {
             request(app)

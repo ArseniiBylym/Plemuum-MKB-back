@@ -39,6 +39,7 @@ export default class UserController extends BaseController {
     }
 
     async modifyUser(req: any, res: Response) {
+        req.checkBody('_id', 'Missing _id').notEmpty();
         req.checkBody('firstName', 'Missing firstName').notEmpty();
         req.checkBody('lastName', 'Missing lastName').notEmpty();
         req.checkBody('email', 'Missing email').notEmpty();

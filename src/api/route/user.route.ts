@@ -17,6 +17,32 @@ import * as passport from 'passport';
 export default (app: Express, userController: UserController) => {
 
     /**
+     * @api {POST} /api/users User - Create new user
+     * @apiVersion 2.0.1
+     * @apiName register
+     * @apiGroup Admin
+     *
+     * @apiHeader {String} Authorization Bearer token
+     *
+     * @apiParam {String} firstName First name of user
+     * @apiParam {String} lastName Last name of user
+     * @apiParam {String} email Email address
+     * @apiParam {String[]} orgIds Organization ID
+     * @apiParam {String} [pictureUrl] URL for the user profile picture
+     *
+     * @apiSuccess (Success 201) {User} - Created user object
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 201 CREATED
+     * {
+     *     "_id": "59cb5832dccfe0061fcbec49",
+     *     "firstName": "John",
+     *     "lastName": "Doe",
+     *     "email": "john.doe@hipteam.io",
+     * }
+     */
+
+    /**
      * @api {POST} /api/register/user User - Create new user
      * @apiVersion 2.0.0
      * @apiName register
@@ -44,25 +70,49 @@ export default (app: Express, userController: UserController) => {
      *         "hipteam"
      *     ]
      * }
-     *
      */
-    app.route("/api/register/user")
+    app.route("/api/users")
         .post(passport.authenticate('bearer', {session: false}), userController.createNewUser.bind(userController));
 
     /**
-     * @api {POST} /api/modify/user User - Modify existing user
+     * @api {PATCH} /api/users User - Modify existing user
+     * @apiVersion 2.0.1
+     * @apiName modify
+     * @apiGroup Admin
+     *
+     * @apiHeader {String} Authorization Bearer token
+     *
+     * @apiParam (Body){String} _id User ID
+     * @apiParam (Body){String} firstName First name of user
+     * @apiParam (Body){String} lastName Last name of user
+     * @apiParam (Body){String} email Email address
+     * @apiParam (Body){String} orgId Organization ID
+     * @apiParam (Body){String} [pictureUrl] URL for the user profile picture
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     * {
+     *     "_id": "59cb5832dccfe0061fcbec49",
+     *     "firstName": "Johnny",
+     *     "lastName": "Doe",
+     *     "email": "john.doe@hipteam.io",
+     * }
+     */
+
+    /**
+     * @api {POST} /api/users/:userId User - Modify existing user
      * @apiVersion 2.0.0
      * @apiName modify
      * @apiGroup Admin
      *
      * @apiHeader {String} Authorization Bearer token
      *
-     * @apiParam {String} _id User ID
-     * @apiParam {String} firstName First name of user
-     * @apiParam {String} lastName Last name of user
-     * @apiParam {String} email Email address
-     * @apiParam {String} orgId Organization ID
-     * @apiParam {String} [pictureUrl] URL for the user profile picture
+     * @apiParam (Body){String} _id User ID
+     * @apiParam (Body){String} firstName First name of user
+     * @apiParam (Body){String} lastName Last name of user
+     * @apiParam (Body){String} email Email address
+     * @apiParam (Body){String} orgId Organization ID
+     * @apiParam (Body){String} [pictureUrl] URL for the user profile picture
      *
      * @apiSuccessExample {json} Success-Response:
      * HTTP/1.1 200 OK
@@ -77,8 +127,40 @@ export default (app: Express, userController: UserController) => {
      *     ]
      * }
      */
-    app.route("/api/modify/user")
-        .post(passport.authenticate('bearer', {session: false}), userController.modifyUser.bind(userController));
+    app.route("/api/users")
+        .patch(passport.authenticate('bearer', {session: false}), userController.modifyUser.bind(userController));
+
+    /**
+     * @api {GET} /api/organizations/:orgId/users  Get organization users
+     * @apiVersion 2.0.1
+     * @apiName getOrgUsers
+     * @apiGroup User
+     * @apiHeader {String} Authorization Bearer token
+     *
+     * @apiParam (URL){String} orgId Organization id
+     *
+     * @apiSuccess (Success 200) {User[]} - Array of users
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     * [
+     *     {
+     *         "_id": "5984342227cd340363dc84a9",
+     *         "firstName": "christina",
+     *         "lastName": "jacobs",
+     *         "email": "christina.jacobs@example.com",
+     *         "pictureUrl": "https://randomuser.me/api/portraits/women/74.jpg",
+     *     },
+     *     {
+     *         "_id": "5984342227cd340363dc84aa",
+     *         "firstName": "bill",
+     *         "lastName": "cox",
+     *         "email": "bill.cox@example.com",
+     *         "pictureUrl": "https://randomuser.me/api/portraits/men/1.jpg",
+     *     },
+     *      ...
+     * ]
+     */
 
     /**
      * @api {GET} /api/:orgId/users Get organization users
@@ -119,22 +201,43 @@ export default (app: Express, userController: UserController) => {
      *
      *      ...
      * ]
-     *
-     *
-     *
      */
-    app.route("/api/:orgId/users")
+    app.route("/api/organizations/:orgId/users")
         .get(passport.authenticate('bearer', {session: false}), userController.getOrganizationUsers.bind(userController));
 
     /**
-     * @api {GET} /api/:orgId/user/:userid Get a specific user from an organization
+     * @api {GET} /api/organizations/:orgId/users/:userId Get a specific user from an organization
+     * @apiVersion 2.0.1
+     * @apiName getByIdFromOrg
+     * @apiGroup User
+     * @apiHeader {String} Authorization Bearer token
+     *
+     * @apiParam (URL){String} orgId Organization id
+     * @apiParam (URL){String} userId User unique id
+     *
+     * @apiSuccess (Success 200) {User} - User object
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     * {
+     *     "_id": "5984342227cd340363dc84c7",
+     *     "firstName": "john",
+     *     "lastName": "doe",
+     *     "email": "john.doe@hipteam.io",
+     *     "pictureUrl": "",
+     * }
+     *
+     */
+
+    /**
+     * @api {GET} /api/:orgId/user/:userId Get a specific user from an organization
      * @apiVersion 2.0.0
      * @apiName getByIdFromOrg
      * @apiGroup User
      * @apiHeader {String} Authorization Bearer token
      *
-     * @apiParam {String} orgId Organization id
-     * @apiParam {String} userId User unique id
+     * @apiParam (URL){String} orgId Organization id
+     * @apiParam (URL){String} userId User unique id
      *
      * @apiSuccess (Success 200) {User} - User object
      *
@@ -159,8 +262,28 @@ export default (app: Express, userController: UserController) => {
      * }
      *
      */
-    app.route("/api/:orgId/user/:userId")
+    app.route("/api/organizations/:orgId/users/:userId")
         .get(passport.authenticate('bearer', {session: false}), userController.getUserByIdFromOrganization.bind(userController));
+
+    /**
+     * @api {GET} /api/users/me Get user by token
+     * @apiVersion 2.0.1
+     * @apiName get self
+     * @apiGroup User
+     * @apiHeader {String} Authorization Bearer token
+     *
+     * @apiSuccess (Success 200) {User} - User object
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     * {
+     *     "_id": "5984342227cd340363dc84c7",
+     *     "firstName": "peter",
+     *     "lastName": "szabo",
+     *     "email": "peter.szabo@hipteam.io",
+     *     "pictureUrl": "",
+     * }
+     */
 
     /**
      * @api {GET} /api/users/self Get user by token
@@ -185,8 +308,29 @@ export default (app: Express, userController: UserController) => {
      * }
      *
      */
-    app.route("/api/users/self")
+    app.route("/api/users/me")
         .get(passport.authenticate('bearer', {session: false}), userController.getUserByToken.bind(userController));
+
+    /**
+     * @api {POST} /api/users/me/avatar    Change the user profile picture
+     * @apiVersion 2.0.1
+     * @apiName setpicture
+     * @apiGroup User
+     * @apiDescription Change the profile picture which is included inside the organization data. Saves the image into firebase on plenuum/userPictures/<userId.ext>
+     *
+     * Authorization: Bearer {token}
+     *
+     * @apiParam (Body){File} avatar A file with the picture of the user.
+     *
+     * @apiSuccess (Success 200) {String} message Success message
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     * {
+     *     "avatar": "http://storage.googleapis.com/plenuumbackend.appspot.com/plenuum/userPictures/5984342227cd340363dc84c7"
+     * }
+     *
+     */
 
     /**
      * @api {POST} /api/profile/setpicture Change the user profile picture
@@ -208,7 +352,7 @@ export default (app: Express, userController: UserController) => {
      * }
      *
      */
-    app.route("/api/profile/setpicture")
+    app.route("/api/users/me/avatar")
         .post(passport.authenticate('bearer', {session: false}), userController.setPicture.bind(userController));
 
 }
