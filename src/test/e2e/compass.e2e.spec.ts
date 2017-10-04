@@ -3,7 +3,7 @@ import config from "../../../config/config";
 import * as request from 'supertest';
 import { authenticate, fixtureLoader, testUser } from "../mock/fixture.loader";
 import app from "../../app";
-import { basicAuthHeader, bearerAuthHeader } from "../util/header.helper";
+import { bearerAuthHeader } from "../util/header.helper";
 import { expect, should } from 'chai';
 import Skill from "../../data/models/organization/compass/skill.model";
 import { ANSWER_TYPES } from "../../data/models/organization/compass/compassanswer.model";
@@ -17,7 +17,7 @@ suite("Compass request test", () => {
             .then(() => fixtureLoader())
             .then(value => done())
             .catch((error) => {
-                console.error (error);
+                console.error(error);
                 done();
             })
     });
@@ -30,70 +30,42 @@ suite("Compass request test", () => {
 
     suite("Generate Todo", () => {
 
-        const url = `/api/${orgId}/compasstodo`;
+        const url = `/api/organizations/${orgId}/compass/todos`;
 
-        test("Should be able to get a fresh todo", done => {
-            authenticate(testUser)
-                .then(token => {
-                    request(app)
-                        .post(url)
-                        .send({aboutUserId: "5984342227cd340363dc84c7"})
-                        .set(bearerAuthHeader(token))
-                        .expect(200)
-                        .then(response => {
-                            should().exist(response.body);
-                            expect(response.body).to.haveOwnProperty("about");
-                            expect(response.body).to.haveOwnProperty("owner");
-                            expect(response.body.questions).to.be.instanceof(Array);
-                            expect(response.body.questions).to.have.lengthOf(3);
-                            expect(response.body.questions[0]).to.haveOwnProperty("sentence");
-                            expect(response.body.questions[0]).to.haveOwnProperty("skill");
-                            done();
-                        })
-                        .catch((err) => done(err));
-                });
+        test("Should be able to get a fresh todo", async () => {
+            const token = await authenticate(testUser);
+            const response = await request(app)
+                .post(url)
+                .send({aboutUserId: "5984342227cd340363dc84c7"})
+                .set(bearerAuthHeader(token))
+                .expect(200);
+
+            should().exist(response.body);
+            expect(response.body).to.haveOwnProperty("about");
+            expect(response.body).to.haveOwnProperty("owner");
+            expect(response.body.questions).to.be.instanceof(Array);
+            expect(response.body.questions).to.have.lengthOf(3);
+            expect(response.body.questions[0]).to.haveOwnProperty("sentence");
+            expect(response.body.questions[0]).to.haveOwnProperty("skill");
         });
 
-        test("Should get user error if user does not exist with the given ID", done => {
-            authenticate(testUser)
-                .then(token => {
-                    // That recipientId does not exist in the mock user list
-                    request(app)
-                        .post(url)
-                        .send({aboutUserId: "5984342227cd340363dd84ae"})
-                        .set(bearerAuthHeader(token))
-                        .expect(404)
-                        .then(response => {
-                            should().exist(response.body);
-                            expect(response.body).to.haveOwnProperty("error");
-                            expect(response.body.error).to.be.equal('User could not be found');
-                            done();
-                        })
-                        .catch((err) => done(err));
-                });
-        });
+        test("Should get user error if user does not exist with the given ID", async () => {
+            const token = await authenticate(testUser);
+            // That recipientId does not exist in the mock user list
+            const response = await request(app)
+                .post(url)
+                .send({aboutUserId: "5984342227cd340363dd84ae"})
+                .set(bearerAuthHeader(token))
+                .expect(404);
 
-        test("Should get organization error if organization does not exist", done => {
-            const urlWhatever = `/api/whatever/compasstodo`;
-            authenticate(testUser)
-                .then(token => {
-                    request(app)
-                        .post(urlWhatever)
-                        .send({aboutUserId: "5984342227cd340363dd84ac"})
-                        .set(bearerAuthHeader(token))
-                        .expect(404)
-                        .then(response => {
-                            should().exist(response.body);
-                            expect(response.body).to.haveOwnProperty("error");
-                            expect(response.body.error).to.be.equal('Organization nonexistent!');
-                            done();
-                        }).catch((err) => done(err));
-                });
-        })
+            should().exist(response.body);
+            expect(response.body).to.haveOwnProperty("error");
+            expect(response.body.error).to.be.equal('User could not be found');
+        });
     });
 
     suite("Answer todo", () => {
-        const url = `/api/${orgId}/compassanswers`;
+        const url = `/api/organizations/${orgId}/compass/answers`;
 
         test("Should be able to send an answer, should get 200", async () => {
             const token = await authenticate(testUser);
@@ -202,7 +174,7 @@ suite("Compass request test", () => {
     });
 
     suite("Create new skill", () => {
-        const url = `/api/${orgId}/skills`;
+        const url = `/api/organizations/${orgId}/skills`;
         const newSkill: Skill = {
             name: "New Skill",
             sentences: [
@@ -266,7 +238,7 @@ suite("Compass request test", () => {
     });
 
     suite("Update existing skill", () => {
-        const url = `/api/${orgId}/skills`;
+        const url = `/api/organizations/${orgId}/skills`;
         test("Should be able to upload and update a skill, should return the updated skill and 200", async () => {
             const newSkill = {
                 _id: "5940f5f44d0d550007d863dc",

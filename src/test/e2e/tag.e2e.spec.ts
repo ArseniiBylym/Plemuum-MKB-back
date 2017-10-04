@@ -7,7 +7,7 @@ import { getDatabaseManager } from "../../factory/database.factory";
 import config from "../../../config/config";
 import { basicAuthHeader, bearerAuthHeader } from "../util/header.helper";
 
-suite.only("Tag request tests", () => {
+suite("Tag request tests", () => {
 
     before(async () => {
         await getDatabaseManager().openConnection(config.mongoUrl);
@@ -21,18 +21,20 @@ suite.only("Tag request tests", () => {
         const url = `/api/organizations/${orgId}/tags`;
 
         test("POST: should return 201", async () => {
+            const token = await authenticate(testUser);
             const response = await request(app)
                 .post(url)
-                .set(basicAuthHeader)
+                .set(bearerAuthHeader(token))
                 .send({ title: "TestTagTitle" })
                 .expect(201);
             modelValidator.validateTagResponse(response.body);
         });
 
         test("POST: should not be able to post a tag with an already existing title", async () => {
+            const token = await authenticate(testUser);
             const response = await request(app)
                 .post(url)
-                .set(basicAuthHeader)
+                .set(bearerAuthHeader(token))
                 .send({ title: "TestTitle" })
                 .expect(405);
             expect(response.body).to.haveOwnProperty("error");
