@@ -206,7 +206,7 @@ export default (app: Express, compassController: CompassController) => {
         .get(passport.authenticate('bearer', {session: false}), compassController.getStatistics.bind(compassController));
 
     /**
-     * @api {POST} /api/organizations/:orgId/skills - Create Skill
+     * @api {POST} /api/organizations/:orgId/skills Skill - Create Skill
      * @apiVersion 2.0.1
      * @apiName create skill
      * @apiGroup Admin
