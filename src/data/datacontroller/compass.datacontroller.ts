@@ -30,7 +30,9 @@ const CompassDataController = {
     },
 
     updateCompassTodo: (orgId: string, updatedTodo: any): Promise<any> => {
-        return CompassTodoCollection(orgId).findByIdAndUpdate(updatedTodo._id, updatedTodo).lean().exec();
+        const id = updatedTodo._id;
+        delete updatedTodo._id;
+        return CompassTodoCollection(orgId).findByIdAndUpdate(id, updatedTodo).lean().exec();
     },
 
     saveCompassTodo: (orgId: string, newTodo: any): Promise<any> => {
