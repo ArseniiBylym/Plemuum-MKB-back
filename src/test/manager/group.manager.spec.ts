@@ -8,7 +8,7 @@ import { testUser } from "../mock/fixture.loader";
 
 suite("Group manager", () => {
 
-    suite.only("Get answer card users", () => {
+    suite("Get answer card users", () => {
 
         test("Should return a list of user objects", async () => {
             const orgId = "hipteam";

@@ -181,7 +181,7 @@ suite("Group request test", () => {
         });
     });
 
-    suite.only("Get answer card users", () => {
+    suite("Get answer card users", () => {
         test("Should return a list of users without doubling and the current user", async () => {
             const url = `/api/organizations/${orgId}/users/me/groups/answer-card-users`;
 

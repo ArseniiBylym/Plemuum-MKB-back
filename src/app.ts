@@ -54,8 +54,7 @@ const app = (): Express => {
 
     passportInit();
 
-    //TODO turn back on after url redesign
-    //app.use("/api/:orgId",OrganizationChecker(getOrganizationDataController()));
+    app.use("/api/organizations/:orgId",OrganizationChecker(getOrganizationDataController()));
 
     Routes(app);
 
