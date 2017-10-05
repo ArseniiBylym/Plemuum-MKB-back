@@ -1,18 +1,12 @@
-import * as crypto from 'crypto';
+import { jwtOptions } from "../../../config/config";
+import * as jwt from 'jsonwebtoken';
 
-interface TokenObject {
-    token: string;
-    tokenExpiry: Date
-}
-
-function generateNewTokenObject(): TokenObject {
-    const token = crypto.randomBytes(64).toString('hex');
-    const tokenExpiry = new Date();
-    tokenExpiry.setDate(tokenExpiry.getDate() + 7);
-    return {
-        token: token,
-        tokenExpiry: tokenExpiry
-    }
+function generateNewToken(userId: string, isAdmin: boolean) {
+    const payload = {
+        id: userId,
+        admin: isAdmin
+    };
+    return jwt.sign(payload, jwtOptions.secretOrKey, {expiresIn: getExpiryInSeconds(7)});
 }
 
 function generateNewTokensForResetPassword() {
@@ -25,4 +19,13 @@ function generateNewTokensForResetPassword() {
     return {tokenExpiry, tokenExpired}
 }
 
-export { generateNewTokenObject, generateNewTokensForResetPassword,  TokenObject }
+function getExpiryAsDate(numberOfDays: number) {
+    const expiry = new Date();
+    expiry.setDate(expiry.getDate() + numberOfDays)
+}
+
+function getExpiryInSeconds(numberOfDays: number) {
+    return numberOfDays * 24 * 60 * 60
+}
+
+export { generateNewToken, generateNewTokensForResetPassword, getExpiryAsDate, getExpiryInSeconds }

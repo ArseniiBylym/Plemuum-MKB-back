@@ -24,7 +24,7 @@ suite("Feedback manager", () => {
                 tags: [],
             };
 
-            const getUserById = sinon.stub(UserDataController, 'getUserById');
+            const getUserById = sinon.stub(UserDataController, 'getUserByIdFromOrg');
             const saveFeedback = sinon.stub(FeedbackDataController, 'saveFeedback');
 
             getUserById.resolves(testUser);
@@ -50,7 +50,7 @@ suite("Feedback manager", () => {
                 tags: [],
             };
 
-            const getUserById = sinon.stub(UserDataController, 'getUserById');
+            const getUserById = sinon.stub(UserDataController, 'getUserByIdFromOrg');
 
             getUserById.resolves(null);
 

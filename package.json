@@ -66,6 +66,7 @@
     "@types/express-validator": "3.0.0",
     "@types/fs-extra": "4.0.0",
     "@types/google-cloud__storage": "1.1.2",
+    "@types/jsonwebtoken": "7.2.3",
     "@types/lodash": "4.14.71",
     "@types/mongoose": "4.7.19",
     "@types/morgan": "1.7.32",
@@ -73,6 +74,7 @@
     "@types/passport": "0.3.3",
     "@types/passport-http": "0.3.2",
     "@types/passport-http-bearer": "1.0.30",
+    "@types/passport-jwt": "2.0.24",
     "@types/passport-local": "1.0.30",
     "apidoc": "0.17.6",
     "body-parser": "1.17.2",
@@ -89,6 +91,7 @@
     "helmet": "3.8.1",
     "http-status-codes": "1.2.0",
     "jade": "1.11.0",
+    "jsonwebtoken": "8.0.1",
     "lodash": "4.17.4",
     "mongodb": "2.2.30",
     "mongoose": "4.11.4",
@@ -98,6 +101,7 @@
     "passport": "0.3.2",
     "passport-http": "0.3.0",
     "passport-http-bearer": "1.0.1",
+    "passport-jwt": "3.0.0",
     "passport-local": "1.0.0"
   }
 }

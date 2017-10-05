@@ -27,4 +27,10 @@ const getConfig = (): Config => {
     }
 };
 
+const jwtOptions: any = {
+    jwtFromRequest: require('passport-jwt').ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: 'mEQHQ9Ks3h'
+};
+
+export { jwtOptions };
 export default getConfig();

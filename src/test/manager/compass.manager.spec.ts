@@ -252,8 +252,8 @@ suite("CompassManager tests", () => {
     });
 
     suite("getAboutUser", () => {
-        test("Should call UserDataController.getUserById", async () => {
-            let userDataControllerStub: Sinon.SinonStub = sinon.stub(UserDataController, "getUserById").returns(Promise.resolve({}));
+        test("Should call UserDataController.getUserByIdFromOrg", async () => {
+            let userDataControllerStub: Sinon.SinonStub = sinon.stub(UserDataController, "getUserByIdFromOrg").returns(Promise.resolve({}));
             await CompassManager.getAboutUser("dummy", "dummy");
             userDataControllerStub.restore();
             expect(userDataControllerStub.calledWith("dummy", "dummy", ['_id', 'firstName', 'lastName'])).to.be.true;

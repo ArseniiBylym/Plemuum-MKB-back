@@ -74,5 +74,5 @@ export default (app: Express, organizationController: OrganizationController) =>
      * }
      */
     app.route('/api/organizations')
-        .post(passport.authenticate('bearer', {session: false}), organizationController.createOrganization.bind(organizationController));
+        .post(passport.authenticate('jwt', {session: false}), organizationController.createOrganization.bind(organizationController));
 }

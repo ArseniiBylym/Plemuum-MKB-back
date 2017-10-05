@@ -17,7 +17,6 @@ export default (app: Express, sessionController: SessionController, userControll
      * @apiParam (Body){String} password    Password
      *
      * @apiSuccess (Success 200) {String}       token Bearer    token
-     * @apiSuccess (Success 200) {String}       token_expiry    Expiration date of the token
      * @apiSuccess (Success 200) {String[]}     orgIds          Array of organization IDs the user participates in
      *
      * @apiSampleRequest /api/session
@@ -26,7 +25,6 @@ export default (app: Express, sessionController: SessionController, userControll
      * HTTP/1.1 200 OK
      * {
      *     "token": "8a815f8f8ac2084c3594951368b0abc47749f28323251f293f06a902654b12502cd1feac7efde70bc123969ec5de7e52bfb809d8393b6cd5c5fcba80f1dd3761",
-     *     "token_expiry": "2017-10-05T14:58:11.596Z",
      *     "orgIds": [
      *         "hipteam"
      *     ]
@@ -53,7 +51,7 @@ export default (app: Express, sessionController: SessionController, userControll
      */
     app.route('/api/session')
         .post(passport.authenticate('local', {session: false}), sessionController.login.bind(sessionController))
-        .delete(passport.authenticate('bearer', {session: false}), sessionController.logout.bind(sessionController));
+        .delete(passport.authenticate('jwt', {session: false}), sessionController.logout.bind(sessionController));
 
     /**
      * @api {POST} /api/session/validtoken Valid token

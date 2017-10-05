@@ -126,11 +126,11 @@ export default (app: Express, notificationController: NotificationController) =>
      * }
      */
     app.route("/api/users/me/notification")
-        .post(passport.authenticate('bearer', {session: false}), notificationController.setNotificationDevice.bind(notificationController))
-        .patch(passport.authenticate('bearer', {session: false}), notificationController.refreshNotificationDevice.bind(notificationController))
-        .delete(passport.authenticate('bearer', {session: false}), notificationController.removeNotificationToken.bind(notificationController));
+        .post(passport.authenticate('jwt', {session: false}), notificationController.setNotificationDevice.bind(notificationController))
+        .patch(passport.authenticate('jwt', {session: false}), notificationController.refreshNotificationDevice.bind(notificationController))
+        .delete(passport.authenticate('jwt', {session: false}), notificationController.removeNotificationToken.bind(notificationController));
 
     app.route("/api/notification/send")
-        .post(passport.authenticate('basic', {session: false}), notificationController.sendNotification.bind(notificationController))
+        .post(passport.authenticate('jwt', {session: false}), notificationController.sendNotification.bind(notificationController))
 
 }

@@ -17,7 +17,7 @@ export default class FeedbackManager {
     }
 
     async postFeedback(orgId: string, feedback: any) {
-        const user = await UserDataController.getUserById(orgId, feedback.recipientId);
+        const user = await UserDataController.getUserByIdFromOrg(orgId, feedback.recipientId);
         if (!user) {
             throw new PlenuumError("Recipient user not found", ErrorType.NOT_FOUND);
         }

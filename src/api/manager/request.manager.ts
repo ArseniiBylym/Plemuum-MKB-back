@@ -11,7 +11,7 @@ export default class RequestManager {
     }
 
     async saveNewRequest(orgId: string, request: any) {
-        const user = await UserDataController.getUserById(orgId, request.recipientId);
+        const user = await UserDataController.getUserByIdFromOrg(orgId, request.recipientId);
         if (!user) {
             throw new PlenuumError("Recipient user not found", ErrorType.NOT_FOUND);
         }

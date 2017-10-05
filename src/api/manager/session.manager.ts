@@ -1,25 +1,15 @@
 import * as tokenManager from "../../service/auth/token.manager";
-import { TokenObject } from "../../service/auth/token.manager";
 import UserDataController from "../../data/datacontroller/user.datacontroller";
 import { ErrorType, PlenuumError } from "../../util/errorhandler";
 
 export default class SessionManager {
 
     async login(userId: string) {
-        let tokenObj: TokenObject = tokenManager.generateNewTokenObject();
-        const user = await UserDataController.getUserByIdWithoutOrgId(userId, true);
-        const now = new Date();
-        if (user && user.token && user.token.token_expiry > now) {
-            tokenObj = {
-                token: user.token.token,
-                tokenExpiry: tokenObj.tokenExpiry
-            };
-        }
-        const updatedUser = await UserDataController.updateUserToken(user._id, tokenObj);
+        const token = tokenManager.generateNewToken(userId, true);
+        const user = await UserDataController.getUserByIdWithoutOrgId(userId, true, true);
         return {
-            token: updatedUser.token.token,
-            token_expiry: updatedUser.token.token_expiry,
-            orgIds: updatedUser.orgIds
+            token: token,
+            orgIds: user.orgIds
         }
     }
 

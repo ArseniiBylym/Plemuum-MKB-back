@@ -105,7 +105,7 @@ export default (app: Express, requestController: RequestController) => {
      *
      */
     app.route("/api/organizations/:orgId/users/me/requests")
-        .get(passport.authenticate('bearer', {session: false}), requestController.getRequests.bind(requestController));
+        .get(passport.authenticate('jwt', {session: false}), requestController.getRequests.bind(requestController));
 
     /**
      * @api {POST} /api/organizations/:orgId/requests Send request
@@ -174,7 +174,7 @@ export default (app: Express, requestController: RequestController) => {
      *
      */
     app.route("/api/organizations/:orgId/requests")
-        .post(passport.authenticate('bearer', {session: false}), requestController.createRequest.bind(requestController));
+        .post(passport.authenticate('jwt', {session: false}), requestController.createRequest.bind(requestController));
 
     /**
      * @api {GET} /api/organizations/:orgId/users/me/requests/sent  Get user's sent requests
@@ -231,7 +231,7 @@ export default (app: Express, requestController: RequestController) => {
      *
      */
     app.route("/api/organizations/:orgId/users/me/requests/sent")
-        .get(passport.authenticate('bearer', {session: false}), requestController.getSenderRequests.bind(requestController));
+        .get(passport.authenticate('jwt', {session: false}), requestController.getSenderRequests.bind(requestController));
 
     /**
      * @api {GET} /api/organizations/:orgId/users/me/requests/received Get user's received requests
@@ -326,7 +326,7 @@ export default (app: Express, requestController: RequestController) => {
      * ]
      */
     app.route("/api/organizations/:orgId/users/me/requests/received")
-        .get(passport.authenticate('bearer', {session: false}), requestController.getRecipientRequests.bind(requestController));
+        .get(passport.authenticate('jwt', {session: false}), requestController.getRecipientRequests.bind(requestController));
 
     /**
      * @api {GET} /api/organizations/:orgId/users/me/requests/:requestId Get a specific request
@@ -384,7 +384,7 @@ export default (app: Express, requestController: RequestController) => {
      * }
      */
     app.route("/api/organizations/:orgId/users/me/requests/:requestId")
-        .get(passport.authenticate('bearer', {session: false}), requestController.getRequest.bind(requestController));
+        .get(passport.authenticate('jwt', {session: false}), requestController.getRequest.bind(requestController));
 
     /**
      * @api {GET} /api/organizations/:orgId/users/me/requests/:requestId/recipients Get the recipients of a request
@@ -470,6 +470,6 @@ export default (app: Express, requestController: RequestController) => {
      *
      */
     app.route("/api/organizations/:orgId/users/me/requests/:requestId/recipients")
-        .get(passport.authenticate('bearer', {session: false}), requestController.getRecipientUsersFromRequest.bind(requestController));
+        .get(passport.authenticate('jwt', {session: false}), requestController.getRecipientUsersFromRequest.bind(requestController));
 
 }

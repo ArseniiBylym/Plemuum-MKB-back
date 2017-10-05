@@ -160,9 +160,9 @@ export default (app: Express, groupController: GroupController) => {
      * }
      */
     app.route('/api/organizations/:orgId/groups')
-        .get(passport.authenticate('bearer', {session: false}), groupController.getGroups.bind(groupController))
-        .post(passport.authenticate('bearer', {session: false}), groupController.createGroup.bind(groupController))
-        .patch(passport.authenticate('bearer', {session: false}), groupController.updateGroup.bind(groupController));
+        .get(passport.authenticate('jwt', {session: false}), groupController.getGroups.bind(groupController))
+        .post(passport.authenticate('jwt', {session: false}), groupController.createGroup.bind(groupController))
+        .patch(passport.authenticate('jwt', {session: false}), groupController.updateGroup.bind(groupController));
 
     /**
      * @api {GET} /api/organizations/:orgId/groups/:groupId Get a specific group by ID
@@ -265,7 +265,7 @@ export default (app: Express, groupController: GroupController) => {
      * }
      */
     app.route('/api/organizations/:orgId/groups/:groupId')
-        .get(passport.authenticate('bearer', {session: false}), groupController.getGroupById.bind(groupController));
+        .get(passport.authenticate('jwt', {session: false}), groupController.getGroupById.bind(groupController));
 
     /**
      * @api {GET} /api/organizations/:orgId/users/me/groups Get all groups a user participates in
@@ -349,7 +349,7 @@ export default (app: Express, groupController: GroupController) => {
      *  ]
      */
     app.route('/api/organizations/:orgId/users/me/groups')
-        .get(passport.authenticate('bearer', {session: false}), groupController.getUserGroups.bind(groupController));
+        .get(passport.authenticate('jwt', {session: false}), groupController.getUserGroups.bind(groupController));
 
     /**
      * @api {GET} /api/organizations/:orgId/users/me/groups/answer-card-users Get user list for answer card
@@ -383,7 +383,7 @@ export default (app: Express, groupController: GroupController) => {
      * ]
      */
     app.route('/api/organizations/:orgId/users/me/groups/answer-card-users')
-        .get(passport.authenticate('bearer', {session: false}), groupController.getAnswerCardUsers.bind(groupController));
+        .get(passport.authenticate('jwt', {session: false}), groupController.getAnswerCardUsers.bind(groupController));
 
     /**
      * @api {POST} /api/organizations/:orgId/groups/:groupId/users Group - Add user to group
@@ -467,6 +467,6 @@ export default (app: Express, groupController: GroupController) => {
      * }
      */
     app.route('/api/organizations/:orgId/groups/:groupId/users')
-        .post(passport.authenticate('bearer', {session: false}), groupController.putUserIntoGroup.bind(groupController))
-        .delete(passport.authenticate('bearer', {session: false}), groupController.removeUserFromGroup.bind(groupController))
+        .post(passport.authenticate('jwt', {session: false}), groupController.putUserIntoGroup.bind(groupController))
+        .delete(passport.authenticate('jwt', {session: false}), groupController.removeUserFromGroup.bind(groupController))
 }

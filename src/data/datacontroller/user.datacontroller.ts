@@ -1,5 +1,4 @@
 import { Model } from 'mongoose';
-import { TokenObject } from "../../service/auth/token.manager";
 import * as crypto from 'crypto';
 import { User } from "../models/common/user.model";
 import { UserCollection, UserModel } from "../database/schema/common/user.schema";
@@ -20,7 +19,14 @@ const UserDataController = {
             .exec() as Promise<UserModel>;
     },
 
-    getUserById: function (orgId: string, userId: string, fields: string[] = []): Promise<UserModel> {
+    getUserById: function (userId: string): Promise<UserModel> {
+        return UserCollection()
+            .findById(userId)
+            .lean()
+            .exec() as Promise<UserModel>;
+    },
+
+    getUserByIdFromOrg: function (orgId: string, userId: string, fields: string[] = []): Promise<UserModel> {
         return UserCollection()
             .findOne({$and: [{orgIds: {$in: [orgId]}}, {_id: userId}]}, fields.join(' '))
             .lean()
@@ -39,19 +45,15 @@ const UserDataController = {
             .exec() as Promise<UserModel>;
     },
 
-    getUserByIdWithoutOrgId: function (userId: string, showToken: boolean = false): Promise<UserModel> {
+    getUserByIdWithoutOrgId: function (userId: string, showToken: boolean = false, showOrgIds: boolean = false): Promise<UserModel> {
         const queryCmd = UserCollection().findById(userId);
         if (showToken) {
             queryCmd.select('+token')
         }
+        if (showOrgIds) {
+            queryCmd.select('+orgIds')
+        }
         return queryCmd.exec() as Promise<UserModel>;
-    },
-
-    getUserByToken: function (token: string): Promise<UserModel> {
-        return UserCollection().findOne({'token.token': token})
-            .select('+token')
-            .lean()
-            .exec() as Promise<UserModel>;
     },
 
     getUserByEmail: function (email: string, showNotificationTokens: boolean = false): Promise<UserModel> {
@@ -62,32 +64,10 @@ const UserDataController = {
         return queryCmd.exec() as Promise<UserModel>;
     },
 
-    updateUserToken: function (userId: string, tokenObj: TokenObject): Promise<UserModel> {
-        const query = {
-            token: {
-                userId: userId,
-                token: tokenObj.token,
-                token_expiry: tokenObj.tokenExpiry,
-                issued_at: new Date(),
-            }
-        };
-        return UserCollection().findByIdAndUpdate(userId, query, {"new": true})
-            .select('+token')
-            .select('+orgIds')
-            .lean()
-            .exec() as Promise<UserModel>;
-    },
-
     removeToken: (userId: string): Promise<any> => {
         return UserCollection().findByIdAndUpdate(userId, {$set: {token: {}}})
             .lean()
             .exec();
-    },
-
-    changeTokens: function (userId: string, tokens: any): Promise<UserModel> {
-        return UserCollection().findByIdAndUpdate(userId, {$set: {tokens: tokens}}, {'new': true})
-            .lean()
-            .exec() as Promise<UserModel>;
     },
 
     getResetToken: function (token: any): Promise<ResetPasswordModel> {

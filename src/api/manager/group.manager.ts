@@ -18,7 +18,7 @@ export default class GroupManager {
         return Promise.all(allGroups.map(async (group: any) => {
 
             group.users = await Promise.all(group.users.map((userId: string) =>
-                UserDataController.getUserById(orgId, userId)));
+                UserDataController.getUserByIdFromOrg(orgId, userId)));
 
             group.skills = await Promise.all(
                 group.skills.map((skillId: string) => CompassDataController.getSkillById(orgId, skillId)));
@@ -68,7 +68,7 @@ export default class GroupManager {
         let userIds: string[] = [];
         answerCardGroups.forEach((group) => userIds = userIds.concat(group.users));
 
-        const users = await Promise.all(userIds.map(async (userId) => await UserDataController.getUserById(orgId, userId)));
+        const users = await Promise.all(userIds.map(async (userId) => await UserDataController.getUserByIdFromOrg(orgId, userId)));
 
         return this.filterUserDoubling(users).filter((user) => user._id.toString() !== userId.toString());
     }

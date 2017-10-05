@@ -133,6 +133,6 @@ export default (app: Express, tagController: TagController) => {
      */
 
     app.route("/api/organizations/:orgId/tags")
-        .get(passport.authenticate('bearer', {session: false}), tagController.getTags.bind(tagController))
-        .post(passport.authenticate('bearer', {session: false}), tagController.addNewTag.bind(tagController));
+        .get(passport.authenticate('jwt', {session: false}), tagController.getTags.bind(tagController))
+        .post(passport.authenticate('jwt', {session: false}), tagController.addNewTag.bind(tagController));
 }

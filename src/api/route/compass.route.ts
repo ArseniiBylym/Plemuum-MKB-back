@@ -75,7 +75,7 @@ export default (app: Express, compassController: CompassController) => {
      *  }
      */
     app.route("/api/organizations/:orgId/interacts")
-        .get(passport.authenticate('bearer', {session: false}), compassController.getTodos.bind(compassController));
+        .get(passport.authenticate('jwt', {session: false}), compassController.getTodos.bind(compassController));
 
     /**
      * @api {POST} /api/organizations/:orgId/compass/todos CompassTodo for a user
@@ -107,7 +107,7 @@ export default (app: Express, compassController: CompassController) => {
      * @apiSuccess (Success 200) {String} ownerId    The unique identifier of the user who asked to answer on competences about some user.
      */
     app.route("/api/organizations/:orgId/compass/todos")
-        .post(passport.authenticate('bearer', {session: false}), compassController.answerCard.bind(compassController));
+        .post(passport.authenticate('jwt', {session: false}), compassController.answerCard.bind(compassController));
 
     /**
      * @api {POST} /api/organizations/:orgId/compass/answers Send CompassTodo answer
@@ -161,7 +161,7 @@ export default (app: Express, compassController: CompassController) => {
      * @apiSuccess (Success 200) {String}       sentencesAnswer.answer      The answer for this specific sentence.
      */
     app.route("/api/organizations/:orgId/compass/answers")
-        .post(passport.authenticate('bearer', {session: false}), compassController.answerCompass.bind(compassController));
+        .post(passport.authenticate('jwt', {session: false}), compassController.answerCompass.bind(compassController));
 
     /**
      * @api {GET} /api/organizations/:orgId/compass/statistics Get COMPASS statistics
@@ -203,7 +203,7 @@ export default (app: Express, compassController: CompassController) => {
      */
     //Just related to the user independent of the organization
     app.route("/api/organizations/:orgId/compass/statistics")
-        .get(passport.authenticate('bearer', {session: false}), compassController.getStatistics.bind(compassController));
+        .get(passport.authenticate('jwt', {session: false}), compassController.getStatistics.bind(compassController));
 
     /**
      * @api {POST} /api/organizations/:orgId/skills Skill - Create Skill
@@ -283,6 +283,6 @@ export default (app: Express, compassController: CompassController) => {
      * @apiSuccess (Success 200) {Skill} - skill object
      */
     app.route("/api/organizations/:orgId/skills")
-        .get(passport.authenticate('bearer', {session: false}), compassController.getSkills.bind(compassController))
-        .patch(passport.authenticate('bearer', {session: false}), compassController.createOrUpdateSkill.bind(compassController));
+        .get(passport.authenticate('jwt', {session: false}), compassController.getSkills.bind(compassController))
+        .patch(passport.authenticate('jwt', {session: false}), compassController.createOrUpdateSkill.bind(compassController));
 }

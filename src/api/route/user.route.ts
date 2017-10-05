@@ -72,7 +72,7 @@ export default (app: Express, userController: UserController) => {
      * }
      */
     app.route("/api/users")
-        .post(passport.authenticate('bearer', {session: false}), userController.createNewUser.bind(userController));
+        .post(passport.authenticate('jwt', {session: false}), userController.createNewUser.bind(userController));
 
     /**
      * @api {PATCH} /api/users User - Modify existing user
@@ -128,7 +128,7 @@ export default (app: Express, userController: UserController) => {
      * }
      */
     app.route("/api/users")
-        .patch(passport.authenticate('bearer', {session: false}), userController.modifyUser.bind(userController));
+        .patch(passport.authenticate('jwt', {session: false}), userController.modifyUser.bind(userController));
 
     /**
      * @api {GET} /api/organizations/:orgId/users  Get organization users
@@ -203,7 +203,7 @@ export default (app: Express, userController: UserController) => {
      * ]
      */
     app.route("/api/organizations/:orgId/users")
-        .get(passport.authenticate('bearer', {session: false}), userController.getOrganizationUsers.bind(userController));
+        .get(passport.authenticate('jwt', {session: false}), userController.getOrganizationUsers.bind(userController));
 
     /**
      * @api {GET} /api/organizations/:orgId/users/:userId Get a specific user from an organization
@@ -263,7 +263,7 @@ export default (app: Express, userController: UserController) => {
      *
      */
     app.route("/api/organizations/:orgId/users/:userId")
-        .get(passport.authenticate('bearer', {session: false}), userController.getUserByIdFromOrganization.bind(userController));
+        .get(passport.authenticate('jwt', {session: false}), userController.getUserByIdFromOrganization.bind(userController));
 
     /**
      * @api {GET} /api/users/me Get user by token
@@ -309,7 +309,7 @@ export default (app: Express, userController: UserController) => {
      *
      */
     app.route("/api/users/me")
-        .get(passport.authenticate('bearer', {session: false}), userController.getUserByToken.bind(userController));
+        .get(passport.authenticate('jwt', {session: false}), userController.getUserByToken.bind(userController));
 
     /**
      * @api {POST} /api/users/me/avatar    Change the user profile picture
@@ -353,6 +353,6 @@ export default (app: Express, userController: UserController) => {
      *
      */
     app.route("/api/users/me/avatar")
-        .post(passport.authenticate('bearer', {session: false}), userController.setPicture.bind(userController));
+        .post(passport.authenticate('jwt', {session: false}), userController.setPicture.bind(userController));
 
 }

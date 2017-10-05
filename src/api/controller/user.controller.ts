@@ -61,7 +61,7 @@ export default class UserController extends BaseController {
     }
 
     async getUserByIdFromOrganization(req: Request, res: Response) {
-        return UserDataController.getUserById(req.params.orgId, req.params.userId)
+        return UserDataController.getUserByIdFromOrg(req.params.orgId, req.params.userId)
             .then((result) => res.status(StatusCodes.OK).send(result))
             .catch((err) => BaseController.handleError(err, res));
     }

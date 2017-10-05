@@ -115,7 +115,7 @@ export default class CompassManager {
     }
 
     static getAboutUser(orgId: string, userId: string): Promise<any> {
-        return UserDataController.getUserById(orgId, userId, ['_id', 'firstName', 'lastName']);
+        return UserDataController.getUserByIdFromOrg(orgId, userId, ['_id', 'firstName', 'lastName']);
     }
 
     static buildUpNewTodoResponse(ownerId: string, numberOfSentences: number, aboutUserId: string, skills: SkillModel[]): any {

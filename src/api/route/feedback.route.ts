@@ -83,7 +83,7 @@ export default (app: Express, feedbackController: FeedbackController) => {
      *
      */
     app.route("/api/organizations/:orgId/feedbacks")
-        .post(passport.authenticate('bearer', {session: false}), feedbackController.postFeedback.bind(feedbackController));
+        .post(passport.authenticate('jwt', {session: false}), feedbackController.postFeedback.bind(feedbackController));
 
     /**
      * @api {GET} /api/organizations/:orgId/users/me/feedbacks Get user feedbacks
@@ -175,7 +175,7 @@ export default (app: Express, feedbackController: FeedbackController) => {
      *
      */
     app.route("/api/organizations/:orgId/users/me/feedbacks")
-        .get(passport.authenticate('bearer', {session: false}), feedbackController.getFeedbacks.bind(feedbackController));
+        .get(passport.authenticate('jwt', {session: false}), feedbackController.getFeedbacks.bind(feedbackController));
 
 
     /**
@@ -266,7 +266,7 @@ export default (app: Express, feedbackController: FeedbackController) => {
      *
      */
     app.route("/api/organizations/:orgId/users/me/feedbacks/sent")
-        .get(passport.authenticate('bearer', {session: false}), feedbackController.getSentFeedbacks.bind(feedbackController));
+        .get(passport.authenticate('jwt', {session: false}), feedbackController.getSentFeedbacks.bind(feedbackController));
 
     /**
      * @api {GET} /api/organizations/:orgId/users/me/feedbacks/received Get user's incoming feedbacks
@@ -355,5 +355,5 @@ export default (app: Express, feedbackController: FeedbackController) => {
      *
      */
     app.route("/api/organizations/:orgId/users/me/feedbacks/received")
-        .get(passport.authenticate('bearer', {session: false}), feedbackController.getIncomingFeedbacks.bind(feedbackController));
+        .get(passport.authenticate('jwt', {session: false}), feedbackController.getIncomingFeedbacks.bind(feedbackController));
 }

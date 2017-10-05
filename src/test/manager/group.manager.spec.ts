@@ -18,7 +18,7 @@ suite("Group manager", () => {
                 getGroupById: sinon.stub().resolves(getTestGroup())
             };
 
-            const getUserById = sinon.stub(UserDataController, "getUserById").resolves(testUser);
+            const getUserById = sinon.stub(UserDataController, "getUserByIdFromOrg").resolves(testUser);
 
             const groupManager = new GroupManager(groupDataController);
             const result = await groupManager.getAnswerCardUsers(orgId, userId);

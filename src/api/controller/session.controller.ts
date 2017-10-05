@@ -2,6 +2,7 @@ import BaseController from "./base.controller";
 import { Request, Response } from "express";
 import SessionManager from "../manager/session.manager";
 import * as StatusCodes from 'http-status-codes';
+import * as tokenManager from "../../service/auth/token.manager";
 
 export default class SessionController extends BaseController {
 
@@ -15,7 +16,7 @@ export default class SessionController extends BaseController {
     async login(req: any, res: any) {
         return this.sessionManager.login(req.user._id)
             .then((result: any) => {
-                res.cookie('token', result.token, {httpOnly: true});
+                res.cookie('token', result.token, {httpOnly: true, expires: tokenManager.getExpiryAsDate(7)});
                 res.status(StatusCodes.OK).send(result);
             })
             .catch((err: any) => BaseController.handleError(err, res));
