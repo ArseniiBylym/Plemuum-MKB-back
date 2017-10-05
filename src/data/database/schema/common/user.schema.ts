@@ -1,6 +1,7 @@
 import { Connection, Document, Model, Schema } from "mongoose";
 import { getDatabaseManager } from "../../../../factory/database.factory"
 import { User } from "../../../models/common/user.model";
+import { ENVIRONMENTS } from "../../../../../config/config";
 
 const USER_COLLECTION = "users";
 const TOKEN_COLLECTION = "tokens";
@@ -24,7 +25,7 @@ let UserSchema = new Schema({
 
 }, {versionKey: false, collection: USER_COLLECTION});
 
-if (process.env.NODE_ENV == "prod") {
+if (process.env.NODE_ENV == ENVIRONMENTS.production || process.env.NODE_ENV == ENVIRONMENTS.staging) {
     UserSchema.plugin(require('mongoose-bcrypt'));
 } else {
     UserSchema.method("verifyPasswordSync", function (password: string): boolean {
