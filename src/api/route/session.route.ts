@@ -24,7 +24,7 @@ export default (app: Express, sessionController: SessionController, userControll
      * @apiSuccessExample {json} Success-Response:
      * HTTP/1.1 200 OK
      * {
-     *     "token": "8a815f8f8ac2084c3594951368b0abc47749f28323251f293f06a902654b12502cd1feac7efde70bc123969ec5de7e52bfb809d8393b6cd5c5fcba80f1dd3761",
+     *     "token": "eyJhbGciOiJIUzI1NiInR5cCI6IkpXVCJ9.eyJpZCI6IjU5ODQzNDIyMjdjZDM0MDM2M2RjODRjNyIsImFluIjpmYWxzZSwiaWF0IjoxNTA3MjEzNzU3LCJleHAiOjE1MDc4MTg1NTd9.4BfX1OyLZT1YeFZIlW_-wzlfptZhj0MvWLK54rxws",
      *     "orgIds": [
      *         "hipteam"
      *     ]
@@ -52,6 +52,30 @@ export default (app: Express, sessionController: SessionController, userControll
     app.route('/api/session')
         .post(passport.authenticate('local', {session: false}), sessionController.login.bind(sessionController))
         .delete(passport.authenticate('jwt', {session: false}), sessionController.logout.bind(sessionController));
+
+    /**
+     * @api {POST} /api/session/admin Log-in as admin
+     * @apiVersion 2.0.1
+     * @apiName login
+     * @apiGroup Session
+     * @apiDescription Dedicated login endpoint for admins. If the user with the given credentials is not an admin, 403
+     * Forbidden will be sent back.
+     *
+     * @apiParam (Body){String} email       Email address
+     * @apiParam (Body){String} password    Password
+     *
+     * @apiSuccess (Success 200) {String}       token Bearer    token
+     *
+     * @apiSampleRequest /api/session
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     * {
+     *     "token": "eyJhbGciOiJIUzI1NiInR5cCI6IkpXVCJ9.eyJpZCI6IjU5ODQzNDIyMjdjZDM0MDM2M2RjODRjNyIsImFluIjpmYWxzZSwiaWF0IjoxNTA3MjEzNzU3LCJleHAiOjE1MDc4MTg1NTd9.4BfX1OyLZT1YeFZIlW_-wzlfptZhj0MvWLK54rxws",
+     * }
+     */
+    app.route('/api/session/admin')
+        .post(passport.authenticate('local', {session: false}), sessionController.loginAsAdmin.bind(sessionController));
 
     /**
      * @api {POST} /api/session/validtoken Valid token

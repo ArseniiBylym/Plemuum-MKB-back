@@ -16,7 +16,16 @@ export default class SessionController extends BaseController {
     async login(req: any, res: any) {
         return this.sessionManager.login(req.user._id)
             .then((result: any) => {
-                res.cookie('token', result.token, {httpOnly: true, expires: tokenManager.getExpiryAsDate(7)});
+                res.cookie('token', result.token, {expires: tokenManager.getExpiryAsDate(7), httpOnly: true});
+                res.status(StatusCodes.OK).send(result);
+            })
+            .catch((err: any) => BaseController.handleError(err, res));
+    }
+
+    async loginAsAdmin(req: any, res: any) {
+        return this.sessionManager.loginAsAdmin(req.user._id)
+            .then((result: any) => {
+                res.cookie('token', result.token, {expires: tokenManager.getExpiryAsDate(7), httpOnly: true});
                 res.status(StatusCodes.OK).send(result);
             })
             .catch((err: any) => BaseController.handleError(err, res));

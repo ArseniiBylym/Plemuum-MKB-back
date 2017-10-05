@@ -21,7 +21,8 @@ function generateNewTokensForResetPassword() {
 
 function getExpiryAsDate(numberOfDays: number) {
     const expiry = new Date();
-    expiry.setDate(expiry.getDate() + numberOfDays)
+    expiry.setDate(expiry.getDate() + numberOfDays);
+    return expiry;
 }
 
 function getExpiryInSeconds(numberOfDays: number) {
