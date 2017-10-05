@@ -1,7 +1,7 @@
 import * as request from 'supertest';
 import app from "../../app";
 import { assert, expect } from 'chai';
-import { authenticate, fixtureLoader, testUser } from "../mock/fixture.loader";
+import { authenticate, fixtureLoader, testAdmin, testUser } from "../mock/fixture.loader";
 import * as modelValidator from "../../util/model.validator";
 import { getDatabaseManager } from "../../factory/database.factory";
 import config from "../../../config/config";
@@ -21,7 +21,7 @@ suite("Tag request tests", () => {
         const url = `/api/organizations/${orgId}/tags`;
 
         test("POST: should return 201", async () => {
-            const token = await authenticate(testUser);
+            const token = await authenticate(testAdmin);
             const response = await request(app)
                 .post(url)
                 .set(bearerAuthHeader(token))
@@ -31,7 +31,7 @@ suite("Tag request tests", () => {
         });
 
         test("POST: should not be able to post a tag with an already existing title", async () => {
-            const token = await authenticate(testUser);
+            const token = await authenticate(testAdmin);
             const response = await request(app)
                 .post(url)
                 .set(bearerAuthHeader(token))

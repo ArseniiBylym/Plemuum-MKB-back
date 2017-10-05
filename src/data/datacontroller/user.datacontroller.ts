@@ -9,6 +9,7 @@ import { ErrorType, PlenuumError } from "../../util/errorhandler";
 const UserDataController = {
 
     saveUser: function (user: User): Promise<UserModel> {
+        user.passwordUpdatedAt = new Date();
         return new (UserCollection())(user).save()
             .then((savedUser) => UserCollection().findById(savedUser._id).lean().exec() as Promise<UserModel>)
     },
@@ -19,11 +20,12 @@ const UserDataController = {
             .exec() as Promise<UserModel>;
     },
 
-    getUserById: function (userId: string): Promise<UserModel> {
-        return UserCollection()
-            .findById(userId)
-            .lean()
-            .exec() as Promise<UserModel>;
+    getUserById: function (userId: string, showAdmin: boolean = false): Promise<UserModel> {
+        const query = UserCollection().findById(userId);
+        if (showAdmin) {
+            query.select('+admin');
+        }
+        return query.lean().exec() as Promise<UserModel>;
     },
 
     getUserByIdFromOrg: function (orgId: string, userId: string, fields: string[] = []): Promise<UserModel> {
@@ -45,11 +47,8 @@ const UserDataController = {
             .exec() as Promise<UserModel>;
     },
 
-    getUserByIdWithoutOrgId: function (userId: string, showToken: boolean = false, showOrgIds: boolean = false): Promise<UserModel> {
+    getUserByIdWithoutOrgId: function (userId: string, showOrgIds: boolean = false): Promise<UserModel> {
         const queryCmd = UserCollection().findById(userId);
-        if (showToken) {
-            queryCmd.select('+token')
-        }
         if (showOrgIds) {
             queryCmd.select('+orgIds')
         }

@@ -3,7 +3,7 @@ import { assert, expect } from 'chai';
 import * as request from 'supertest';
 import * as TestObjectFactory from "../../util/testobject.factory"
 import * as modelValidator from "../../util/model.validator"
-import { authenticate, fixtureLoader, resetPassword, testUser } from "../mock/fixture.loader"
+import { authenticate, fixtureLoader, resetPassword, testAdmin, testUser } from "../mock/fixture.loader"
 import { getDatabaseManager } from "../../factory/database.factory";
 import config from "../../../config/config";
 import { basicAuthHeader, bearerAuthHeader } from "../util/header.helper";
@@ -30,7 +30,7 @@ suite("User request tests", () => {
         const url = `/api/users`;
 
         test("POST: Correct request response should contain a user and return 201", async () => {
-            const token = await authenticate(testUser);
+            const token = await authenticate(testAdmin);
             const response = await request(app)
                 .post(url)
                 .set(bearerAuthHeader(token))

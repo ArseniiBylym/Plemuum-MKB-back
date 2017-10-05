@@ -1,6 +1,6 @@
 import { getDatabaseManager } from "../../factory/database.factory";
 import config from "../../../config/config";
-import { authenticate, fixtureLoader, testUser } from "../mock/fixture.loader";
+import { authenticate, fixtureLoader, testAdmin, testUser } from "../mock/fixture.loader";
 import * as request from 'supertest';
 import app from "../../app";
 import { basicAuthHeader, bearerAuthHeader } from "../util/header.helper";
@@ -22,7 +22,7 @@ suite("Group request test", () => {
     suite("Create group", () => {
         test("Should be able to create a group, response should contain a group object, return 201", async () => {
             const url = `/api/organizations/${orgId}/groups`;
-            const token = await authenticate(testUser);
+            const token = await authenticate(testAdmin);
             const response = await request(app)
                 .post(url)
                 .send(getTestGroup())
@@ -72,7 +72,7 @@ suite("Group request test", () => {
             const groupID = "599312a81b31d008b6bd2783";
             const url = `/api/organizations/${orgId}/groups/${groupID}/users`;
 
-            const token = await authenticate(testUser);
+            const token = await authenticate(testAdmin);
             const response = await request(app)
                 .post(url)
                 .send({userId: userID})
@@ -88,7 +88,7 @@ suite("Group request test", () => {
             const groupID = "599312a31b31d008b6bd2782";
             const url = `/api/organizations/${orgId}/groups/${groupID}/users`;
 
-            const token = await authenticate(testUser);
+            const token = await authenticate(testAdmin);
             const response = await request(app)
                 .post(url)
                 .send({userId: userID})
@@ -107,7 +107,7 @@ suite("Group request test", () => {
             const groupID = "599312971b31d008b6bd2781";
             const url = `/api/organizations/${orgId}/groups/${groupID}/users`;
 
-            const token = await authenticate(testUser);
+            const token = await authenticate(testAdmin);
             const response = await request(app)
                 .delete(url)
                 .send({userId: userID})
@@ -124,7 +124,7 @@ suite("Group request test", () => {
             const groupID = "599312aa1b31d008b6bd2784";
             const url = `/api/organizations/${orgId}/groups/${groupID}/users`;
 
-            const token = await authenticate(testUser);
+            const token = await authenticate(testAdmin);
             const response = await request(app)
                 .delete(url)
                 .send({userId: userID})
@@ -147,7 +147,7 @@ suite("Group request test", () => {
             };
             const url = `/api/organizations/${orgId}/groups`;
 
-            const token = await authenticate(testUser);
+            const token = await authenticate(testAdmin);
             const response = await request(app)
                 .patch(url)
                 .send(testGroup)
@@ -170,7 +170,7 @@ suite("Group request test", () => {
             };
             const url = `/api/organizations/${orgId}/groups`;
 
-            const token = await authenticate(testUser);
+            const token = await authenticate(testAdmin);
             const response = await request(app)
                 .patch(url)
                 .send(testGroup)

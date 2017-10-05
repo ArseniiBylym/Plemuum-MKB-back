@@ -2,7 +2,6 @@ import { FeedbackCollection } from "../../data/database/schema/organization/feed
 import { RequestCollection } from "../../data/database/schema/organization/request.schema"
 import { TagCollection } from "../../data/database/schema/organization/tag.schema"
 import * as fs from "fs";
-import * as ControllerFactory from '../../factory/controller.factory';
 import { Model } from "mongoose";
 import { OrganizationCollection } from "../../data/database/schema/organization/organization.schema";
 import { GroupCollection } from "../../data/database/schema/organization/group.schema";
@@ -21,6 +20,15 @@ const testUser = {
     "email": "sheryl.grant@hipteam.io",
     "pictureUrl": "https://randomuser.me/api/portraits/women/85.jpg",
     "_id": "5984342227cd340363dc84af",
+};
+
+const testAdmin = {
+    "firstName": "peter",
+    "lastName": "szabo",
+    "email": "peter.szabo@hipteam.io",
+    "pictureUrl": "",
+    "_id": "5984342227cd340363dc84c7",
+    "admin": true
 };
 
 function fixtureLoader(): Promise<any> {
@@ -69,4 +77,4 @@ async function resetPassword(userId: string): Promise<any> {
     return resetPass.token;
 }
 
-export { fixtureLoader, authenticate, resetPassword, testUser }
+export { fixtureLoader, authenticate, resetPassword, testUser, testAdmin }

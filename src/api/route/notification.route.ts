@@ -1,6 +1,7 @@
 import { Express } from "express";
 import * as passport from "passport";
 import NotificationController from "../controller/notification.controller";
+import checkAdmin from '../../middleware/admin.checker';
 
 export default (app: Express, notificationController: NotificationController) => {
 
@@ -131,6 +132,6 @@ export default (app: Express, notificationController: NotificationController) =>
         .delete(passport.authenticate('jwt', {session: false}), notificationController.removeNotificationToken.bind(notificationController));
 
     app.route("/api/notification/send")
-        .post(passport.authenticate('jwt', {session: false}), notificationController.sendNotification.bind(notificationController))
+        .post(passport.authenticate('jwt', {session: false}), checkAdmin(), notificationController.sendNotification.bind(notificationController))
 
 }

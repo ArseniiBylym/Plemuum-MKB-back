@@ -1,6 +1,7 @@
 import TagController from "../controller/tag.controller";
 import { Express } from "express";
 import * as passport from "passport";
+import checkAdmin from '../../middleware/admin.checker';
 
 export default (app: Express, tagController: TagController) => {
 
@@ -134,5 +135,5 @@ export default (app: Express, tagController: TagController) => {
 
     app.route("/api/organizations/:orgId/tags")
         .get(passport.authenticate('jwt', {session: false}), tagController.getTags.bind(tagController))
-        .post(passport.authenticate('jwt', {session: false}), tagController.addNewTag.bind(tagController));
+        .post(passport.authenticate('jwt', {session: false}), checkAdmin(), tagController.addNewTag.bind(tagController));
 }

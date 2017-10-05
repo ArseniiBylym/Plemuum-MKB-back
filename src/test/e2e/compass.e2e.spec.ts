@@ -1,7 +1,7 @@
 import { getDatabaseManager } from "../../factory/database.factory";
 import config from "../../../config/config";
 import * as request from 'supertest';
-import { authenticate, fixtureLoader, testUser } from "../mock/fixture.loader";
+import { authenticate, fixtureLoader, testAdmin, testUser } from "../mock/fixture.loader";
 import app from "../../app";
 import { bearerAuthHeader } from "../util/header.helper";
 import { expect, should } from 'chai';
@@ -186,7 +186,7 @@ suite("Compass request test", () => {
         };
 
         test("Should be able to create a new skill, it should return 201 and the created skill object", async () => {
-            const token = await authenticate(testUser);
+            const token = await authenticate(testAdmin);
             const response = await request(app)
                 .patch(url)
                 .set(bearerAuthHeader(token))
@@ -207,7 +207,7 @@ suite("Compass request test", () => {
         });
 
         test("Should get and error with status 400 if request body is empty", async () => {
-            const token = await authenticate(testUser);
+            const token = await authenticate(testAdmin);
             const response = await request(app)
                 .patch(url)
                 .set(bearerAuthHeader(token))
@@ -224,7 +224,7 @@ suite("Compass request test", () => {
                 sentences: [],
                 inactiveSentences: []
             };
-            const token = await authenticate(testUser);
+            const token = await authenticate(testAdmin);
             const response = await request(app)
                 .patch(url)
                 .set(bearerAuthHeader(token))
@@ -260,7 +260,7 @@ suite("Compass request test", () => {
                     },
                 ]
             };
-            const token = await authenticate(testUser);
+            const token = await authenticate(testAdmin);
             const response = await request(app)
                 .patch(url)
                 .set(bearerAuthHeader(token))

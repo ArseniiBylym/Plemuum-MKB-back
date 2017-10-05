@@ -1,6 +1,7 @@
 import { Express } from 'express';
 import UserController from "../controller/user.controller";
 import * as passport from 'passport';
+import checkAdmin from '../../middleware/admin.checker';
 
 /**
  * @apiDefine user_list_data
@@ -71,8 +72,6 @@ export default (app: Express, userController: UserController) => {
      *     ]
      * }
      */
-    app.route("/api/users")
-        .post(passport.authenticate('jwt', {session: false}), userController.createNewUser.bind(userController));
 
     /**
      * @api {PATCH} /api/users User - Modify existing user
@@ -128,7 +127,8 @@ export default (app: Express, userController: UserController) => {
      * }
      */
     app.route("/api/users")
-        .patch(passport.authenticate('jwt', {session: false}), userController.modifyUser.bind(userController));
+        .post(passport.authenticate('jwt', {session: false}), checkAdmin(), userController.createNewUser.bind(userController))
+        .patch(passport.authenticate('jwt', {session: false}), checkAdmin(), userController.modifyUser.bind(userController));
 
     /**
      * @api {GET} /api/organizations/:orgId/users  Get organization users
@@ -354,5 +354,4 @@ export default (app: Express, userController: UserController) => {
      */
     app.route("/api/users/me/avatar")
         .post(passport.authenticate('jwt', {session: false}), userController.setPicture.bind(userController));
-
 }

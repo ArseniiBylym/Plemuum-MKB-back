@@ -5,8 +5,9 @@ import { ErrorType, PlenuumError } from "../../util/errorhandler";
 export default class SessionManager {
 
     async login(userId: string) {
-        const token = tokenManager.generateNewToken(userId, true);
-        const user = await UserDataController.getUserByIdWithoutOrgId(userId, true, true);
+        const isAdmin = (await UserDataController.getUserById(userId, true)).admin;
+        const token = tokenManager.generateNewToken(userId, isAdmin);
+        const user = await UserDataController.getUserByIdWithoutOrgId(userId, true);
         return {
             token: token,
             orgIds: user.orgIds

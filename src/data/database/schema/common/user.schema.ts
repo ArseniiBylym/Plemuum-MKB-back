@@ -4,23 +4,17 @@ import { User } from "../../../models/common/user.model";
 import { ENVIRONMENTS } from "../../../../../config/config";
 
 const USER_COLLECTION = "users";
-const TOKEN_COLLECTION = "tokens";
 
-const TokenSchema = new Schema({
-    userId: {required: true, type: String},
-    token: {required: true, type: String},
-    token_expiry: {required: true, type: Date},
-    issued_at: {required: true, type: Date}
-}, {_id: false, collection: TOKEN_COLLECTION});
-
+// noinspection ReservedWordAsName
 let UserSchema = new Schema({
     firstName: {required: true, type: String, index: true},
     lastName: {required: true, type: String, index: true},
     email: {required: true, type: String, index: {unique: true}},
-    orgIds: {required: true, type: [String], select: false},
-    password: {required: true, type: String, select: false},
     pictureUrl: {required: false, type: String},
-    token: {required: false, type: TokenSchema, select: false},
+    orgIds: {required: true, type: [String], select: false},
+    admin: {required: true, type: Boolean, select: false, default: false},
+    password: {required: true, type: String, select: false},
+    passwordUpdatedAt: {required: true, type: Date, select: false, default: Date.now},
     notificationToken: {required: false, type: [String], select: false}
 
 }, {versionKey: false, collection: USER_COLLECTION});

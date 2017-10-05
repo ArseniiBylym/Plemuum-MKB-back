@@ -1,6 +1,7 @@
 import CompassController from "../controller/compass.controller";
 import { Express } from "express-serve-static-core";
 import * as passport from 'passport';
+import checkAdmin from '../../middleware/admin.checker';
 
 /**
  * @apiDefine dates
@@ -206,25 +207,7 @@ export default (app: Express, compassController: CompassController) => {
         .get(passport.authenticate('jwt', {session: false}), compassController.getStatistics.bind(compassController));
 
     /**
-     * @api {POST} /api/organizations/:orgId/skills Skill - Create Skill
-     * @apiVersion 2.0.1
-     * @apiName create skill
-     * @apiGroup Admin
-     * @apiDescription Create a new skill object with at least one active sentence
-     *
-     * @apiHeader {String} Authorization Basic username:password
-     *
-     * @apiParam (Body) {String}       name                The name of the skill
-     * @apiParam (Body) {Sentence[]}   sentences           Active sentences. You need to add at least one.
-     * @apiParam (Body) {Sentence[]}   inactivesentences   Inactive sentences. Should be part of the object, but can be empty.
-     *
-     * @apiSuccess (Success 200) {String}           name                The name of the skill
-     * @apiSuccess (Success 200) {Sentence[]}       sentences           Active sentences. You need to add at least one.
-     * @apiSuccess (Success 200) {Sentence[]}       inactivesentences   Inactive sentences. Should be part of the object, but can be empty.
-     */
-
-    /**
-     * @api {PATCH} /api/organizations/:orgId/skills Skill - Update Skill
+     * @api {PATCH} /api/organizations/:orgId/skills Skill - Create/Update Skill
      * @apiVersion 2.0.1
      * @apiName update skill
      * @apiGroup Admin
@@ -232,8 +215,8 @@ export default (app: Express, compassController: CompassController) => {
      *
      * @apiHeader {String} Authorization Basic username:password
      *
-     * @apiParam (Body) {String}       _id The identifier of the skill
-     * @apiParam (Body) {String}       name The name of the skill
+     * @apiParam (Body) {String}       _id                         The identifier of the skill. If this value is missing then a new skill will be created
+     * @apiParam (Body) {String}       name                        The name of the skill
      * @apiParam (Body) {Sentence[]}   sentences                   Active sentences. You need to add at least one.
      * @apiParam (Body) {String}       sentences._id               Id of the sentence.
      * @apiParam (Body) {String}       sentences.message           Message of the sentence.
@@ -284,5 +267,5 @@ export default (app: Express, compassController: CompassController) => {
      */
     app.route("/api/organizations/:orgId/skills")
         .get(passport.authenticate('jwt', {session: false}), compassController.getSkills.bind(compassController))
-        .patch(passport.authenticate('jwt', {session: false}), compassController.createOrUpdateSkill.bind(compassController));
+        .patch(passport.authenticate('jwt', {session: false}), checkAdmin(), compassController.createOrUpdateSkill.bind(compassController));
 }

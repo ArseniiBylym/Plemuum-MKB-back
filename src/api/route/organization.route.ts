@@ -1,6 +1,7 @@
 import { Express } from "express";
 import OrganizationController from "../controller/organization.controller";
 import * as passport from 'passport';
+import checkAdmin from '../../middleware/admin.checker';
 
 export default (app: Express, organizationController: OrganizationController) => {
     /**
@@ -74,5 +75,5 @@ export default (app: Express, organizationController: OrganizationController) =>
      * }
      */
     app.route('/api/organizations')
-        .post(passport.authenticate('jwt', {session: false}), organizationController.createOrganization.bind(organizationController));
+        .post(passport.authenticate('jwt', {session: false}), checkAdmin(), organizationController.createOrganization.bind(organizationController));
 }

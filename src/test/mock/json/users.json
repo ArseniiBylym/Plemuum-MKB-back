@@ -6,7 +6,6 @@
     "password": "asd1234",
     "pictureUrl": "https://randomuser.me/api/portraits/women/74.jpg",
     "_id": "5984342227cd340363dc84a9",
-    "tokens": [],
     "orgIds": [
       "hipteam"
     ]
@@ -21,7 +20,8 @@
     "tokens": [],
     "orgIds": [
       "hipteam"
-    ]
+    ],
+    "admin": true
   },
   {
     "firstName": "bill",

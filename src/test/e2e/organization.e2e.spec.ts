@@ -3,7 +3,7 @@ import app from "../../app";
 import { bearerAuthHeader } from "../util/header.helper";
 import { getTestOrganization } from "../../util/testobject.factory";
 import { getDatabaseManager } from "../../factory/database.factory";
-import { authenticate, fixtureLoader, testUser } from "../mock/fixture.loader";
+import { authenticate, fixtureLoader, testAdmin, testUser } from "../mock/fixture.loader";
 import config from "../../../config/config";
 import { validateOrganization } from "../../util/model.validator";
 import { expect } from 'chai';
@@ -29,7 +29,7 @@ suite("Organization request tests", () => {
     suite("Create organization", () => {
         const url = "/api/organizations";
         test("Register new organization, should return 201", async () => {
-            const token = await authenticate(testUser);
+            const token = await authenticate(testAdmin);
             const response = await request(app)
                 .post(url)
                 .set(bearerAuthHeader(token))
@@ -42,7 +42,7 @@ suite("Organization request tests", () => {
             const newOrg = getTestOrganization();
             newOrg.dbName = "hipteam"; // this organization is part of the mocks
 
-            const token = await authenticate(testUser);
+            const token = await authenticate(testAdmin);
             const response = await request(app)
                 .post(url)
                 .set(bearerAuthHeader(token))

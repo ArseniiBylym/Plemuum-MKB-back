@@ -45,6 +45,9 @@ function basicAuth() {
 function jwtAuth() {
     return new JwtStrategy(jwtOptions, async (payload, next) => {
         const user = await UserDataController.getUserById(payload.id);
+        if (user) {
+            user.admin = payload.admin;
+        }
         next(null, user ? user : false);
     });
 }
