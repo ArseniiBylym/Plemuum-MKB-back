@@ -19,7 +19,7 @@ export default class SessionController extends BaseController {
                 res.cookie('token', result.token, {expires: tokenManager.getExpiryAsDate(7), httpOnly: true});
                 res.status(StatusCodes.OK).send(result);
             })
-            .catch((err: any) => BaseController.handleError(err, res));
+            .catch((err: any) => BaseController.handleError(err, req, res));
     }
 
     async loginAsAdmin(req: any, res: any) {

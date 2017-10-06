@@ -6,7 +6,7 @@ import { testUser } from "../mock/fixture.loader"
 import { getRequestObject } from "../util/testutil";
 import NotificationController from "../../api/controller/notification.controller";
 
-suite.only("NotificationController", () => {
+suite("NotificationController", () => {
     const mockUser: User = TestObjectFactory.getJohnDoe();
 
     suite("setNotificationDevice", () => {
