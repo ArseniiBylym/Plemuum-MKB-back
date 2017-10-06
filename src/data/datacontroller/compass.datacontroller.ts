@@ -51,15 +51,19 @@ const CompassDataController = {
     },
 
     createOrUpdateSkill: (orgId: string, skill: any): Promise<any> => {
-        return skill._id
-            ? SkillCollection(orgId).update({_id: skill._id}, skill).exec()
+        if (skill._id) {
+            const skillId = skill._id;
+            delete skill._id;
+            return SkillCollection(orgId).update({_id: skillId}, skill).exec()
                 .then((result) => {
                     if (result.nModified === 0) {
                         throw new Error('Group was not found');
                     }
-                    return SkillCollection(orgId).findById(skill._id).lean().exec();
-                })
-            : new (SkillCollection(orgId))(skill).save()
+                    return SkillCollection(orgId).findById(skillId).lean().exec();
+                });
+        } else {
+            return new (SkillCollection(orgId))(skill).save();
+        }
     }
 };
 

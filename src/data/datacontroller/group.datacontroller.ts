@@ -56,7 +56,8 @@ const getGroupDataController = (): GroupDataController => {
                 });
         },
 
-        updateGroup: (orgId: string, groupId: string, group: Group): Promise<any> => {
+        updateGroup: (orgId: string, groupId: string, group: GroupModel): Promise<any> => {
+            delete group._id;
             return GroupCollection(orgId).update({_id: groupId}, group).exec()
                 .then((result) => {
                     if (result.nModified === 0) {

@@ -16,7 +16,6 @@ const getOrganizationDataController = (): OrganizationDataController => {
             return new (OrganizationCollection())(organization).save();
         }
     }
-
 };
 
 export { getOrganizationDataController }
