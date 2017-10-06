@@ -354,4 +354,9 @@ export default (app: Express, userController: UserController) => {
      */
     app.route("/api/users/me/avatar")
         .post(passport.authenticate('jwt', {session: false}), userController.setPicture.bind(userController));
+
+
+    app.route("/register/user")
+        .get(passport.authenticate('basic', { session: false }), userController.showRegistrationForm.bind(userController))
+        .post(passport.authenticate('basic', { session: false }), userController.createNewUser.bind(userController))
 }

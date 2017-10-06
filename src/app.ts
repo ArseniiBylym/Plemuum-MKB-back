@@ -45,7 +45,11 @@ const app = (): Express => {
     app.use(passport.session());
     app.use(validator());
 
-    app.use((req, res, next) => {
+    // view engine setup
+    app.set("views", path.join(__dirname, "./view"));
+    app.set("view engine", "jade");
+
+    app.use('/api', (req, res, next) => {
         if (req.cookies.token) {
             req.headers.authorization = `Bearer ${req.cookies.token}`;
         }
@@ -54,7 +58,7 @@ const app = (): Express => {
 
     passportInit();
 
-    app.use("/api/organizations/:orgId",OrganizationChecker(getOrganizationDataController()));
+    app.use("/api/organizations/:orgId", OrganizationChecker(getOrganizationDataController()));
 
     Routes(app);
 

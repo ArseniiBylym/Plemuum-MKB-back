@@ -13,7 +13,6 @@ let UserSchema = new Schema({
     pictureUrl: {required: false, type: String},
     orgIds: {required: true, type: [String], select: false},
     admin: {required: true, type: Boolean, select: false, default: false},
-    password: {required: true, type: String, select: false},
     passwordUpdatedAt: {required: true, type: Date, select: false, default: Date.now},
     notificationToken: {required: false, type: [String], select: false}
 
