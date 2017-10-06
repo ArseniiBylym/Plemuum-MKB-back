@@ -1,5 +1,6 @@
 import { formError } from '../../util/errorhandler';
 import * as StatusCodes from 'http-status-codes';
+import logger from "../../util/logger";
 
 class BaseController {
 
@@ -7,8 +8,18 @@ class BaseController {
         return err.getStatusCode ? err.getStatusCode() : StatusCodes.INTERNAL_SERVER_ERROR
     }
 
-    protected static handleError(error: any, res: any) {
-        res.status(this.getErrorStatus(error)).send(formError(error))
+    protected static handleError(error: any, req: any, res: any) {
+        const statusCode = this.getErrorStatus(error);
+        if (statusCode >= 500) {
+            logger.error({
+                error: error,
+                userId: req.user._id,
+                requestParams: req.params,
+                requestBody: req.body,
+                timeStamp: new Date()
+            });
+        }
+        res.status(statusCode).send(formError(error))
     }
 }
 

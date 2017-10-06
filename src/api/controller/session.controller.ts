@@ -18,7 +18,7 @@ export default class SessionController extends BaseController {
                 res.cookie('token', result.token, {httpOnly: true});
                 res.status(StatusCodes.OK).send(result);
             })
-            .catch((err: any) => BaseController.handleError(err, res));
+            .catch((err: any) => BaseController.handleError(err, req, res));
     }
 
     async logout(req: any, res: Response) {
@@ -29,12 +29,12 @@ export default class SessionController extends BaseController {
                 res.cookie('token', "deleted", {expires: expiryDate, httpOnly: true});
                 res.status(StatusCodes.OK).send(result);
             })
-            .catch((err: any) => BaseController.handleError(err, res));
+            .catch((err: any) => BaseController.handleError(err, req, res));
     }
 
     async checkToken(req: Request, res: Response) {
         return this.sessionManager.checkToken(req.body.token)
             .then((result: any) => res.status(StatusCodes.OK).send(result))
-            .catch((err: any) => BaseController.handleError(err, res));
+            .catch((err: any) => BaseController.handleError(err, req, res));
     }
 }

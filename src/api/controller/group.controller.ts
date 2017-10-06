@@ -16,7 +16,7 @@ export default class GroupController extends BaseController {
     async getGroups(req: any, res: any) {
         this.groupManager.getGroups(req.params.orgId)
             .then((groups: any[]) => res.status(StatusCodes.CREATED).send(groups))
-            .catch((err: any) => BaseController.handleError(err, res));
+            .catch((err: any) => BaseController.handleError(err, req, res));
     };
 
     async createGroup(req: any, res: any) {
@@ -28,19 +28,19 @@ export default class GroupController extends BaseController {
 
         return this.groupManager.createGroup(req.params.orgId, req.body)
             .then((group: GroupModel) => res.status(StatusCodes.CREATED).send(group))
-            .catch((err: any) => BaseController.handleError(err, res));
+            .catch((err: any) => BaseController.handleError(err, req, res));
     }
 
     async getGroupById(req: any, res: any) {
         return this.groupManager.getGroupById(req.params.orgId, req.params.groupId)
             .then((group: GroupModel) => res.status(StatusCodes.OK).send(group))
-            .catch((err: any) => BaseController.handleError(err, res));
+            .catch((err: any) => BaseController.handleError(err, req, res));
     }
 
     async getUserGroups(req: any, res: any) {
         return this.groupManager.getUserGroups(req.params.orgId, req.user._id)
             .then((groups: GroupModel[]) => res.status(StatusCodes.OK).send(groups))
-            .catch((err: any) => BaseController.handleError(err, res));
+            .catch((err: any) => BaseController.handleError(err, req, res));
     }
 
     async putUserIntoGroup(req: any, res: any) {
@@ -52,7 +52,7 @@ export default class GroupController extends BaseController {
 
         return this.groupManager.putUserIntoGroup(req.params.orgId, req.body.userId, req.params.groupId)
             .then((result: any) => res.status(StatusCodes.OK).send(result))
-            .catch((err: any) => BaseController.handleError(err, res));
+            .catch((err: any) => BaseController.handleError(err, req, res));
     }
 
     async removeUserFromGroup(req: any, res: any) {
@@ -64,7 +64,7 @@ export default class GroupController extends BaseController {
 
         return this.groupManager.removeUserFromGroup(req.params.orgId, req.body.userId, req.params.groupId)
             .then((result: any) => res.status(StatusCodes.OK).send(result))
-            .catch((err: any) => BaseController.handleError(err, res));
+            .catch((err: any) => BaseController.handleError(err, req, res));
     }
 
     async updateGroup(req: any, res: any) {
@@ -77,12 +77,12 @@ export default class GroupController extends BaseController {
 
         return this.groupManager.updateGroup(req.params.orgId, req.body)
             .then((result: any) => res.status(StatusCodes.OK).send(result))
-            .catch((err: any) => BaseController.handleError(err, res));
+            .catch((err: any) => BaseController.handleError(err, req, res));
     }
 
     async getAnswerCardUsers(req: any, res: any) {
         return this.groupManager.getAnswerCardUsers(req.params.orgId, req.user._id)
             .then((result: any) => res.status(StatusCodes.OK).send(result))
-            .catch((err: any) => BaseController.handleError(err, res));
+            .catch((err: any) => BaseController.handleError(err, req, res));
     }
 }
