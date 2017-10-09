@@ -20,4 +20,8 @@ export default class OrganizationManager {
                 ErrorType.VALIDATION)
         }
     }
+
+    async getOrganizations() {
+        return this.organizationDataController.getOrganizations();
+    }
 }

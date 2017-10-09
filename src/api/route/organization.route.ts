@@ -74,6 +74,46 @@ export default (app: Express, organizationController: OrganizationController) =>
      *     "updatedAt": "2017-09-27T10:54:53.822Z",
      * }
      */
+
+    /**
+     * @api {GET} /api/organization Organization - Get organizations
+     * @apiVersion 2.0.1
+     * @apiName get organizations
+     * @apiGroup Admin
+     *
+     * @apiSuccess (Success 200) {Organization[]} organizations Array of organizations
+     * @apiSuccess (Success 200) {String} organizations.name The name of the organization created.
+     * @apiSuccess (Success 200) {Number} organizations.todoSentenceNumber The number of sentences to be used by the organization created.
+     * @apiSuccess (Success 200) {Number} organizations.compassGenerationTime Time between to COMPASS generations.
+     * @apiSuccess (Success 200) {String} organizations.dbName The database name of the organization created.
+     * @apiSuccess (Success 200) {Date} organizations.createdAt The creation date of the organization created.
+     * @apiSuccess (Success 200) {Date} organizations.updatedAt The update date of the organization created.
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     * [
+     *     {
+     *         "_id": "598b04c182664715590b7499",
+     *         "updatedAt": "2017-10-09T12:36:55.760Z",
+     *         "createdAt": "2017-10-09T12:36:55.760Z",
+     *         "name": "hipteam",
+     *         "dbName": "hipteam",
+     *         "todoSentenceNumber": 3,
+     *         "compassGenerationTime": 3
+     *     },
+     *     {
+     *         "_id": "59db7b8b9968862ecce23612",
+     *         "updatedAt": "2017-10-09T13:37:15.542Z",
+     *         "createdAt": "2017-10-09T13:37:15.542Z",
+     *         "name": "Super turbo ninja killers",
+     *         "dbName": "super_turbo_ninja_killers",
+     *         "todoSentenceNumber": 3,
+     *         "compassGenerationTime": 60
+     *     }
+     * ]
+     *
+     */
     app.route('/api/organizations')
+        .get(passport.authenticate('jwt', {session: false}), checkAdmin(), organizationController.getOrganizations.bind(organizationController))
         .post(passport.authenticate('jwt', {session: false}), checkAdmin(), organizationController.createOrganization.bind(organizationController));
 }

@@ -26,4 +26,10 @@ export default class OrganizationController extends BaseController {
             .then((savedOrganization) => res.status(StatusCodes.CREATED).send(savedOrganization))
             .catch((err) => BaseController.handleError(err, req, res));
     }
+
+    async getOrganizations(req: any, res: any) {
+        return this.organizationManager.getOrganizations()
+            .then((result) => res.status(StatusCodes.OK).send(result))
+            .catch((err) => BaseController.handleError(err, req, res));
+    }
 }
