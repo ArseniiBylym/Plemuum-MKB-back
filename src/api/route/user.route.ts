@@ -85,7 +85,6 @@ export default (app: Express, userController: UserController) => {
      * @apiParam (Body){String} firstName First name of user
      * @apiParam (Body){String} lastName Last name of user
      * @apiParam (Body){String} email Email address
-     * @apiParam (Body){String} orgId Organization ID
      * @apiParam (Body){String} [pictureUrl] URL for the user profile picture
      *
      * @apiSuccessExample {json} Success-Response:
