@@ -17,17 +17,13 @@ export default (app: Express, sessionController: SessionController, userControll
      * @apiParam (Body){String} password    Password
      *
      * @apiSuccess (Success 200) {String}       token Bearer    token
-     * @apiSuccess (Success 200) {String[]}     orgIds          Array of organization IDs the user participates in
      *
      * @apiSampleRequest /api/session
      *
      * @apiSuccessExample {json} Success-Response:
      * HTTP/1.1 200 OK
      * {
-     *     "token": "eyJhbGciOiJIUzI1NiInR5cCI6IkpXVCJ9.eyJpZCI6IjU5ODQzNDIyMjdjZDM0MDM2M2RjODRjNyIsImFluIjpmYWxzZSwiaWF0IjoxNTA3MjEzNzU3LCJleHAiOjE1MDc4MTg1NTd9.4BfX1OyLZT1YeFZIlW_-wzlfptZhj0MvWLK54rxws",
-     *     "orgIds": [
-     *         "hipteam"
-     *     ]
+     *     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU5ODQzNDIyMjdjZDM0MDM2M2RjODRjNyIsImFkbWluIjp0cnVlLCJpYXQiOjE1MDc1ODAxNjcsImV4cCI6MTUwODE4NDk2N30.slOz1lxOSfmUBIdQtagBulXkvtNrplodDdTq_fjm2zA"
      * }
      */
 

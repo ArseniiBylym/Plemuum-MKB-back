@@ -33,7 +33,6 @@ function validateRequest(request: any) {
 
 function validateLoginResponse(loginResponse: any) {
     expect(loginResponse).have.property("token");
-    expect(loginResponse).have.property("orgIds");
 }
 
 function validateTagResponse(tagResponse: any) {

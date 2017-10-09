@@ -7,10 +7,8 @@ export default class SessionManager {
     async login(userId: string) {
         const isAdmin = (await UserDataController.getUserById(userId, false, true)).admin;
         const token = tokenManager.generateNewToken(userId, isAdmin);
-        const user = await UserDataController.getUserByIdWithoutOrgId(userId, true);
         return {
             token: token,
-            orgIds: user.orgIds
         }
     }
 
