@@ -9,7 +9,7 @@ export let OrganizationSchema = new Schema({
     name: {required: true, type: String, index: true},
     dbName: {required: true, type: String, index: true}, //Maybe instead of this, use the database name as the ID of the organization
     todoSentenceNumber: {required: true, type: Number, index: true},
-    compassGenerationTime: {required: true, type: Number, index: true}
+    compassGenerationTime: {required: true, type: String, index: true}
 }, {
     versionKey: false,
     timestamps: true,

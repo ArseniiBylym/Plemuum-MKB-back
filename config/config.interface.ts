@@ -8,4 +8,5 @@ export interface Config {
     plenuumBotPass: string;
     debugMode: boolean;
     firebaseConfig: FirebaseConfig;
+    workerTime: string;
 }

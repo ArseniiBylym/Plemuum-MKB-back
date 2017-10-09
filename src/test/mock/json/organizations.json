@@ -3,7 +3,7 @@
     "name": "hipteam",
     "dbName": "hipteam",
     "todoSentenceNumber": 3,
-    "compassGenerationTime": 3,
+    "compassGenerationTime": "* * * */1 * *",
     "_id": "598b04c182664715590b7499"
   }
 ]

@@ -196,7 +196,7 @@ suite("CompassManager tests", () => {
                 name: "Name",
                 dbName: "NAME",
                 todoSentenceNumber: 3,
-                compassGenerationTime: 3
+                compassGenerationTime: "* */10 * * * *"
             };
             try {
                 const result = CompassManager.checkOrganization(organization);
