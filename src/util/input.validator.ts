@@ -1,5 +1,6 @@
 import * as expressValidator from 'express-validator';
 import * as StatusCodes from 'http-status-codes';
+import logger from "./logger";
 
 const validateCompassAnswer = (input: any): boolean => {
     return true;
@@ -32,6 +33,14 @@ const validate = async (req: any, res: any) => {
     if (!validationResults.isEmpty()) {
         res.status(StatusCodes.BAD_REQUEST);
         res.send({error: "Validation error", hint: validationResults.array()});
+        logger.error({
+            error: "Validation error",
+            userId: req.user._id,
+            requestParams: req.params,
+            requestBody: req.body,
+            hint: validationResults.array(),
+            timeStamp: new Date()
+        });
         return false;
     }
     return true;

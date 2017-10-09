@@ -4,7 +4,7 @@ import * as basicStrategy from 'passport-http'
 import { Strategy as JwtStrategy } from 'passport-jwt'
 import config, { jwtOptions } from "../../../config/config";
 import UserDataController from "../../data/datacontroller/user.datacontroller";
-import { UserModel } from "../../data/database/schema/common/user.schema";
+import { UserCollection, UserModel } from "../../data/database/schema/common/user.schema";
 
 function passportInit() {
     passport.use(jwtAuth());
@@ -24,7 +24,7 @@ function localAuth() {
         usernameField: 'email',
         passwordField: 'password'
     }, (email: string, password: string, done: Function): void => {
-        UserDataController.getUserByEmail(email)
+        UserCollection().findOne({email: email}, {password: 1})
             .then((user: UserModel) => {
                 return !user
                     ? done(null, false)

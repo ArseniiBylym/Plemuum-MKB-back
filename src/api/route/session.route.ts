@@ -56,7 +56,7 @@ export default (app: Express, sessionController: SessionController, userControll
     /**
      * @api {POST} /api/session/admin Log-in as admin
      * @apiVersion 2.0.1
-     * @apiName login
+     * @apiName admin-login
      * @apiGroup Session
      * @apiDescription Dedicated login endpoint for admins. If the user with the given credentials is not an admin, 403
      * Forbidden will be sent back.
