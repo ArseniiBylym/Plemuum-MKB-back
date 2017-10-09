@@ -33,14 +33,18 @@ const validate = async (req: any, res: any) => {
     if (!validationResults.isEmpty()) {
         res.status(StatusCodes.BAD_REQUEST);
         res.send({error: "Validation error", hint: validationResults.array()});
-        logger.error({
+        const error = {
             error: "Validation error",
-            userId: req.user._id,
+            userId: undefined,
             requestParams: req.params,
             requestBody: req.body,
             hint: validationResults.array(),
             timeStamp: new Date()
-        });
+        };
+        if (req.user) {
+            error.userId = req.user._id;
+        }
+        logger.error(error);
         return false;
     }
     return true;

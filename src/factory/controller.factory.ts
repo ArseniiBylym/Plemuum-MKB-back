@@ -4,25 +4,9 @@ import TagController from "../api/controller/tag.controller";
 import OrganizationController from "../api/controller/organization.controller";
 import RequestController from "../api/controller/request.controller";
 import SessionController from "../api/controller/session.controller";
-import EmailService from "../service/email/mail.service";
-import FileTransferService from "../service/file/filetransfer.service";
 import GroupController from "../api/controller/group.controller";
-import { requestDataController } from "../data/datacontroller/request.datacontroller";
-import { tagDataController } from "../data/datacontroller/tag.datacontroller";
-import { getGroupDataController } from "../data/datacontroller/group.datacontroller";
-import UserManager from "../api/manager/user.manager";
-import GroupManager from "../api/manager/group.manager";
-import OrganizationManager from "../api/manager/organization.manager";
-import { getOrganizationDataController } from "../data/datacontroller/organization.datacontroller";
-import RequestManager from "../api/manager/request.manager";
-import SessionManager from "../api/manager/session.manager";
-import TagManager from "../api/manager/tag.manager";
-import FirebaseStorageManager from "../service/file/firebase.storage.manager";
 import NotificationController from "../api/controller/notification.controller";
-import NotificationManager from "../api/manager/notification.manager";
-import FirebaseNotification from "../service/notification/firebase.notification";
-import config from "../../config/config";
-import FeedbackManager from "../api/manager/feedback.manager";
+import * as ManagerFactory from "./manager.factory";
 
 let userController: UserController;
 let feedbackController: FeedbackController;
@@ -36,28 +20,28 @@ let notificationController: NotificationController;
 /* #########################     PUBLIC      ########################## */
 
 const getUserController = (): UserController => getController(userController, UserController,
-    new UserManager(new EmailService(), new FileTransferService(new FirebaseStorageManager()))
-);
+    ManagerFactory.getUserManager());
 
 const getFeedbackController = (): FeedbackController => getController(feedbackController, FeedbackController,
-    new FeedbackManager());
+    ManagerFactory.getFeedbackManager());
 
 const getTagController = (): TagController => getController(tagController, TagController,
-    new TagManager(tagDataController));
+    ManagerFactory.getTagManager());
 
 const getOrganizationController = (): OrganizationController =>
-    getController(organizationController, OrganizationController, new OrganizationManager(getOrganizationDataController()));
+    getController(organizationController, OrganizationController, ManagerFactory.getOrganizationManager());
 
 const getRequestController = (): RequestController => getController(requestController, RequestController,
-    new RequestManager(requestDataController));
+    ManagerFactory.getRequestManager());
 
-const getSessionController = (): SessionController => getController(sessionController, SessionController, new SessionManager());
+const getSessionController = (): SessionController => getController(sessionController, SessionController,
+    ManagerFactory.getSessionManager());
 
 const getGroupController = (): GroupController => getController(groupController, GroupController,
-    new GroupManager(getGroupDataController()));
+    ManagerFactory.getGroupManager());
 
 const getNotificationController = (): NotificationController => getController(notificationController, NotificationController,
-    new NotificationManager(new FirebaseNotification(require(`../../res/${config.firebaseConfig.keyFileName}`), config.firebaseConfig.databaseUrl)));
+    ManagerFactory.getNotificationManager());
 
 /* #########################     PRIVATE      ########################## */
 

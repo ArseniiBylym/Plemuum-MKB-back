@@ -27,6 +27,9 @@ const stagingConfig: Config = {
             baseUrl: 'http://storage.googleapis.com/plenuumbackend.appspot.com/',
             databaseUrl: 'https://plenuumbackend.firebaseio.com/'
         };
+    },
+    get workerTime() {
+        return "0 0 8 * * *"; //Every day at 08:00 AM
     }
 };
 

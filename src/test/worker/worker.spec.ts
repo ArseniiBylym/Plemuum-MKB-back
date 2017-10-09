@@ -3,6 +3,7 @@ import * as sinon from "sinon";
 import * as Sinon from "sinon";
 import { expect } from 'chai';
 import CompassManager from "../../api/manager/compass.manager";
+import * as ManagerFactory from "../../factory/manager.factory";
 
 suite("Worker test cases", () => {
 
@@ -34,7 +35,7 @@ suite("Worker test cases", () => {
             const organizationDataController: any = {
                 getOrganizationByDbName: getOrganizationByDbName,
                 getOrganizations: sinon.stub().resolves(mockListOrg) };
-            const compassManager = new CompassManager(groupDataController, organizationDataController);
+            const compassManager = ManagerFactory.getCompassManager();
 
             const autoGenerateTodoStub: Sinon.SinonSpy = sinon.stub(compassManager, "autoGenerateTodo")
                  .resolves("mock success response");
@@ -55,7 +56,7 @@ suite("Worker test cases", () => {
             const organizationDataController: any = {
                 getOrganizationByDbName: getOrganizationByDbName,
                 getOrganizations: sinon.stub().rejects("mock error response") };
-            const compassManager = new CompassManager(groupDataController, organizationDataController);
+            const compassManager = ManagerFactory.getCompassManager();
 
             const autoGenerateTodoStub: Sinon.SinonSpy = sinon.stub(compassManager, "autoGenerateTodo")
                 .rejects("mock error response");
