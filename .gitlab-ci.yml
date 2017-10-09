@@ -37,7 +37,6 @@ testing:
     - branches
   except:
     - master
-    - develop
 
 send_to_staging:
   stage: deploy
