@@ -20,10 +20,13 @@ const UserDataController = {
             .exec() as Promise<UserModel>;
     },
 
-    getUserById: function (userId: string, showAdmin: boolean = false): Promise<UserModel> {
+    getUserById: function (userId: string, showOrganizations: boolean = false, showAdmin: boolean = false): Promise<UserModel> {
         const query = UserCollection().findById(userId);
         if (showAdmin) {
             query.select('+admin');
+        }
+        if(showOrganizations) {
+            query.select('+orgIds');
         }
         return query.lean().exec() as Promise<UserModel>;
     },

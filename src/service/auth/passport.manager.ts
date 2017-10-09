@@ -13,7 +13,7 @@ function passportInit() {
 
     passport.serializeUser((user: UserModel, done: Function) => done(null, user._id));
     passport.deserializeUser((id: string, done: Function) =>
-        UserDataController.getUserById(id)
+        UserDataController.getUserById(id, true)
             .then((user) => done(null, user))
             .catch((err) => done(err, null))
     )
@@ -44,7 +44,7 @@ function basicAuth() {
 
 function jwtAuth() {
     return new JwtStrategy(jwtOptions, async (payload, next) => {
-        const user = await UserDataController.getUserById(payload.id);
+        const user = await UserDataController.getUserById(payload.id, true);
         if (user) {
             user.admin = payload.admin;
         }

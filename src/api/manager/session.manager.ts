@@ -5,7 +5,7 @@ import { ErrorType, PlenuumError } from "../../util/errorhandler";
 export default class SessionManager {
 
     async login(userId: string) {
-        const isAdmin = (await UserDataController.getUserById(userId, true)).admin;
+        const isAdmin = (await UserDataController.getUserById(userId, false, true)).admin;
         const token = tokenManager.generateNewToken(userId, isAdmin);
         const user = await UserDataController.getUserByIdWithoutOrgId(userId, true);
         return {
@@ -15,7 +15,7 @@ export default class SessionManager {
     }
 
     async loginAsAdmin(userId: string) {
-        const isAdmin = (await UserDataController.getUserById(userId, true)).admin;
+        const isAdmin = (await UserDataController.getUserById(userId, false, true)).admin;
         if (!isAdmin) {
             throw new PlenuumError("You are not an admin", ErrorType.FORBIDDEN);
         }
