@@ -281,6 +281,9 @@ export default (app: Express, userController: UserController) => {
      *     "lastName": "szabo",
      *     "email": "peter.szabo@hipteam.io",
      *     "pictureUrl": "",
+     *     "orgIds": [
+     *         "hipteam"
+     *     ]
      * }
      */
 
