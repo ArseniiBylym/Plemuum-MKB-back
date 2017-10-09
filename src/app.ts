@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { Express } from 'express';
+import {Express} from 'express';
 import * as passport from 'passport';
 import Routes from './api/route/routes';
 import * as bodyParser from "body-parser";
@@ -7,10 +7,11 @@ import * as path from "path";
 import * as logger from 'morgan';
 import passportInit from "./service/auth/passport.manager";
 import * as session from 'express-session';
+import * as expressValidator from 'express-validator';
 import * as cors from 'cors';
-import { validator } from "./util/input.validator";
 import OrganizationChecker from "./middleware/organization.checker";
-import { getOrganizationDataController } from "./data/datacontroller/organization.datacontroller";
+import {getOrganizationDataController} from "./data/datacontroller/organization.datacontroller";
+
 
 const viewsPath = [path.join(__dirname, "./view"), path.join(__dirname, "./email/raw")];
 const sessionOptions = {
@@ -20,6 +21,7 @@ const sessionOptions = {
 };
 
 const app = (): Express => {
+
     const app = express();
 
     //https://helmetjs.github.io/
@@ -43,7 +45,22 @@ const app = (): Express => {
     app.use(session(sessionOptions));
     app.use(passport.initialize());
     app.use(passport.session());
-    app.use(validator());
+    app.use(expressValidator({
+        errorFormatter: function (param, msg, value) {
+            let namespace = param ? param.split('.') : []
+                , root = namespace.shift()
+                , formParam = root;
+
+            while (namespace.length) {
+                formParam += '[' + namespace.shift() + ']';
+            }
+            return {
+                param: formParam,
+                msg: msg,
+                value: value
+            };
+        }
+    }));
 
     // view engine setup
     app.set("views", path.join(__dirname, "./view"));

@@ -4,7 +4,7 @@ import { OrganizationDataController } from "../../data/datacontroller/organizati
 
 export default class OrganizationManager {
 
-    private organizationDataController: OrganizationDataController;
+    public organizationDataController: OrganizationDataController;
 
     constructor(organizationDataController: OrganizationDataController) {
         this.organizationDataController = organizationDataController;

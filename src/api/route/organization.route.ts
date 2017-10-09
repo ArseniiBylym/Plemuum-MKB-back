@@ -50,6 +50,8 @@ export default (app: Express, organizationController: OrganizationController) =>
      * @apiPermission basic
      *
      * @apiParam {String} name The name of the organization.
+     * @apiParam {Number} todoSentenceNumber The name of sentences that will be send on generated todo.
+     * @apiParam {String} compassGenerationTime The string with a cron pattern that uses seconds. Read more on https://en.wikipedia.org/wiki/Cron
      * @apiParam {String} dbName The name of the database. Can not contain (' ', *, !).
      * @apiParam {Number} todoSentenceNumber The name of sentences that will be send on generated todo.
      * @apiParam {Number} compassGenerationTime Time between to COMPASS generations.

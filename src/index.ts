@@ -1,7 +1,9 @@
 import app from './app'
 import * as http from "http";
 import config from '../config/config';
-import { getDatabaseManager } from "./factory/database.factory";
+import {getDatabaseManager} from "./factory/database.factory";
+import WorkerPlenuum from "./worker/compass.worker";
+import * as ManagerFactory from "./factory/manager.factory";
 
 const server: http.Server = http.createServer(app);
 
@@ -13,6 +15,11 @@ getDatabaseManager().openConnection(config.mongoUrl)
         });
         server.on("listening", () => {
             console.log(`Server started on port ${config.port}`);
+
+            const organizationDataController: any = ManagerFactory.getOrganizationManager();
+            const compassManager = ManagerFactory.getCompassManager();
+            const worker = new WorkerPlenuum(config.workerTime, organizationDataController.organizationDataController, compassManager);
+            worker.start();
         });
     })
     .catch(reason => console.error(reason));
