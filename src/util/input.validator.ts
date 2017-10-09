@@ -41,6 +41,7 @@ const validate = async (req: any, res: any) => {
             hint: validationResults.array(),
             timeStamp: new Date()
         };
+
         if (req.user) {
             error.userId = req.user._id;
         }
