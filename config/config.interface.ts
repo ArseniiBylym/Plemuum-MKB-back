@@ -9,4 +9,5 @@ export interface Config {
     debugMode: boolean;
     firebaseConfig: FirebaseConfig;
     workerTime: string;
+    webappDomain: string;
 }

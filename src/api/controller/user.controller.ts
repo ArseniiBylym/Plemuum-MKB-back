@@ -1,12 +1,16 @@
-import { Request, Response } from "express";
+import {Request, Response} from "express";
 import BaseController from "./base.controller";
 import UserDataController from "../../data/datacontroller/user.datacontroller";
-import { UserModel } from "../../data/database/schema/common/user.schema";
+import {UserModel} from "../../data/database/schema/common/user.schema";
 import UserManager from "../manager/user.manager";
-import { formError } from "../../util/errorhandler";
+import {formError} from "../../util/errorhandler";
 import * as StatusCodes from 'http-status-codes';
-import { validate } from "../../util/input.validator";
+import {validate} from "../../util/input.validator";
 import * as crypto from 'crypto';
+import EmailService from "../../service/email/mail.service";
+import {resetPasswordDataController} from "../../data/datacontroller/resetpassword.datacontroller";
+import logger from "../../util/logger";
+import config from "../../../config/config";
 
 const formidable = require('formidable');
 
@@ -34,7 +38,29 @@ export default class UserController extends BaseController {
         }
 
         return UserDataController.saveUser(req.body)
-            .then((result) => res.status(StatusCodes.CREATED).send(result))
+            .then((result) => {
+                const origin = config.webappDomain;
+                const { email, firstName, _id } = result;
+                const {token, token_expiry} = UserDataController.generateToken(1);
+                const data = {userId: _id, token: token, token_expiry: token_expiry, reseted: false};
+                resetPasswordDataController.saveResetPassword(data)
+                    .then((response) => {
+                        let link = origin + "/set_new_password?token="
+                            + response.token+"&email="+email+"&welcome=true&name="+firstName;
+                        const mailService = new EmailService();
+                        mailService.sendWelcomeEmail(email, firstName, link, req.body.orgId);
+                    })
+                    .catch((error) => {
+                        logger.error({
+                            error: error,
+                            userId: _id,
+                            requestParams: req.params,
+                            requestBody: req.body,
+                            timeStamp: new Date()
+                        });
+                    });
+                res.status(StatusCodes.CREATED).send(result);
+            })
             .catch((err) => BaseController.handleError(err, req, res));
     }
 
