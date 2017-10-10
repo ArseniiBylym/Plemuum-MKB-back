@@ -91,7 +91,7 @@ export default class UserController extends BaseController {
 
         return this.userManager.resetPassword(req.body.email, req.header('Origin'), req.query.welcome)
             .then((result) => {
-                res.status(StatusCodes.OK).send(result.response)
+                res.status(StatusCodes.OK).send(result.response);
                 return result.resetPasswordToken;
             })
             .catch((err) => BaseController.handleError(err, req, res));

@@ -1,12 +1,12 @@
 import app from './app'
 import * as http from "http";
-import config from '../config/config';
+import config, { ENVIRONMENTS } from '../config/config';
 import WorkerPlenuum from "./worker/compass.worker";
 import * as ManagerFactory from "./factory/manager.factory";
 import { getDatabaseManager } from "./factory/database.factory";
 import * as cluster from 'cluster';
 
-if (cluster.isMaster) {
+if (cluster.isMaster && process.env.NODE_ENV !== ENVIRONMENTS.development) {
     // Count the machine's CPUs
     const cpuCount = require('os').cpus().length;
 

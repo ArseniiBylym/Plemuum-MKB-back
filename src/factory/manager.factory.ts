@@ -32,7 +32,7 @@ const getCompassManager = () => getManager(compassManager, CompassManager,
     getGroupDataController(), getOrganizationManager(), requestDataController);
 
 const getUserManager = (): UserManager =>
-    getManager(userManager, UserManager, [EmailService, FileTransferService]);
+    getManager(userManager, UserManager, new EmailService(), new FileTransferService(new FirebaseStorageManager()));
 
 const getGroupManager = (): GroupManager =>
     getManager(groupManager, GroupManager, getGroupDataController());
