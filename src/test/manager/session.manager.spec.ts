@@ -12,45 +12,39 @@ suite("SessionManager tests", () => {
             const passedDate = new Date();
             passedDate.setHours(passedDate.getHours() - 1);
 
-            const resetToken = {
-                token_expiry: passedDate,
-                reseted: false
-            };
-
-            const expectedResult = {validToken: false, reseted: false};
-
+            const resetToken = { token_expiry: passedDate, reseted: false };
             const getResetToken = sinon.stub(UserDataController, "getResetToken");
             getResetToken.withArgs(token).resolves(resetToken);
-
             const sessionManager = new SessionManager();
-            const result = await sessionManager.checkToken(token);
+
+            try {
+                await sessionManager.checkToken(token);
+                fail('The token is still valid or not reseted');
+            }catch (error) {
+                expect(error.message).to.be.equal('Token is not valid anymore.');
+                expect(error.getStatusCode()).to.be.equal(511);
+            }
+
             getResetToken.restore();
-
-            expect(result).to.be.deep.equal(expectedResult);
-
         });
 
         test("Reset token is not expired but reseted", async () => {
             const token = "mocktoken";
             const passedDate = new Date();
             passedDate.setHours(passedDate.getHours() + 1);
-
-            const resetToken = {
-                token_expiry: passedDate,
-                reseted: true
-            };
-
-            const expectedResult = {validToken: false, reseted: true};
-
+            const resetToken = { token_expiry: passedDate, reseted: true };
             const getResetToken = sinon.stub(UserDataController, "getResetToken");
             getResetToken.withArgs(token).resolves(resetToken);
-
             const sessionManager = new SessionManager();
-            const result = await sessionManager.checkToken(token);
+
+            try {
+                await sessionManager.checkToken(token);
+                fail('The token is still valid or not reseted');
+            }catch (error) {
+                expect(error.message).to.be.equal('Token is not valid anymore.');
+                expect(error.getStatusCode()).to.be.equal(511);
+            }
             getResetToken.restore();
-
-            expect(result).to.be.deep.equal(expectedResult);
-
         });
 
         test("Reset token is not expired and is not reseted", async () => {
