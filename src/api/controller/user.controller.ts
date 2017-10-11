@@ -115,7 +115,7 @@ export default class UserController extends BaseController {
             return;
         }
 
-        return this.userManager.resetPassword(req.body.email, req.header('Origin'), req.query.welcome)
+        return this.userManager.resetPassword(req.body.email, config.webappDomain, req.query.welcome)
             .then((result) => {
                 res.status(StatusCodes.OK).send(result.response);
                 return result.resetPasswordToken;
@@ -132,7 +132,21 @@ export default class UserController extends BaseController {
         }
 
         return this.userManager.setPassword(req.body.token, req.body.newPassword)
-            .then((result) => res.status(StatusCodes.OK).send(result))
+            .then((result) => {
+                let now = new Date();
+                now.setFullYear(1970);
+                UserDataController.invalidateResetToken(req.body.token, now)
+                    .catch((error) => {
+                        logger.error({
+                            error: error,
+                            userId: "no user id",
+                            requestParams: req.params,
+                            requestBody: req.body,
+                            timeStamp: new Date()
+                        });
+                    });
+                res.status(StatusCodes.OK).send(result)
+            })
             .catch((err) => BaseController.handleError(err, req, res));
     }
 
