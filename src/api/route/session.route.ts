@@ -90,6 +90,12 @@ export default (app: Express, sessionController: SessionController, userControll
      *          "validToken": true,
      *          "reseted": false
      *     }
+     *
+     * @apiErrorExample {json} Error-Response:
+     *      HTTP/1.1 511 Not Valid
+     *      {
+     *          "error": "Token is not valid anymore"
+     *      }
      */
     app.route("/api/session/validtoken")
         .post(sessionController.checkToken.bind(sessionController));
