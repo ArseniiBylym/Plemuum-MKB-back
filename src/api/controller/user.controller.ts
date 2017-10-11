@@ -7,9 +7,6 @@ import {formError} from "../../util/errorhandler";
 import * as StatusCodes from 'http-status-codes';
 import {validate} from "../../util/input.validator";
 import * as crypto from 'crypto';
-import EmailService from "../../service/email/mail.service";
-import {resetPasswordDataController} from "../../data/datacontroller/resetpassword.datacontroller";
-import logger from "../../util/logger";
 import config from "../../../config/config";
 
 const formidable = require('formidable');
@@ -37,31 +34,9 @@ export default class UserController extends BaseController {
             req.body.password = crypto.randomBytes(16).toString('hex');
         }
 
-        return UserDataController.saveUser(req.body)
-            .then((result) => {
-                const origin = config.webappDomain;
-                const { email, firstName, _id } = result;
-                const {token, token_expiry} = UserDataController.generateToken(1);
-                const data = {userId: _id, token: token, token_expiry: token_expiry, reseted: false};
-                resetPasswordDataController.saveResetPassword(data)
-                    .then((response) => {
-                        let link = origin + "/set_new_password?token="
-                            + response.token+"&email="+email+"&welcome=true&name="+firstName;
-                        const mailService = new EmailService();
-                        mailService.sendWelcomeEmail(email, firstName, link, req.body.orgId);
-                    })
-                    .catch((error) => {
-                        logger.error({
-                            error: error,
-                            userId: _id,
-                            requestParams: req.params,
-                            requestBody: req.body,
-                            timeStamp: new Date()
-                        });
-                    });
-                res.status(StatusCodes.CREATED).send(result);
-            })
-            .catch((err) => BaseController.handleError(err, req, res));
+        return this.userManager.saveUser(req.body, req.params)
+            .then((result) => res.status(StatusCodes.CREATED).send(result))
+            .catch((err) => BaseController.handleError(err, req, res))
     }
 
     async modifyUser(req: any, res: Response) {
@@ -132,21 +107,7 @@ export default class UserController extends BaseController {
         }
 
         return this.userManager.setPassword(req.body.token, req.body.newPassword)
-            .then((result) => {
-                let now = new Date();
-                now.setFullYear(1970);
-                UserDataController.invalidateResetToken(req.body.token, now)
-                    .catch((error) => {
-                        logger.error({
-                            error: error,
-                            userId: "no user id",
-                            requestParams: req.params,
-                            requestBody: req.body,
-                            timeStamp: new Date()
-                        });
-                    });
-                res.status(StatusCodes.OK).send(result)
-            })
+            .then((result) => { res.status(StatusCodes.OK).send(result) })
             .catch((err) => BaseController.handleError(err, req, res));
     }
 

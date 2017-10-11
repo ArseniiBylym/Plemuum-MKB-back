@@ -5,6 +5,8 @@ import FileTransfer from "../../service/file/filetransfer.service";
 import { generateNewTokensForResetPassword } from "../../service/auth/token.manager";
 import { ErrorType, PlenuumError } from "../../util/errorhandler";
 import { UserModel } from "../../data/database/schema/common/user.schema";
+import config from "../../../config/config";
+import logger from "../../util/logger";
 
 export default class UserManager {
 
@@ -68,6 +70,39 @@ export default class UserManager {
             throw new PlenuumError("User not found", ErrorType.NOT_FOUND);
         }
         return {avatar: pictureUrl}
+    }
+
+    //This should be async
+    async saveUser(body: any, params: any){
+        const savedUser = await UserDataController.saveUser(body);
+        if (!savedUser){
+            throw new PlenuumError("User not saved", ErrorType.VALIDATION);
+        }
+        this.sendChangePasswordOnWelcome(savedUser, body, params);
+        return savedUser;
+    }
+
+    sendChangePasswordOnWelcome(result: any, body: any, params: any) {
+        const origin = config.webappDomain;
+        const {email, firstName, _id} = result;
+        const {token, token_expiry} = UserDataController.generateToken(1);
+        const data = {userId: _id, token: token, token_expiry: token_expiry, reseted: false};
+        resetPasswordDataController.saveResetPassword(data)
+            .then((response) => {
+                let link = origin + "/set_new_password?token="
+                    + response.token + "&email=" + email + "&welcome=true&name=" + firstName;
+                const mailService = new EmailService();
+                mailService.sendWelcomeEmail(email, firstName, link, body.orgId);
+            })
+            .catch((error) => {
+                logger.error({
+                    error: error,
+                    userId: _id,
+                    requestParams: params,
+                    requestBody: body,
+                    timeStamp: new Date()
+                });
+            });
     }
 
 }
