@@ -1,10 +1,12 @@
 import { jwtOptions } from "../../../config/config";
 import * as jwt from 'jsonwebtoken';
+import UserDataController from "../../data/datacontroller/user.datacontroller";
 
-function generateNewToken(userId: string, isAdmin: boolean) {
+function generateNewToken(userId: string, isAdmin: boolean, createdAt: Date) {
     const payload = {
         id: userId,
-        admin: isAdmin
+        admin: isAdmin,
+        createdAt: createdAt
     };
     return jwt.sign(payload, jwtOptions.secretOrKey, {expiresIn: getExpiryInSeconds(7)});
 }
