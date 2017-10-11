@@ -139,6 +139,12 @@ const UserDataController = {
                 return UserCollection().findByIdAndUpdate({_id: userId}, {$set: {notificationToken: modifiedToken}}, {"new": true}).lean().exec() as Promise<UserModel>;
             });
     },
+
+    getNotificationToken: function (userId: string, token: string): Promise<string> {
+        return UserCollection().findById(userId).select('+notificationToken').lean().exec()
+            .then((user: any) =>
+                user.notificationToken.find((elem: string) => { return elem === token }))
+    }
 };
 
 export default UserDataController
