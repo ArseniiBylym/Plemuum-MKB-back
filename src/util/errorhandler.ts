@@ -10,6 +10,7 @@ export enum ErrorType {
     NOT_IMPLEMENTED = StatusCodes.NOT_IMPLEMENTED,
     NOT_ALLOWED = StatusCodes.METHOD_NOT_ALLOWED,
     UNKNOWN = StatusCodes.INTERNAL_SERVER_ERROR,
+    ALREADY_EXISTS = StatusCodes.CONFLICT,
 }
 
 export class PlenuumError extends Error {
