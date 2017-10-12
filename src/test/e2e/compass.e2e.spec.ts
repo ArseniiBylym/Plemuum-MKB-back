@@ -275,7 +275,7 @@ suite("Compass request test", () => {
 
     suite("Trigger for todo generation", () => {
         const url = '/api/generatetodos';
-        test.only("Generate todos for users in the organizations", async () => {
+        test("Generate todos for users in the organizations", async () => {
 
             const result = {"message": "Todos were generated successfuly"};
             const token = await authenticate(testAdmin);
