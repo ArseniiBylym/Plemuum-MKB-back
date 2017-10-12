@@ -30,6 +30,9 @@ const prodConfig: Config = {
     },
     get workerTime() {
         return "0 0 8 * * *"; //Every day at 08:00 AM
+    },
+    get webappDomain() {
+        return "https://app.plenuum.com";
     }
 };
 

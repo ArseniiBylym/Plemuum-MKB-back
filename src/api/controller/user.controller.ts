@@ -1,12 +1,13 @@
-import { Request, Response } from "express";
+import {Request, Response} from "express";
 import BaseController from "./base.controller";
 import UserDataController from "../../data/datacontroller/user.datacontroller";
-import { UserModel } from "../../data/database/schema/common/user.schema";
+import {UserModel} from "../../data/database/schema/common/user.schema";
 import UserManager from "../manager/user.manager";
-import { formError } from "../../util/errorhandler";
+import {formError} from "../../util/errorhandler";
 import * as StatusCodes from 'http-status-codes';
-import { validate } from "../../util/input.validator";
+import {validate} from "../../util/input.validator";
 import * as crypto from 'crypto';
+import config from "../../../config/config";
 
 const formidable = require('formidable');
 
@@ -33,9 +34,9 @@ export default class UserController extends BaseController {
             req.body.password = crypto.randomBytes(16).toString('hex');
         }
 
-        return UserDataController.saveUser(req.body)
+        return this.userManager.saveUser(req.body, req.params)
             .then((result) => res.status(StatusCodes.CREATED).send(result))
-            .catch((err) => BaseController.handleError(err, req, res));
+            .catch((err) => BaseController.handleError(err, req, res))
     }
 
     async modifyUser(req: any, res: Response) {
@@ -89,7 +90,7 @@ export default class UserController extends BaseController {
             return;
         }
 
-        return this.userManager.resetPassword(req.body.email, req.header('Origin'), req.query.welcome)
+        return this.userManager.resetPassword(req.body.email, config.webappDomain, req.query.welcome)
             .then((result) => {
                 res.status(StatusCodes.OK).send(result.response);
                 return result.resetPasswordToken;
@@ -106,7 +107,7 @@ export default class UserController extends BaseController {
         }
 
         return this.userManager.setPassword(req.body.token, req.body.newPassword)
-            .then((result) => res.status(StatusCodes.OK).send(result))
+            .then((result) => { res.status(StatusCodes.OK).send(result) })
             .catch((err) => BaseController.handleError(err, req, res));
     }
 

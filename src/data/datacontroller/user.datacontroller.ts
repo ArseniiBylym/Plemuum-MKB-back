@@ -20,13 +20,17 @@ const UserDataController = {
             .exec() as Promise<UserModel>;
     },
 
-    getUserById: function (userId: string, showOrganizations: boolean = false, showAdmin: boolean = false): Promise<UserModel> {
+    getUserById: function (userId: string, showOrganizations: boolean = false, showAdmin: boolean = false,
+                           showUpdatedPasswordDate: boolean = false): Promise<UserModel> {
         const query = UserCollection().findById(userId);
         if (showAdmin) {
             query.select('+admin');
         }
         if(showOrganizations) {
             query.select('+orgIds');
+        }
+        if(showUpdatedPasswordDate) {
+            query.select('+passwordUpdatedAt');
         }
         return query.lean().exec() as Promise<UserModel>;
     },
@@ -76,6 +80,12 @@ const UserDataController = {
         return ResetPasswordCollection().findOne({token: token})
             .lean()
             .exec() as Promise<ResetPasswordModel>;
+    },
+
+    invalidateResetToken: (token: string, date: Date): Promise<ResetPasswordModel> => {
+        return ResetPasswordCollection().findOneAndUpdate({token: token}, {$set: {token_expiry: date}})
+            .lean()
+            .exec() as Promise<ResetPasswordModel>
     },
 
     changeUserPassword: function (email: string, newPassword: string): Promise<UserModel> {

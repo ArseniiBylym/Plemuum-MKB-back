@@ -6,7 +6,7 @@ export default class SessionManager {
 
     async login(userId: string) {
         const isAdmin = (await UserDataController.getUserById(userId, false, true)).admin;
-        const token = tokenManager.generateNewToken(userId, isAdmin);
+        const token = tokenManager.generateNewToken(userId, isAdmin, new Date());
         return {
             token: token,
         }
@@ -17,7 +17,7 @@ export default class SessionManager {
         if (!isAdmin) {
             throw new PlenuumError("You are not an admin", ErrorType.FORBIDDEN);
         }
-        return {token: tokenManager.generateNewToken(userId, isAdmin)}
+        return {token: tokenManager.generateNewToken(userId, isAdmin, new Date())}
     }
 
     async logout(userId: string) {
