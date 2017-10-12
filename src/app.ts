@@ -33,7 +33,7 @@ const app = (): Express => {
 
     // TODO finish and use this before release!
     const corsOptions = {
-        "origin": ["http://localhost:3000", "http://localhost:8081"],
+        "origin": ["http://localhost:3000", "http://localhost:8081", "http://188.142.231.10:8082"],
         "optionsSuccessStatus": 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
         "credentials": true,
     };
