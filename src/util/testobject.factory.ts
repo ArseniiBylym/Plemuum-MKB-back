@@ -72,6 +72,12 @@ function getTestGroup() {
     }
 }
 
+function getTestNotificationToken() {
+    return {
+        token: "02139712hsdad2190e12e129e12geh912e6gh19216912ge129eg1296"
+    }
+}
+
 export {
     getTestUser,
     getJohnDoe,
@@ -80,5 +86,6 @@ export {
     getRegisterTestUser,
     getRegisterJohnDoe,
     getTestOrganization,
-    getTestGroup
+    getTestGroup,
+    getTestNotificationToken
 }

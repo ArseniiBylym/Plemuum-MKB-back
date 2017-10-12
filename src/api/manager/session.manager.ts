@@ -32,8 +32,11 @@ export default class SessionManager {
     async checkToken(token: any) {
         const resetToken = await UserDataController.getResetToken(token);
         const now = new Date();
-        return (resetToken.token_expiry < now || resetToken.reseted)
-            ? {validToken: false, reseted: resetToken.reseted}
-            : {validToken: true, reseted: false};
+        const test = resetToken.token_expiry > now;
+        if (resetToken && !resetToken.reseted && test){
+            return { validToken: true, reseted: false };
+        }else{
+            throw new PlenuumError("Token is not valid anymore.", ErrorType.NOT_VALID);
+        }
     }
 }

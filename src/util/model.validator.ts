@@ -88,6 +88,10 @@ function validateTodosResponse(result: any) {
     expect(result.compassTodo).to.be.instanceof(Array);
 }
 
+function validateNotificationTokenResponse(result: any, property: string){
+    expect(result).to.haveOwnProperty(property);
+}
+
 export {
     validateUser,
     validateFeedback,
@@ -97,5 +101,6 @@ export {
     validateTagResponse,
     validateOrganization,
     validateGroup,
-    validateCompassTodo
+    validateCompassTodo,
+    validateNotificationTokenResponse
 }

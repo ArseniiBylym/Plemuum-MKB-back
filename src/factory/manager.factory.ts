@@ -16,6 +16,7 @@ import { requestDataController } from "../data/datacontroller/request.datacontro
 import { getGroupDataController } from "../data/datacontroller/group.datacontroller";
 import FirebaseNotification from "../service/notification/firebase.notification";
 import config from "../../config/config";
+import UserDataController from "../data/datacontroller/user.datacontroller";
 
 let compassManager: CompassManager;
 let userManager: UserManager;
@@ -54,9 +55,9 @@ const getFirebaseStorageManager = (): FirebaseStorageManager =>
 
 const getNotificationManager = (): NotificationManager =>
     getManager(notificationManager, NotificationManager,
-        [new FirebaseNotification(
+        new FirebaseNotification(
             require(`../../res/${config.firebaseConfig.keyFileName}`),
-            config.firebaseConfig.databaseUrl)]);
+            config.firebaseConfig.databaseUrl), UserDataController);
 
 const getFeedbackManager = (): FeedbackManager =>
     getManager(feedbackManager, FeedbackManager);
