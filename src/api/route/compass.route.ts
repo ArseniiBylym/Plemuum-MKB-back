@@ -270,8 +270,8 @@ export default (app: Express, compassController: CompassController) => {
         .patch(passport.authenticate('jwt', {session: false}), checkAdmin(), compassController.createOrUpdateSkill.bind(compassController));
 
     /**
-     * @api {GET} /api/generatetodos Generate todds
-     * @apiVersion 2.0.0
+     * @api {GET} /api/generatetodos Generate todos
+     * @apiVersion 2.0.1
      * @apiName Generate todos
      * @apiGroup Admin
      * @apiDescription Trigger a generation of todos

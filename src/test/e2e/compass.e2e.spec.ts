@@ -275,7 +275,7 @@ suite("Compass request test", () => {
 
     suite("Trigger for todo generation", () => {
         const url = '/api/generatetodos';
-        test("", async () => {
+        test.only("Generate todos for users in the organizations", async () => {
 
             const result = {"message": "Todos were generated successfuly"};
             const token = await authenticate(testAdmin);
@@ -283,7 +283,7 @@ suite("Compass request test", () => {
                 .get(url)
                 .set(bearerAuthHeader(token))
                 .expect(200);
-            expect(response.body[0]).to.be.deep.equal(result);
+            expect(response.body).to.be.deep.equal(result);
         });
     });
 });

@@ -212,7 +212,7 @@ export default class CompassManager {
         if (organizations.length > 0){
             return Promise.all(organizations.map(async (org: OrganizationModel) => {
                 return await this.autoGenerateTodosForOrganization(org);
-            }));
+            })).then(value => value.reduce((_, currentValue) => currentValue));
         }else{
             throw new PlenuumError("No organization found to generate todo.", ErrorType.NOT_FOUND);
         }
