@@ -14,10 +14,10 @@ const UserDataController = {
             .then((savedUser) => UserCollection().findById(savedUser._id).lean().exec() as Promise<UserModel>)
     },
 
-    getOrganizationUsers: function (orgId: string): Promise<UserModel> {
+    getOrganizationUsers: function (orgId: string): Promise<UserModel[]> {
         return UserCollection().find({orgIds: {$in: [orgId]}})
             .lean()
-            .exec() as Promise<UserModel>;
+            .exec() as Promise<UserModel[]>;
     },
 
     getUserById: function (userId: string, showOrganizations: boolean = false, showAdmin: boolean = false,

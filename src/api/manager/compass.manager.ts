@@ -17,6 +17,7 @@ import { getRandomItem } from "../../test/util/utils";
 import { RequestDataController } from "../../data/datacontroller/request.datacontroller";
 import FeedbackDataController from "../../data/datacontroller/feedback.datacontroller";
 import filterAsync from '../../util/asyncFilter';
+import {OrganizationModel} from "../../data/database/schema/organization/organization.schema";
 const parser = require('cron-parser');
 
 export default class CompassManager {
@@ -182,10 +183,38 @@ export default class CompassManager {
         return await StatisticsDataController.getStatisticsByUserId(orgId, userId);
     }
 
+    async autoGenerateTodosForOrganization(org: OrganizationModel) {
+        const { name, dbName } = org;
+        const users = await UserDataController.getOrganizationUsers(name);
+        if (users.length > 0) {
+            await users.forEach(async (user) => {
+                const userGroups: Group[] = await this.groupDataController.getUserGroups(name, user._id);
+                const groupsWithTodoRelations = userGroups.filter((group) => group.todoCardRelations.length > 0);
+
+                if (groupsWithTodoRelations.length > 0) {
+                    const randomGroup = getRandomItem(groupsWithTodoRelations);
+                    const usersTopick = randomGroup.users.filter((element: any) => user._id !== element._id);
+                    const randomAboutUserId = getRandomItem(usersTopick);
+                    const skills = await CompassDataController.getSkillsByIds(name, randomGroup.skills);
+                    const todo = CompassManager.buildUpNewTodoResponse(
+                        user._id, org.todoSentenceNumber, randomAboutUserId, skills);
+                    await CompassDataController.saveCompassTodo(dbName, todo);
+                }
+            });
+            return {"message": "Todos were generated successfuly"};
+        }else{
+            throw new PlenuumError("No user found that can receive a todo.", ErrorType.NOT_FOUND);
+        }
+    }
+
     async generateTodo() {
         let organizations = await this.organizationDataController.getOrganizations();
-        return Promise.all(organizations.map(async (org: any) => {
-            return await this.autoGenerateTodo(org.name);
-        }));
+        if (organizations.length > 0){
+            return Promise.all(organizations.map(async (org: OrganizationModel) => {
+                return await this.autoGenerateTodosForOrganization(org);
+            }));
+        }else{
+            throw new PlenuumError("No organization found to generate todo.", ErrorType.NOT_FOUND);
+        }
     }
 }
