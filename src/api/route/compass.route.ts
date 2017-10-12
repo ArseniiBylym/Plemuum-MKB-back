@@ -268,4 +268,27 @@ export default (app: Express, compassController: CompassController) => {
     app.route("/api/organizations/:orgId/skills")
         .get(passport.authenticate('jwt', {session: false}), compassController.getSkills.bind(compassController))
         .patch(passport.authenticate('jwt', {session: false}), checkAdmin(), compassController.createOrUpdateSkill.bind(compassController));
+
+    /**
+     * @api {GET} /api/generatetodos Generate todds
+     * @apiVersion 2.0.0
+     * @apiName Generate todos
+     * @apiGroup Admin
+     * @apiDescription Trigger a generation of todos
+     *
+     * @apiHeader {String} Authorization Basic username:password
+     *
+     * @apiSucess (Success 200) {message} - Started
+     * @apiSuccessExample {json} Success-Response:
+     *      HTTP/1.1 200 OK
+     *      {
+     *          "message": "Todos were generated successfuly"
+     *      }
+     *
+     */
+    app.route("/api/generatetodos")
+        .get(
+            passport.authenticate('jwt', {session: false}), checkAdmin(),
+            compassController.generateTodo.bind(compassController)
+        );
 }

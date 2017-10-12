@@ -17,6 +17,7 @@ import { getRandomItem } from "../../test/util/utils";
 import { RequestDataController } from "../../data/datacontroller/request.datacontroller";
 import FeedbackDataController from "../../data/datacontroller/feedback.datacontroller";
 import filterAsync from '../../util/asyncFilter';
+const parser = require('cron-parser');
 
 export default class CompassManager {
 
@@ -179,5 +180,12 @@ export default class CompassManager {
         const statistics = await StatisticsManager.getStatistics(orgId, userId, userGroups);
         await StatisticsDataController.saveOrUpdateStatistics(orgId, statistics);
         return await StatisticsDataController.getStatisticsByUserId(orgId, userId);
+    }
+
+    async generateTodo() {
+        let organizations = await this.organizationDataController.getOrganizations();
+        return Promise.all(organizations.map(async (org: any) => {
+            return await this.autoGenerateTodo(org.name);
+        }));
     }
 }
