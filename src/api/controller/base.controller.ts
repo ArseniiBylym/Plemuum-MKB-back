@@ -11,9 +11,10 @@ class BaseController {
     protected static handleError(error: any, req: any, res: any) {
         const statusCode = this.getErrorStatus(error);
         if (statusCode >= 500) {
+            delete req.body.password;
             logger.error({
                 error: error,
-                userId: req.user._id,
+                userId: req.user ? req.user._id : "",
                 requestParams: req.params,
                 requestBody: req.body,
                 timeStamp: new Date()
