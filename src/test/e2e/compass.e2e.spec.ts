@@ -271,5 +271,19 @@ suite("Compass request test", () => {
             expect(response.body.sentences.length).to.be.equal(newSkill.sentences.length);
         });
 
-    })
+    });
+
+    suite("Trigger for todo generation", () => {
+        const url = '/api/generatetodos';
+        test("Generate todos for users in the organizations", async () => {
+
+            const result = {"message": "Todos were generated successfuly"};
+            const token = await authenticate(testAdmin);
+            const response = await request(app)
+                .get(url)
+                .set(bearerAuthHeader(token))
+                .expect(200);
+            expect(response.body).to.be.deep.equal(result);
+        });
+    });
 });

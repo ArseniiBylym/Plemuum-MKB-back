@@ -13,6 +13,7 @@ import { validateCompassTodo } from "../../util/model.validator";
 import { fail } from "assert";
 import { PlenuumError } from "../../util/errorhandler";
 import FeedbackDataController from "../../data/datacontroller/feedback.datacontroller";
+import { generateUsers } from "../mock/mock.generator";
 
 const dummy: any = {};
 
@@ -595,4 +596,57 @@ suite("CompassManager tests", () => {
             }
         });
     })
+
+    suite("Auto Generate Todos For Organization", () => {
+
+        test("It should send a 200", async () => {
+
+            const organizationMock: any = { name: sinon.stub(), dbName: sinon.stub() };
+            const response = {"message": "Todos were generated successfuly"};
+            const testGroups: any[] = [
+                {
+                    _id: "group1",
+                    users: ["user1", "user2"],
+                    skills: ["skill1", "skill2"],
+                    todoCardRelations: ["group2"]
+                },
+                {
+                    _id: "group2",
+                    users: ["user3", "user4", "user5", "user6"],
+                    skills: ["skill3", "skill4"],
+                    todoCardRelations: ["group1"]
+                },
+                {
+                    _id: "group3",
+                    users: ["user7"],
+                    skills: ["skill5", "skill6"],
+                    todoCardRelations: ["group2"]
+                },
+                {
+                    _id: "group4",
+                    users: ["user8", "user9"],
+                    skills: ["skill7"],
+                    todoCardRelations: []
+                },
+            ];
+
+            const skills: any = [
+                { name: "skill 1", sentences: [{message: "message 1"}]},
+                { name: "skill 2", sentences: [{message: "message 2"}]}
+            ];
+
+            const saveMock = sinon.stub(CompassDataController, "saveCompassTodo").resolves("Saved");
+            const getSkillByIdMock = sinon.stub(CompassDataController, "getSkillsByIds").resolves(skills);
+            const groupDataController: any = { getUserGroups: sinon.stub().resolves(testGroups) };
+            const mockUsers = sinon.stub(UserDataController, "getOrganizationUsers").resolves(generateUsers());
+            const compassManager = new CompassManager(groupDataController, dummy, dummy);
+
+            const result = await compassManager.autoGenerateTodosForOrganization(organizationMock);
+            expect(result).to.be.deep.equal(response);
+
+            getSkillByIdMock.restore();
+            mockUsers.restore();
+            saveMock.restore();
+        });
+    });
 });
