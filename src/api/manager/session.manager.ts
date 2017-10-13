@@ -20,15 +20,6 @@ export default class SessionManager {
         return {token: tokenManager.generateNewToken(userId, isAdmin, new Date())}
     }
 
-    async logout(userId: string) {
-        try {
-            await UserDataController.removeToken(userId);
-            return {message: "User logged out successfully"}
-        } catch (err) {
-            throw new PlenuumError("User could not be logged out.", ErrorType.UNKNOWN);
-        }
-    }
-
     async checkToken(token: any) {
         const resetToken = await UserDataController.getResetToken(token);
         const now = new Date();

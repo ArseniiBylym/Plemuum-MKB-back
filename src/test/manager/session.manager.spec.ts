@@ -3,7 +3,6 @@ import * as sinon from "sinon";
 import SessionManager from "../../api/manager/session.manager";
 import { expect } from 'chai';
 import { fail } from "assert";
-import { PlenuumError } from "../../util/errorhandler";
 
 suite("SessionManager tests", () => {
     suite("checkToken", () => {
@@ -12,7 +11,7 @@ suite("SessionManager tests", () => {
             const passedDate = new Date();
             passedDate.setHours(passedDate.getHours() - 1);
 
-            const resetToken = { token_expiry: passedDate, reseted: false };
+            const resetToken = {token_expiry: passedDate, reseted: false};
             const getResetToken = sinon.stub(UserDataController, "getResetToken");
             getResetToken.withArgs(token).resolves(resetToken);
             const sessionManager = new SessionManager();
@@ -20,7 +19,7 @@ suite("SessionManager tests", () => {
             try {
                 await sessionManager.checkToken(token);
                 fail('The token is still valid or not reseted');
-            }catch (error) {
+            } catch (error) {
                 expect(error.message).to.be.equal('Token is not valid anymore.');
                 expect(error.getStatusCode()).to.be.equal(511);
             }
@@ -32,7 +31,7 @@ suite("SessionManager tests", () => {
             const token = "mocktoken";
             const passedDate = new Date();
             passedDate.setHours(passedDate.getHours() + 1);
-            const resetToken = { token_expiry: passedDate, reseted: true };
+            const resetToken = {token_expiry: passedDate, reseted: true};
             const getResetToken = sinon.stub(UserDataController, "getResetToken");
             getResetToken.withArgs(token).resolves(resetToken);
             const sessionManager = new SessionManager();
@@ -40,7 +39,7 @@ suite("SessionManager tests", () => {
             try {
                 await sessionManager.checkToken(token);
                 fail('The token is still valid or not reseted');
-            }catch (error) {
+            } catch (error) {
                 expect(error.message).to.be.equal('Token is not valid anymore.');
                 expect(error.getStatusCode()).to.be.equal(511);
             }
@@ -67,39 +66,6 @@ suite("SessionManager tests", () => {
             getResetToken.restore();
 
             expect(result).to.be.deep.equal(expectedResult);
-        });
-    });
-
-    suite("logout", () => {
-        test("Token was removed successfully", async () => {
-            const userId = "userId";
-            const expectedResult = {message: "User logged out successfully"};
-            const removeToken = sinon.stub(UserDataController, "removeToken");
-            removeToken.withArgs(userId).resolves({success: "success"});
-
-            const sessionManager = new SessionManager();
-            const result = await sessionManager.logout(userId);
-            removeToken.restore();
-
-            expect(result).to.be.deep.equal(expectedResult);
-        });
-
-        test("Error during token removal", async () => {
-            const userId = "userId";
-            const removeToken = sinon.stub(UserDataController, "removeToken");
-            removeToken.withArgs(userId).rejects(new Error("whatever error"));
-
-            const sessionManager = new SessionManager();
-            try {
-                await sessionManager.logout(userId);
-                fail("Should throw Plenuum error!")
-            } catch (err) {
-                expect(err).to.be.instanceOf(PlenuumError);
-                expect(err.message).to.be.equal("User could not be logged out.");
-                expect(err.getStatusCode()).to.be.equal(500);
-            } finally {
-                removeToken.restore();
-            }
         });
     });
 

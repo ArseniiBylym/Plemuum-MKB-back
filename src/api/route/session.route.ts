@@ -32,22 +32,11 @@ export default (app: Express, sessionController: SessionController, userControll
      * @apiVersion 2.0.1
      * @apiName logout
      * @apiGroup Session
-     * @apiDescription Logging out. Token will be removed, will not be available for other applications
-     *
-     * @apiHeader {String} Authorization Bearer token
-     *
-     * @apiSuccess (Success 200) {String} message Message of success
-     *
-     * @apiSuccessExample {json} Success-Response:
-     *     HTTP/1.1 200 OK
-     *     {
-     *         "message": "User Logged out successfully!"
-     *     }
-     *
+     * @apiDescription Logging out. Token will be removed from the cookies. On mobile the client should remove it's token.
      */
     app.route('/api/session')
         .post(passport.authenticate('local', {session: false}), sessionController.login.bind(sessionController))
-        .delete(passport.authenticate('jwt', {session: false}), sessionController.logout.bind(sessionController));
+        .delete(sessionController.logout.bind(sessionController));
 
     /**
      * @api {POST} /api/session/admin Log-in as admin
