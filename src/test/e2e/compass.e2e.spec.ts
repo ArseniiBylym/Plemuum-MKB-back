@@ -3,7 +3,7 @@ import config from "../../../config/config";
 import * as request from 'supertest';
 import { authenticate, fixtureLoader, testAdmin, testUser } from "../mock/fixture.loader";
 import app from "../../app";
-import { bearerAuthHeader } from "../util/header.helper";
+import {basicAuthHeader, bearerAuthHeader} from "../util/header.helper";
 import { expect, should } from 'chai';
 import Skill from "../../data/models/organization/compass/skill.model";
 import { ANSWER_TYPES } from "../../data/models/organization/compass/compassanswer.model";
@@ -274,9 +274,9 @@ suite("Compass request test", () => {
     });
 
     suite("Trigger for todo generation", () => {
-        const url = '/api/generatetodos';
-        test("Generate todos for users in the organizations", async () => {
 
+        test("Generate todos for users in the organizations", async () => {
+            const url = '/api/generatetodos';
             const result = {"message": "Todos were generated successfuly"};
             const token = await authenticate(testAdmin);
             const response = await request(app)
@@ -285,5 +285,17 @@ suite("Compass request test", () => {
                 .expect(200);
             expect(response.body).to.be.deep.equal(result);
         });
+
+        test.only("", async () => {
+            const url = '/api/startwork';
+            const result = {"message": "Todos were generated successfuly"};
+            const response = await request(app)
+                .get(url)
+                .set(basicAuthHeader)
+                .expect(200);
+            expect(response.body).to.be.deep.equal(result);
+        });
+
     });
+
 });

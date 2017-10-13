@@ -291,4 +291,25 @@ export default (app: Express, compassController: CompassController) => {
             passport.authenticate('jwt', {session: false}), checkAdmin(),
             compassController.generateTodo.bind(compassController)
         );
+
+
+    /**
+     * @api {GET} /api/startwork Start Work
+     * @apiVersion 2.0.1
+     * @apiName Start Generation Todos
+     * @apiGroup Worker
+     * @apiDescription Start a generation of a chunk of todos for users for all the organizations
+     *
+     * @apiHeader {String} Authorization Basic username:password
+     *
+     * @apiSuccess (Success 200) {message}
+     * @apiSuccessExample {json} Success-Response:
+     *      HTTP/1.1 200 OK
+     *      {
+     *          "message": "Todos were generated successfuly"
+     *      }
+     *
+     */
+    app.route("/api/startwork")
+        .get(passport.authenticate('basic', {session: false}), compassController.generateTodoForWorker.bind(compassController));
 }
