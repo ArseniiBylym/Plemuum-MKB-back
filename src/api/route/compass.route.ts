@@ -278,7 +278,6 @@ export default (app: Express, compassController: CompassController) => {
      *
      * @apiHeader {String} Authorization Basic username:password
      *
-     * @apiSucess (Success 200) {message} - Started
      * @apiSuccessExample {json} Success-Response:
      *      HTTP/1.1 200 OK
      *      {
@@ -298,7 +297,6 @@ export default (app: Express, compassController: CompassController) => {
      *
      * @apiHeader {String} Authorization Basic username:password
      *
-     * @apiSuccess (Success 200) {message}
      * @apiSuccessExample {json} Success-Response:
      *      HTTP/1.1 200 OK
      *      {
