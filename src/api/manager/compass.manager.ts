@@ -217,4 +217,15 @@ export default class CompassManager {
             throw new PlenuumError("No organization found to generate todo.", ErrorType.NOT_FOUND);
         }
     }
+
+    async startWorker(){
+        let organizations = await this.organizationDataController.getOrganizations();
+        return Promise.all(organizations.map(async (org: OrganizationModel) => {
+            const interval = parser.parseExpression(org.compassGenerationTime);
+            const now = new Date();
+            if (interval.next().getDate() === now.getDate()){
+                return await this.autoGenerateTodosForOrganization(org)
+            }
+        })).then((value => value.reduce((_, currentValue) => currentValue)));
+    }
 }
