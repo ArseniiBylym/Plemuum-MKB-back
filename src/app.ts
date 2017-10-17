@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {Express} from 'express';
+import { Express } from 'express';
 import * as passport from 'passport';
 import Routes from './api/route/routes';
 import * as bodyParser from "body-parser";
@@ -10,7 +10,8 @@ import * as session from 'express-session';
 import * as expressValidator from 'express-validator';
 import * as cors from 'cors';
 import OrganizationChecker from "./middleware/organization.checker";
-import {getOrganizationDataController} from "./data/datacontroller/organization.datacontroller";
+import { getOrganizationDataController } from "./data/datacontroller/organization.datacontroller";
+import { ENVIRONMENTS } from "../config/config";
 
 
 const viewsPath = [path.join(__dirname, "./view"), path.join(__dirname, "./email/raw")];
@@ -32,8 +33,12 @@ const app = (): Express => {
     app.use(logger("dev"));
 
     // TODO finish and use this before release!
+    const origins = process.env.NODE_ENV === ENVIRONMENTS.development
+        ? ["http://localhost:3000", "http://localhost:8081"]
+        : ["http://188.142.231.10:8082", "http://188.142.231.10:8083"];
+
     const corsOptions = {
-        "origin": ["http://localhost:3000", "http://localhost:8081", "http://188.142.231.10:8082"],
+        "origin": origins,
         "optionsSuccessStatus": 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
         "credentials": true,
     };
