@@ -287,11 +287,7 @@ export default (app: Express, compassController: CompassController) => {
      *
      */
     app.route("/api/generatetodos")
-        .get(
-            passport.authenticate('jwt', {session: false}), checkAdmin(),
-            compassController.generateTodo.bind(compassController)
-        );
-
+        .get(passport.authenticate('jwt', {session: false}), checkAdmin(), compassController.generateTodo.bind(compassController));
 
     /**
      * @api {GET} /api/startwork Start Work

@@ -201,7 +201,7 @@ export default class CompassManager {
                     await CompassDataController.saveCompassTodo(dbName, todo);
                 }
             });
-            return {"message": "Todos were generated successfuly"};
+            return {"message": "Todos were generated successfully"};
         }else{
             throw new PlenuumError("No user found that can receive a todo.", ErrorType.NOT_FOUND);
         }
@@ -221,6 +221,7 @@ export default class CompassManager {
     async startWorker(){
         let organizations = await this.organizationDataController.getOrganizations();
         return Promise.all(organizations.map(async (org: OrganizationModel) => {
+            //TODO Franclin: we shouldn't save the compass generation time as cron expression -> please convert the number into cron
             const interval = parser.parseExpression(org.compassGenerationTime);
             const now = new Date();
             if (interval.next().getDate() === now.getDate()){

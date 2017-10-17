@@ -286,7 +286,7 @@ suite("Compass request test", () => {
             expect(response.body).to.be.deep.equal(result);
         });
 
-        test.only("", async () => {
+        test("", async () => {
             const url = '/api/startwork';
             const result = {"message": "Todos were generated successfuly"};
             const response = await request(app)
