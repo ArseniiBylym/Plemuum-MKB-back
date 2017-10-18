@@ -36,8 +36,8 @@ export default class EmailService {
     }
 
 
-    static getMailOptions(email: string, html: string, subject: string) {
-        const message = "This is an automated answer, there is no need to reply!";
+    static getMailOptions(email: string, html: string, subject: string,
+                          message: string = "This is an automated answer, there is no need to reply!") {
         return {
             from: 'bot@plenuum.com',
             to: email,
