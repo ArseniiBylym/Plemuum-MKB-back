@@ -602,7 +602,7 @@ suite("CompassManager tests", () => {
         test("It should send a 200", async () => {
 
             const organizationMock: any = { name: sinon.stub(), dbName: sinon.stub() };
-            const response = {"message": "Todos were generated successfuly"};
+            const response = {"message": "Todos were generated successfully"};
             const testGroups: any[] = [
                 {
                     _id: "group1",
