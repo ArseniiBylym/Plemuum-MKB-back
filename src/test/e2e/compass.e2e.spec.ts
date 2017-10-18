@@ -286,7 +286,7 @@ suite("Compass request test", () => {
             expect(response.body).to.be.deep.equal(result);
         });
 
-        test("Start generation shoulb be successfull", async () => {
+        test("Start generation should be successfull", async () => {
             const url = '/api/startwork';
             const result = {"message": "Todos were generated successfully"};
             const response = await request(app)
