@@ -92,7 +92,7 @@ export default class UserManager {
                 let link = origin + "/set_new_password?token="
                     + response.token + "&email=" + email + "&welcome=true&name=" + firstName;
                 const mailService = new EmailService();
-                mailService.sendWelcomeEmail(email, firstName, link, body.orgId);
+                mailService.sendWelcomeEmail(email, firstName, link, body.orgIds);
             })
             .catch((error) => {
                 logger.error({
