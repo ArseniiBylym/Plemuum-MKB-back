@@ -277,7 +277,7 @@ suite("Compass request test", () => {
 
         test("Generate todos for users in the organizations", async () => {
             const url = '/api/generatetodos';
-            const result = {"message": "Todos were generated successfuly"};
+            const result = {"message": "Todos were generated successfully"};
             const token = await authenticate(testAdmin);
             const response = await request(app)
                 .get(url)
@@ -286,9 +286,9 @@ suite("Compass request test", () => {
             expect(response.body).to.be.deep.equal(result);
         });
 
-        test("", async () => {
+        test("Start generation should be successfull", async () => {
             const url = '/api/startwork';
-            const result = {"message": "Todos were generated successfuly"};
+            const result = {"message": "Todos were generated successfully"};
             const response = await request(app)
                 .get(url)
                 .set(basicAuthHeader)
