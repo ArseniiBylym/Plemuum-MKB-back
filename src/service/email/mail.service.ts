@@ -36,12 +36,12 @@ export default class EmailService {
     }
 
 
-    static getMailOptions(email: string, html: string) {
+    static getMailOptions(email: string, html: string, subject: string) {
         const message = "This is an automated answer, there is no need to reply!";
         return {
             from: 'bot@plenuum.com',
             to: email,
-            subject: 'Pleenum Change password step 2',
+            subject: subject,
             text: message,
             html: html
         };
@@ -57,7 +57,7 @@ export default class EmailService {
         return this.getHtmlFromEjs(WELCOME_TEMPLATE, data)
             .then((html) => {
                 const transporter = EmailService.getTransport(HOST, PORT, SECURE, USERNAME, SECRET);
-                const mailOptions = EmailService.getMailOptions(email, html);
+                const mailOptions = EmailService.getMailOptions(email, html, "Welcome to Plenuum");
                 return new Promise((resolve, reject) => {
                     transporter.sendMail(mailOptions, (error: any, info: any) => error ? reject(error) : resolve(info));
                 })
@@ -71,7 +71,7 @@ export default class EmailService {
         return this.getHtmlFromEjs(RESET_PASSWORD_TEMPLATE, data)
             .then((html) => {
                 const transporter = EmailService.getTransport(HOST, PORT, SECURE, USERNAME, SECRET);
-                const mailOptions = EmailService.getMailOptions(email, html);
+                const mailOptions = EmailService.getMailOptions(email, html, "Pleenum Change password step 2");
                 return new Promise((resolve, reject) => {
                     transporter.sendMail(mailOptions, (error: any, info: any) => error ? reject(error)
                         : resolve(info));
