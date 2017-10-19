@@ -8,16 +8,7 @@ before_script:
   - apk update
   - apk upgrade
   - apk add python python-dev py-pip build-base
-  - apk add git openssh
   - pip install docker-compose
-
-#  - docker-compose --version
-#  - mkdir -p ~/.ssh
-#  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
-#  - chmod 600 ~/.ssh/id_rsa
-#  - eval "$(ssh-agent -s)"
-#  - ssh-add ~/.ssh/id_rsa
-#  - ssh-keyscan -H 'dev.plenuum.com' >> ~/.ssh/known_hosts
 
 stages:
   - test
@@ -27,7 +18,7 @@ testing:
   script:
     - docker-compose -f docker-compose-test.yml up -d
     - docker exec -i plenuumbe npm run start-ci-test
-    - docker-compose stop
+    - docker-compose -f docker-compose-test.yml stop
   stage: test
   environment:
     name: review/$CI_COMMIT_REF_NAME
