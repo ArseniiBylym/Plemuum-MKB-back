@@ -14,8 +14,6 @@ services:
     tty: true
     stdin_open: true
     command: 'bash'
-    volumes:
-    - ./node_modules
   mongo:
     image: mongo
     volumes:
