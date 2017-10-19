@@ -1,36 +1,3 @@
-#image: docker:latest
-#
-#services:
-#  - docker:dind
-#
-#before_script:
-#  - docker info
-#  - apk update
-#  - apk upgrade
-#  - apk add python python-dev py-pip build-base
-#  - pip install docker-compose
-#
-#stages:
-#  - test
-#
-#
-#
-#
-#testing:
-#  script:
-#    - docker-compose -f docker-compose-test.yml up -d
-#    - docker exec -i plenuumbe npm run start-ci-test
-#    - docker-compose -f docker-compose-test.yml stop
-#  stage: test
-#  environment:
-#    name: review/$CI_COMMIT_REF_NAME
-#    url: http://$CI_PROJECT_PATH_SLUG-$CI_ENVIRONMENT_SLUG
-#  only:
-#    - branches
-#  except:
-#    - master
-
-
 image: node:8.4.0
 
 cache:
@@ -38,7 +5,7 @@ cache:
   - node_modules/
 
 services:
- - mongo
+ - mongo:3.4.9
 
 before_script:
  - npm i --silent
