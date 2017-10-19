@@ -1,4 +1,3 @@
-#image: tmaier/docker-compose:latest
 image: docker:latest
 
 services:
@@ -11,22 +10,22 @@ before_script:
   - apk add python python-dev py-pip build-base
   - apk add git openssh
   - pip install docker-compose
-  - docker-compose --version
-  - mkdir -p ~/.ssh
-  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
-  - chmod 600 ~/.ssh/id_rsa
-  - eval "$(ssh-agent -s)"
-  - ssh-add ~/.ssh/id_rsa
-  - ssh-keyscan -H 'dev.plenuum.com' >> ~/.ssh/known_hosts
+
+#  - docker-compose --version
+#  - mkdir -p ~/.ssh
+#  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+#  - chmod 600 ~/.ssh/id_rsa
+#  - eval "$(ssh-agent -s)"
+#  - ssh-add ~/.ssh/id_rsa
+#  - ssh-keyscan -H 'dev.plenuum.com' >> ~/.ssh/known_hosts
 
 stages:
   - test
   - review
-  - deploy
 
 testing:
   script:
-    - docker-compose up -d
+    - docker-compose -f docker-compose-test.yml up -d
     - docker exec -i plenuumbe npm run start-ci-test
     - docker-compose stop
   stage: test
@@ -37,24 +36,3 @@ testing:
     - branches
   except:
     - master
-
-send_to_staging:
-  stage: deploy
-  environment:
-    name: staging/$CI_COMMIT_REF_NAME
-  script:
-    - git push -u $STAGING_SERVER master
-  only:
-    - develop
-  when: manual
-
-
-product_deploy:
-  stage: deploy
-  environment:
-    name: production/$CI_COMMIT_REF_NAME
-  script:
-    - git push -u $PRODUCTION_SERVER master
-  only:
-    - master
-  when: manual
