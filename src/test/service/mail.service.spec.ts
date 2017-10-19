@@ -15,6 +15,25 @@ suite("Mail service tests", () => {
 
     suite("sendWelcomeEmail", () => {
 
+        suite("Get Options", () => {
+            test("Should get the options correctly", () => {
+                const mockEmail = "mock email";
+                const mockHtml = "mock html";
+                const mockSubject = "mock subject";
+                const mockMessage = "mock message";
+                const mockResponse = {
+                    from: 'bot@plenuum.com',
+                    to: mockEmail,
+                    subject: mockSubject,
+                    text: mockMessage,
+                    html: mockHtml
+                };
+
+                const options = EmailService.getMailOptions(mockEmail, mockHtml, mockSubject, mockMessage);
+                expect(options).to.be.deep.equal(mockResponse);
+            });
+        });
+
         suite("Happy cases", () => {
             beforeEach(() => {
                 emailService = new EmailService();
