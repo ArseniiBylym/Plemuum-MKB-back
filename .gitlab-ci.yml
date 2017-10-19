@@ -45,4 +45,4 @@ before_script:
 
 tests:
  script:
-  - npm test
+  - npm run start-ci-test
