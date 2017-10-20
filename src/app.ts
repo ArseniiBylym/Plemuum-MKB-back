@@ -33,7 +33,7 @@ const app = (): Express => {
     app.use(logger("dev"));
 
     // TODO finish and use this before release!
-    const origins = process.env.NODE_ENV === ENVIRONMENTS.development
+    const origins = process.env.NODE_ENV === ENVIRONMENTS.development || process.env.NODE_ENV === ENVIRONMENTS.test
         ? ["http://localhost:3000", "http://localhost:8081"]
         : ["http://188.142.231.10:8082", "http://188.142.231.10:8083"];
 

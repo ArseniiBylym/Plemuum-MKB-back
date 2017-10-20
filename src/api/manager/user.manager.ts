@@ -73,9 +73,10 @@ export default class UserManager {
     }
 
     //This should be async
-    async saveUser(body: any, params: any){
+    async saveUser(body: any, params: any) {
+        body.admin = body.admin && body.admin === 'true';
         const savedUser = await UserDataController.saveUser(body);
-        if (!savedUser){
+        if (!savedUser) {
             throw new PlenuumError("User not saved", ErrorType.VALIDATION);
         }
         this.sendChangePasswordOnWelcome(savedUser, body, params);
