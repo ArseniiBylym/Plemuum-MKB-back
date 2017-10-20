@@ -10,7 +10,7 @@
     "start-staging": "NODE_ENV=staging node index.js",
     "start-ci-test": "NODE_ENV=test nyc --reporter=html ./node_modules/.bin/mocha -u tdd -r ts-node/register src/test/**/**.spec.ts",
     "generate-api-docs": "apidoc -i src -o docs/api",
-    "test": "NODE_ENV=dev nyc --reporter=html ./node_modules/.bin/mocha -u tdd -r ts-node/register src/test/**/**.spec.ts"
+    "test": "nyc --reporter=html ./node_modules/.bin/mocha -u tdd -r ts-node/register src/test/**/**.spec.ts"
   },
   "nyc": {
     "extension": [
