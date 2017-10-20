@@ -13,7 +13,6 @@ before_script:
 tests:
  variables: {
   NODE_ENV:           "test",
-  DATABASE_URL:       "mongodb://mongo:27017",
   PLENUUM_BOT_EMAIL:  "bot@plenuum.com",
   PLENUUM_BOT_PWD:    "Cocobongo1",
   ADMIN_PASSWORD:     "incline diadem passed hoop",
@@ -21,11 +20,4 @@ tests:
   ADMIN_DOMAIN:       "http://localhost:8081"
  }
  script:
-  - NODE_ENV=             $NODE_ENV
-    DATABASE_URL=         $DATABASE_URL
-    PLENUUM_BOT_EMAIL=    $PLENUUM_BOT_EMAIL
-    PLENUUM_BOT_PWD=      $PLENUUM_BOT_PWD
-    ADMIN_PASSWORD=       $ADMIN_PASSWORD
-    WEBAPP_DOMAIN=        $WEBAPP_DOMAIN
-    ADMIN_DOMAIN=         $ADMIN_DOMAIN
     npm start
