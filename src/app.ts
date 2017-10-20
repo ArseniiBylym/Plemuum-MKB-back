@@ -11,8 +11,7 @@ import * as expressValidator from 'express-validator';
 import * as cors from 'cors';
 import OrganizationChecker from "./middleware/organization.checker";
 import { getOrganizationDataController } from "./data/datacontroller/organization.datacontroller";
-import { ENVIRONMENTS } from "../config/config";
-
+import { default as config } from "../config/config";
 
 const viewsPath = [path.join(__dirname, "./view"), path.join(__dirname, "./email/raw")];
 const sessionOptions = {
@@ -32,13 +31,8 @@ const app = (): Express => {
     app.set("view engine", "ejs");
     app.use(logger("dev"));
 
-    // TODO finish and use this before release!
-    const origins = process.env.NODE_ENV === ENVIRONMENTS.development || process.env.NODE_ENV === ENVIRONMENTS.test
-        ? ["http://localhost:3000", "http://localhost:8081"]
-        : ["http://188.142.231.10:8082", "http://188.142.231.10:8083"];
-
     const corsOptions = {
-        "origin": origins,
+        "origin": [config.webappDomain, config.adminDomain],
         "optionsSuccessStatus": 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
         "credentials": true,
     };

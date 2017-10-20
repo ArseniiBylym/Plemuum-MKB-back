@@ -45,14 +45,15 @@ function basicAuth() {
 function jwtAuth() {
     return new JwtStrategy(jwtOptions, async (payload, next) => {
         const user = await UserDataController.getUserById(payload.id, true, false, true);
-        if (user) {
-            user.admin = payload.admin;
+        if (!user) {
+            next(null, false);
+            return;
         }
-
+        user.admin = payload.admin;
         const createdAt = new Date(payload.createdAt);
         if (createdAt < user.passwordUpdatedAt) {
             next(null, false);
-        }else{
+        } else {
             next(null, user ? user : false);
         }
     });

@@ -1,6 +1,7 @@
 import FirebaseConfig from "./firebase.config";
 
 export interface Config {
+    env: string;
     port: string;
     mongoUrl: string;
     adminPwd: string;
@@ -10,4 +11,5 @@ export interface Config {
     firebaseConfig: FirebaseConfig;
     workerTime: string;
     webappDomain: string;
+    adminDomain: string;
 }

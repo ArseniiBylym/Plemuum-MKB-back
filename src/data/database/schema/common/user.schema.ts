@@ -1,7 +1,7 @@
 import { Connection, Document, Model, Schema } from "mongoose";
 import { getDatabaseManager } from "../../../../factory/database.factory"
 import { User } from "../../../models/common/user.model";
-import { ENVIRONMENTS } from "../../../../../config/config";
+import { default as config, ENVIRONMENTS } from "../../../../../config/config";
 
 const USER_COLLECTION = "users";
 
@@ -13,13 +13,13 @@ let UserSchema = new Schema({
     pictureUrl: {required: false, type: String},
     orgIds: {required: true, type: [String], select: false},
     admin: {required: true, type: Boolean, select: false, default: false},
-    password: { type: String, required: true, bcrypt: true, select: false },
+    password: {type: String, required: true, bcrypt: true, select: false},
     passwordUpdatedAt: {required: true, type: Date, select: false, default: Date.now},
     notificationToken: {required: false, type: [String], select: false}
 
 }, {versionKey: false, collection: USER_COLLECTION});
 
-if (process.env.NODE_ENV == ENVIRONMENTS.production || process.env.NODE_ENV == ENVIRONMENTS.staging) {
+if (config.env === ENVIRONMENTS.PRODUCTION || config.env === ENVIRONMENTS.STAGING) {
     UserSchema.plugin(require('mongoose-bcrypt'));
 } else {
     UserSchema.method("verifyPasswordSync", function (password: string): boolean {

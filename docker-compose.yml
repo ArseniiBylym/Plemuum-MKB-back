@@ -11,7 +11,7 @@ services:
       - mongo
     container_name: plenuum-backend
     environment:
-        - NODE_ENV=test
+        - NODE_ENV=staging
     depends_on:
       - mongo
     tty: true

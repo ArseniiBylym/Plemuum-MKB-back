@@ -5,24 +5,21 @@ import stagingConfig from "./staging.config"
 import { Config } from "./config.interface";
 
 export enum ENVIRONMENTS {
-    production = "prod",
-    staging = "staging",
-    test = "test",
-    development = "dev",
+    PRODUCTION = "prod",
+    STAGING = "staging",
+    TEST = "test",
+    DEVELOPMENT = "dev",
 }
 
 const getConfig = (): Config => {
     switch (process.env.NODE_ENV) {
-        case ENVIRONMENTS.development:
-            return devConfig;
-        case ENVIRONMENTS.production:
+        case ENVIRONMENTS.PRODUCTION:
             return prodConfig;
-        case ENVIRONMENTS.test:
+        case ENVIRONMENTS.TEST:
             return testConfig;
-        case ENVIRONMENTS.staging:
+        case ENVIRONMENTS.STAGING:
             return stagingConfig;
         default:
-            console.error('NODE_ENV environment variable not set | dev will be used');
             return devConfig;
     }
 };

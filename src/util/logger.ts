@@ -1,4 +1,4 @@
-import { ENVIRONMENTS } from "../../config/config";
+import { default as config, ENVIRONMENTS } from "../../config/config";
 
 const winston = require("winston");
 
@@ -10,7 +10,7 @@ const logger = winston.createLogger({
     ]
 });
 
-if (process.env.NODE_ENV !== ENVIRONMENTS.development) {
+if (config.env !== ENVIRONMENTS.DEVELOPMENT) {
     logger.add(new winston.transports.File({filename: './log/error.log', level: 'error'}));
 }
 

@@ -1,6 +1,11 @@
 import { Config } from "./config.interface";
+import { ENVIRONMENTS } from "./config";
+import { getDefaultFirebaseConfig } from "./firebase.config";
 
 const devConfig: Config = {
+    get env() {
+        return ENVIRONMENTS.DEVELOPMENT
+    },
     get port() {
         return '5000';
     },
@@ -20,19 +25,16 @@ const devConfig: Config = {
         return true;
     },
     get firebaseConfig() {
-        return {
-            projectId: 'plenuumbackend',
-            keyFileName: 'PlenuumBackend-25b19e804e20.json',
-            bucketName: 'plenuumbackend.appspot.com',
-            baseUrl: 'http://storage.googleapis.com/plenuumbackend.appspot.com/',
-            databaseUrl: 'https://plenuumbackend.firebaseio.com/'
-        };
+        return getDefaultFirebaseConfig();
     },
     get workerTime() {
         return "0 0 8 * * *"; //Every day at 08:00 AM
     },
     get webappDomain() {
-        return "http://localhost:3000"; //"http://dev.app.plenuum.com"
+        return "http://localhost:3000";
+    },
+    get adminDomain() {
+        return "http://localhost:8081";
     }
 };
 

@@ -6,7 +6,7 @@ import * as ManagerFactory from "./factory/manager.factory";
 import { getDatabaseManager } from "./factory/database.factory";
 import * as cluster from 'cluster';
 
-if (cluster.isMaster && process.env.NODE_ENV !== ENVIRONMENTS.development ) {
+if (cluster.isMaster && config.env !== ENVIRONMENTS.DEVELOPMENT ) {
     // Count the machine's CPUs
     const cpuCount = require('os').cpus().length;
 
