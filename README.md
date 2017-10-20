@@ -111,3 +111,40 @@ You can find extra documentation inside the "docs" folder.
 
 - groups: There's a "mock_groups_diagram.xml" draw.io document, which describes the current state of our mock groups.
 Whenever you change the "groups.json", please make sure you update this document as well.
+
+
+## Installation for client developers
+As a client (frontend, mobile app, etc.) developer you might not want to install all of the necessary components
+on your local machine just to be able to test. For you there's a faster and easier way to run the backend and all it's
+dependencies.
+
+### Requirements
+In order to use this installation method you need to have Docker preinstalled on you machine.
+If you don't have it yet please go to the [Docker website](https://docs.docker.com/engine/installation/) and install it.
+Make sure you install the latest and Stable version.
+
+### Usage
+First of all check Docker. Open a terminal window and type:
+```
+docker version
+```
+Your version should be 17.09.0-ce or newer. Then check docker-compose:
+```
+docker-compose -v
+```
+This one should be 1.16.1 or newer.
+
+If you have both of them installed then navigate to your work directory. Check if you can see a "docker-compose.yml" file.
+Use the 
+```
+docker-compose up -d
+``` 
+command to start the backend.
+Your local backend should be up and running in a few seconds at ```localhost:5000```
+To stop your local server simply type: 
+```
+docker-compose down
+```
+
+If you want to connect to your local database then you'll need a client application like [Robo 3T](https://robomongo.org/)
+Your local MongoDB is accessable at ```localhost:27017``` no authorization needed.
