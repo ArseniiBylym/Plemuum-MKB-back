@@ -1,0 +1,30 @@
+version: "3.3"
+services:
+  web:
+    build: .
+    image: plenuum-backend
+    expose:
+      - "5000"
+    ports:
+      - "5000:5000"
+    links:
+      - mongo
+    container_name: plenuum-backend
+    environment:
+        - NODE_ENV=test
+    depends_on:
+      - mongo
+    tty: true
+    stdin_open: true
+  mongo:
+    image: mongo:3.4.9
+    expose:
+          - "27017"
+    ports:
+          - "27017:27017"
+    volumes:
+      - mongodb:/data/db
+    container_name: plenuum-db
+
+volumes:
+  mongodb:
