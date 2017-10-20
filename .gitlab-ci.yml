@@ -1,60 +1,15 @@
-#image: tmaier/docker-compose:latest
-image: docker:latest
+image: node:8.4.0
+
+cache:
+ paths:
+  - node_modules/
 
 services:
-  - docker:dind
+ - mongo:3.4.9
 
 before_script:
-  - docker info
-  - apk update
-  - apk upgrade
-  - apk add python python-dev py-pip build-base
-  - apk add git openssh
-  - pip install docker-compose
-  - docker-compose --version
-  - mkdir -p ~/.ssh
-  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
-  - chmod 600 ~/.ssh/id_rsa
-  - eval "$(ssh-agent -s)"
-  - ssh-add ~/.ssh/id_rsa
-  - ssh-keyscan -H 'dev.plenuum.com' >> ~/.ssh/known_hosts
+ - npm i --silent
 
-stages:
-  - test
-  - review
-  - deploy
-
-testing:
-  script:
-    - docker-compose up -d
-    - docker exec -i plenuumbe npm run start-ci-test
-    - docker-compose stop
-  stage: test
-  environment:
-    name: review/$CI_COMMIT_REF_NAME
-    url: http://$CI_PROJECT_PATH_SLUG-$CI_ENVIRONMENT_SLUG
-  only:
-    - branches
-  except:
-    - master
-
-send_to_staging:
-  stage: deploy
-  environment:
-    name: staging/$CI_COMMIT_REF_NAME
-  script:
-    - git push -u $STAGING_SERVER master
-  only:
-    - develop
-  when: manual
-
-
-product_deploy:
-  stage: deploy
-  environment:
-    name: production/$CI_COMMIT_REF_NAME
-  script:
-    - git push -u $PRODUCTION_SERVER master
-  only:
-    - master
-  when: manual
+tests:
+ script:
+  - npm run start-ci-test
