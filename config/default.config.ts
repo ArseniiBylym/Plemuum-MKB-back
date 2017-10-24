@@ -2,9 +2,9 @@ import { Config } from "./config.interface";
 import { ENVIRONMENTS } from "./config";
 import { getDefaultFirebaseConfig } from "./firebase.config";
 
-const stagingConfig: Config = {
+const defaultConfig: Config = {
     get env() {
-        return ENVIRONMENTS.STAGING
+        return ENVIRONMENTS.PRODUCTION
     },
     get port() {
         return '5000';
@@ -22,7 +22,7 @@ const stagingConfig: Config = {
         return <string> process.env.PLENUUM_BOT_PWD
     },
     get debugMode() {
-        return true;
+        return false;
     },
     get firebaseConfig() {
         return getDefaultFirebaseConfig();
@@ -38,5 +38,7 @@ const stagingConfig: Config = {
     }
 };
 
-export default stagingConfig
+export default defaultConfig
+
+
 

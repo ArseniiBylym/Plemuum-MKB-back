@@ -1,7 +1,5 @@
 import devConfig from "./dev.config"
-import prodConfig from "./prod.config"
-import testConfig from "./test.config"
-import stagingConfig from "./staging.config"
+import defaultConfig from "./default.config"
 import { Config } from "./config.interface";
 
 export enum ENVIRONMENTS {
@@ -12,16 +10,9 @@ export enum ENVIRONMENTS {
 }
 
 const getConfig = (): Config => {
-    switch (process.env.NODE_ENV) {
-        case ENVIRONMENTS.PRODUCTION:
-            return prodConfig;
-        case ENVIRONMENTS.TEST:
-            return testConfig;
-        case ENVIRONMENTS.STAGING:
-            return stagingConfig;
-        default:
-            return devConfig;
-    }
+    return process.env.NODE_ENV === ENVIRONMENTS.DEVELOPMENT
+        ? devConfig
+        : defaultConfig
 };
 
 const jwtOptions: any = {
