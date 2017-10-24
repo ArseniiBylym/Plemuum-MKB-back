@@ -12,6 +12,7 @@ before_script:
 
 tests:
  variables: {
+  NODE_ENV:           "test",
   DATABASE_URL:       "mongodb://mongo:27017",
   PLENUUM_BOT_EMAIL:  "bot@plenuum.com",
   PLENUUM_BOT_PWD:    "Cocobongo1",
