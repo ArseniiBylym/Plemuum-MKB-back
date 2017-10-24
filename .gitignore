@@ -1,2 +1,9 @@
 .idea
 node_modules
+*.map
+dist
+.nyc_output
+coverage
+docs/api
+log
+package-lock.json

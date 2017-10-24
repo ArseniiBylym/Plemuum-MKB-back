@@ -1,0 +1,18 @@
+{
+  "apps" : [
+    {
+      "name": "plenuum-backend",
+      "script": "./index.js",
+      "watch": true,
+      "env": {
+        "NODE_ENV": "staging",
+        "DATABASE_URL": "mongodb://172.17.0.1:27017",
+        "PLENUUM_BOT_EMAIL": "bot@plenuum.com",
+        "PLENUUM_BOT_PWD": "Cocobongo1",
+        "ADMIN_PASSWORD": "incline diadem passed hoop",
+        "WEBAPP_DOMAIN": "http://188.142.231.10:8083",
+        "ADMIN_DOMAIN": "http://188.142.231.10:8082"
+      }
+    }
+  ]
+}

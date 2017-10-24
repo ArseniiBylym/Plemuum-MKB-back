@@ -1,17 +1,24 @@
 import devConfig from "./dev.config"
-import prodConfig from "./prod.config"
+import defaultConfig from "./default.config"
 import { Config } from "./config.interface";
 
-const getConfig = (): Config => {
-    switch (process.env.NODE_ENV) {
-        case "dev":
-            return devConfig;
-        case "prod":
-            return prodConfig;
-        default:
-            console.error('NODE_ENV environment variable not set | dev will be used');
-            return devConfig;
-    }
+export enum ENVIRONMENTS {
+    PRODUCTION = "prod",
+    STAGING = "staging",
+    TEST = "test",
+    DEVELOPMENT = "dev",
 }
 
+const getConfig = (): Config => {
+    return process.env.NODE_ENV === ENVIRONMENTS.DEVELOPMENT
+        ? devConfig
+        : defaultConfig
+};
+
+const jwtOptions: any = {
+    jwtFromRequest: require('passport-jwt').ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: 'HlP8IqXEfXyrP0LgZihWSyLwlcSlySc3H40yj9P2'
+};
+
+export { jwtOptions };
 export default getConfig();

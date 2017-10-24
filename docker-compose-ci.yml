@@ -1,0 +1,32 @@
+version: "3.3"
+services:
+  web:
+    build: .
+    image: plenuum-backend-test
+    expose:
+      - "5000"
+    ports:
+      - "5000:5000"
+    links:
+      - mongo
+    container_name: plenuum-backend-test
+    environment:
+        - NODE_ENV=test
+        - DATABASE_URL=mongodb://mongo:27017
+        - PLENUUM_BOT_EMAIL=bot@plenuum.com
+        - PLENUUM_BOT_PWD=Cocobongo1
+        - ADMIN_PASSWORD=incline diadem passed hoop
+        - WEBAPP_DOMAIN=http://localhost:3000
+        - ADMIN_DOMAIN=http://localhost:8081
+    depends_on:
+      - mongo
+    tty: true
+    stdin_open: true
+    command: npm run start-ci-test
+  mongo:
+    image: mongo:3.4.9
+    expose:
+          - "27017"
+    ports:
+          - "27017:27017"
+    container_name: plenuum-db-test

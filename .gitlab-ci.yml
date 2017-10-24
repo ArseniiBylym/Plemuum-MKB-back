@@ -1,0 +1,23 @@
+image: node:8.4.0
+
+cache:
+ paths:
+  - node_modules/
+
+services:
+ - mongo:3.4.9
+
+before_script:
+ - npm i --silent
+
+tests:
+ variables: {
+  DATABASE_URL:       "mongodb://mongo:27017",
+  PLENUUM_BOT_EMAIL:  "bot@plenuum.com",
+  PLENUUM_BOT_PWD:    "Cocobongo1",
+  ADMIN_PASSWORD:     "incline diadem passed hoop",
+  WEBAPP_DOMAIN:      "http://localhost:3000",
+  ADMIN_DOMAIN:       "http://localhost:8081"
+ }
+ script:
+  - npm run start-ci-test
