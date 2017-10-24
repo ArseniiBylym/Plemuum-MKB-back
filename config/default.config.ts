@@ -1,10 +1,9 @@
 import { Config } from "./config.interface";
-import { ENVIRONMENTS } from "./config";
 import { getDefaultFirebaseConfig } from "./firebase.config";
 
 const defaultConfig: Config = {
     get env() {
-        return ENVIRONMENTS.PRODUCTION
+        return <string> process.env.NODE_ENV;
     },
     get port() {
         return '5000';
