@@ -1,20 +1,22 @@
+import { Types } from "mongoose";
+
 const adam = {
-    _id: "5984342227cd340363dc84a9"
+    _id: Types.ObjectId.createFromHexString("5984342227cd340363dc84a9")
 };
 const hakim = {
-    _id: "5984342227cd340363dc84c7"
+    _id: Types.ObjectId.createFromHexString("5984342227cd340363dc84c7")
 };
 const fabricio = {
-    _id: "5984342227cd340363dc84aa"
+    _id: Types.ObjectId.createFromHexString("5984342227cd340363dc84aa")
 };
 const eve = {
-    _id: "5984342227cd340363dc84ab"
+    _id: Types.ObjectId.createFromHexString("5984342227cd340363dc84ab")
 };
 const liu = {
-    _id: "5984342227cd340363dc84ac"
+    _id: Types.ObjectId.createFromHexString("5984342227cd340363dc84ac")
 };
 const bono = {
-    _id: "5984342227cd340363dc84ad"
+    _id: Types.ObjectId.createFromHexString("5984342227cd340363dc84ad")
 };
 
 const communication = {
@@ -102,31 +104,31 @@ const callCenterID = "599312aa1b31d008b6bd2784";
 const marketing: any = {
     _id: marketingID,
     name: "Marketing",
-    users: [hakim._id, fabricio._id],
+    users: [hakim._id.toString(), fabricio._id.toString()],
     skills: [communication._id, leadership._id, interpersonalEffectiveness._id],
     todoCardRelations: [],
     answerCardRelations: []
 };
 const IT: any = {
     _id: itID,
-    name: "Marketing",
-    users: [adam._id, eve._id],
+    name: "IT",
+    users: [adam._id.toString(), eve._id.toString()],
     skills: [communication._id, leadership._id],
     todoCardRelations: [],
     answerCardRelations: []
 };
 const dbEngineers: any = {
     _id: dbEngineersID,
-    name: "Marketing",
-    users: [adam._id, liu._id],
+    name: "DB Engineers",
+    users: [adam._id.toString(), liu._id.toString()],
     skills: [communication._id, databases._id],
     todoCardRelations: [dbEngineersID, itID],
     answerCardRelations: [dbEngineersID, itID]
 };
 const callCenter: any = {
     _id: callCenterID,
-    name: "Marketing",
-    users: [bono._id],
+    name: "Call center",
+    users: [bono._id.toString()],
     skills: [communication._id, interpersonalEffectiveness._id],
     todoCardRelations: [callCenterID],
     answerCardRelations: [callCenterID]
@@ -143,7 +145,7 @@ export function getScenarioOneGroups() {
 }
 
 export function getScenarioOneUsers() {
-    return copy(scenarioOneUsers);
+    return scenarioOneUsers;
 }
 
 export function getScenarioOneSkills() {
