@@ -279,6 +279,7 @@ suite("Compass Statistics Manager tests", () => {
             };
 
             const result = await StatisticsManager.getStatistics(orgId, userId, groups);
+
             getStatisticsByUserId.restore();
             getSkillsByIds.restore();
 
