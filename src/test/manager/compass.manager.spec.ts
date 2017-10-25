@@ -14,6 +14,7 @@ import { fail } from "assert";
 import { PlenuumError } from "../../util/errorhandler";
 import FeedbackDataController from "../../data/datacontroller/feedback.datacontroller";
 import { getScenarioOneGroups, getScenarioOneSkills, getScenarioOneUsers, } from "../util/test-scenerios";
+import { getRandomItem } from "../util/utils";
 
 const dummy: any = {};
 
@@ -597,9 +598,13 @@ suite("CompassManager tests", () => {
         });
     });
 
-    suite("Auto Generate Todos For Organization", () => {
+    suite.only("Auto Generate Todos For Organization", () => {
         const organizationMock: any = {name: "MockOrg", dbName: "mock-org", todoSentenceNumber: 3};
-        const random = (array: any[]) => array[0];
+        const random = (array: any[]) => array[0 % array.length];
+        const groupDataController: any = {
+            getUserGroups: sinon.stub().callsFake((orgId: string, userId: any) =>
+                getScenarioOneGroups().filter((g: any) => g.users.indexOf(userId.toString()) !== -1))
+        };
         let sandbox: any;
 
         beforeEach(() => sandbox = sinon.sandbox.create());
@@ -611,7 +616,6 @@ suite("CompassManager tests", () => {
             sandbox.stub(UserDataController, "getOrganizationUsers").resolves(getScenarioOneUsers());
             sandbox.stub(CompassDataController, "saveCompassTodo").resolves();
 
-            const groupDataController: any = {getUserGroups: sinon.stub().resolves(getScenarioOneGroups())};
             const compassManager: any = new CompassManager(groupDataController, dummy, dummy);
 
             const result = await compassManager.autoGenerateTodosForOrganization(organizationMock, random);
@@ -625,7 +629,6 @@ suite("CompassManager tests", () => {
             sandbox.stub(UserDataController, "getOrganizationUsers").resolves(getScenarioOneUsers());
             sandbox.stub(CompassDataController, "saveCompassTodo").resolves();
 
-            const groupDataController: any = {getUserGroups: sinon.stub().resolves(getScenarioOneGroups())};
             const compassManager: any = new CompassManager(groupDataController, dummy, dummy);
 
             const result = await compassManager.autoGenerateTodosForOrganization(organizationMock, random);
@@ -638,14 +641,34 @@ suite("CompassManager tests", () => {
             sandbox.stub(UserDataController, "getOrganizationUsers").resolves(getScenarioOneUsers());
             sandbox.stub(CompassDataController, "saveCompassTodo").resolves();
 
-            const groupDataController: any = {getUserGroups: sinon.stub().resolves(getScenarioOneGroups())};
             const compassManager: any = new CompassManager(groupDataController, dummy, dummy);
 
-            const result = await compassManager.autoGenerateTodosForOrganization(organizationMock, random);
+            for(let i = 0; i < 10; i++) {
+                const result = await compassManager.autoGenerateTodosForOrganization(
+                    organizationMock,
+                    (array: any[]) => array[i % array.length]);
+                console.log(result);
+                console.log("");
+                result.forEach((todo: any) => {
+                    if (todo.about.toString() === todo.owner.toString()) {
+                        fail("Owner and about are the same: " + JSON.stringify(todo))
+                    }
+                });
+            }
+        });
+
+        test("TODO about must not be empty", async () => {
+            sandbox.stub(CompassDataController, "getSkillsByIds").callsFake((orgId: string, ids: string[]) =>
+                ids.map((id: string) => getScenarioOneSkills().find((skill: any) => id === skill._id)));
+            sandbox.stub(UserDataController, "getOrganizationUsers").resolves([getScenarioOneUsers()[5]]);
+            sandbox.stub(CompassDataController, "saveCompassTodo").resolves();
+
+            const compassManager: any = new CompassManager(groupDataController, dummy, dummy);
+
+            const result = await compassManager.autoGenerateTodosForOrganization(organizationMock, getRandomItem);
             result.forEach((todo: any) => {
-                if (todo.about === todo.owner) {
-                    fail("Owner and about are the same: " + JSON.stringify(todo))
-                }
+                expect(todo.about).to.not.be.undefined;
+                expect(todo.about).to.not.be.empty;
             });
         });
     });

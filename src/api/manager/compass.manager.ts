@@ -192,22 +192,22 @@ export default class CompassManager {
             return;
         }
 
-        const todos: any[] = [];
-        await users.forEach(async (user) => {
+        return Promise.all(users.map(async (user) => {
             const userGroups: Group[] = await this.groupDataController.getUserGroups(name, user._id);
             const groupsWithTodoRelations = userGroups.filter((group) => group.todoCardRelations.length > 0);
 
             if (groupsWithTodoRelations.length > 0) {
                 const randomGroup = random(groupsWithTodoRelations);
-                const usersToPickFrom = randomGroup.users.filter((element: any) => user._id !== element);
-                const randomAboutUserId = random(usersToPickFrom);
-                const skills = await CompassDataController.getSkillsByIds(name, randomGroup.skills);
-                const todo = CompassManager.buildUpNewTodoResponse(user._id, org.todoSentenceNumber, randomAboutUserId, skills);
-                await CompassDataController.saveCompassTodo(dbName, todo);
-                todos.push(todo);
+                const usersToPickFrom = randomGroup.users.filter((element: any) => user._id.toString() !== element);
+                if(usersToPickFrom.length > 0) {
+                    const randomAboutUserId = random(usersToPickFrom);
+                    const skills = await CompassDataController.getSkillsByIds(name, randomGroup.skills);
+                    const todo = CompassManager.buildUpNewTodoResponse(user._id, org.todoSentenceNumber, randomAboutUserId, skills);
+                    await CompassDataController.saveCompassTodo(dbName, todo);
+                    return todo;
+                }
             }
-        });
-        return todos;
+        })).then((todos) => todos.filter((t) => t));
     }
 
     async generateTodo() {
