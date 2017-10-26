@@ -598,12 +598,14 @@ suite("CompassManager tests", () => {
         });
     });
 
-    suite.only("Auto Generate Todos For Organization", () => {
+    suite("Auto Generate Todos For Organization", () => {
         const organizationMock: any = {name: "MockOrg", dbName: "mock-org", todoSentenceNumber: 3};
         const random = (array: any[]) => array[0 % array.length];
         const groupDataController: any = {
             getUserGroups: sinon.stub().callsFake((orgId: string, userId: any) =>
-                getScenarioOneGroups().filter((g: any) => g.users.indexOf(userId.toString()) !== -1))
+                getScenarioOneGroups().filter((g: any) => g.users.indexOf(userId.toString()) !== -1)),
+            getGroupsByIds: sinon.stub().callsFake((orgId: string, groupIds: string[]) =>
+                getScenarioOneGroups().filter((g: any) => groupIds.indexOf(g._id) !== -1))
         };
         let sandbox: any;
 
@@ -643,12 +645,10 @@ suite("CompassManager tests", () => {
 
             const compassManager: any = new CompassManager(groupDataController, dummy, dummy);
 
-            for(let i = 0; i < 10; i++) {
+            for (let i = 0; i < 10; i++) {
                 const result = await compassManager.autoGenerateTodosForOrganization(
                     organizationMock,
                     (array: any[]) => array[i % array.length]);
-                console.log(result);
-                console.log("");
                 result.forEach((todo: any) => {
                     if (todo.about.toString() === todo.owner.toString()) {
                         fail("Owner and about are the same: " + JSON.stringify(todo))
@@ -660,7 +660,7 @@ suite("CompassManager tests", () => {
         test("TODO about must not be empty", async () => {
             sandbox.stub(CompassDataController, "getSkillsByIds").callsFake((orgId: string, ids: string[]) =>
                 ids.map((id: string) => getScenarioOneSkills().find((skill: any) => id === skill._id)));
-            sandbox.stub(UserDataController, "getOrganizationUsers").resolves([getScenarioOneUsers()[5]]);
+            sandbox.stub(UserDataController, "getOrganizationUsers").resolves([getScenarioOneUsers()[5]]); // User Bono
             sandbox.stub(CompassDataController, "saveCompassTodo").resolves();
 
             const compassManager: any = new CompassManager(groupDataController, dummy, dummy);
@@ -671,5 +671,18 @@ suite("CompassManager tests", () => {
                 expect(todo.about).to.not.be.empty;
             });
         });
+
+        test("Should be able to generate TODO about Eve for Adam", async () => {
+            const random = (array: any[]) => array[0 % array.length];
+            sandbox.stub(CompassDataController, "getSkillsByIds").callsFake((orgId: string, ids: string[]) =>
+                ids.map((id: string) => getScenarioOneSkills().find((skill: any) => id === skill._id)));
+            sandbox.stub(UserDataController, "getOrganizationUsers").resolves([getScenarioOneUsers()[0]]);
+            sandbox.stub(CompassDataController, "saveCompassTodo").resolves();
+
+            const compassManager: any = new CompassManager(groupDataController, dummy, dummy);
+
+            const result = await compassManager.autoGenerateTodosForOrganization(organizationMock, random);
+            expect(result[0].about).to.be.equal(getScenarioOneUsers()[3]._id.toString());
+        })
     });
 });

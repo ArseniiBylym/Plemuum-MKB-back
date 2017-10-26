@@ -198,8 +198,10 @@ export default class CompassManager {
 
             if (groupsWithTodoRelations.length > 0) {
                 const randomGroup = random(groupsWithTodoRelations);
-                const usersToPickFrom = randomGroup.users.filter((element: any) => user._id.toString() !== element);
-                if(usersToPickFrom.length > 0) {
+                const groupsToPickUserFrom = await this.groupDataController.getGroupsByIds(dbName, randomGroup.todoCardRelations);
+                const randomTargetGroup = random(groupsToPickUserFrom);
+                const usersToPickFrom = randomTargetGroup.users.filter((element: any) => user._id.toString() !== element);
+                if (usersToPickFrom.length > 0) {
                     const randomAboutUserId = random(usersToPickFrom);
                     const skills = await CompassDataController.getSkillsByIds(name, randomGroup.skills);
                     const todo = CompassManager.buildUpNewTodoResponse(user._id, org.todoSentenceNumber, randomAboutUserId, skills);
