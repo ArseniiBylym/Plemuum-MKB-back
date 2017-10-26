@@ -11,7 +11,6 @@ import {
     createSkillScore,
     skills
 } from "../util/statistics.manager.util";
-import Group from "../../data/models/organization/group.model";
 
 suite("Compass Statistics Manager tests", () => {
     const orgId = "orgId";
@@ -107,8 +106,8 @@ suite("Compass Statistics Manager tests", () => {
                 const expectedStatistics: any = {
                     user: "aboutUser",
                     skillScores: [
-                        createSkillScore(skills[0], false, createSentenceScore(1, 1, 0)),
-                        createSkillScore(skills[1], false, createSentenceScore(3, 0, 1)),
+                        createSkillScore(skills[0], createSentenceScore(1, 1, 0)),
+                        createSkillScore(skills[1], createSentenceScore(3, 0, 1)),
                     ]
                 };
 
@@ -129,7 +128,7 @@ suite("Compass Statistics Manager tests", () => {
                 const expectedStatistics: any = {
                     user: "aboutUser",
                     skillScores: [
-                        createSkillScore(skills[0], false, createSentenceScore(1, 1, 0), createSentenceScore(2, 1, 0)),
+                        createSkillScore(skills[0], createSentenceScore(1, 1, 0), createSentenceScore(2, 1, 0)),
                     ]
                 };
 
@@ -165,8 +164,8 @@ suite("Compass Statistics Manager tests", () => {
                 statistics = {
                     user: "aboutUser",
                     skillScores: [
-                        createSkillScore(skills[0], true, createSentenceScore(1, 1, 0)),
-                        createSkillScore(skills[1], true, createSentenceScore(3, 0, 1)),
+                        createSkillScore(skills[0], createSentenceScore(1, 1, 0)),
+                        createSkillScore(skills[1], createSentenceScore(3, 0, 1)),
                     ]
                 };
             });
@@ -183,8 +182,8 @@ suite("Compass Statistics Manager tests", () => {
                 const expectedStatistics: any = {
                     user: "aboutUser",
                     skillScores: [
-                        createSkillScore(skills[0], true, createSentenceScore(1, 2, 0)),
-                        createSkillScore(skills[1], true, createSentenceScore(3, 0, 2))
+                        createSkillScore(skills[0], createSentenceScore(1, 2, 0)),
+                        createSkillScore(skills[1], createSentenceScore(3, 0, 2))
                     ]
                 };
 
@@ -205,8 +204,8 @@ suite("Compass Statistics Manager tests", () => {
                 const expectedStatistics: any = {
                     user: "aboutUser",
                     skillScores: [
-                        createSkillScore(skills[0], true, createSentenceScore(1, 2, 0), createSentenceScore(2, 1, 0)),
-                        createSkillScore(skills[1], true, createSentenceScore(3, 0, 1))
+                        createSkillScore(skills[0], createSentenceScore(1, 2, 0), createSentenceScore(2, 1, 0)),
+                        createSkillScore(skills[1], createSentenceScore(3, 0, 1))
                     ]
                 };
 
@@ -227,8 +226,8 @@ suite("Compass Statistics Manager tests", () => {
                 const expectedStatistics: any = {
                     user: "aboutUser",
                     skillScores: [
-                        createSkillScore(skills[0], true, createSentenceScore(1, 1, 0)),
-                        createSkillScore(skills[1], true, createSentenceScore(3, 0, 1))
+                        createSkillScore(skills[0], createSentenceScore(1, 1, 0)),
+                        createSkillScore(skills[1], createSentenceScore(3, 0, 1))
                     ]
                 };
 
@@ -239,7 +238,7 @@ suite("Compass Statistics Manager tests", () => {
         })
     });
 
-    suite.only("getStatistics", () => {
+    suite("getStatistics", () => {
         const userId: any = "userId";
 
         test("No statistics in the DB yet, user has skills already", async () => {
@@ -271,9 +270,9 @@ suite("Compass Statistics Manager tests", () => {
             const expectedStatistics: any = {
                 user: userId,
                 skillScores: [
-                    createSkillScore(skills[0], false),
-                    createSkillScore(skills[2], false),
-                    createSkillScore(skills[1], false)
+                    createSkillScore(skills[0]),
+                    createSkillScore(skills[2]),
+                    createSkillScore(skills[1])
                 ]
             };
 
@@ -301,7 +300,7 @@ suite("Compass Statistics Manager tests", () => {
             const expectedStatistics: any = {
                 user: userId,
                 skillScores: [
-                    createSkillScore(skills[0], false, createSentenceScore(1, 3, 2), createSentenceScore(2, 0, 5)),
+                    createSkillScore(skills[0], createSentenceScore(1, 3, 2), createSentenceScore(2, 0, 5)),
                 ]
             };
 
@@ -336,7 +335,7 @@ suite("Compass Statistics Manager tests", () => {
             const dbStatistics: any = {
                 user: userId,
                 skillScores: [
-                    createSkillScore(skills[0], false, createSentenceScore(1, 3, 2), createSentenceScore(2, 0, 5)),
+                    createSkillScore(skills[0], createSentenceScore(1, 3, 2), createSentenceScore(2, 0, 5)),
                 ]
             };
 
@@ -356,9 +355,9 @@ suite("Compass Statistics Manager tests", () => {
             const expectedStatistics: any = {
                 user: userId,
                 skillScores: [
-                    createSkillScore(skills[0], false, createSentenceScore(1, 3, 2), createSentenceScore(2, 0, 5)),
-                    createSkillScore(skills[1], false),
-                    createSkillScore(skills[2], false),
+                    createSkillScore(skills[0], createSentenceScore(1, 3, 2), createSentenceScore(2, 0, 5)),
+                    createSkillScore(skills[1]),
+                    createSkillScore(skills[2]),
                 ]
             };
 
@@ -381,9 +380,9 @@ suite("Compass Statistics Manager tests", () => {
             const dbStatistics: any = {
                 user: userId,
                 skillScores: [
-                    createSkillScore(skills[0], false, createSentenceScore(1, 3, 2), createSentenceScore(2, 0, 5)),
-                    createSkillScore(skills[1], false, createSentenceScore(2, 10, 2), createSentenceScore(3, 3, 0)),
-                    createSkillScore(skills[2], false, createSentenceScore(3, 0, 15)),
+                    createSkillScore(skills[0], createSentenceScore(1, 3, 2), createSentenceScore(2, 0, 5)),
+                    createSkillScore(skills[1], createSentenceScore(2, 10, 2), createSentenceScore(3, 3, 0)),
+                    createSkillScore(skills[2], createSentenceScore(3, 0, 15)),
                 ]
             };
 
@@ -403,9 +402,9 @@ suite("Compass Statistics Manager tests", () => {
             const expectedStatistics: any = {
                 user: userId,
                 skillScores: [
-                    createSkillScore(skills[0], false, createSentenceScore(1, 3, 2), createSentenceScore(2, 0, 5)),
-                    createSkillScore(skills[1], false, createSentenceScore(2, 10, 2), createSentenceScore(3, 3, 0)),
-                    createSkillScore(skills[2], false, createSentenceScore(3, 0, 15)),
+                    createSkillScore(skills[0], createSentenceScore(1, 3, 2), createSentenceScore(2, 0, 5)),
+                    createSkillScore(skills[1], createSentenceScore(2, 10, 2), createSentenceScore(3, 3, 0)),
+                    createSkillScore(skills[2], createSentenceScore(3, 0, 15)),
                 ]
             };
 
