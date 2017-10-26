@@ -69,7 +69,7 @@ export default class StatisticsManager {
             (sentenceAnswer: any) => sentenceAnswer.answer !== ANSWER_TYPES.SKIP);
         validSentenceAnswers.forEach((sentenceAnswer: any) => {
             // Check if there's a skill score for that skill
-            let skillScore = statistics.skillScores.find((element) => element.skill === sentenceAnswer.skill._id);
+            let skillScore = statistics.skillScores.find((element) => element.skill.toString() === sentenceAnswer.skill._id.toString());
             if (skillScore) {
                 // If there's already a skill score for that skill, create or update a sentence score
                 this.createOrUpdateSentenceScore(skillScore, sentenceAnswer);
@@ -99,7 +99,7 @@ export default class StatisticsManager {
 
     private static createSkillScore(sentenceAnswer: any): SkillScore {
         return {
-            skill: sentenceAnswer.skill._id,
+            skill: sentenceAnswer.skill._id.toString(),
             sentenceScores: [this.createSentenceScore(sentenceAnswer)]
         }
     }

@@ -1,4 +1,5 @@
 import { ANSWER_TYPES } from "../../data/models/organization/compass/compassanswer.model";
+import { Types } from "mongoose";
 
 const createSentence = (num: number) => {
     return {
@@ -9,7 +10,7 @@ const createSentence = (num: number) => {
 
 const createSkill = (num: number, ...sentences: any[]) => {
     return {
-        _id: `skillId${num}`,
+        _id: `5940f6044d0d550007d863d${num}`,
         name: `skill name ${num}`,
         sentences: sentences,
         inactiveSentences: []
@@ -46,9 +47,9 @@ const createCompassAnswer = (...sentenceAnswers: any[]) => {
     }
 };
 
-const createSkillScore = (skill: any, ...sentenceScores: any[]) => {
+const createSkillScore = (skill: any, withDbID: boolean, ...sentenceScores: any[]) => {
     return {
-        skill: skill._id,
+        skill: withDbID ? Types.ObjectId.createFromHexString(skill._id) : skill._id,
         sentenceScores: sentenceScores
     }
 };
