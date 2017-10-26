@@ -10,7 +10,7 @@ const createSentence = (num: number) => {
 
 const createSkill = (num: number, ...sentences: any[]) => {
     return {
-        _id: `5940f6044d0d550007d863d${num}`,
+        _id: Types.ObjectId.createFromHexString(`5940f6044d0d550007d863d${num}`),
         name: `skill name ${num}`,
         sentences: sentences,
         inactiveSentences: []
@@ -49,7 +49,7 @@ const createCompassAnswer = (...sentenceAnswers: any[]) => {
 
 const createSkillScore = (skill: any, withDbID: boolean, ...sentenceScores: any[]) => {
     return {
-        skill: withDbID ? Types.ObjectId.createFromHexString(skill._id) : skill._id,
+        skill: withDbID ? skill._id : skill._id.toString(),
         sentenceScores: sentenceScores
     }
 };

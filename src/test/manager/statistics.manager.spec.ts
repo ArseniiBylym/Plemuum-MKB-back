@@ -239,12 +239,12 @@ suite("Compass Statistics Manager tests", () => {
         })
     });
 
-    suite("getStatistics", () => {
+    suite.only("getStatistics", () => {
         const userId: any = "userId";
 
         test("No statistics in the DB yet, user has skills already", async () => {
             const groupUsers: any[] = [sinon.mock()];
-            const groups: Group[] = [
+            const groups: any[] = [
                 {
                     name: "Group name",
                     users: groupUsers,
@@ -287,7 +287,7 @@ suite("Compass Statistics Manager tests", () => {
 
         test("Statistics in DB, but with all the user skills", async () => {
             const groupUsers: any[] = [sinon.mock()];
-            const groups: Group[] = [
+            const groups: any[] = [
                 {
                     name: "Group name",
                     users: groupUsers,
@@ -322,7 +322,7 @@ suite("Compass Statistics Manager tests", () => {
 
         test("Statistics in DB, and the user has more skills", async () => {
             const groupUsers: any[] = [sinon.mock()];
-            const groups: Group[] = [
+            const groups: any[] = [
                 {
                     name: "Group name",
                     users: groupUsers,
@@ -367,7 +367,7 @@ suite("Compass Statistics Manager tests", () => {
 
         test("Statistics in DB, and the user lost skills", async () => {
             const groupUsers: any[] = [sinon.mock()];
-            const groups: Group[] = [
+            const groups: any[] = [
                 {
                     name: "Group name",
                     users: groupUsers,

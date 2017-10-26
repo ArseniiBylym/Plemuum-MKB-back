@@ -84,7 +84,7 @@ export default class StatisticsManager {
     }
 
     private static createOrUpdateSentenceScore(skillScore: SkillScore, sentenceAnswer: any) {
-        let sentenceScore = skillScore.sentenceScores.find((ss: any) => ss.sentence._id === sentenceAnswer.sentence._id);
+        let sentenceScore = skillScore.sentenceScores.find((ss: any) => ss.sentence._id.toString() === sentenceAnswer.sentence._id.toString());
         if (sentenceScore) {
             if (sentenceAnswer.answer === ANSWER_TYPES.AGREE) {
                 sentenceScore.numberOfAgree++;
