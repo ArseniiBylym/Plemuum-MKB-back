@@ -12,7 +12,7 @@ export default (app: Express, compassController: CompassController) => {
 
     /**
      * @api {GET} /api/organizations/:orgId/interacts Interact todos
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName interacts
      * @apiGroup Compass Assessment
      * @apiHeader   {String}    Authorization       Bearer token Optional for web
@@ -47,7 +47,7 @@ export default (app: Express, compassController: CompassController) => {
 
     /**
      * @api {POST} /api/organizations/:orgId/compass/todos CompassTodo for a user
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName compasstodo
      * @apiGroup Compass Assessment
      * @apiDescription Generate and answer card (CompassTodo).
@@ -64,7 +64,7 @@ export default (app: Express, compassController: CompassController) => {
 
     /**
      * @api {POST} /api/organizations/:orgId/compass/answers Send CompassTodo answer
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName compassanswers
      * @apiGroup Compass Assessment
      * @apiDescription ost answers based in a CompassTODO. This api will trigger an update
@@ -92,7 +92,7 @@ export default (app: Express, compassController: CompassController) => {
 
     /**
      * @api {GET} /api/organizations/:orgId/compass/statistics Get COMPASS statistics
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName CompassStatistics
      * @apiGroup Compass Assessment
      * @apiDescription Get the statistics generated from compass answers. If the user have statistics, retrieve them,
@@ -115,7 +115,7 @@ export default (app: Express, compassController: CompassController) => {
 
     /**
      * @api {PATCH} /api/organizations/:orgId/skills Skill - Create/Update Skill
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName update skill
      * @apiGroup Admin
      * @apiPermission admin
@@ -140,7 +140,7 @@ export default (app: Express, compassController: CompassController) => {
 
     /**
      * @api {GET} /api/generatetodos Generate todos
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName Generate todos
      * @apiGroup Admin
      * @apiPermission admin
@@ -160,7 +160,7 @@ export default (app: Express, compassController: CompassController) => {
 
     /**
      * @api {GET} /api/startwork Start Work
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName Start Generation Todos
      * @apiGroup Worker
      * @apiDescription Start a generation of a chunk of todos for users for all the organizations

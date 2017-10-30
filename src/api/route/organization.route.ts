@@ -6,7 +6,7 @@ import checkAdmin from '../../middleware/admin.checker';
 export default (app: Express, organizationController: OrganizationController) => {
     /**
      * @api {POST} /api/organizations Organization - Add new organization
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName organization
      * @apiGroup Admin
      * @apiPermission admin
@@ -42,7 +42,7 @@ export default (app: Express, organizationController: OrganizationController) =>
 
     /**
      * @api {GET} /api/organization Organization - Get organizations
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName get organizations
      * @apiGroup Admin
      * @apiPermission admin

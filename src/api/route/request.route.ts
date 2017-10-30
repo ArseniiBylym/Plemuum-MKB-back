@@ -16,7 +16,7 @@ export default (app: Express, requestController: RequestController) => {
 
     /**
      * @api {GET} /api/organizations/:orgId/users/me/requests Get user requests
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName getRequests
      * @apiGroup Request
      *
@@ -64,7 +64,7 @@ export default (app: Express, requestController: RequestController) => {
 
     /**
      * @api {POST} /api/organizations/:orgId/requests Send request
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName createRequest
      * @apiGroup Request
      * @apiHeader {String} Authorization Bearer token
@@ -100,7 +100,7 @@ export default (app: Express, requestController: RequestController) => {
 
     /**
      * @api {GET} /api/organizations/:orgId/users/me/requests/sent  Get user's sent requests
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName getSenderRequests
      * @apiGroup Request
      * @apiHeader {String} Authorization Bearer token
@@ -130,7 +130,7 @@ export default (app: Express, requestController: RequestController) => {
     /**
      * @api {GET} /api/organizations/:orgId/users/me/requests/received Get user's received requests
      * @apiDeprecated Unused endpoint. Will be removed before version release.
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName getRecipientRequests
      * @apiGroup Request
      *
@@ -178,7 +178,7 @@ export default (app: Express, requestController: RequestController) => {
 
     /**
      * @api {GET} /api/organizations/:orgId/users/me/requests/:requestId Get a specific request
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName getRequest
      * @apiGroup Request
      * @apiHeader {String} Authorization Bearer token
@@ -209,7 +209,7 @@ export default (app: Express, requestController: RequestController) => {
     /**
      * @api {GET} /api/organizations/:orgId/users/me/requests/:requestId/recipients Get the recipients of a request
      * @apiDeprecated Unused endpoint. Will be removed before version release.
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName getRecipientUsersFromRequest
      * @apiGroup Request
      * @apiHeader {String} Authorization Bearer token

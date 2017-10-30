@@ -33,7 +33,7 @@ export default (app: Express, groupController: GroupController) => {
 
     /**
      * @api {POST} /api/organizations/:orgId/groups Group - Create group
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName New Group
      * @apiGroup Admin
      * @apiPermission admin
@@ -73,7 +73,7 @@ export default (app: Express, groupController: GroupController) => {
 
     /**
      * @api {GET} /api/organizations/:orgId/groups Group - Get organization groups
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName get groups
      * @apiGroup Admin
      * @apiPermission admin
@@ -86,7 +86,7 @@ export default (app: Express, groupController: GroupController) => {
 
     /**
      * @api {PATCH} /api/organizations/:orgId/groups Group - Update a group
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName Update a group
      * @apiGroup Admin
      * @apiPermission admin
@@ -114,7 +114,7 @@ export default (app: Express, groupController: GroupController) => {
 
     /**
      * @api {GET} /api/organizations/:orgId/groups/:groupId Get a specific group by ID
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName Get Group By ID
      * @apiGroup Group
      * @apiDescription Get a specific group by ID
@@ -155,7 +155,7 @@ export default (app: Express, groupController: GroupController) => {
 
     /**
      * @api {GET} /api/organizations/:orgId/users/me/groups Get all groups a user participates in
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName Get all groups a user participates in
      * @apiGroup Group
      * @apiDescription Get all groups a user participates in
@@ -199,7 +199,7 @@ export default (app: Express, groupController: GroupController) => {
 
     /**
      * @api {GET} /api/organizations/:orgId/users/me/groups/answer-card-users Get user list for answer card
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName answer-card-users
      * @apiGroup Group
      *
@@ -233,7 +233,7 @@ export default (app: Express, groupController: GroupController) => {
 
     /**
      * @api {POST} /api/organizations/:orgId/groups/:groupId/users Group - Add user to group
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName Add user to group
      * @apiGroup Admin
      * @apiPermission admin
@@ -253,7 +253,7 @@ export default (app: Express, groupController: GroupController) => {
 
     /**
      * @api {DELETE} /api/organizations/:orgId/groups/:groupId/users Group - Remove a user from a group
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName Remove a user from a group
      * @apiGroup Admin
      * @apiPermission admin

@@ -7,7 +7,7 @@ export default (app: Express, notificationController: NotificationController) =>
 
     /**
      * @api {POST} /api/users/me/notification Add a notification Token
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName add notification token
      * @apiGroup Notification
      * @apiDescription Add a notification token to a device that is subscribing to receive notification
@@ -27,7 +27,7 @@ export default (app: Express, notificationController: NotificationController) =>
 
     /**
      * @api {PATCH} /api/users/me/notification Set a new token
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName set new notification token
      * @apiGroup Notification
      * @apiDescription Set the new unique token, replacing the old one.
@@ -48,7 +48,7 @@ export default (app: Express, notificationController: NotificationController) =>
 
     /**
      * @api {DELETE} /api/users/me/notification Delete a token
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName delete notification token
      * @apiGroup Notification
      * @apiDescription Delete a token when the device is subscribed

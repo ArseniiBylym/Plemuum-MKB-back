@@ -6,7 +6,7 @@ import UserController from "../controller/user.controller";
 export default (app: Express, sessionController: SessionController, userController: UserController) => {
     /**
      * @api {POST} /api/session Log-in user
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName login
      * @apiGroup Session
      * @apiDescription If the user is authenticated successfully, a Bearer token will be returned.
@@ -29,7 +29,7 @@ export default (app: Express, sessionController: SessionController, userControll
 
     /**
      * @api {DELETE} /api/session Log-out user
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName logout
      * @apiGroup Session
      * @apiDescription Logging out. Token will be removed from the cookies. On mobile the client should remove it's token.
@@ -40,7 +40,7 @@ export default (app: Express, sessionController: SessionController, userControll
 
     /**
      * @api {POST} /api/session/admin Log-in as admin
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName admin-login
      * @apiGroup Session
      * @apiDescription Dedicated login endpoint for admins. If the user with the given credentials is not an admin, 403
@@ -64,7 +64,7 @@ export default (app: Express, sessionController: SessionController, userControll
 
     /**
      * @api {POST} /api/session/validtoken Valid token
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName validtoken
      * @apiGroup Session
      * @apiDescription Check if the token is still valid in the reset token.
@@ -91,7 +91,7 @@ export default (app: Express, sessionController: SessionController, userControll
 
     /**
      * @api {POST} /api/session/reset-password Reset user's password
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName resetPassword
      * @apiGroup Session
      * @apiDescription The user show intent to change his password to receive a link with a token.
@@ -113,7 +113,7 @@ export default (app: Express, sessionController: SessionController, userControll
 
     /**
      * @api {POST} /api/set-password Set new password to user
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName setPassword
      * @apiGroup Session
      * @apiDescription Set the new password chosen by user to its account and generates a new token.
@@ -132,7 +132,7 @@ export default (app: Express, sessionController: SessionController, userControll
 
     /**
      * @api {POST} /api/session/password Change user password
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName changePassword
      * @apiGroup Session
      * @apiDescription Change the password of the user in side the app.

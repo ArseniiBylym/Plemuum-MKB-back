@@ -19,7 +19,7 @@ export default (app: Express, userController: UserController) => {
 
     /**
      * @api {POST} /api/users User - Create new user
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName register
      * @apiGroup Admin
      * @apiPermission admin
@@ -46,7 +46,7 @@ export default (app: Express, userController: UserController) => {
 
     /**
      * @api {PATCH} /api/users User - Modify existing user
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName modify
      * @apiGroup Admin
      * @apiPermission admin
@@ -74,7 +74,7 @@ export default (app: Express, userController: UserController) => {
 
     /**
      * @api {GET} /api/organizations/:orgId/users  Get organization users
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName getOrgUsers
      * @apiGroup User
      * @apiHeader {String} Authorization Bearer token
@@ -108,7 +108,7 @@ export default (app: Express, userController: UserController) => {
 
     /**
      * @api {GET} /api/organizations/:orgId/users/:userId Get a specific user from an organization
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName getByIdFromOrg
      * @apiGroup User
      * @apiHeader {String} Authorization Bearer token
@@ -134,7 +134,7 @@ export default (app: Express, userController: UserController) => {
 
     /**
      * @api {GET} /api/users/me Get user by token
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName get self
      * @apiGroup User
      * @apiHeader {String} Authorization Bearer token
@@ -159,7 +159,7 @@ export default (app: Express, userController: UserController) => {
 
     /**
      * @api {POST} /api/users/me/avatar    Change the user profile picture
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName setpicture
      * @apiGroup User
      * @apiDescription Change the profile picture which is included inside the organization data. Saves the image into firebase on plenuum/userPictures/<userId.ext>

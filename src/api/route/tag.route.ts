@@ -7,7 +7,7 @@ export default (app: Express, tagController: TagController) => {
 
     /**
      * @api {GET} /api/organizations/:orgId/tags List of tags
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName getTags
      * @apiGroup Tag
      * @apiHeader {String} Authorization Bearer token
@@ -41,7 +41,7 @@ export default (app: Express, tagController: TagController) => {
 
     /**
      * @api {POST} /api/organizations/:orgId/tags Tag - Create a new Tag
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName tag
      * @apiGroup Admin
      * @apiPermission admin

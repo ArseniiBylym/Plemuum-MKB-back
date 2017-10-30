@@ -19,7 +19,7 @@ export default (app: Express, feedbackController: FeedbackController) => {
 
     /**
      * @api {POST} /api/organizations/:orgId/feedbacks Send feedback
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName createFeedback
      * @apiGroup Feedback
      * @apiHeader {String} Authorization Bearer token
@@ -54,7 +54,7 @@ export default (app: Express, feedbackController: FeedbackController) => {
 
     /**
      * @api {GET} /api/organizations/:orgId/users/me/feedbacks Get user feedbacks
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName getFeedbacks
      * @apiGroup Feedback
      * @apiHeader {String} Authorization Bearer token
@@ -102,7 +102,7 @@ export default (app: Express, feedbackController: FeedbackController) => {
 
     /**
      * @api {GET} /api/organizations/:orgId/users/me/feedbacks/sent Get user's sent feedbacks
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName getSentFeedbacks
      * @apiGroup Feedback
      * @apiHeader {String} Authorization Bearer token
@@ -148,7 +148,7 @@ export default (app: Express, feedbackController: FeedbackController) => {
 
     /**
      * @api {GET} /api/organizations/:orgId/users/me/feedbacks/received Get user's incoming feedbacks
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName getIncomingFeedbacks
      * @apiGroup Feedback
      * @apiHeader {String} Authorization Bearer token
