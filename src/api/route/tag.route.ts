@@ -44,6 +44,7 @@ export default (app: Express, tagController: TagController) => {
      * @apiVersion 2.0.1
      * @apiName tag
      * @apiGroup Admin
+     * @apiPermission admin
      * @apiHeader Authorization basic
      *
      * @apiParam (URL){String} orgId Organization Id

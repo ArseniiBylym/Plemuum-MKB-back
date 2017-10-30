@@ -118,6 +118,7 @@ export default (app: Express, compassController: CompassController) => {
      * @apiVersion 2.0.1
      * @apiName update skill
      * @apiGroup Admin
+     * @apiPermission admin
      * @apiDescription Update an existing skill
      *
      * @apiHeader {String} Authorization Basic username:password
@@ -142,6 +143,7 @@ export default (app: Express, compassController: CompassController) => {
      * @apiVersion 2.0.1
      * @apiName Generate todos
      * @apiGroup Admin
+     * @apiPermission admin
      * @apiDescription Trigger a generation of todos
      *
      * @apiHeader {String} Authorization Basic username:password

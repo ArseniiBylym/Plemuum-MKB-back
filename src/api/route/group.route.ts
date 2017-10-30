@@ -36,9 +36,9 @@ export default (app: Express, groupController: GroupController) => {
      * @apiVersion 2.0.1
      * @apiName New Group
      * @apiGroup Admin
+     * @apiPermission admin
      * @apiDescription Add a new groups to organization.
      *
-     * @apiPermission basic
      * @apiHeader {String} Authorization Basic username:password
      *
      * @apiParam {String}                           name The name of the group.
@@ -76,9 +76,9 @@ export default (app: Express, groupController: GroupController) => {
      * @apiVersion 2.0.1
      * @apiName get groups
      * @apiGroup Admin
+     * @apiPermission admin
      * @apiDescription Get all organization group
      *
-     * @apiPermission basic
      * @apiHeader {String} Authorization Basic username:password
      *
      * @apiUse group_array_response
@@ -89,9 +89,9 @@ export default (app: Express, groupController: GroupController) => {
      * @apiVersion 2.0.1
      * @apiName Update a group
      * @apiGroup Admin
+     * @apiPermission admin
      * @apiDescription Update a group
      *
-     * @apiPermission basic
      * @apiHeader {String} Authorization Basic username:password
      *
      * @apiParam (Body){String}   _id                     Group ID
@@ -148,30 +148,6 @@ export default (app: Express, groupController: GroupController) => {
      *         "5984342227cd340363dc84c6",
      *         "5984342227cd340363dc84c7"
      *     ]
-     * }
-     */
-
-
-    /**
-     * @api {PATCH} /api/:orgId/groups/:groupId Group - Update a group
-     * @apiVersion 2.0.0
-     * @apiName Update a group
-     * @apiGroup Admin
-     * @apiDescription Update a group
-     *
-     * @apiPermission basic
-     * @apiHeader {String} Authorization Basic username:password
-     *
-     * @apiParam (Body){String}   name                    The name of the group.
-     * @apiParam (Body){String[]} [users]                 The participant user ids in a string array.
-     * @apiParam (Body){String[]} [skills]                Group skill ids.
-     * @apiParam (Body){String[]} [answerCardRelations]   Group answer card relations with other groups (group ids).
-     * @apiParam (Body){String[]} [todoCardRelations]     Group todo card relations with other groups (group ids).
-     *
-     * @apiSuccessExample {json} Success-Response:
-     * HTTP/1.1 200 OK
-     * {
-     *     "success": "Group has been updated"
      * }
      */
     app.route('/api/organizations/:orgId/groups/:groupId')
@@ -260,8 +236,8 @@ export default (app: Express, groupController: GroupController) => {
      * @apiVersion 2.0.1
      * @apiName Add user to group
      * @apiGroup Admin
+     * @apiPermission admin
      *
-     * @apiPermission basic
      * @apiHeader {String} Authorization Basic username:password
      *
      * @apiParam (URL)  {String}    orgId       User ID
@@ -280,9 +256,9 @@ export default (app: Express, groupController: GroupController) => {
      * @apiVersion 2.0.1
      * @apiName Remove a user from a group
      * @apiGroup Admin
+     * @apiPermission admin
      * @apiDescription Remove a user from a group
      *
-     * @apiPermission basic
      * @apiHeader {String} Authorization Basic username:password
      *
      * @apiParam (URL)  {String}    orgId       User ID

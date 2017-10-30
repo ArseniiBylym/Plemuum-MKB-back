@@ -22,6 +22,7 @@ export default (app: Express, userController: UserController) => {
      * @apiVersion 2.0.1
      * @apiName register
      * @apiGroup Admin
+     * @apiPermission admin
      *
      * @apiHeader {String} Authorization Bearer token
      *
@@ -48,6 +49,7 @@ export default (app: Express, userController: UserController) => {
      * @apiVersion 2.0.1
      * @apiName modify
      * @apiGroup Admin
+     * @apiPermission admin
      *
      * @apiHeader {String} Authorization Bearer token
      *

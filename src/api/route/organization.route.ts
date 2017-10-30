@@ -9,9 +9,9 @@ export default (app: Express, organizationController: OrganizationController) =>
      * @apiVersion 2.0.1
      * @apiName organization
      * @apiGroup Admin
+     * @apiPermission admin
      * @apiDescription Add a new organization to plenuum.
      *
-     * @apiPermission basic
      *
      * @apiParam (Body){String} name The name of the organization.
      * @apiParam (Body){String} dbName The name of the database. Can not contain (' ', *, !).
@@ -45,6 +45,7 @@ export default (app: Express, organizationController: OrganizationController) =>
      * @apiVersion 2.0.1
      * @apiName get organizations
      * @apiGroup Admin
+     * @apiPermission admin
      *
      * @apiSuccess (Success 200) {Organization[]} organizations Array of organizations
      * @apiSuccess (Success 200) {String} organizations.name The name of the organization created.

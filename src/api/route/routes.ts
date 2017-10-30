@@ -15,6 +15,10 @@ import { getGroupDataController } from "../../data/datacontroller/group.datacont
 import { getOrganizationDataController } from "../../data/datacontroller/organization.datacontroller";
 import { requestDataController } from "../../data/datacontroller/request.datacontroller";
 
+
+/**
+ * @apiDefine admin Admin access rights needed.
+ */
 export default (express: Express) => {
     UserRoute(express, ControllerFactory.getUserController());
     NotificationRoute(express, ControllerFactory.getNotificationController());
