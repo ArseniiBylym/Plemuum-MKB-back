@@ -6,4 +6,3 @@ dist
 coverage
 docs/api
 log
-package-lock.json
