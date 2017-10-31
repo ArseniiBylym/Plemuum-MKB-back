@@ -181,7 +181,11 @@ export default class CompassManager {
         const userGroups: Group[] = await this.groupDataController.getUserGroups(orgId, userId);
         const statistics = await StatisticsManager.getStatistics(orgId, userId, userGroups);
         await StatisticsDataController.saveOrUpdateStatistics(orgId, statistics);
-        return await StatisticsDataController.getStatisticsByUserId(orgId, userId);
+        const savedStatistics = await StatisticsDataController.getStatisticsByUserId(orgId, userId);
+        return await Promise.all(savedStatistics.skillScores.map(async (skillScore: any) => {
+            skillScore.skill = await CompassDataController.getSkillById(orgId, skillScore.skill);
+            return skillScore;
+        }));
     }
 
     async autoGenerateTodosForOrganization(org: OrganizationModel, random: Function) {
