@@ -33,7 +33,6 @@ export default class CompassController extends BaseController {
 
     async answerCompass(req: any, res: any) {
         req.checkBody('compassTodo', 'Missing compassTodo').notEmpty();
-        req.checkBody('sender', 'Missing sender').notEmpty();
         req.checkBody('sentencesAnswer', 'Missing sentencesAnswer').notEmpty();
         req.checkBody('sentencesAnswer', 'sentencesAnswer must be an Array').len(1);
 
@@ -41,6 +40,7 @@ export default class CompassController extends BaseController {
             return;
         }
 
+        req.body.sender = req.user._id;
         return CompassManager.answerCompass(req.params.orgId, req.body)
             .then(savedAnswer => res.status(StatusCodes.OK).send(savedAnswer))
             .catch((err) => res.status(BaseController.getErrorStatus(err)).send(formError(err)));
