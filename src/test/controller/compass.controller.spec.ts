@@ -3,6 +3,7 @@ import * as sinon from 'sinon';
 import { ErrorType, PlenuumError } from "../../util/errorhandler";
 import CompassManager from "../../api/manager/compass.manager";
 import { getRequestObject } from "../util/testutil";
+import { testUser } from "../mock/fixture.loader";
 
 suite("CompassController tests", () => {
 
@@ -88,6 +89,9 @@ suite("CompassController tests", () => {
                 send: sinon.stub()
             };
             req = {
+                user: {
+                    _id: testUser._id
+                },
                 params: {},
                 body: {},
                 checkBody: sinon.stub().returns({
@@ -101,7 +105,6 @@ suite("CompassController tests", () => {
             });
             req.params.orgId = "orgId";
             req.body.compassTodo = "compassTodo";
-            req.body.sender = "sender";
             req.body.sentencesAnswer = ["sentencesAnswer"];
         });
 
