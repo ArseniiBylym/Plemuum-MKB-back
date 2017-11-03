@@ -12,13 +12,13 @@ export default class TagController extends BaseController {
         this.tagManager = tagManager;
     }
 
-    async addNewTag(req: Request, res: Response, next: Function) {
+    async addNewTag(req: Request, res: Response) {
         return this.tagManager.addNewTag(req.params.orgId, req.body)
             .then(tag => res.status(StatusCodes.CREATED).send(tag))
             .catch(error => BaseController.handleError(error, req, res));
     }
 
-    async getTags(req: Request, res: Response, next: Function) {
+    async getTags(req: Request, res: Response) {
         return this.tagManager.getTags(req.params.orgId)
             .then(tags => res.status(StatusCodes.OK).send(tags))
             .catch(error => BaseController.handleError(error, req, res))
