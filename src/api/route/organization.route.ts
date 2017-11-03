@@ -81,5 +81,6 @@ export default (app: Express, organizationController: OrganizationController) =>
      */
     app.route('/api/organizations')
         .get(passport.authenticate('jwt', {session: false}), checkAdmin(), organizationController.getOrganizations.bind(organizationController))
-        .post(passport.authenticate('jwt', {session: false}), checkAdmin(), organizationController.createOrganization.bind(organizationController));
+        .post(passport.authenticate('jwt', {session: false}), checkAdmin(), organizationController.createOrganization.bind(organizationController))
+        .patch(passport.authenticate('jwt', {session: false}), checkAdmin(), organizationController.modifyOrganization.bind(organizationController));
 }

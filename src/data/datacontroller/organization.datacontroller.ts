@@ -4,7 +4,8 @@ import Organization from "../models/organization/organization.model";
 export interface OrganizationDataController {
     getOrganizationByDbName: (dbName: string) => Promise<Organization>;
     getOrganizations: () => Promise<Organization[]>;
-    saveNewOrganization: (organization: Organization) => Promise<any>
+    saveNewOrganization: (organization: Organization) => Promise<any>;
+    updateOrganization: (organization: Organization) => Promise<any>
 }
 
 const getOrganizationDataController = (): OrganizationDataController => {
@@ -19,6 +20,12 @@ const getOrganizationDataController = (): OrganizationDataController => {
 
         saveNewOrganization: (organization: Organization): Promise<any> => {
             return new (OrganizationCollection())(organization).save();
+        },
+
+        updateOrganization: (organization: any): Promise<any> => {
+            const id = organization._id;
+            delete organization._id;
+            return OrganizationCollection().findByIdAndUpdate(id, organization, {new: true}).lean().exec();
         }
     }
 };

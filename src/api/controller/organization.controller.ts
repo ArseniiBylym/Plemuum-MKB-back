@@ -32,4 +32,20 @@ export default class OrganizationController extends BaseController {
             .then((result) => res.status(StatusCodes.OK).send(result))
             .catch((err) => BaseController.handleError(err, req, res));
     }
+
+    async modifyOrganization(req: any, res: any) {
+        req.checkBody('_id', 'Missing _id').notEmpty();
+        req.checkBody('name', 'Missing name').notEmpty();
+        req.checkBody('dbName', 'Missing dbName').notEmpty();
+        req.checkBody('todoSentenceNumber', 'Missing todoSentenceNumber').notEmpty();
+        req.checkBody('compassGenerationTime', 'Missing compassGenerationTime').notEmpty();
+
+        if (!await validate(req, res)) {
+            return;
+        }
+
+        return this.organizationManager.modifyOrganization(req.body)
+            .then((modifyOrganization) => res.status(StatusCodes.OK).send(modifyOrganization))
+            .catch((err) => BaseController.handleError(err, req, res));
+    }
 }

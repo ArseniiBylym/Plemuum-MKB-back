@@ -8,7 +8,8 @@ suite("TagManager tests", () => {
         test("Add new non-existing tag", async () => {
             const orgId = "orgId";
             const tag = {
-                title: "New tag"
+                title: "New tag",
+                isActive: true
             };
 
             const getTags = sinon.stub();

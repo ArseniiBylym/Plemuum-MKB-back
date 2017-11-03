@@ -21,6 +21,14 @@ export default class OrganizationManager {
         }
     }
 
+    async modifyOrganization(organization: any) {
+        const existingOrganization = await this.organizationDataController.getOrganizationByDbName(organization.dbName);
+        if (!existingOrganization) {
+            throw new PlenuumError("Organization does not exist", ErrorType.NOT_FOUND)
+        }
+        return this.organizationDataController.updateOrganization(organization);
+    }
+
     async getOrganizations() {
         return this.organizationDataController.getOrganizations();
     }
