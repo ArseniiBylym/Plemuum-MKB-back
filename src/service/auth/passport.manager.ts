@@ -43,7 +43,6 @@ function localAuth() {
 
 function basicAuth() {
     return new basicStrategy.BasicStrategy((userid: string, password: string, done: Function) => {
-            console.log(userid, password);
             return (userid === "admin" && password === config.adminPwd) ? done(null, true) : done(null, false);
         }
     )
