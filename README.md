@@ -1,10 +1,21 @@
 # Plenuum Backend by hipteam
 
+1. 	[Rules of development](#rules-of-development)
+2. 	[Getting Started](#getting-started)
+3. 	[Running the application](#running-the-application)
+4. 	[Testing](#testing)
+5. 	[Version control](#version-control)
+6. 	[Versioning](#versioning)
+7. 	[Deployment](#deployment)
+8. 	[Documents](#documents)
+9.  [Installation for client developers](#installation-for-client-developers)
+
 ## `Rules of development`
 
 - No commits without tests!
 - Do not push directly to master!
-- Please use "feature", "task" or "bugfix" branches. For example: "feature/my_awesome_new_feature"
+- Use GitFlow specified branches  (feature/release/hotfix)
+- Big feature branches can be split up into multiple "task" branches
 - Keep the API document up-to-date
 - If you're done, create a pull/merge request (PR) and assign it to an other developer
 
@@ -72,12 +83,20 @@ Set the "Extra Mocha options" to this
 --compilers ts-node/register --require source-map-support/register --recursive
 ```
 
-## Deployment
-### `TBD`
+## Version control
+This project follows the [GitFlow](https://datasift.github.io/gitflow/IntroducingGitFlow.html) branching model. Before pushing any changes into this repo please check out how it works. [SourceTree](https://medium.com/@budioktaviyans/how-to-make-a-git-flow-using-sourcetree-20ab77fe6813) support GitFlow by default which could also help you.
 
 ## Versioning
 We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 see the [tags on this repository](https://gitlab.com/hipteam/project/plenuum/plenuum-backend-v2/tags). 
+
+## Deployment
+
+### Staging
+When a version is ready for testing we can deploy it to our staging server. These versions are release candidates hense they cannot be used for developement!
+Our currrent staging server `plenuum-backend-staging` on DigitalOcean. To release a version use Dokku's `plenuum-backend` application on that server. (For further informations please contact the project owner)
+
+### Production `TBD`
 
 ## Documents
 
@@ -112,6 +131,7 @@ You can find extra documentation inside the "docs" folder.
 - groups: There's a "mock_groups_diagram.xml" draw.io document, which describes the current state of our mock groups.
 Whenever you change the "groups.json", please make sure you update this document as well.
 
+***
 
 ## Installation for client developers
 As a client (frontend, mobile app, etc.) developer you might not want to install all of the necessary components
