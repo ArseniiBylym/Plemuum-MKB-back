@@ -23,7 +23,7 @@ export default class SessionController extends BaseController {
     }
 
     async loginAsAdmin(req: any, res: any) {
-        return this.sessionManager.loginAsAdmin(req.user._id)
+        return this.sessionManager.loginAsAdmin()
             .then((result: any) => {
                 res.cookie('token', result.token, {expires: tokenManager.getExpiryAsDate(7), httpOnly: true});
                 res.status(StatusCodes.OK).send(result);

@@ -22,15 +22,6 @@ const testUser = {
     "_id": "5984342227cd340363dc84af",
 };
 
-const testAdmin = {
-    "firstName": "peter",
-    "lastName": "szabo",
-    "email": "peter.szabo@hipteam.io",
-    "pictureUrl": "",
-    "_id": "5984342227cd340363dc84c7",
-    "admin": true
-};
-
 function fixtureLoader(): Promise<any> {
     let promises: Promise<any>[] = [];
     let collections: any[] = [
@@ -69,6 +60,11 @@ async function authenticate(testUser: any): Promise<string> {
     return (await sessionManager.login(testUser._id)).token;
 }
 
+async function adminAuthenticate(): Promise<string> {
+    const sessionManager = new SessionManager();
+    return (await sessionManager.loginAsAdmin()).token;
+}
+
 async function resetPassword(userId: string): Promise<any> {
     const expiry = new Date();
     expiry.setHours(expiry.getHours() + 5);
@@ -77,4 +73,4 @@ async function resetPassword(userId: string): Promise<any> {
     return resetPass.token;
 }
 
-export { fixtureLoader, authenticate, resetPassword, testUser, testAdmin }
+export { fixtureLoader, authenticate, adminAuthenticate, resetPassword, testUser }

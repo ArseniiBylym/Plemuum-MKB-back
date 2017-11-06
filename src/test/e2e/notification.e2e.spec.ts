@@ -1,7 +1,6 @@
-import { assert, expect } from 'chai';
-import {getDatabaseManager} from "../../factory/database.factory";
+import { getDatabaseManager } from "../../factory/database.factory";
 import config from "../../../config/config";
-import { authenticate, fixtureLoader, testAdmin, testUser } from "../mock/fixture.loader";
+import { authenticate, fixtureLoader, testUser } from "../mock/fixture.loader";
 import * as request from 'supertest';
 import app from "../../app";
 import { bearerAuthHeader } from "../util/header.helper";
@@ -27,7 +26,7 @@ suite("Notification request test", () => {
         });
 
         test("Add a notification token that do not exist", async () => {
-            const url =  '/api/users/me/notification';
+            const url = '/api/users/me/notification';
             const token = await authenticate(testUser);
             const response = await request(app)
                 .post(url)
@@ -38,7 +37,7 @@ suite("Notification request test", () => {
         });
 
         test("Remove an existing notification token", async () => {
-            const url =  '/api/users/me/notification';
+            const url = '/api/users/me/notification';
             const token = await authenticate(testUser);
 
             const postResponse = await request(app)
@@ -60,7 +59,7 @@ suite("Notification request test", () => {
     suite("Sad cases", () => {
 
         test("Add a notification token when it already exists", async () => {
-            const url =  '/api/users/me/notification';
+            const url = '/api/users/me/notification';
             const token = await authenticate(testUser);
 
             const response1 = await request(app)
@@ -79,7 +78,7 @@ suite("Notification request test", () => {
         });
 
         test("Remove a notification token that do not exist", async () => {
-            const url =  '/api/users/me/notification';
+            const url = '/api/users/me/notification';
             const token = await authenticate(testUser);
 
             const response1 = await request(app)

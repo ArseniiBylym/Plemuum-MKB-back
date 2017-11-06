@@ -1,8 +1,7 @@
 import { jwtOptions } from "../../../config/config";
 import * as jwt from 'jsonwebtoken';
-import UserDataController from "../../data/datacontroller/user.datacontroller";
 
-function generateNewToken(userId: string, isAdmin: boolean, createdAt: Date) {
+function generateNewToken(userId: string, createdAt: Date, isAdmin = false) {
     const payload = {
         id: userId,
         admin: isAdmin,

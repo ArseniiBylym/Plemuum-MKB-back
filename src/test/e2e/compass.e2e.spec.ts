@@ -1,9 +1,9 @@
 import { getDatabaseManager } from "../../factory/database.factory";
 import config from "../../../config/config";
 import * as request from 'supertest';
-import { authenticate, fixtureLoader, testAdmin, testUser } from "../mock/fixture.loader";
+import { adminAuthenticate, authenticate, fixtureLoader, testUser } from "../mock/fixture.loader";
 import app from "../../app";
-import {basicAuthHeader, bearerAuthHeader} from "../util/header.helper";
+import { basicAuthHeader, bearerAuthHeader } from "../util/header.helper";
 import { expect, should } from 'chai';
 import Skill from "../../data/models/organization/compass/skill.model";
 import { ANSWER_TYPES } from "../../data/models/organization/compass/compassanswer.model";
@@ -186,7 +186,7 @@ suite("Compass request test", () => {
         };
 
         test("Should be able to create a new skill, it should return 201 and the created skill object", async () => {
-            const token = await authenticate(testAdmin);
+            const token = await adminAuthenticate();
             const response = await request(app)
                 .patch(url)
                 .set(bearerAuthHeader(token))
@@ -207,7 +207,7 @@ suite("Compass request test", () => {
         });
 
         test("Should get and error with status 400 if request body is empty", async () => {
-            const token = await authenticate(testAdmin);
+            const token = await adminAuthenticate();
             const response = await request(app)
                 .patch(url)
                 .set(bearerAuthHeader(token))
@@ -224,7 +224,7 @@ suite("Compass request test", () => {
                 sentences: [],
                 inactiveSentences: []
             };
-            const token = await authenticate(testAdmin);
+            const token = await adminAuthenticate();
             const response = await request(app)
                 .patch(url)
                 .set(bearerAuthHeader(token))
@@ -260,7 +260,7 @@ suite("Compass request test", () => {
                     },
                 ]
             };
-            const token = await authenticate(testAdmin);
+            const token = await adminAuthenticate();
             const response = await request(app)
                 .patch(url)
                 .set(bearerAuthHeader(token))
@@ -278,7 +278,7 @@ suite("Compass request test", () => {
         test("Generate todos for users in the organizations", async () => {
             const url = '/api/generatetodos';
             const result = {"message": "Todos were generated successfully"};
-            const token = await authenticate(testAdmin);
+            const token = await adminAuthenticate();
             const response = await request(app)
                 .get(url)
                 .set(bearerAuthHeader(token))

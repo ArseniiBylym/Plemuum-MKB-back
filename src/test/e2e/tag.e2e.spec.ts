@@ -1,11 +1,11 @@
 import * as request from 'supertest';
 import app from "../../app";
 import { assert, expect } from 'chai';
-import { authenticate, fixtureLoader, testAdmin, testUser } from "../mock/fixture.loader";
+import { adminAuthenticate, authenticate, fixtureLoader, testUser } from "../mock/fixture.loader";
 import * as modelValidator from "../../util/model.validator";
 import { getDatabaseManager } from "../../factory/database.factory";
 import config from "../../../config/config";
-import { basicAuthHeader, bearerAuthHeader } from "../util/header.helper";
+import { bearerAuthHeader } from "../util/header.helper";
 
 suite("Tag request tests", () => {
 
@@ -21,21 +21,21 @@ suite("Tag request tests", () => {
         const url = `/api/organizations/${orgId}/tags`;
 
         test("POST: should return 201", async () => {
-            const token = await authenticate(testAdmin);
+            const token = await adminAuthenticate();
             const response = await request(app)
                 .post(url)
                 .set(bearerAuthHeader(token))
-                .send({ title: "TestTagTitle" })
+                .send({title: "TestTagTitle"})
                 .expect(201);
             modelValidator.validateTagResponse(response.body);
         });
 
         test("POST: should not be able to post a tag with an already existing title", async () => {
-            const token = await authenticate(testAdmin);
+            const token = await adminAuthenticate();
             const response = await request(app)
                 .post(url)
                 .set(bearerAuthHeader(token))
-                .send({ title: "TestTitle" })
+                .send({title: "TestTitle"})
                 .expect(405);
             expect(response.body).to.haveOwnProperty("error");
             expect(response.body.error).to.be.equal("This tag already exists");
