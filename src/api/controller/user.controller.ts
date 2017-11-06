@@ -135,10 +135,6 @@ export default class UserController extends BaseController {
             .catch((err: Error) => res.status(400).send(formError(err)))
     }
 
-    showRegistrationForm(req: any, res: Response) {
-        res.render("newuser", {title: "Express", organizations: ["hipteam"]});
-    }
-
     private async handleProfilePictureUpload(req: any, userId: string): Promise<any> {
         const form = new formidable.IncomingForm();
         form.keepExtensions = true;

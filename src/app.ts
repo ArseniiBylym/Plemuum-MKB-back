@@ -27,8 +27,6 @@ const app = (): Express => {
     //https://helmetjs.github.io/
     app.use(require('helmet')());
 
-    app.set("views", viewsPath);
-    app.set("view engine", "ejs");
     app.use(logger("dev"));
 
     const corsOptions = {
