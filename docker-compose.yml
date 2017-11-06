@@ -15,7 +15,7 @@ services:
         - DATABASE_URL=mongodb://mongo:27017
         - PLENUUM_BOT_EMAIL=bot@plenuum.com
         - PLENUUM_BOT_PWD=Cocobongo1
-        - ADMIN_PASSWORD=incline diadem passed hoop
+        - ADMIN_PASSWORD=Cocobongo1
         - WEBAPP_DOMAIN=http://localhost:3000
         - ADMIN_DOMAIN=http://localhost:8081
     depends_on:
