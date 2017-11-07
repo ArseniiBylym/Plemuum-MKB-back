@@ -7,7 +7,6 @@ import SessionController from "../api/controller/session.controller";
 import GroupController from "../api/controller/group.controller";
 import NotificationController from "../api/controller/notification.controller";
 import * as ManagerFactory from "./manager.factory";
-import EmailService from "../service/email/mail.service";
 
 let userController: UserController;
 let feedbackController: FeedbackController;

@@ -1,5 +1,6 @@
 import { Config } from "./config.interface";
-import { getDefaultFirebaseConfig } from "./firebase.config";
+import { getDefaultFirebaseConfig, getProductionFirebaseConfig } from "./firebase/firebase.config";
+import { ENVIRONMENTS } from "./config";
 
 const defaultConfig: Config = {
     get env() {
@@ -24,7 +25,7 @@ const defaultConfig: Config = {
         return false;
     },
     get firebaseConfig() {
-        return getDefaultFirebaseConfig();
+        return this.env === ENVIRONMENTS.PRODUCTION ? getProductionFirebaseConfig() : getDefaultFirebaseConfig();
     },
     get workerTime() {
         return "0 0 8 * * *"; //Every day at 08:00 AM

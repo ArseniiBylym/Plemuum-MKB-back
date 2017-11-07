@@ -1,4 +1,4 @@
-import FirebaseConfig from "./firebase.config";
+import FirebaseConfig from "./firebase/firebase.config";
 
 export interface Config {
     env: string;

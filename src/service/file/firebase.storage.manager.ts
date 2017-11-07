@@ -8,7 +8,7 @@ export default class FirebaseStorageManager implements StorageManager {
     constructor() {
         this.gcs = require('@google-cloud/storage')({
             projectId: config.firebaseConfig.projectId,
-            keyFilename: `res/${config.firebaseConfig.keyFileName}`
+            keyFilename: `config/firebase/${config.firebaseConfig.keyFileName}`
         });
     }
 

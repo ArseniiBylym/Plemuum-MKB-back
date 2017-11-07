@@ -1,6 +1,6 @@
 import { Config } from "./config.interface";
 import { ENVIRONMENTS } from "./config";
-import { getDefaultFirebaseConfig } from "./firebase.config";
+import { getDefaultFirebaseConfig } from "./firebase/firebase.config";
 
 const devConfig: Config = {
     get env() {

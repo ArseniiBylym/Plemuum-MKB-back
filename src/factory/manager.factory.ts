@@ -56,7 +56,7 @@ const getFirebaseStorageManager = (): FirebaseStorageManager =>
 const getNotificationManager = (): NotificationManager =>
     getManager(notificationManager, NotificationManager,
         new FirebaseNotification(
-            require(`../../res/${config.firebaseConfig.keyFileName}`),
+            require(`../../config/firebase/${config.firebaseConfig.keyFileName}`),
             config.firebaseConfig.databaseUrl), UserDataController);
 
 const getFeedbackManager = (): FeedbackManager =>
