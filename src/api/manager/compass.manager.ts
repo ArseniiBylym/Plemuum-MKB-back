@@ -18,6 +18,7 @@ import { RequestDataController } from "../../data/datacontroller/request.datacon
 import FeedbackDataController from "../../data/datacontroller/feedback.datacontroller";
 import filterAsync from '../../util/asyncFilter';
 import { OrganizationModel } from "../../data/database/schema/organization/organization.schema";
+import { GroupModel } from "../../data/database/schema/organization/group.schema";
 
 const parser = require('cron-parser');
 
@@ -177,6 +178,18 @@ export default class CompassManager {
         return CompassDataController.getAllSkills(orgId);
     }
 
+    private async getUserSkillIds(orgId: string, userId: string) {
+        const user = await UserDataController.getUserById(userId);
+        const organizationGroups = await this.groupDataController.getGroups(orgId);
+        const userGroups = organizationGroups.filter(
+            (group: GroupModel) => group.users.indexOf(user._id.toString()) !== -1);
+        let skillCollectionFromGroups: string[] = [];
+        for (const group of userGroups) {
+            skillCollectionFromGroups = skillCollectionFromGroups.concat(group.skills);
+        }
+        return Array.from(new Set(skillCollectionFromGroups)); // Create a new array without duplicates
+    }
+
     async getStatistics(orgId: string, userId: string) {
         const userGroups: Group[] = await this.groupDataController.getUserGroups(orgId, userId);
         const statistics = await StatisticsManager.getStatistics(orgId, userId, userGroups);
@@ -201,15 +214,27 @@ export default class CompassManager {
             const groupsWithTodoRelations = userGroups.filter((group) => group.todoCardRelations.length > 0);
 
             if (groupsWithTodoRelations.length > 0) {
+                // Select a group from owner user's group list
                 const randomGroup = random(groupsWithTodoRelations);
+                // Possible target groups
                 const groupsToPickUserFrom = await this.groupDataController.getGroupsByIds(dbName, randomGroup.todoCardRelations);
+                // Select a target group from the list
                 const randomTargetGroup = random(groupsToPickUserFrom);
+                // Filter owner from the list
                 const usersToPickFrom = randomTargetGroup.users.filter((element: any) => user._id.toString() !== element);
+
                 if (usersToPickFrom.length > 0) {
+                    // Random target user
                     const randomAboutUserId = random(usersToPickFrom);
-                    const skills = await CompassDataController.getSkillsByIds(name, randomGroup.skills);
+                    // Get skills that the target user has
+                    const targetSkills = await this.getUserSkillIds(dbName, randomAboutUserId);
+                    // Fetch skills from DB
+                    const skills = await CompassDataController.getSkillsByIds(name, targetSkills);
+                    // Build CompassTODO object
                     const todo = CompassManager.buildUpNewTodoResponse(user._id, org.todoSentenceNumber, randomAboutUserId, skills);
+                    // Save built object
                     await CompassDataController.saveCompassTodo(dbName, todo);
+
                     return todo;
                 }
             }

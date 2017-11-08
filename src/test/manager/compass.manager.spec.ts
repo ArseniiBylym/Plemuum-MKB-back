@@ -608,13 +608,14 @@ suite("CompassManager tests", () => {
     });
 
     suite("Auto Generate Todos For Organization", () => {
-        const organizationMock: any = {name: "MockOrg", dbName: "mock-org", todoSentenceNumber: 3};
+        const organizationMock: any = {name: "MockOrg", dbName: "mock-org", todoSentenceNumber: 5};
         const random = (array: any[]) => array[0 % array.length];
         const groupDataController: any = {
             getUserGroups: sinon.stub().callsFake((orgId: string, userId: any) =>
                 getScenarioOneGroups().filter((g: any) => g.users.indexOf(userId.toString()) !== -1)),
             getGroupsByIds: sinon.stub().callsFake((orgId: string, groupIds: string[]) =>
-                getScenarioOneGroups().filter((g: any) => groupIds.indexOf(g._id) !== -1))
+                getScenarioOneGroups().filter((g: any) => groupIds.indexOf(g._id) !== -1)),
+            getGroups: sinon.stub().callsFake(() => getScenarioOneGroups())
         };
         let sandbox: any;
 
@@ -692,6 +693,38 @@ suite("CompassManager tests", () => {
 
             const result = await compassManager.autoGenerateTodosForOrganization(organizationMock, random);
             expect(result[0].about).to.be.equal(getScenarioOneUsers()[3]._id.toString());
+        });
+
+        test("Adam should not get Database TODO question about Eve", async () => {
+            const random = (array: any[]) => array[0 % array.length];
+            sandbox.stub(CompassDataController, "getSkillsByIds").callsFake((orgId: string, ids: string[]) =>
+                ids.map((id: string) => getScenarioOneSkills().find((skill: any) => id === skill._id)));
+            sandbox.stub(UserDataController, "getOrganizationUsers").resolves([getScenarioOneUsers()[0]]);
+            sandbox.stub(CompassDataController, "saveCompassTodo").resolves();
+
+            const compassManager: any = new CompassManager(groupDataController, dummy, dummy);
+
+            const result = await compassManager.autoGenerateTodosForOrganization(organizationMock, random);
+            for (const question of result[0].questions) {
+                expect(question.skill.name).not.to.be.equal("Databases");
+            }
+        });
+
+        test("Adam should get Leadership TODO question about Eve", async () => {
+            const random = (array: any[]) => array[0 % array.length];
+            sandbox.stub(CompassDataController, "getSkillsByIds").callsFake((orgId: string, ids: string[]) =>
+                ids.map((id: string) => getScenarioOneSkills().find((skill: any) => id === skill._id)));
+            sandbox.stub(UserDataController, "getOrganizationUsers").resolves([getScenarioOneUsers()[0]]);
+            sandbox.stub(CompassDataController, "saveCompassTodo").resolves();
+
+            const compassManager: any = new CompassManager(groupDataController, dummy, dummy);
+
+            const result = await compassManager.autoGenerateTodosForOrganization(organizationMock, random);
+            let containsLeadershipQuestion = false;
+            for (const question of result[0].questions) {
+                containsLeadershipQuestion = containsLeadershipQuestion || question.skill.name === "Leadership";
+            }
+            expect(containsLeadershipQuestion).to.be.true;
         })
     });
 });
