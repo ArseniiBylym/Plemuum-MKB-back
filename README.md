@@ -102,6 +102,10 @@ Our currrent staging server `plenuum-backend-staging` on DigitalOcean. To releas
 
 ### API
 
+[Online API docs](https://api.staging.plenuum.com/docs/api)
+
+[Postman collection](https://api.staging.plenuum.com/docs/postman)
+
 We are using apidoc for API document generation. This generated document can be under "docs/api".
 It is essential to keep this document up-to-date so it is **mandatory** to be updated after evey change.
 
