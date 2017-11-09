@@ -19,7 +19,9 @@ class BaseController {
                     headers: req.headers,
                     params: req.params,
                     body: req.body,
-                    user: req.user ? req.user : undefined
+                    user: req.user ? req.user : undefined,
+                    url: req.url,
+                    method: req.method
                 },
                 message: error,
                 status: statusCode,
@@ -40,7 +42,9 @@ class BaseController {
                     headers: request.headers,
                     params: request.params,
                     body: request.body,
-                    user: request.user ? request.user : undefined
+                    user: request.user ? request.user : undefined,
+                    url: request.url,
+                    method: request.method
                 },
                 message: message,
                 status: status,
