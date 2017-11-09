@@ -1,11 +1,11 @@
-import {Request, Response} from "express";
+import { Request, Response } from "express";
 import BaseController from "./base.controller";
 import UserDataController from "../../data/datacontroller/user.datacontroller";
-import {UserModel} from "../../data/database/schema/common/user.schema";
+import { UserModel } from "../../data/database/schema/common/user.schema";
 import UserManager from "../manager/user.manager";
-import {formError} from "../../util/errorhandler";
+import { formError } from "../../util/errorhandler";
 import * as StatusCodes from 'http-status-codes';
-import {validate} from "../../util/input.validator";
+import { validate } from "../../util/input.validator";
 import * as crypto from 'crypto';
 import config from "../../../config/config";
 
@@ -35,8 +35,8 @@ export default class UserController extends BaseController {
         }
 
         return this.userManager.saveUser(req.body, req.params)
-            .then((result) => res.status(StatusCodes.CREATED).send(result))
-            .catch((err) => BaseController.handleError(err, req, res))
+            .then((result) => this.respond(StatusCodes.CREATED, req, res, result))
+            .catch((err) => this.handleError(err, req, res))
     }
 
     async modifyUser(req: any, res: Response) {
@@ -50,20 +50,20 @@ export default class UserController extends BaseController {
         }
 
         return this.userManager.updateUser(req.body)
-            .then((result) => res.status(StatusCodes.OK).send(result))
-            .catch((err) => BaseController.handleError(err, req, res));
+            .then((result) => this.respond(StatusCodes.OK, req, res, result))
+            .catch((err) => this.handleError(err, req, res));
     }
 
     async getOrganizationUsers(req: any, res: Response) {
         return UserDataController.getOrganizationUsers(req.params.orgId)
-            .then((result) => res.status(StatusCodes.OK).send(result))
-            .catch((err) => BaseController.handleError(err, req, res));
+            .then((result) => this.respond(StatusCodes.OK, req, res, result))
+            .catch((err) => this.handleError(err, req, res));
     }
 
     async getUserByIdFromOrganization(req: Request, res: Response) {
         return UserDataController.getUserByIdFromOrg(req.params.orgId, req.params.userId)
-            .then((result) => res.status(StatusCodes.OK).send(result))
-            .catch((err) => BaseController.handleError(err, req, res));
+            .then((result) => this.respond(StatusCodes.OK, req, res, result))
+            .catch((err) => this.handleError(err, req, res));
     }
 
     async getUserByToken(req: any, res: any) {
@@ -76,9 +76,9 @@ export default class UserController extends BaseController {
                 pictureUrl: req.user.pictureUrl,
                 orgIds: req.user.orgIds
             };
-            res.status(StatusCodes.OK).send(result);
+            this.respond(StatusCodes.OK, req, res, result);
         } catch (err) {
-            BaseController.handleError(err, req, res)
+            this.handleError(err, req, res)
         }
     }
 
@@ -92,10 +92,10 @@ export default class UserController extends BaseController {
 
         return this.userManager.resetPassword(req.body.email, config.webappDomain, req.query.welcome)
             .then((result) => {
-                res.status(StatusCodes.OK).send(result.response);
+                this.respond(StatusCodes.OK, req, res, result.response);
                 return result.resetPasswordToken;
             })
-            .catch((err) => BaseController.handleError(err, req, res));
+            .catch((err) => this.handleError(err, req, res));
     }
 
     async setPassword(req: any, res: any) {
@@ -107,8 +107,8 @@ export default class UserController extends BaseController {
         }
 
         return this.userManager.setPassword(req.body.token, req.body.newPassword)
-            .then((result) => { res.status(StatusCodes.OK).send(result) })
-            .catch((err) => BaseController.handleError(err, req, res));
+            .then((result) => this.respond(StatusCodes.OK, req, res, result))
+            .catch((err) => this.handleError(err, req, res));
     }
 
     async changePassword(req: Request, res: Response) {
@@ -122,16 +122,15 @@ export default class UserController extends BaseController {
         }
 
         return UserDataController.changeUserPassword(req.body.email, req.body.newPassword)
-            .then((updatedUser: UserModel) => res
-                .status(!updatedUser ? 404 : 200)
-                .send(!updatedUser ? {error: "User not found"} : {message: "Password has been changed"})
-            )
-            .catch((err) => BaseController.handleError(err, req, res));
+            .then((result: UserModel) =>
+                this.respond(!result ? StatusCodes.NOT_FOUND : StatusCodes.OK, req, res,
+                    !result ? {error: "User not found"} : {message: "Password has been changed"}))
+            .catch((err) => this.handleError(err, req, res));
     }
 
     async setPicture(req: any, res: Response) {
         return this.handleProfilePictureUpload(req, req.user._id)
-            .then((result) => res.status(StatusCodes.OK).send(result))
+            .then((result) => this.respond(StatusCodes.OK, req, res, result))
             .catch((err: Error) => res.status(400).send(formError(err)))
     }
 

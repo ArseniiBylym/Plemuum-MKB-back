@@ -25,38 +25,38 @@ export default class RequestController extends BaseController {
         req.body.senderId = req.user._id;
 
         this.requestManager.saveNewRequest(req.params.orgId, req.body)
-            .then((savedRequest: Request) => res.status(StatusCodes.CREATED).send(savedRequest))
-            .catch((error: any) => BaseController.handleError(error, req, res));
+            .then((result: Request) => this.respond(StatusCodes.CREATED, req, res, result))
+            .catch((error: any) => this.handleError(error, req, res));
     }
 
     async getSenderRequests(req: any, res: Response) {
         this.requestManager.getSenderRequests(req.params.orgId, req.user._id)
-            .then((requests: Request[]) => res.status(StatusCodes.OK).send(requests))
-            .catch((error: any) => BaseController.handleError(error, req, res));
+            .then((result: Request[]) => this.respond(StatusCodes.OK, req, res, result))
+            .catch((error: any) => this.handleError(error, req, res));
     }
 
     async getRecipientRequests(req: any, res: Response) {
         this.requestManager.getRecipientRequests(req.params.orgId, req.user._id)
-            .then((requests: Request[]) => res.status(StatusCodes.OK).send(requests))
-            .catch((error: any) => BaseController.handleError(error, req, res));
+            .then((result: Request[]) => this.respond(StatusCodes.OK, req, res, result))
+            .catch((error: any) => this.handleError(error, req, res));
     }
 
     //TODO implement showReplied
     async getRequests(req: any, res: Response) {
         this.requestManager.getRequests(req.params.orgId, req.user._id)
-            .then((requests: Request[]) => res.status(StatusCodes.OK).send(requests))
-            .catch((error: any) => BaseController.handleError(error, req, res));
+            .then((result: Request[]) => this.respond(StatusCodes.OK, req, res, result))
+            .catch((error: any) => this.handleError(error, req, res));
     }
 
     async getRequest(req: any, res: Response) {
         this.requestManager.getRequest(req.params.orgId, req.user._id, req.params.requestId)
-            .then((request: Request) => res.status(StatusCodes.OK).send(request))
-            .catch((error: any) => BaseController.handleError(error, req, res));
+            .then((result: Request) => this.respond(StatusCodes.OK, req, res, result))
+            .catch((error: any) => this.handleError(error, req, res));
     }
 
     async getRecipientUsersFromRequest(req: any, res: Response) {
         this.requestManager.getRecipientUsersFromRequest(req.params.orgId, req.user._id, req.params.requestId)
-            .then((users: User[]) => res.status(StatusCodes.OK).send(users))
-            .catch((error: any) => BaseController.handleError(error, req, res));
+            .then((result: User[]) => this.respond(StatusCodes.OK, req, res, result))
+            .catch((error: any) => this.handleError(error, req, res));
     }
 }

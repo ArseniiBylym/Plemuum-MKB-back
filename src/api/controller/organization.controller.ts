@@ -23,14 +23,14 @@ export default class OrganizationController extends BaseController {
         }
 
         return this.organizationManager.createOrganization(req.body)
-            .then((savedOrganization) => res.status(StatusCodes.CREATED).send(savedOrganization))
-            .catch((err) => BaseController.handleError(err, req, res));
+            .then((result) => this.respond(StatusCodes.CREATED, req, res, result))
+            .catch((err) => this.handleError(err, req, res));
     }
 
     async getOrganizations(req: any, res: any) {
         return this.organizationManager.getOrganizations()
             .then((result) => res.status(StatusCodes.OK).send(result))
-            .catch((err) => BaseController.handleError(err, req, res));
+            .catch((err) => this.handleError(err, req, res));
     }
 
     async modifyOrganization(req: any, res: any) {
@@ -45,7 +45,7 @@ export default class OrganizationController extends BaseController {
         }
 
         return this.organizationManager.modifyOrganization(req.body)
-            .then((modifyOrganization) => res.status(StatusCodes.OK).send(modifyOrganization))
-            .catch((err) => BaseController.handleError(err, req, res));
+            .then((result) => this.respond(StatusCodes.OK, req, res, result))
+            .catch((err) => this.handleError(err, req, res));
     }
 }

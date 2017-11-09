@@ -4,23 +4,51 @@ import logger from "../../util/logger";
 
 class BaseController {
 
-    protected static getErrorStatus(err: any): number {
+    protected getErrorStatus(err: any): number {
         return err.getStatusCode ? err.getStatusCode() : StatusCodes.INTERNAL_SERVER_ERROR
     }
 
-    protected static handleError(error: any, req: any, res: any) {
+    protected handleError(error: any, req: any, res: any) {
         const statusCode = this.getErrorStatus(error);
         if (statusCode >= 500) {
             delete req.body.password;
             logger.error({
-                error: error,
-                userId: req.user ? req.user._id : "",
-                requestParams: req.params,
-                requestBody: req.body,
+                type: "error",
+                request: {
+                    cookies: req.cookies,
+                    headers: req.headers,
+                    params: req.params,
+                    body: req.body,
+                    user: req.user ? req.user : undefined
+                },
+                message: error,
+                status: statusCode,
                 timeStamp: new Date()
             });
         }
         res.status(statusCode).send(formError(error))
+    }
+
+    protected respond(status: number, request: any, response: any, message?: any) {
+        delete request.body.password;
+        response.status(status).send(message);
+        try {
+            logger.info({
+                type: "info",
+                request: {
+                    cookies: request.cookies,
+                    headers: request.headers,
+                    params: request.params,
+                    body: request.body,
+                    user: request.user ? request.user : undefined
+                },
+                message: message,
+                status: status,
+                timestamp: new Date().toISOString()
+            });
+        } catch (err) {
+            console.error(err);
+        }
     }
 }
 

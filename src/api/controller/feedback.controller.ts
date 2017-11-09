@@ -15,20 +15,20 @@ export default class FeedbackController extends BaseController {
 
     async getFeedbacks(req: any, res: any,) {
         return this.feedbackManager.getFeedbacks(req.params.orgId, req.user._id)
-            .then((result) => res.status(StatusCodes.OK).send(result))
-            .catch((err) => res.status(BaseController.getErrorStatus(err)).send(formError(err)));
+            .then((result) => this.respond(StatusCodes.OK, req, res, result))
+            .catch((err) => res.status(this.getErrorStatus(err)).send(formError(err)));
     }
 
     async getSentFeedbacks(req: any, res: any,) {
         return this.feedbackManager.getSentFeedbacks(req.params.orgId, req.user._id)
-            .then((result) => res.status(StatusCodes.OK).send(result))
-            .catch((err) => res.status(BaseController.getErrorStatus(err)).send(formError(err)));
+            .then((result) => this.respond(StatusCodes.OK, req, res, result))
+            .catch((err) => res.status(this.getErrorStatus(err)).send(formError(err)));
     }
 
     async getIncomingFeedbacks(req: any, res: any,) {
         return this.feedbackManager.getIncomingFeedbacks(req.params.orgId, req.user._id)
-            .then((result) => res.status(StatusCodes.OK).send(result))
-            .catch((err) => res.status(BaseController.getErrorStatus(err)).send(formError(err)));
+            .then((result) => this.respond(StatusCodes.OK, req, res, result))
+            .catch((err) => res.status(this.getErrorStatus(err)).send(formError(err)));
     }
 
     async postFeedback(req: any, res: any) {
@@ -43,7 +43,7 @@ export default class FeedbackController extends BaseController {
         req.body.senderId = req.user._id;
 
         return this.feedbackManager.postFeedback(req.params.orgId, req.body)
-            .then((result) => res.status(StatusCodes.CREATED).send(result))
-            .catch((err) => res.status(BaseController.getErrorStatus(err)).send(formError(err)));
+            .then((result) => this.respond(StatusCodes.CREATED, req, res, result))
+            .catch((err) => res.status(this.getErrorStatus(err)).send(formError(err)));
     }
 }

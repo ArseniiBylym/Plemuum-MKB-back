@@ -22,7 +22,7 @@ export default class NotificationController extends BaseController {
 
         return this.notificationManager.setNotificationDevice(req.user._id, req.body.token)
             .then((result) => res.status(StatusCodes.OK).send(result))
-            .catch((err) => BaseController.handleError(err, req, res));
+            .catch((err) => this.handleError(err, req, res));
     }
 
     async refreshNotificationDevice(req: any, res: Response) {
@@ -35,7 +35,7 @@ export default class NotificationController extends BaseController {
 
         return this.notificationManager.refreshNotificationDevice(req.user._id, req.body.oldToken, req.body.newToken)
             .then((result) => res.status(StatusCodes.OK).send(result))
-            .catch((err) => BaseController.handleError(err, req, res));
+            .catch((err) => this.handleError(err, req, res));
     }
 
     async removeNotificationToken(req: any, res: Response) {
@@ -47,7 +47,7 @@ export default class NotificationController extends BaseController {
 
         return this.notificationManager.removeNotificationToken(req.user._id, req.body.token)
             .then((result) => res.status(StatusCodes.OK).send(result))
-            .catch((err) => BaseController.handleError(err, req, res));
+            .catch((err) => this.handleError(err, req, res));
     }
 
     async sendNotification(req: any, res: Response) {
@@ -60,7 +60,7 @@ export default class NotificationController extends BaseController {
 
         return this.notificationManager.sendNotification(req.body.email, req.body.message)
             .then((result) => res.status(StatusCodes.OK).send(result))
-            .catch((err) => BaseController.handleError(err, req, res));
+            .catch((err) => this.handleError(err, req, res));
     }
 
 }

@@ -83,9 +83,9 @@ export default class UserManager {
         return savedUser;
     }
 
-    sendChangePasswordOnWelcome(result: any, body: any, params: any) {
+    sendChangePasswordOnWelcome(user: any, body: any, params: any) {
         const origin = config.webappDomain;
-        const {email, firstName, _id} = result;
+        const {email, firstName, _id} = user;
         const {token, token_expiry} = UserDataController.generateToken(1);
         const data = {userId: _id, token: token, token_expiry: token_expiry, reseted: false};
         resetPasswordDataController.saveResetPassword(data)
@@ -97,13 +97,15 @@ export default class UserManager {
             })
             .catch((error) => {
                 logger.error({
-                    error: error,
-                    userId: _id,
-                    requestParams: params,
-                    requestBody: body,
+                    type: "error",
+                    request: {
+                        params: params,
+                        body: body,
+                        user: user
+                    },
+                    message: error,
                     timeStamp: new Date()
                 });
             });
     }
-
 }
