@@ -409,6 +409,57 @@ suite("Compass Statistics Manager tests", () => {
             };
 
             expect(result).to.deep.equal(expectedStatistics);
-        })
+        });
+
+        test("Statistics in DB, and the user has more skills from many groups", async () => {
+            const groupUsers: any[] = [sinon.mock()];
+            const groups: any[] = [
+                {
+                    name: "Group name",
+                    users: groupUsers,
+                    answerCardRelations: [],
+                    todoCardRelations: [],
+                    skills: [skills[0]._id, skills[1]._id,]
+                },
+                {
+                    name: "Group name 2",
+                    users: groupUsers,
+                    answerCardRelations: [],
+                    todoCardRelations: [],
+                    skills: [skills[0]._id, skills[1]._id, skills[2]._id]
+                }
+            ];
+
+            // Expected output
+            const dbStatistics: any = {
+                user: userId,
+                skillScores: [
+                    createSkillScore(skills[0], createSentenceScore(1, 3, 2), createSentenceScore(2, 0, 5)),
+                ]
+            };
+
+            const getStatisticsByUserId = sinon.stub(StatisticsDataController, 'getStatisticsByUserId');
+            getStatisticsByUserId.withArgs(orgId, userId).resolves(dbStatistics);
+
+            const getSkillsByIds = sinon.stub(CompassDataController, 'getSkillsByIds');
+            getSkillsByIds
+                .withArgs(orgId, [skills[0]._id, skills[1]._id, skills[2]._id])
+                .resolves([skills[0], skills[1], skills[2]]);
+
+            const result = await StatisticsManager.getStatistics(orgId, userId, groups);
+            getStatisticsByUserId.restore();
+            getSkillsByIds.restore();
+
+            // Expected output
+            const expectedStatistics: any = {
+                user: userId,
+                skillScores: [
+                    createSkillScore(skills[0], createSentenceScore(1, 3, 2), createSentenceScore(2, 0, 5)),
+                    createSkillScore(skills[1]),
+                    createSkillScore(skills[2]),
+                ]
+            };
+            expect(result).to.deep.equal(expectedStatistics);
+        });
     })
 });

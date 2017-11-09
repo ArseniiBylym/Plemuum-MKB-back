@@ -35,6 +35,7 @@ export default class StatisticsManager {
 
         let availableSkillIds: string[] = [];
         groups.forEach((group) => availableSkillIds = availableSkillIds.concat(group.skills));
+        availableSkillIds = Array.from(new Set(availableSkillIds)); // Remove duplicates
 
         const statistics = await StatisticsDataController.getStatisticsByUserId(orgId, userId);
         if (statistics) {
