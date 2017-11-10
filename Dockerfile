@@ -1,7 +1,7 @@
 FROM node:8.4.0
 
 WORKDIR /app
-VOLUME ./log:/app/log
+VOLUME /app/log
 
 COPY package.json .
 
