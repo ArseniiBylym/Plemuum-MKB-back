@@ -20,7 +20,6 @@ import filterAsync from '../../util/asyncFilter';
 import { OrganizationModel } from "../../data/database/schema/organization/organization.schema";
 import { GroupModel } from "../../data/database/schema/organization/group.schema";
 import { CompassStatisticsModel } from "../../data/database/schema/organization/compass/compass.statistics.schema";
-import logger from "../../util/logger";
 
 const parser = require('cron-parser');
 
@@ -213,22 +212,16 @@ export default class CompassManager {
     }
 
     async autoGenerateTodosForOrganization(org: OrganizationModel, random: Function) {
-        const {name, dbName} = org;
-        const users = await UserDataController.getOrganizationUsers(name);
+        const {dbName} = org;
+        const users = await UserDataController.getOrganizationUsers(dbName);
 
         if (users.length === 0) {
             return;
         }
 
         return Promise.all(users.map(async (user) => {
-            const userGroups: Group[] = await this.groupDataController.getUserGroups(name, user._id);
+            const userGroups: Group[] = await this.groupDataController.getUserGroups(dbName, user._id);
             const groupsWithTodoRelations = userGroups.filter((group) => group.todoCardRelations.length > 0);
-
-            console.log({
-                user: user,
-                userGroups: userGroups,
-                groupsWithTodoRelations: groupsWithTodoRelations
-            });
 
             if (groupsWithTodoRelations.length > 0) {
                 // Select a group from owner user's group list
@@ -240,17 +233,13 @@ export default class CompassManager {
                 // Filter owner from the list
                 const usersToPickFrom = randomTargetGroup.users.filter((element: any) => user._id.toString() !== element);
 
-                console.log({
-                    usersToPickFrom: usersToPickFrom
-                });
-
                 if (usersToPickFrom.length > 0) {
                     // Random target user
                     const randomAboutUserId = random(usersToPickFrom);
                     // Get skills that the target user has
                     const targetSkills = await this.getUserSkillIds(dbName, randomAboutUserId);
                     // Fetch skills from DB
-                    const skills = await CompassDataController.getSkillsByIds(name, targetSkills);
+                    const skills = await CompassDataController.getSkillsByIds(dbName, targetSkills);
                     // Build CompassTODO object
                     const todo = CompassManager.buildUpNewTodoResponse(user._id, org.todoSentenceNumber, randomAboutUserId, skills);
                     // Save built object
