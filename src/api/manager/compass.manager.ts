@@ -224,14 +224,10 @@ export default class CompassManager {
             const userGroups: Group[] = await this.groupDataController.getUserGroups(name, user._id);
             const groupsWithTodoRelations = userGroups.filter((group) => group.todoCardRelations.length > 0);
 
-            logger.info({
-                type: "todo_generation",
-                message: {
-                    user: user,
-                    userGroups: userGroups,
-                    groupsWithTodoRelations: groupsWithTodoRelations
-                },
-                timestamp: new Date().toISOString()
+            console.log({
+                user: user,
+                userGroups: userGroups,
+                groupsWithTodoRelations: groupsWithTodoRelations
             });
 
             if (groupsWithTodoRelations.length > 0) {
@@ -244,12 +240,8 @@ export default class CompassManager {
                 // Filter owner from the list
                 const usersToPickFrom = randomTargetGroup.users.filter((element: any) => user._id.toString() !== element);
 
-                logger.info({
-                    type: "todo_generation",
-                    message: {
-                        usersToPickFrom: usersToPickFrom
-                    },
-                    timestamp: new Date().toISOString()
+                console.log({
+                    usersToPickFrom: usersToPickFrom
                 });
 
                 if (usersToPickFrom.length > 0) {
@@ -291,6 +283,6 @@ export default class CompassManager {
             if (interval.next().getDate() === now.getDate()) {
                 return await this.autoGenerateTodosForOrganization(org, getRandomItem)
             }
-        })).then(() => ({"message": "Todos were generated successfully"}));
+        })).then(() => ({"message": "TODOs were generated successfully"}));
     }
 }
