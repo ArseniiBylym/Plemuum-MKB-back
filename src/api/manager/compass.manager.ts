@@ -254,7 +254,13 @@ export default class CompassManager {
     async generateTodo(orgId: string) {
         let organization = await this.organizationDataController.getOrganizationByDbName(orgId);
         return this.autoGenerateTodosForOrganization(organization, getRandomItem)
-            .then(() => ({"message": "Todos were generated successfully"}))
+            .then((todos) => (
+                {
+                    "message": todos && todos.length > 0
+                        ? "TODOs were generated successfully"
+                        : "No TODO was generated"
+                }
+            ))
     }
 
     async startWorker() {
