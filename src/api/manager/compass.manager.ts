@@ -19,6 +19,7 @@ import FeedbackDataController from "../../data/datacontroller/feedback.datacontr
 import filterAsync from '../../util/asyncFilter';
 import { OrganizationModel } from "../../data/database/schema/organization/organization.schema";
 import { GroupModel } from "../../data/database/schema/organization/group.schema";
+import { CompassStatisticsModel } from "../../data/database/schema/organization/compass/compass.statistics.schema";
 
 const parser = require('cron-parser');
 
@@ -195,10 +196,19 @@ export default class CompassManager {
         const statistics = await StatisticsManager.getStatistics(orgId, userId, userGroups);
         await StatisticsDataController.saveOrUpdateStatistics(orgId, statistics);
         const savedStatistics = await StatisticsDataController.getStatisticsByUserId(orgId, userId);
-        return await Promise.all(savedStatistics.skillScores.map(async (skillScore: any) => {
+
+        const userSkills = await this.getUserSkillIds(orgId, userId);
+        const filteredStatistics = await this.filterStatistics(userSkills, savedStatistics);
+
+        return await Promise.all(filteredStatistics.skillScores.map(async (skillScore: any) => {
             skillScore.skill = await CompassDataController.getSkillById(orgId, skillScore.skill);
             return skillScore;
         }));
+    }
+
+    filterStatistics(userSkills: string[], statistics: CompassStatisticsModel): CompassStatisticsModel {
+        statistics.skillScores = statistics.skillScores.filter((skillScore: any) => userSkills.indexOf(skillScore.skill) !== -1);
+        return statistics;
     }
 
     async autoGenerateTodosForOrganization(org: OrganizationModel, random: Function) {

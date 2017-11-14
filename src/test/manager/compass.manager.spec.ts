@@ -1,5 +1,5 @@
 import Organization from "../../data/models/organization/organization.model";
-import { expect } from 'chai';
+import { assert, expect } from 'chai';
 import * as sinon from 'sinon';
 import * as Sinon from 'sinon';
 import UserDataController from "../../data/datacontroller/user.datacontroller";
@@ -8,7 +8,7 @@ import CompassManager from "../../api/manager/compass.manager";
 import StatisticsManager from "../../api/manager/statistics.manager";
 import StatisticsDataController from "../../data/datacontroller/statistics.datacontroller";
 import Group from "../../data/models/organization/group.model";
-import { skills } from "../util/statistics.manager.util";
+import { createSentence, createSkill, createSkillScore, skills } from "../util/statistics.manager.util";
 import { validateCompassTodo } from "../../util/model.validator";
 import { fail } from "assert";
 import { PlenuumError } from "../../util/errorhandler";
@@ -491,6 +491,55 @@ suite("CompassManager tests", () => {
             getSkillById.restore();
             sinon.assert.calledWith(groupDataController.getUserGroups, orgId, userId);
             expect(result).to.be.deep.equal(mockStatistics);
+        })
+    });
+
+    suite("filterStatistics", () => {
+        const userSkillIds = [`5940f6044d0d550007d863d1`, `5940f6044d0d550007d863d2`];
+        const statistics: any = {
+            userId: "userId",
+            skillScores: [
+                createSkillScore(createSkill(1, createSentence(1), createSentence(2))),
+                createSkillScore(createSkill(2, createSentence(3), createSentence(4))),
+                createSkillScore(createSkill(3, createSentence(5), createSentence(6))),
+                createSkillScore(createSkill(4, createSentence(7), createSentence(8)))
+            ]
+        };
+        test("Should return only 2 skillScores", async () => {
+            const compassManager = new CompassManager(dummy, dummy, dummy);
+            const result = compassManager.filterStatistics(userSkillIds, statistics);
+
+            expect(result.skillScores).to.have.lengthOf(2);
+        });
+
+        test("Skill scores array should contain skill 1 and 2", async () => {
+            const compassManager = new CompassManager(dummy, dummy, dummy);
+            const result = compassManager.filterStatistics(userSkillIds, statistics);
+
+            let hasSkillOne = false;
+            let hasSkillTwo = false;
+
+            result.skillScores.forEach((sc: any) => {
+                if (sc.skill === `5940f6044d0d550007d863d1`) hasSkillOne = true;
+                if (sc.skill === `5940f6044d0d550007d863d2`) hasSkillTwo = true;
+            });
+
+            assert(hasSkillOne && hasSkillTwo);
+        });
+
+        test("Skill scores array should not container other skills", async () => {
+            const compassManager = new CompassManager(dummy, dummy, dummy);
+            const result = compassManager.filterStatistics(userSkillIds, statistics);
+
+            let hasSkillThree = false;
+            let hasSkillFour = false;
+
+            result.skillScores.forEach((sc: any) => {
+                if (sc.skill === `5940f6044d0d550007d863d3`) hasSkillThree = true;
+                if (sc.skill === `5940f6044d0d550007d863d4`) hasSkillFour = true;
+            });
+
+            assert(!(hasSkillThree || hasSkillFour));
         })
     });
 
