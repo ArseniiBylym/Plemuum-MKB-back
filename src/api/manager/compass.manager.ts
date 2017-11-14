@@ -224,6 +224,16 @@ export default class CompassManager {
             const userGroups: Group[] = await this.groupDataController.getUserGroups(name, user._id);
             const groupsWithTodoRelations = userGroups.filter((group) => group.todoCardRelations.length > 0);
 
+            logger.info({
+                type: "todo_generation",
+                message: {
+                    user: user,
+                    userGroups: userGroups,
+                    groupsWithTodoRelations: groupsWithTodoRelations
+                },
+                timestamp: new Date().toISOString()
+            });
+
             if (groupsWithTodoRelations.length > 0) {
                 // Select a group from owner user's group list
                 const randomGroup = random(groupsWithTodoRelations);
@@ -237,7 +247,6 @@ export default class CompassManager {
                 logger.info({
                     type: "todo_generation",
                     message: {
-                        groupsWithTodoRelations: groupsWithTodoRelations,
                         usersToPickFrom: usersToPickFrom
                     },
                     timestamp: new Date().toISOString()
