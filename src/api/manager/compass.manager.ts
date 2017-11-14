@@ -20,6 +20,7 @@ import filterAsync from '../../util/asyncFilter';
 import { OrganizationModel } from "../../data/database/schema/organization/organization.schema";
 import { GroupModel } from "../../data/database/schema/organization/group.schema";
 import { CompassStatisticsModel } from "../../data/database/schema/organization/compass/compass.statistics.schema";
+import logger from "../../util/logger";
 
 const parser = require('cron-parser');
 
@@ -232,6 +233,15 @@ export default class CompassManager {
                 const randomTargetGroup = random(groupsToPickUserFrom);
                 // Filter owner from the list
                 const usersToPickFrom = randomTargetGroup.users.filter((element: any) => user._id.toString() !== element);
+
+                logger.info({
+                    type: "todo_generation",
+                    message: {
+                        groupsWithTodoRelations: groupsWithTodoRelations,
+                        usersToPickFrom: usersToPickFrom
+                    },
+                    timestamp: new Date().toISOString()
+                });
 
                 if (usersToPickFrom.length > 0) {
                     // Random target user
