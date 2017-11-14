@@ -717,11 +717,11 @@
 								{
 									"name": "Generate todos",
 									"request": {
-										"method": "GET",
+										"method": "POST",
 										"header": [],
 										"body": {},
 										"url": {
-											"raw": "http://localhost:5000/api/generatetodos",
+											"raw": "http://localhost:5000/api/organizations/hipteam/compass/todos/generate",
 											"protocol": "http",
 											"host": [
 												"localhost"
@@ -729,7 +729,11 @@
 											"port": "5000",
 											"path": [
 												"api",
-												"generatetodos"
+												"organizations",
+												"hipteam",
+												"compass",
+												"todos",
+												"generate"
 											]
 										},
 										"description": ""
@@ -2744,11 +2748,11 @@
 								{
 									"name": "Generate todos",
 									"request": {
-										"method": "GET",
+										"method": "POST",
 										"header": [],
 										"body": {},
 										"url": {
-											"raw": "https://api.staging.plenuum.com/api/generatetodos",
+											"raw": "https://api.staging.plenuum.com/api/organizations/hipteam/compass/todos/generate",
 											"protocol": "https",
 											"host": [
 												"api",
@@ -2758,7 +2762,11 @@
 											],
 											"path": [
 												"api",
-												"generatetodos"
+												"organizations",
+												"hipteam",
+												"compass",
+												"todos",
+												"generate"
 											]
 										},
 										"description": ""
@@ -4095,6 +4103,155 @@
 						}
 					],
 					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "JOBS",
+			"description": "",
+			"item": [
+				{
+					"name": "Create TODO job",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"orgId\": \"598b04c182664715590b7499\",\n\t\"name\": \"Test job\"\n}"
+						},
+						"url": {
+							"raw": "localhost:5001/jobs/todo",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"jobs",
+								"todo"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get jobs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "localhost:5001/jobs",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"jobs"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get job by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": \"5a096bdd4b777f08a18e0142\"\n}"
+						},
+						"url": {
+							"raw": "localhost:5001/jobs/5a0970710e3b160959708f0f",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"jobs",
+								"5a0970710e3b160959708f0f"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Start job",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "localhost:5001/jobs/5a0993ce4c944511d075d3d1/start",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"jobs",
+								"5a0993ce4c944511d075d3d1",
+								"start"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Stop job",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "localhost:5001/jobs/5a0993ce4c944511d075d3d1/stop",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"jobs",
+								"5a0993ce4c944511d075d3d1",
+								"stop"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Remove job",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "localhost:5001/jobs/5a0970710e3b160959708f0f",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"jobs",
+								"5a0970710e3b160959708f0f"
+							]
+						},
+						"description": ""
+					},
+					"response": []
 				}
 			]
 		}

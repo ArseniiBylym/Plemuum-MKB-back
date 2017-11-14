@@ -139,7 +139,7 @@ export default (app: Express, compassController: CompassController) => {
         .patch(passport.authenticate('jwt', {session: false}), checkAdmin(), compassController.createOrUpdateSkill.bind(compassController));
 
     /**
-     * @api {GET} /api/generatetodos Generate todos
+     * @api {POST} /api/organizations/:orgId/compass/todos/generate Generate todos
      * @apiVersion 2.0.0
      * @apiName Generate todos
      * @apiGroup Admin
@@ -155,8 +155,8 @@ export default (app: Express, compassController: CompassController) => {
      *      }
      *
      */
-    app.route("/api/generatetodos")
-        .get(passport.authenticate('jwt', {session: false}), checkAdmin(), compassController.generateTodo.bind(compassController));
+    app.route("/api/organizations/:orgId/compass/todos/generate")
+        .post(passport.authenticate('jwt', {session: false}), checkAdmin(), compassController.generateTodo.bind(compassController));
 
     /**
      * @api {GET} /api/startwork Start Work

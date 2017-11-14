@@ -276,11 +276,12 @@ suite("Compass request test", () => {
     suite("Trigger for todo generation", () => {
 
         test("Generate todos for users in the organizations", async () => {
-            const url = '/api/generatetodos';
+            const orgId = "hipteam";
+            const url = `/api/organizations/${orgId}/compass/todos/generate`;
             const result = {"message": "Todos were generated successfully"};
             const token = await adminAuthenticate();
             const response = await request(app)
-                .get(url)
+                .post(url)
                 .set(bearerAuthHeader(token))
                 .expect(200);
             expect(response.body).to.be.deep.equal(result);

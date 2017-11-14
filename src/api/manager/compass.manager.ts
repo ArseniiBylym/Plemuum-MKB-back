@@ -241,15 +241,10 @@ export default class CompassManager {
         })).then((todos) => todos.filter((t) => t));
     }
 
-    async generateTodo() {
-        let organizations = await this.organizationDataController.getOrganizations();
-        if (organizations.length > 0) {
-            return Promise.all(organizations.map(async (org: OrganizationModel) =>
-                await this.autoGenerateTodosForOrganization(org, getRandomItem)))
-                .then(() => ({"message": "Todos were generated successfully"}))
-        } else {
-            throw new PlenuumError("No organization found to generate todo.", ErrorType.NOT_FOUND);
-        }
+    async generateTodo(orgId: string) {
+        let organization = await this.organizationDataController.getOrganizationByDbName(orgId);
+        return this.autoGenerateTodosForOrganization(organization, getRandomItem)
+            .then(() => ({"message": "Todos were generated successfully"}))
     }
 
     async startWorker() {
