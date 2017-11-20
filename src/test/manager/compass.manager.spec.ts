@@ -11,7 +11,6 @@ import Group from "../../data/models/organization/group.model";
 import { createSentence, createSkill, createSkillScore, skills } from "../util/statistics.manager.util";
 import { validateCompassTodo } from "../../util/model.validator";
 import { fail } from "assert";
-import { PlenuumError } from "../../util/errorhandler";
 import FeedbackDataController from "../../data/datacontroller/feedback.datacontroller";
 import { getScenarioOneGroups, getScenarioOneSkills, getScenarioOneUsers, } from "../util/test-scenerios";
 import { getRandomItem } from "../util/utils";
@@ -67,75 +66,57 @@ suite("CompassManager tests", () => {
     });
 
     suite("answerCard", () => {
+        const organizationMock: any = {name: "MockOrg", dbName: "mock-org", todoSentenceNumber: 5};
+
+        const organizationDataController: any = {
+            getOrganizationByDbName: sinon.stub().callsFake(() => organizationMock)
+        };
+        const groupDataController: any = {
+            getUserGroups: sinon.stub().callsFake((orgId: string, userId: any) =>
+                getScenarioOneGroups().filter((g: any) => g.users.indexOf(userId.toString()) !== -1)),
+            getGroupsByIds: sinon.stub().callsFake((orgId: string, groupIds: string[]) =>
+                getScenarioOneGroups().filter((g: any) => groupIds.indexOf(g._id) !== -1)),
+            getGroups: sinon.stub().callsFake(() => getScenarioOneGroups())
+        };
+        let sandbox: any;
+
+        beforeEach(() => sandbox = sinon.sandbox.create());
+        afterEach(() => sandbox.restore());
+
         const aboutUserId = "5984342227cd340363dc84c7";
         const senderId = "5984342227cd340363dc84aa";
         const orgId = "hipteam";
 
-        test("Should get the correct skills and call generateTodo", async () => {
-            const aboutUserGroups: any = [
-                {
-                    _id: "599312971b31d008b6bd2781",
-                    skills: [
-                        "5940f6044d0d550007d863df",
-                        "5940f5f44d0d550007d863dc"
-                    ],
-                    answerCardRelations: [
-                        "599312a31b31d008b6bd2782",
-                        "599312971b31d008b6bd2781"
-                    ]
-                },
-                {
-                    _id: "599312ac1b31d008b6bd2785",
-                    skills: [
-                        "5940f6144d0d550007d863e2"
-                    ],
-                    answerCardRelations: []
-                },
-            ];
+        test("Adam should get Leadership and Communication questions about Eve", async () => {
+            const aboutUserId = getScenarioOneUsers()[3]._id.toString(); // Eve;
+            const ownerId = getScenarioOneUsers()[0]._id.toString(); // Adam
 
-            const senderUserGroups: any = [
-                {
-                    _id: "599312a31b31d008b6bd2782",
-                    skills: [
-                        "5940f6044d0d550007d863df",
-                        "5940f6144d0d550007d863e2"
-                    ],
-                    answerCardRelations: [
-                        "599312971b31d008b6bd2781"
-                    ]
-                }
-
-            ];
-            const mockSkills = sinon.mock();
-            const getUserGroups = sinon.stub();
-            const getOrganizationByDbName = sinon.stub();
-
-            getUserGroups.withArgs(orgId, "5984342227cd340363dc84c7").resolves(aboutUserGroups);
-            getUserGroups.withArgs(orgId, "5984342227cd340363dc84aa").resolves(senderUserGroups);
-            getOrganizationByDbName.withArgs(orgId).resolves({dbName: orgId, todoSentenceNumber: 3});
-
-            const groupDataController: any = {getUserGroups: getUserGroups};
-            const organizationDataController: any = {getOrganizationByDbName: getOrganizationByDbName};
-
-            const getSkillsByIds = sinon.stub(CompassDataController, "getSkillsByIds");
-            const getAboutUser = sinon.stub(CompassManager, "getAboutUser");
-            const buildUpNewTodoResponse = sinon.stub(CompassManager, "buildUpNewTodoResponse");
-            const saveCompassTodo = sinon.stub(CompassDataController, "saveCompassTodo").resolves();
-
-            getAboutUser.withArgs(orgId, aboutUserId).resolves(aboutUserId);
-
-            getSkillsByIds.withArgs(orgId, ["5940f6044d0d550007d863df", "5940f5f44d0d550007d863dc"])
-                .resolves(mockSkills);
+            sandbox.stub(CompassManager, "getAboutUser").callsFake((orgId: string, userId: string) => {
+                if (userId == aboutUserId) return getScenarioOneUsers()[3];
+                throw new Error("getAboutUser -> wrong user id");
+            });
+            sandbox.stub(CompassDataController, "getSkillsByIds").callsFake((orgId: string, ids: string[]) =>
+                ids.map((id: string) => getScenarioOneSkills().find((skill: any) => id === skill._id)));
+            sandbox.stub(UserDataController, "getOrganizationUsers").resolves(getScenarioOneUsers());
+            sandbox.stub(CompassDataController, "saveCompassTodo").callsFake((orgId: string, todo: any) => todo);
 
             const compassManager = new CompassManager(groupDataController, organizationDataController, dummy);
-            await compassManager.answerCard(aboutUserId, senderId, orgId);
+            const result = await compassManager.answerCard(aboutUserId, ownerId, organizationMock.dbName);
 
-            getSkillsByIds.restore();
-            buildUpNewTodoResponse.restore();
-            getAboutUser.restore();
-            saveCompassTodo.restore();
+            let containsLeadershipQuestion = false;
+            for (const question of result.questions) {
+                containsLeadershipQuestion = containsLeadershipQuestion || question.skill.name === "Leadership";
+            }
 
-            sinon.assert.calledWith(buildUpNewTodoResponse, senderId, 3, aboutUserId, mockSkills);
+            let containerCommunicationQuestion = false;
+            for (const question of result.questions) {
+                containerCommunicationQuestion = containerCommunicationQuestion || question.skill.name === "Communication";
+            }
+
+            expect(result).to.not.be.undefined;
+            validateCompassTodo(result, 5, true);
+            expect(containsLeadershipQuestion).to.be.true;
+            expect(containerCommunicationQuestion).to.be.true;
         });
 
         test("Should throw error, if the sender does not have an answerCard relation to the about user's group", (done) => {
@@ -541,119 +522,6 @@ suite("CompassManager tests", () => {
 
             assert(!(hasSkillThree || hasSkillFour));
         })
-    });
-
-    suite("autoGenerateTodo", () => {
-        test("Should get parts send them to build a todo and call save", async () => {
-            const testGroups: any[] = [
-                {
-                    _id: "group1",
-                    users: ["user1", "user2"],
-                    skills: ["skill1", "skill2"],
-                    todoCardRelations: ["group2"]
-                },
-                {
-                    _id: "group2",
-                    users: ["user3", "user4", "user5", "user6"],
-                    skills: ["skill3", "skill4"],
-                    todoCardRelations: ["group1"]
-                },
-                {
-                    _id: "group3",
-                    users: ["user7"],
-                    skills: ["skill5", "skill6"],
-                    todoCardRelations: ["group2"]
-                },
-                {
-                    _id: "group4",
-                    users: ["user8", "user9"],
-                    skills: ["skill7"],
-                    todoCardRelations: []
-                },
-            ];
-
-            const groupDataController: any = {
-                getGroups: sinon.stub().resolves(testGroups),
-                getGroupById: sinon.stub().callsFake((orgId, groupId) => Promise.resolve(testGroups.filter((g) => g._id === groupId)[0]))
-            };
-
-            const organizationDataController: any = {
-                getOrganizationByDbName: sinon.stub().resolves({
-                    dbName: "orgName",
-                    todoSentenceNumber: 3
-                })
-            };
-
-            const getSkillsByIds = sinon.stub(CompassDataController, "getSkillsByIds");
-            getSkillsByIds.callsFake((orgId, skills) => skills);
-
-            const saveCompassTodo = sinon.stub(CompassDataController, "saveCompassTodo");
-
-            const buildUpNewTodoResponse = sinon.stub(CompassManager, "buildUpNewTodoResponse");
-            buildUpNewTodoResponse.returns({todo: "todo"});
-
-            const compassManager = new CompassManager(groupDataController, organizationDataController, dummy);
-            await compassManager.autoGenerateTodo("orgName");
-
-            buildUpNewTodoResponse.restore();
-            getSkillsByIds.restore();
-            saveCompassTodo.restore();
-
-            sinon.assert.calledWith(buildUpNewTodoResponse, sinon.match.defined, 3, sinon.match.defined, sinon.match.array);
-            sinon.assert.calledWith(saveCompassTodo, "orgName", {todo: "todo"});
-        });
-
-        test("Should throw and error if there's no group with todo relation", async () => {
-            const testGroups: any[] = [
-                {
-                    _id: "group1",
-                    users: ["user1", "user2"],
-                    skills: ["skill1", "skill2"],
-                    todoCardRelations: []
-                },
-                {
-                    _id: "group2",
-                    users: ["user3", "user4", "user5", "user6"],
-                    skills: ["skill3", "skill4"],
-                    todoCardRelations: []
-                },
-                {
-                    _id: "group3",
-                    users: ["user7"],
-                    skills: ["skill5", "skill6"],
-                    todoCardRelations: []
-                },
-                {
-                    _id: "group4",
-                    users: ["user8", "user9"],
-                    skills: ["skill7"],
-                    todoCardRelations: []
-                },
-            ];
-
-            const groupDataController: any = {
-                getGroups: sinon.stub().resolves(testGroups),
-                getGroupById: sinon.stub().callsFake((orgId, groupId) => Promise.resolve(
-                    testGroups.filter((g) => g._id === groupId)[0]))
-            };
-
-            const organizationDataController: any = {
-                getOrganizationByDbName: sinon.stub().resolves({
-                    dbName: "orgName",
-                    todoSentenceNumber: 3
-                })
-            };
-
-            const compassManager = new CompassManager(groupDataController, organizationDataController, dummy);
-            try {
-                await compassManager.autoGenerateTodo("orgName");
-                fail("Should throw and exception")
-            } catch (err) {
-                expect(err).to.be.instanceOf(PlenuumError);
-                expect(err.getStatusCode()).to.be.equal(404);
-                expect(err.message).to.be.equal("Organization has no group with Todo relations");
-            }
-        });
     });
 
     suite("Auto Generate Todos For Organization", () => {

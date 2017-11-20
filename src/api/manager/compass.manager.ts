@@ -49,56 +49,6 @@ export default class CompassManager {
         }
     };
 
-    async answerCard(aboutUserId: string, ownerId: string, orgId: string) {
-        const organization = await this.organizationDataController.getOrganizationByDbName(orgId);
-        CompassManager.checkOrganization(organization);
-
-        const aboutUser: UserModel = await CompassManager.getAboutUser(organization.dbName, aboutUserId);
-        CompassManager.checkAboutUser(aboutUser);
-
-        const aboutUserGroups = await this.groupDataController.getUserGroups(orgId, aboutUserId);
-        const senderUserGroups = await this.groupDataController.getUserGroups(orgId, ownerId);
-
-        const answerGroups: Group[] = [];
-        senderUserGroups.forEach((senderGroup) => senderGroup.answerCardRelations.forEach((relationGroupId) => {
-            const found = aboutUserGroups.find((aboutGroup) => aboutGroup._id.toString() === relationGroupId);
-            if (found) {
-                answerGroups.push(found);
-            }
-        }));
-
-        CompassManager.checkAnswerCardRelation(answerGroups);
-
-        let answerSkillIds: string[] = [];
-        answerGroups.forEach((group) => answerSkillIds = answerSkillIds.concat(group.skills));
-        const aboutUserSkills = await CompassDataController.getSkillsByIds(orgId, answerSkillIds);
-        const todo = CompassManager.buildUpNewTodoResponse(ownerId, organization.todoSentenceNumber, aboutUserId, aboutUserSkills);
-        return CompassDataController.saveCompassTodo(organization.dbName, todo);
-    }
-
-    async autoGenerateTodo(orgId: string) {
-        const organization = await this.organizationDataController.getOrganizationByDbName(orgId);
-        const organizationGroups = await this.groupDataController.getGroups(orgId);
-        const groupsWithTodoRelations = organizationGroups.filter((group) => group.todoCardRelations.length > 0);
-
-        if (groupsWithTodoRelations.length === 0) {
-            throw new PlenuumError("Organization has no group with Todo relations", ErrorType.NOT_FOUND)
-        }
-
-        const randomGroup = getRandomItem(groupsWithTodoRelations);
-        const randomOwnerUserId = getRandomItem(randomGroup.users);
-
-        const randomAboutGroupId = getRandomItem(randomGroup.todoCardRelations);
-        const randomAboutGroup = await this.groupDataController.getGroupById(orgId, randomAboutGroupId);
-
-        const randomAboutUserId = getRandomItem(randomAboutGroup.users);
-        const skills = await CompassDataController.getSkillsByIds(orgId, randomAboutGroup.skills);
-
-        const todo = CompassManager.buildUpNewTodoResponse(randomOwnerUserId, organization.todoSentenceNumber, randomAboutUserId, skills);
-
-        return CompassDataController.saveCompassTodo(organization.dbName, todo);
-    }
-
     static checkAnswerCardRelation(answerGroups: Group[]) {
         if (answerGroups.length === 0) {
             throw new PlenuumError("Sender has no answer card relation to this user", ErrorType.NOT_FOUND);
@@ -175,40 +125,32 @@ export default class CompassManager {
         return CompassDataController.createOrUpdateSkill(orgId, skill);
     }
 
-    async getSkills(orgId: string) {
-        return CompassDataController.getAllSkills(orgId);
-    }
+    async answerCard(aboutUserId: string, ownerId: string, orgId: string) {
+        const organization = await this.organizationDataController.getOrganizationByDbName(orgId);
+        CompassManager.checkOrganization(organization);
 
-    private async getUserSkillIds(orgId: string, userId: string) {
-        const user = await UserDataController.getUserById(userId);
-        const organizationGroups = await this.groupDataController.getGroups(orgId);
-        const userGroups = organizationGroups.filter(
-            (group: GroupModel) => group.users.indexOf(user._id.toString()) !== -1);
-        let skillCollectionFromGroups: string[] = [];
-        for (const group of userGroups) {
-            skillCollectionFromGroups = skillCollectionFromGroups.concat(group.skills);
-        }
-        return Array.from(new Set(skillCollectionFromGroups)); // Create a new array without duplicates
-    }
+        const aboutUser: UserModel = await CompassManager.getAboutUser(organization.dbName, aboutUserId);
+        CompassManager.checkAboutUser(aboutUser);
 
-    async getStatistics(orgId: string, userId: string) {
-        const userGroups: Group[] = await this.groupDataController.getUserGroups(orgId, userId);
-        const statistics = await StatisticsManager.getStatistics(orgId, userId, userGroups);
-        await StatisticsDataController.saveOrUpdateStatistics(orgId, statistics);
-        const savedStatistics = await StatisticsDataController.getStatisticsByUserId(orgId, userId);
+        const aboutUserGroups = await this.groupDataController.getUserGroups(orgId, aboutUserId);
+        const senderUserGroups = await this.groupDataController.getUserGroups(orgId, ownerId);
 
-        const userSkills = await this.getUserSkillIds(orgId, userId);
-        const filteredStatistics = await this.filterStatistics(userSkills, savedStatistics);
-
-        return await Promise.all(filteredStatistics.skillScores.map(async (skillScore: any) => {
-            skillScore.skill = await CompassDataController.getSkillById(orgId, skillScore.skill);
-            return skillScore;
+        const answerGroups: Group[] = [];
+        senderUserGroups.forEach((senderGroup) => senderGroup.answerCardRelations.forEach((relationGroupId) => {
+            const found = aboutUserGroups.find((aboutGroup) => aboutGroup._id.toString() === relationGroupId);
+            if (found) {
+                answerGroups.push(found);
+            }
         }));
-    }
 
-    filterStatistics(userSkills: string[], statistics: CompassStatisticsModel): CompassStatisticsModel {
-        statistics.skillScores = statistics.skillScores.filter((skillScore: any) => userSkills.indexOf(skillScore.skill) !== -1);
-        return statistics;
+        CompassManager.checkAnswerCardRelation(answerGroups);
+
+        // Get skills that the target user has
+        const targetSkills = await this.getUserSkillIds(orgId, aboutUserId);
+
+        const aboutUserSkills = await CompassDataController.getSkillsByIds(orgId, targetSkills);
+        const todo = CompassManager.buildUpNewTodoResponse(ownerId, organization.todoSentenceNumber, aboutUserId, aboutUserSkills);
+        return CompassDataController.saveCompassTodo(organization.dbName, todo);
     }
 
     async autoGenerateTodosForOrganization(org: OrganizationModel, random: Function) {
@@ -251,6 +193,42 @@ export default class CompassManager {
         })).then((todos) => todos.filter((t) => t));
     }
 
+    async getSkills(orgId: string) {
+        return CompassDataController.getAllSkills(orgId);
+    }
+
+    private async getUserSkillIds(orgId: string, userId: string) {
+        const user = await UserDataController.getUserById(userId);
+        const organizationGroups = await this.groupDataController.getGroups(orgId);
+        const userGroups = organizationGroups.filter(
+            (group: GroupModel) => group.users.indexOf(user._id.toString()) !== -1);
+        let skillCollectionFromGroups: string[] = [];
+        for (const group of userGroups) {
+            skillCollectionFromGroups = skillCollectionFromGroups.concat(group.skills);
+        }
+        return Array.from(new Set(skillCollectionFromGroups)); // Create a new array without duplicates
+    }
+
+    async getStatistics(orgId: string, userId: string) {
+        const userGroups: Group[] = await this.groupDataController.getUserGroups(orgId, userId);
+        const statistics = await StatisticsManager.getStatistics(orgId, userId, userGroups);
+        await StatisticsDataController.saveOrUpdateStatistics(orgId, statistics);
+        const savedStatistics = await StatisticsDataController.getStatisticsByUserId(orgId, userId);
+
+        const userSkills = await this.getUserSkillIds(orgId, userId);
+        const filteredStatistics = await this.filterStatistics(userSkills, savedStatistics);
+
+        return await Promise.all(filteredStatistics.skillScores.map(async (skillScore: any) => {
+            skillScore.skill = await CompassDataController.getSkillById(orgId, skillScore.skill);
+            return skillScore;
+        }));
+    }
+
+    filterStatistics(userSkills: string[], statistics: CompassStatisticsModel): CompassStatisticsModel {
+        statistics.skillScores = statistics.skillScores.filter((skillScore: any) => userSkills.indexOf(skillScore.skill) !== -1);
+        return statistics;
+    }
+
     async generateTodo(orgId: string) {
         let organization = await this.organizationDataController.getOrganizationByDbName(orgId);
         return this.autoGenerateTodosForOrganization(organization, getRandomItem)
@@ -261,17 +239,5 @@ export default class CompassManager {
                         : "No TODO was generated"
                 }
             ))
-    }
-
-    async startWorker() {
-        let organizations = await this.organizationDataController.getOrganizations();
-        return Promise.all(organizations.map(async (org: OrganizationModel) => {
-            //TODO Franclin: we shouldn't save the compass generation time as cron expression -> please convert the number into cron
-            const interval = parser.parseExpression(org.compassGenerationTime);
-            const now = new Date();
-            if (interval.next().getDate() === now.getDate()) {
-                return await this.autoGenerateTodosForOrganization(org, getRandomItem)
-            }
-        })).then(() => ({"message": "TODOs were generated successfully"}));
     }
 }

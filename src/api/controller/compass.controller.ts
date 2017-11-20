@@ -77,10 +77,4 @@ export default class CompassController extends BaseController {
             .then((result) => this.respond(StatusCodes.OK, req, res, result))
             .catch((err) => res.status(this.getErrorStatus(err)).send(formError(err)));
     }
-
-    async generateTodoForWorker(req: any, res: any) {
-        return this.compassManager.startWorker()
-            .then((result) => this.respond(StatusCodes.OK, req, res, result))
-            .catch((err) => res.status(this.getErrorStatus(err)).send(formError(err)));
-    }
 }

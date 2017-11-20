@@ -157,23 +157,4 @@ export default (app: Express, compassController: CompassController) => {
      */
     app.route("/api/organizations/:orgId/compass/todos/generate")
         .post(passport.authenticate('jwt', {session: false}), checkAdmin(), compassController.generateTodo.bind(compassController));
-
-    /**
-     * @api {GET} /api/startwork Start Work
-     * @apiVersion 2.0.0
-     * @apiName Start Generation Todos
-     * @apiGroup Worker
-     * @apiDescription Start a generation of a chunk of todos for users for all the organizations
-     *
-     * @apiHeader {String} Authorization Basic username:password
-     *
-     * @apiSuccessExample {json} Success-Response:
-     *      HTTP/1.1 200 OK
-     *      {
-     *          "message": "Todos were generated successfuly"
-     *      }
-     *
-     */
-    app.route("/api/startwork")
-        .get(passport.authenticate('basic', {session: false}), compassController.generateTodoForWorker.bind(compassController));
 }

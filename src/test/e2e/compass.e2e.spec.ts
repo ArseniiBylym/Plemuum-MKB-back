@@ -274,7 +274,6 @@ suite("Compass request test", () => {
     });
 
     suite("Trigger for todo generation", () => {
-
         test("Generate todos for users in the organizations", async () => {
             const orgId = "hipteam";
             const url = `/api/organizations/${orgId}/compass/todos/generate`;
@@ -286,17 +285,5 @@ suite("Compass request test", () => {
                 .expect(200);
             expect(response.body).to.be.deep.equal(result);
         });
-
-        test("Start generation should be successfull", async () => {
-            const url = '/api/startwork';
-            const result = {"message": "TODOs were generated successfully"};
-            const response = await request(app)
-                .get(url)
-                .set(basicAuthHeader)
-                .expect(200);
-            expect(response.body).to.be.deep.equal(result);
-        });
-
     });
-
 });
