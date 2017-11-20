@@ -23,6 +23,12 @@ export default class SessionController extends BaseController {
     }
 
     async loginAsAdmin(req: any, res: any) {
+        // TODO: ugly solution to filter non admin users
+        if (req.user._id) {
+            res.status(StatusCodes.UNAUTHORIZED).send("Unauthorized");
+            return;
+        }
+
         return this.sessionManager.loginAsAdmin()
             .then((result: any) => {
                 res.cookie('token', result.token, {httpOnly: true});
