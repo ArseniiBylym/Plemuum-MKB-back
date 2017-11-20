@@ -1,8 +1,6 @@
 import app from './app'
 import * as http from "http";
 import config, { ENVIRONMENTS } from '../config/config';
-import WorkerPlenuum from "./worker/compass.worker";
-import * as ManagerFactory from "./factory/manager.factory";
 import { getDatabaseManager } from "./factory/database.factory";
 import * as cluster from 'cluster';
 
@@ -28,17 +26,8 @@ if (cluster.isMaster && config.env === ENVIRONMENTS.STAGING || config.env === EN
     getDatabaseManager().openConnection(config.mongoUrl)
         .then(() => {
             server.listen(config.port);
-            server.on("error", (error: Error) => {
-                console.error(`Error starting  server ${error}`);
-            });
-            server.on("listening", () => {
-                console.log(`Server started on port ${config.port}`);
-
-                const organizationDataController: any = ManagerFactory.getOrganizationManager();
-                const compassManager = ManagerFactory.getCompassManager();
-                const worker = new WorkerPlenuum(config.workerTime, organizationDataController.organizationDataController, compassManager);
-                worker.start();
-            });
+            server.on("error", (error: Error) => console.error(`Error starting  server ${error}`));
+            server.on("listening", () => console.log(`Server started on port ${config.port}`));
         })
         .catch(reason => console.error(reason));
 
