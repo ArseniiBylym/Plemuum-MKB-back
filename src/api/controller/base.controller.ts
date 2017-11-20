@@ -1,6 +1,6 @@
 import { formError } from '../../util/errorhandler';
 import * as StatusCodes from 'http-status-codes';
-import logger from "../../util/logger";
+import logger, {default as getLogger} from "../../util/logger";
 
 class BaseController {
 
@@ -12,7 +12,7 @@ class BaseController {
         const statusCode = this.getErrorStatus(error);
         if (statusCode >= 500) {
             delete req.body.password;
-            logger.error({
+            getLogger().error({
                 type: "error",
                 request: {
                     cookies: req.cookies,
@@ -35,7 +35,7 @@ class BaseController {
         delete request.body.password;
         response.status(status).send(message);
         try {
-            logger.info({
+            getLogger().info({
                 type: "info",
                 request: {
                     cookies: request.cookies,

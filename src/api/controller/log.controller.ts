@@ -5,10 +5,14 @@ export default class LogController {
     async getLogs(req: any, res: any) {
         const data = await fs.readFile(path.join(__dirname, '../../../log', 'info.log'), 'utf8');
         let lines = data.split('\n');
-        const parsedList: any[] = [];
+        let parsedList: any[] = [];
         lines.forEach(l => {
-            if (l) parsedList.push(JSON.parse(l))
+            if (l) parsedList.push(JSON.parse(l));
         });
+        if (req.query.filter) {
+            const filterDate = new Date(req.query.filter);
+            parsedList = parsedList.filter((l) => new Date(l.timestamp) >= filterDate);
+        }
         return res.send(parsedList);
     }
 }

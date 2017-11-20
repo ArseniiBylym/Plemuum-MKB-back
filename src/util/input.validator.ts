@@ -1,6 +1,6 @@
 import * as expressValidator from 'express-validator';
 import * as StatusCodes from 'http-status-codes';
-import logger from "./logger";
+import {default as getLogger} from "./logger";
 
 const validateCompassAnswer = (input: any): boolean => {
     return true;
@@ -34,7 +34,7 @@ const validate = async (req: any, res: any) => {
         res.status(StatusCodes.BAD_REQUEST);
         res.send({error: "Validation error", hint: validationResults.array()});
 
-        logger.error({
+        getLogger().error({
             type: "error",
             request: {
                 cookies: req.cookies,
@@ -55,4 +55,4 @@ const validate = async (req: any, res: any) => {
     return true;
 };
 
-export { validator, validate }
+export {validator, validate}

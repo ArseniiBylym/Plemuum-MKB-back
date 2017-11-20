@@ -1,12 +1,12 @@
 import UserDataController from "../../data/datacontroller/user.datacontroller";
-import { resetPasswordDataController } from "../../data/datacontroller/resetpassword.datacontroller";
+import {resetPasswordDataController} from "../../data/datacontroller/resetpassword.datacontroller";
 import EmailService from "../../service/email/mail.service";
 import FileTransfer from "../../service/file/filetransfer.service";
-import { generateNewTokensForResetPassword } from "../../service/auth/token.manager";
-import { ErrorType, PlenuumError } from "../../util/errorhandler";
-import { UserModel } from "../../data/database/schema/common/user.schema";
+import {generateNewTokensForResetPassword} from "../../service/auth/token.manager";
+import {ErrorType, PlenuumError} from "../../util/errorhandler";
+import {UserModel} from "../../data/database/schema/common/user.schema";
 import config from "../../../config/config";
-import logger from "../../util/logger";
+import {default as getLogger} from "../../util/logger";
 
 export default class UserManager {
 
@@ -96,7 +96,7 @@ export default class UserManager {
                 mailService.sendWelcomeEmail(email, firstName, link, body.orgIds);
             })
             .catch((error) => {
-                logger.error({
+                getLogger().error({
                     type: "error",
                     request: {
                         params: params,
