@@ -1,22 +1,17 @@
 import NotificationInterface from "./notification.interface";
 
 export const TEMPLATE = {
-    FEEDBACK: (name: string) => {
-        return { body: `You received a feedback from ${name}`,  title: `New feedback` }
-    },
-    REQUEST: (name: string) => {
-        return { body: `${name} needs your feedback`, title: `New feedback request`};
-    },
-    COMPASS: (name: string) => {
-        return { body: `Would you like to help ${name} to improve?`, title: `New todo`};
-    },
+    FEEDBACK: (name: string) => ({body: `You received a feedback from ${name}`, title: `New feedback`}),
+    REQUEST: (name: string) => ({body: `${name} needs your feedback`, title: `New feedback request`}),
+    COMPASS: (name: string) => ({body: `Would you like to help ${name} to improve?`, title: `New todo`}),
+    GENERAL: (title: string, body: string) => ({title: title, body: body})
 };
 
 export default class NotificationService {
 
-    service : NotificationInterface;
+    service: NotificationInterface;
 
-    constructor(service: NotificationInterface){
+    constructor(service: NotificationInterface) {
         this.service = service;
     }
 

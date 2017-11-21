@@ -3,6 +3,7 @@ import NotificationManager from "../manager/notification.manager";
 import { validate } from "../../util/input.validator";
 import * as StatusCodes from 'http-status-codes';
 import { Response } from 'express';
+import { TEMPLATE } from "../../service/notification/notification.service";
 
 export default class NotificationController extends BaseController {
 
@@ -52,13 +53,14 @@ export default class NotificationController extends BaseController {
 
     async sendNotification(req: any, res: Response) {
         req.checkBody('email', 'Missing email').notEmpty();
+        req.checkBody('title', 'Missing title').notEmpty();
         req.checkBody('message', 'Missing message').notEmpty();
 
         if (!await validate(req, res)) {
             return;
         }
 
-        return this.notificationManager.sendNotification(req.body.email, req.body.message)
+        return this.notificationManager.sendNotification(req.body.email, TEMPLATE.GENERAL(req.body.title, req.body.message))
             .then((result) => res.status(StatusCodes.OK).send(result))
             .catch((err) => this.handleError(err, req, res));
     }
