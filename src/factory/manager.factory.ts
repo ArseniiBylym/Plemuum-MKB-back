@@ -45,7 +45,7 @@ const getOrganizationManager = (): OrganizationManager =>
     getManager(organizationManager, OrganizationManager, getOrganizationDataController());
 
 const getRequestManager = (): RequestManager =>
-    getManager(requestManager, RequestManager, requestDataController);
+    getManager(requestManager, RequestManager, requestDataController, getNotificationManager());
 
 const getSessionManager = (): SessionManager =>
     getManager(sessionManager, SessionManager);
