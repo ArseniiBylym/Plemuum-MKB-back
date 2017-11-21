@@ -3,7 +3,8 @@ import * as fs from "fs-extra";
 
 export default class LogController {
     async getLogs(req: any, res: any) {
-        const data = await fs.readFile(path.join(__dirname, '../../../log', 'info.log'), 'utf8');
+        const currentDateString = new Date().toISOString().substr(0, 10);
+        const data = await fs.readFile(path.join(__dirname, '../../../log', `info-${currentDateString}.log`), 'utf8');
         let lines = data.split('\n');
         let parsedList: any[] = [];
         lines.forEach(l => {

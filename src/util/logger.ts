@@ -1,4 +1,4 @@
-import config, {ENVIRONMENTS} from "../../config/config";
+import config, { ENVIRONMENTS } from "../../config/config";
 
 const {createLogger, format, transports} = require("winston");
 const {json} = format;
@@ -12,8 +12,9 @@ export default function getLogger() {
     if (config.env === ENVIRONMENTS.DEVELOPMENT) {
         logger.add(new transports.Console({format: json()}));
     } else {
-        logger.add(new transports.File({filename: './log/error.log', level: 'error'}));
-        logger.add(new transports.File({filename: './log/info.log', level: 'info'}));
+        const currentDateString = new Date().toISOString().substr(0, 10);
+        logger.add(new transports.File({filename: `./log/error-${currentDateString}.log`, level: 'error'}));
+        logger.add(new transports.File({filename: `./log/info-${currentDateString}.log`, level: 'info'}));
     }
     return logger;
 }
