@@ -28,6 +28,9 @@ let tagManager: TagManager;
 let firebaseStorageManager: FirebaseStorageManager;
 let notificationManager: NotificationManager;
 let feedbackManager: FeedbackManager;
+let firebaseNotification = new FirebaseNotification(
+    require(`../../config/firebase/${config.firebaseConfig.keyFileName}`),
+    config.firebaseConfig.databaseUrl);
 
 const getCompassManager = () => getManager(compassManager, CompassManager,
     getGroupDataController(), getOrganizationManager(), requestDataController);
@@ -54,13 +57,10 @@ const getFirebaseStorageManager = (): FirebaseStorageManager =>
     getManager(firebaseStorageManager, FirebaseStorageManager);
 
 const getNotificationManager = (): NotificationManager =>
-    getManager(notificationManager, NotificationManager,
-        new FirebaseNotification(
-            require(`../../config/firebase/${config.firebaseConfig.keyFileName}`),
-            config.firebaseConfig.databaseUrl), UserDataController);
+    getManager(notificationManager, NotificationManager, firebaseNotification, UserDataController);
 
 const getFeedbackManager = (): FeedbackManager =>
-    getManager(feedbackManager, FeedbackManager);
+    getManager(feedbackManager, FeedbackManager, getNotificationManager());
 
 const getManager = (instance: any, manager: any, ...dependencies: any[]) => {
     if (!instance) {

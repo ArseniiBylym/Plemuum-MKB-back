@@ -41,9 +41,15 @@ export default class NotificationManager {
     async sendNotification(email: string, template: Object) {
         const user = await this.userDataController.getUserByEmail(email, true);
         if (user.notificationToken.length === 0) {
-            throw new PlenuumError("There's no notification token available", ErrorType.NOT_FOUND);
+            return;
         }
         return Promise.all(user.notificationToken.map(
             (token: any) => this.notificationService.sendNotification(token, template)))
+    }
+
+    async sendNotificationById(userId: string, template: Object) {
+        const tokens = await this.userDataController.getNotificationTokens(userId);
+        if (tokens === 0) return;
+        return Promise.all(tokens.map((token: any) => this.notificationService.sendNotification(token, template)))
     }
 }

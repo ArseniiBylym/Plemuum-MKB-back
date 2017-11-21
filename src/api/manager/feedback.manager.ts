@@ -1,8 +1,16 @@
 import FeedbackDataController from "../../data/datacontroller/feedback.datacontroller";
 import UserDataController from "../../data/datacontroller/user.datacontroller";
 import { ErrorType, PlenuumError } from "../../util/errorhandler";
+import NotificationManager from "./notification.manager";
+import { TEMPLATE } from "../../service/notification/notification.service";
 
 export default class FeedbackManager {
+
+    private notificationManager: NotificationManager;
+
+    constructor(notificationManager: NotificationManager) {
+        this.notificationManager = notificationManager;
+    }
 
     async getFeedbacks(orgId: string, userId: string) {
         return FeedbackDataController.getAllFeedback(orgId, userId)
@@ -21,7 +29,13 @@ export default class FeedbackManager {
         if (!user) {
             throw new PlenuumError("Recipient user not found", ErrorType.NOT_FOUND);
         }
-        return FeedbackDataController.saveFeedback(orgId, feedback);
+        const savedFeedback = await FeedbackDataController.saveFeedback(orgId, feedback);
+        try {
+            await this.notificationManager.sendNotificationById(feedback.recipientId, TEMPLATE.FEEDBACK(user.firstName));
+        } catch (error) {
+            console.error(error);
+        }
+        return savedFeedback;
     }
 
 }

@@ -26,13 +26,20 @@ const UserDataController = {
         if (showAdmin) {
             query.select('+admin');
         }
-        if(showOrganizations) {
+        if (showOrganizations) {
             query.select('+orgIds');
         }
-        if(showUpdatedPasswordDate) {
+        if (showUpdatedPasswordDate) {
             query.select('+passwordUpdatedAt');
         }
         return query.lean().exec() as Promise<UserModel>;
+    },
+
+    getNotificationTokens: async function (userId: string) {
+        const query = UserCollection().findById(userId);
+        query.select('+notificationToken');
+        const user = await (query.lean().exec() as Promise<UserModel>);
+        return user.notificationToken;
     },
 
     getUserByIdFromOrg: function (orgId: string, userId: string, fields: string[] = []): Promise<UserModel> {
@@ -153,7 +160,9 @@ const UserDataController = {
     getNotificationToken: function (userId: string, token: string): Promise<string> {
         return UserCollection().findById(userId).select('+notificationToken').lean().exec()
             .then((user: any) =>
-                user.notificationToken.find((elem: string) => { return elem === token }))
+                user.notificationToken.find((elem: string) => {
+                    return elem === token
+                }))
     }
 };
 
