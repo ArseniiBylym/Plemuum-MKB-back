@@ -739,6 +739,85 @@
 										"description": ""
 									},
 									"response": []
+								},
+								{
+									"name": "Send notification message",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "email",
+													"value": "peter.szabo@hipteam.io",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "title",
+													"value": "Other test title",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "message",
+													"value": "Test message",
+													"description": "",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://localhost:5000/api/notification/send",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "5000",
+											"path": [
+												"api",
+												"notification",
+												"send"
+											]
+										},
+										"description": ""
+									},
+									"response": []
+								},
+								{
+									"name": "Get logs",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"body": {},
+										"url": {
+											"raw": "http://localhost:5000/api/logs?filter=2017-11-21T09:48:29.000Z",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "5000",
+											"path": [
+												"api",
+												"logs"
+											],
+											"query": [
+												{
+													"key": "filter",
+													"value": "2017-11-21T09:48:29.000Z",
+													"equals": true
+												}
+											]
+										},
+										"description": ""
+									},
+									"response": []
 								}
 							],
 							"_postman_isSubFolder": true
@@ -2772,6 +2851,89 @@
 										"description": ""
 									},
 									"response": []
+								},
+								{
+									"name": "Send notification message",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "email",
+													"value": "peter.szabo@hipteam.io",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "title",
+													"value": "Other test title",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "message",
+													"value": "Test message",
+													"description": "",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "https://api.staging.plenuum.com/api/notification/send",
+											"protocol": "https",
+											"host": [
+												"api",
+												"staging",
+												"plenuum",
+												"com"
+											],
+											"path": [
+												"api",
+												"notification",
+												"send"
+											]
+										},
+										"description": ""
+									},
+									"response": []
+								},
+								{
+									"name": "Get logs",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"body": {},
+										"url": {
+											"raw": "https://api.staging.plenuum.com/api/logs?filter=2017-11-21T09:48:29.000Z",
+											"protocol": "https",
+											"host": [
+												"api",
+												"staging",
+												"plenuum",
+												"com"
+											],
+											"path": [
+												"api",
+												"logs"
+											],
+											"query": [
+												{
+													"key": "filter",
+													"value": "2017-11-21T09:48:29.000Z",
+													"equals": true
+												}
+											]
+										},
+										"description": ""
+									},
+									"response": []
 								}
 							],
 							"_postman_isSubFolder": true
@@ -4122,15 +4284,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"orgId\": \"598b04c182664715590b7499\",\n\t\"name\": \"Test job\"\n}"
+							"raw": "{\n\t\"orgId\": \"hipteam\"\n}"
 						},
 						"url": {
-							"raw": "localhost:5001/jobs/todo",
+							"raw": "localhost:5001/hipteam/jobs/todo",
 							"host": [
 								"localhost"
 							],
 							"port": "5001",
 							"path": [
+								"hipteam",
 								"jobs",
 								"todo"
 							]
@@ -4146,12 +4309,13 @@
 						"header": [],
 						"body": {},
 						"url": {
-							"raw": "localhost:5001/jobs",
+							"raw": "localhost:5001/hipteam/jobs",
 							"host": [
 								"localhost"
 							],
 							"port": "5001",
 							"path": [
+								"hipteam",
 								"jobs"
 							]
 						},
@@ -4195,14 +4359,15 @@
 						"header": [],
 						"body": {},
 						"url": {
-							"raw": "localhost:5001/jobs/5a0993ce4c944511d075d3d1/start",
+							"raw": "localhost:5001/hipteam/jobs/5a0b02797c0f012a708896dd/start",
 							"host": [
 								"localhost"
 							],
 							"port": "5001",
 							"path": [
+								"hipteam",
 								"jobs",
-								"5a0993ce4c944511d075d3d1",
+								"5a0b02797c0f012a708896dd",
 								"start"
 							]
 						},
@@ -4217,14 +4382,15 @@
 						"header": [],
 						"body": {},
 						"url": {
-							"raw": "localhost:5001/jobs/5a0993ce4c944511d075d3d1/stop",
+							"raw": "localhost:5001/hipteam/jobs/5a0b02797c0f012a708896dd/stop",
 							"host": [
 								"localhost"
 							],
 							"port": "5001",
 							"path": [
+								"hipteam",
 								"jobs",
-								"5a0993ce4c944511d075d3d1",
+								"5a0b02797c0f012a708896dd",
 								"stop"
 							]
 						},

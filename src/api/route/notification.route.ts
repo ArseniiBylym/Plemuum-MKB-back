@@ -70,6 +70,34 @@ export default (app: Express, notificationController: NotificationController) =>
         .patch(passport.authenticate('jwt', {session: false}), notificationController.refreshNotificationDevice.bind(notificationController))
         .delete(passport.authenticate('jwt', {session: false}), notificationController.removeNotificationToken.bind(notificationController));
 
+    /**
+     * @api {POST} /api/notification/send Notification - Send message to user
+     * @apiVersion 2.0.0
+     * @apiName send push notification
+     * @apiGroup Admin
+     * @apiDescription Send a push notification to a user
+     * @apiPermission admin
+     *
+     * @apiParam (Body){String}     email       User's email address
+     * @apiParam (Body){String}     title       Notification title
+     * @apiParam (Body){String}     message     Notification body message
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     * [
+     *     {
+     *         "results": [
+     *             {
+     *                 "messageId": "0:1511261613456526%b7d36b5cb7d36b5c"
+     *             }
+     *         ],
+     *         "canonicalRegistrationTokenCount": 0,
+     *         "failureCount": 0,
+     *         "successCount": 1,
+     *         "multicastId": 8843572636015946000
+     *     }
+     * ]
+     */
     app.route("/api/notification/send")
         .post(passport.authenticate('jwt', {session: false}), checkAdmin(), notificationController.sendNotification.bind(notificationController))
 
