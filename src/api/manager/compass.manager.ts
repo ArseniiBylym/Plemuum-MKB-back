@@ -20,6 +20,8 @@ import filterAsync from '../../util/asyncFilter';
 import { OrganizationModel } from "../../data/database/schema/organization/organization.schema";
 import { GroupModel } from "../../data/database/schema/organization/group.schema";
 import { CompassStatisticsModel } from "../../data/database/schema/organization/compass/compass.statistics.schema";
+import NotificationManager from "./notification.manager";
+import { TEMPLATE } from "../../service/notification/notification.service";
 
 const parser = require('cron-parser');
 
@@ -28,12 +30,14 @@ export default class CompassManager {
     groupDataController: GroupDataController;
     organizationDataController: OrganizationDataController;
     requestDataController: RequestDataController;
+    notificationManager: NotificationManager;
 
     constructor(groupDataController: GroupDataController, organizationDataController: OrganizationDataController,
-                requestDataController: RequestDataController) {
+                requestDataController: RequestDataController, notificationManager: NotificationManager) {
         this.groupDataController = groupDataController;
         this.requestDataController = requestDataController;
         this.organizationDataController = organizationDataController;
+        this.notificationManager = notificationManager;
     }
 
     async getTodos(orgId: string, userId: string) {
@@ -186,7 +190,13 @@ export default class CompassManager {
                     const todo = CompassManager.buildUpNewTodoResponse(user._id, org.todoSentenceNumber, randomAboutUserId, skills);
                     // Save built object
                     await CompassDataController.saveCompassTodo(dbName, todo);
-
+                    console.log("before noti");
+                    // Send notification
+                    try {
+                        await this.notificationManager.sendNotificationById(user._id, TEMPLATE.COMPASS(user.firstName));
+                    } catch (error) {
+                        console.error(error);
+                    }
                     return todo;
                 }
             }

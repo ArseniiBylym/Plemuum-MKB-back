@@ -33,7 +33,7 @@ let firebaseNotification = new FirebaseNotification(
     config.firebaseConfig.databaseUrl);
 
 const getCompassManager = () => getManager(compassManager, CompassManager,
-    getGroupDataController(), getOrganizationManager(), requestDataController);
+    getGroupDataController(), getOrganizationDataController(), requestDataController, getNotificationManager());
 
 const getUserManager = (): UserManager =>
     getManager(userManager, UserManager, new EmailService(), new FileTransferService(getFirebaseStorageManager()));
