@@ -31,13 +31,15 @@ export default class CompassManager {
     organizationDataController: OrganizationDataController;
     requestDataController: RequestDataController;
     notificationManager: NotificationManager;
+    statisticsManager: StatisticsManager;
 
     constructor(groupDataController: GroupDataController, organizationDataController: OrganizationDataController,
-                requestDataController: RequestDataController, notificationManager: NotificationManager) {
+                requestDataController: RequestDataController, notificationManager: NotificationManager, statisticsManager: StatisticsManager) {
         this.groupDataController = groupDataController;
         this.requestDataController = requestDataController;
         this.organizationDataController = organizationDataController;
         this.notificationManager = notificationManager;
+        this.statisticsManager = statisticsManager;
     }
 
     async getTodos(orgId: string, userId: string) {
@@ -116,17 +118,8 @@ export default class CompassManager {
         compassTodo.answered = true;
         await CompassDataController.updateCompassTodo(orgId, compassTodo);
         const savedAnswer = await CompassDataController.saveCompassAnswer(orgId, answer);
-        const statistics = await StatisticsManager.createOrUpdateStatistics(orgId, answer);
+        const statistics = await this.statisticsManager.createOrUpdateStatistics(orgId, answer);
         await StatisticsDataController.saveOrUpdateStatistics(orgId, statistics);
-
-        console.log("answerCompass");
-        // Send notification
-        try {
-            await this.notificationManager.sendNotificationById(compassTodo.about, TEMPLATE.STATISTICS());
-        } catch (error) {
-            console.error(error);
-        }
-
         return savedAnswer;
     }
 
@@ -228,7 +221,7 @@ export default class CompassManager {
 
     async getStatistics(orgId: string, userId: string) {
         const userGroups: Group[] = await this.groupDataController.getUserGroups(orgId, userId);
-        const statistics = await StatisticsManager.getStatistics(orgId, userId, userGroups);
+        const statistics = await this.statisticsManager.getStatistics(orgId, userId, userGroups);
         await StatisticsDataController.saveOrUpdateStatistics(orgId, statistics);
         const savedStatistics = await StatisticsDataController.getStatisticsByUserId(orgId, userId);
 

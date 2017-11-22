@@ -17,6 +17,7 @@ import { getGroupDataController } from "../data/datacontroller/group.datacontrol
 import FirebaseNotification from "../service/notification/firebase.notification";
 import config from "../../config/config";
 import UserDataController from "../data/datacontroller/user.datacontroller";
+import StatisticsManager from "../api/manager/statistics.manager";
 
 let compassManager: CompassManager;
 let userManager: UserManager;
@@ -28,12 +29,13 @@ let tagManager: TagManager;
 let firebaseStorageManager: FirebaseStorageManager;
 let notificationManager: NotificationManager;
 let feedbackManager: FeedbackManager;
+let statisticsManager: StatisticsManager;
 let firebaseNotification = new FirebaseNotification(
     require(`../../config/firebase/${config.firebaseConfig.keyFileName}`),
     config.firebaseConfig.databaseUrl);
 
 const getCompassManager = () => getManager(compassManager, CompassManager,
-    getGroupDataController(), getOrganizationDataController(), requestDataController, getNotificationManager());
+    getGroupDataController(), getOrganizationDataController(), requestDataController, getNotificationManager(), getStatisticsManager());
 
 const getUserManager = (): UserManager =>
     getManager(userManager, UserManager, new EmailService(), new FileTransferService(getFirebaseStorageManager()));
@@ -62,6 +64,9 @@ const getNotificationManager = (): NotificationManager =>
 const getFeedbackManager = (): FeedbackManager =>
     getManager(feedbackManager, FeedbackManager, getNotificationManager());
 
+const getStatisticsManager = (): StatisticsManager =>
+    getManager(statisticsManager, StatisticsManager, getNotificationManager());
+
 const getManager = (instance: any, manager: any, ...dependencies: any[]) => {
     if (!instance) {
         instance = new manager(...dependencies);
@@ -72,5 +77,5 @@ const getManager = (instance: any, manager: any, ...dependencies: any[]) => {
 
 export {
     getUserManager, getGroupManager, getOrganizationManager, getRequestManager, getSessionManager, getTagManager,
-    getFirebaseStorageManager, getNotificationManager, getFeedbackManager, getCompassManager
+    getFirebaseStorageManager, getNotificationManager, getFeedbackManager, getCompassManager, getStatisticsManager
 }

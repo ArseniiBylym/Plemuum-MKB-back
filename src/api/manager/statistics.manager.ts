@@ -4,8 +4,16 @@ import { CompassStatistics, SkillScore } from "../../data/models/organization/co
 import CompassDataController from "../../data/datacontroller/compass.datacontroller";
 import CompassTodo from "../../data/models/organization/compass/compasstodo.model";
 import Group from "../../data/models/organization/group.model";
+import NotificationManager from "./notification.manager";
+import { TEMPLATE } from "../../service/notification/notification.service";
 
 export default class StatisticsManager {
+
+    private notificationManager: NotificationManager;
+
+    constructor(notificationManager: NotificationManager) {
+        this.notificationManager = notificationManager;
+    }
 
     /**
      * Entrance point. Creates and/or updates Compass Statistics object
@@ -14,12 +22,18 @@ export default class StatisticsManager {
      * @param {CompassAnswer} answer Compass Answer to put generate statistics about
      * @returns {Promise<any>} Return the generated or updated statistics
      */
-    static async createOrUpdateStatistics(orgId: string, answer: CompassAnswer): Promise<any> {
+    async createOrUpdateStatistics(orgId: string, answer: CompassAnswer): Promise<any> {
         const todo: CompassTodo = await CompassDataController.getTodoById(orgId, answer.compassTodo);
         const statistics = await StatisticsDataController.getStatisticsByUserId(orgId, todo.about);
-        return statistics
+        const savedStatistics = await statistics
             ? this.updateStatistics(answer, statistics)
             : this.createStatistics(answer, todo);
+
+        // Send notification
+        this.notificationManager.sendNotificationById(savedStatistics.user, TEMPLATE.STATISTICS())
+            .catch(console.error);
+
+        return savedStatistics;
     }
 
     /**
@@ -30,7 +44,7 @@ export default class StatisticsManager {
      * @param {Group[]} groups  Groups the user participates in
      * @returns {Promise<CompassStatistics>}
      */
-    static async getStatistics(orgId: string, userId: string, groups: Group[]): Promise<CompassStatistics> {
+    async getStatistics(orgId: string, userId: string, groups: Group[]): Promise<CompassStatistics> {
         const emptySkillScore = (skillId: string) => ({skill: skillId, sentenceScores: []});
 
         let availableSkillIds: string[] = [];
@@ -60,11 +74,11 @@ export default class StatisticsManager {
     }
 
     // Creates an empty statistics object and calls update to fill it up
-    static createStatistics(answer: CompassAnswer, todo: CompassTodo) {
+    createStatistics(answer: CompassAnswer, todo: CompassTodo) {
         return this.updateStatistics(answer, {user: todo.about, skillScores: []});
     }
 
-    static updateStatistics(answer: CompassAnswer, statistics: CompassStatistics) {
+    updateStatistics(answer: CompassAnswer, statistics: CompassStatistics) {
         // Filter SKIP answers, since we don't want to count them
         const validSentenceAnswers = answer.sentencesAnswer.filter(
             (sentenceAnswer: any) => sentenceAnswer.answer !== ANSWER_TYPES.SKIP);
@@ -84,7 +98,7 @@ export default class StatisticsManager {
         return statistics;
     }
 
-    private static createOrUpdateSentenceScore(skillScore: SkillScore, sentenceAnswer: any) {
+    private createOrUpdateSentenceScore(skillScore: SkillScore, sentenceAnswer: any) {
         let sentenceScore = skillScore.sentenceScores.find((ss: any) => ss.sentence._id.toString() === sentenceAnswer.sentence._id.toString());
         if (sentenceScore) {
             if (sentenceAnswer.answer === ANSWER_TYPES.AGREE) {
@@ -98,14 +112,14 @@ export default class StatisticsManager {
         }
     }
 
-    private static createSkillScore(sentenceAnswer: any): SkillScore {
+    private createSkillScore(sentenceAnswer: any): SkillScore {
         return {
             skill: sentenceAnswer.skill._id.toString(),
             sentenceScores: [this.createSentenceScore(sentenceAnswer)]
         }
     }
 
-    private static createSentenceScore(sentenceAnswer: any) {
+    private createSentenceScore(sentenceAnswer: any) {
         return {
             sentence: sentenceAnswer.sentence,
             numberOfAgree: sentenceAnswer.answer === ANSWER_TYPES.AGREE ? 1 : 0,
