@@ -108,7 +108,7 @@ export default class CompassManager {
         };
     }
 
-    static async answerCompass(orgId: string, answer: CompassAnswer): Promise<CompassAnswer> {
+    async answerCompass(orgId: string, answer: CompassAnswer): Promise<CompassAnswer> {
         const compassTodo = await CompassDataController.getTodoById(orgId, answer.compassTodo);
         if (!compassTodo) {
             throw new PlenuumError("COMPASS Todo not found", ErrorType.NOT_FOUND);
@@ -118,6 +118,15 @@ export default class CompassManager {
         const savedAnswer = await CompassDataController.saveCompassAnswer(orgId, answer);
         const statistics = await StatisticsManager.createOrUpdateStatistics(orgId, answer);
         await StatisticsDataController.saveOrUpdateStatistics(orgId, statistics);
+
+        console.log("answerCompass");
+        // Send notification
+        try {
+            await this.notificationManager.sendNotificationById(compassTodo.about, TEMPLATE.STATISTICS());
+        } catch (error) {
+            console.error(error);
+        }
+
         return savedAnswer;
     }
 
@@ -190,13 +199,11 @@ export default class CompassManager {
                     const todo = CompassManager.buildUpNewTodoResponse(user._id, org.todoSentenceNumber, randomAboutUserId, skills);
                     // Save built object
                     await CompassDataController.saveCompassTodo(dbName, todo);
-                    console.log("before noti");
                     // Send notification
-                    try {
-                        await this.notificationManager.sendNotificationById(user._id, TEMPLATE.COMPASS(user.firstName));
-                    } catch (error) {
-                        console.error(error);
-                    }
+                    UserDataController.getUserById(randomAboutUserId)
+                        .then((aboutUser) => this.notificationManager.sendNotificationById(user._id, TEMPLATE.COMPASS(aboutUser.firstName)))
+                        .catch(console.error);
+
                     return todo;
                 }
             }

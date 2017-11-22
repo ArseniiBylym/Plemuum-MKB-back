@@ -366,7 +366,8 @@ suite("CompassManager tests", () => {
                 .withArgs(mockOrgId, mockStatistics)
                 .resolves(mockStatistics);
 
-            const result = await CompassManager.answerCompass(mockOrgId, mockAnswer);
+            const compassManager = new CompassManager(dummy, dummy, dummy, dummy);
+            const result = await compassManager.answerCompass(mockOrgId, mockAnswer);
 
             getTodoById.restore();
             updateCompassTodo.restore();

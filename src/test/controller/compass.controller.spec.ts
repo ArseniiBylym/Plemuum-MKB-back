@@ -82,7 +82,9 @@ suite("CompassController tests", () => {
         let req: any;
 
         beforeEach(() => {
-            compassManager = {};
+            compassManager = {
+                answerCompass: sinon.stub()
+            };
             compassController = new CompassController(compassManager);
             res = {
                 status: sinon.stub().callsFake(() => res),
@@ -110,20 +112,16 @@ suite("CompassController tests", () => {
 
         test("Should call CompassManager and send result with 200", async () => {
             const mockAnswer = sinon.mock();
-            const answerCompass = sinon.stub(CompassManager, "answerCompass").resolves(mockAnswer);
+            compassManager.answerCompass.resolves(mockAnswer);
             await compassController.answerCompass(req, res);
-
-            answerCompass.restore();
 
             sinon.assert.calledWith(res.status, 200);
             sinon.assert.calledWith(res.send, mockAnswer);
         });
 
         test("Should handle CompassManager error", async () => {
-            const answerCompass = sinon.stub(CompassManager, "answerCompass").rejects(new PlenuumError("Error", 404));
+            compassManager.answerCompass.rejects(new PlenuumError("Error", 404));
             await compassController.answerCompass(req, res);
-
-            answerCompass.restore();
 
             sinon.assert.calledWith(res.status, 404);
             sinon.assert.calledWith(res.send, {error: "Error"});
@@ -134,13 +132,9 @@ suite("CompassController tests", () => {
                 isEmpty: sinon.stub().returns(false),
                 array: sinon.stub().returns(["Error hint"])
             });
-
-            const answerCompass = sinon.stub(CompassManager, "answerCompass");
             await compassController.answerCompass(req, res);
 
-            answerCompass.restore();
-
-            sinon.assert.notCalled(answerCompass);
+            sinon.assert.notCalled(compassManager.answerCompass);
             sinon.assert.calledWith(res.status, 400);
             sinon.assert.calledWithMatch(res.send, {error: "Validation error", hint: ["Error hint"]});
         })

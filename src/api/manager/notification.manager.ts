@@ -49,7 +49,7 @@ export default class NotificationManager {
 
     async sendNotificationById(userId: string, template: Object) {
         const tokens = await this.userDataController.getNotificationTokens(userId);
-        if (tokens === 0) return;
+        if (tokens.length === 0) return;
         return Promise.all(tokens.map((token: any) => this.notificationService.sendNotification(token, template)))
     }
 }

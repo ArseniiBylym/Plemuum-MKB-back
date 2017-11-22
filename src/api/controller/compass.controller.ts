@@ -41,7 +41,7 @@ export default class CompassController extends BaseController {
         }
 
         req.body.sender = req.user._id;
-        return CompassManager.answerCompass(req.params.orgId, req.body)
+        return this.compassManager.answerCompass(req.params.orgId, req.body)
             .then(result => this.respond(StatusCodes.OK, req, res, result))
             .catch((err) => res.status(this.getErrorStatus(err)).send(formError(err)));
     }
