@@ -3,6 +3,7 @@ import UserDataController from "../../data/datacontroller/user.datacontroller";
 import { ErrorType, PlenuumError } from "../../util/errorhandler";
 import NotificationManager from "./notification.manager";
 import { TEMPLATE } from "../../service/notification/notification.service";
+import { UserModel } from "../../data/database/schema/common/user.schema";
 
 export default class RequestManager {
 
@@ -15,16 +16,18 @@ export default class RequestManager {
     }
 
     async saveNewRequest(orgId: string, request: any) {
-        const user = await UserDataController.getUserByIdFromOrg(orgId, request.recipientId);
-        if (!user) {
-            throw new PlenuumError("Recipient user not found", ErrorType.NOT_FOUND);
-        }
-        try {
-            await this.notificationManager.sendNotificationById(request.recipientId, TEMPLATE.REQUEST(user.firstName));
-        } catch (error) {
-            console.error(error);
-        }
-        return this.requestDataController.saveNewRequest(orgId, request);
+        const recipients = await Promise.all(request.recipientId.map(async (id: string) => {
+            const user = await UserDataController.getUserByIdFromOrg(orgId, id);
+            if (!user) throw new PlenuumError("Recipient user not found", ErrorType.NOT_FOUND);
+            return user;
+        }));
+        const sender = await UserDataController.getUserByIdFromOrg(orgId, request.senderId);
+        const savedRequest = await this.requestDataController.saveNewRequest(orgId, request);
+        recipients.forEach((r: UserModel) =>
+            this.notificationManager.sendNotificationById(r._id, TEMPLATE.REQUEST(sender.firstName))
+                .catch(console.error)
+        );
+        return savedRequest;
     }
 
     async getSenderRequests(orgId: string, userId: string) {
