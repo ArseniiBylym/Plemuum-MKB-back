@@ -69,8 +69,11 @@ export default (app: Express, userController: UserController) => {
      * }
      */
     app.route("/api/users")
-        .post(passport.authenticate('jwt', {session: false}), checkAdmin(), userController.createNewUser.bind(userController))
+        .post(passport.authenticate('jwt', {session: false}), checkAdmin(), userController.registerUser.bind(userController))
         .patch(passport.authenticate('jwt', {session: false}), checkAdmin(), userController.modifyUser.bind(userController));
+
+    app.route("/api/csv/users")
+        .post(passport.authenticate('jwt', {session: false}), checkAdmin(), userController.registerUsersFromCSV.bind(userController));
 
     /**
      * @api {GET} /api/organizations/:orgId/users  Get organization users

@@ -1,9 +1,9 @@
 import BaseController from "./base.controller";
-import NotificationManager from "../manager/notification.manager";
 import { validate } from "../../util/input.validator";
 import * as StatusCodes from 'http-status-codes';
 import { Response } from 'express';
-import { TEMPLATE } from "../../service/notification/notification.service";
+import NotificationManager from "../interactor/notification.interactor";
+import { TEMPLATE } from "../../manager/notification/notification.manager";
 
 export default class NotificationController extends BaseController {
 

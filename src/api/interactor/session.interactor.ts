@@ -1,8 +1,8 @@
-import * as tokenManager from "../../service/auth/token.manager";
+import * as tokenManager from "../../manager/auth/token.manager";
 import UserDataController from "../../data/datacontroller/user.datacontroller";
 import { ErrorType, PlenuumError } from "../../util/errorhandler";
 
-export default class SessionManager {
+export default class SessionInteractor {
 
     async login(userId: string) {
         return {token: tokenManager.generateNewToken(userId, new Date()),}

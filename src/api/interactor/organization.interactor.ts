@@ -2,7 +2,7 @@ import { databaseNameValidator } from "../../util/regexp.checker";
 import { ErrorType, PlenuumError } from "../../util/errorhandler";
 import { OrganizationDataController } from "../../data/datacontroller/organization.datacontroller";
 
-export default class OrganizationManager {
+export default class OrganizationInteractor {
 
     public organizationDataController: OrganizationDataController;
 

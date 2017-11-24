@@ -12,7 +12,7 @@ import { resetPasswordDataController } from "../../data/datacontroller/resetpass
 import { CompassTodoCollection } from "../../data/database/schema/organization/compass/compasstodo.schema";
 import { StatisticsCollection } from "../../data/database/schema/organization/compass/compass.statistics.schema";
 import { CompassAnswerCollection } from "../../data/database/schema/organization/compass/compassanswer.schema";
-import SessionManager from "../../api/manager/session.manager";
+import SessionManager from "../../api/interactor/session.interactor";
 
 const testUser = {
     "firstName": "sheryl",

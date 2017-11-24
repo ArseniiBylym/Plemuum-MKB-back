@@ -8,7 +8,7 @@ export const TEMPLATE = {
     GENERAL: (title: string, body: string) => ({title: title, body: body})
 };
 
-export default class NotificationService {
+export default class NotificationManager {
 
     service: NotificationInterface;
 

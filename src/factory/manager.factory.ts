@@ -1,23 +1,23 @@
-import UserManager from "../api/manager/user.manager";
-import GroupManager from "../api/manager/group.manager";
-import OrganizationManager from "../api/manager/organization.manager";
-import RequestManager from "../api/manager/request.manager";
-import SessionManager from "../api/manager/session.manager";
-import TagManager from "../api/manager/tag.manager";
-import FirebaseStorageManager from "../service/file/firebase.storage.manager";
-import NotificationManager from "../api/manager/notification.manager";
-import FeedbackManager from "../api/manager/feedback.manager";
-import CompassManager from "../api/manager/compass.manager";
-import EmailService from "../service/email/mail.service";
-import FileTransferService from "../service/file/filetransfer.service";
 import { tagDataController } from "../data/datacontroller/tag.datacontroller";
 import { getOrganizationDataController } from "../data/datacontroller/organization.datacontroller";
 import { requestDataController } from "../data/datacontroller/request.datacontroller";
 import { getGroupDataController } from "../data/datacontroller/group.datacontroller";
-import FirebaseNotification from "../service/notification/firebase.notification";
+import FirebaseNotification from "../manager/notification/firebase.notification";
 import config from "../../config/config";
 import UserDataController from "../data/datacontroller/user.datacontroller";
-import StatisticsManager from "../api/manager/statistics.manager";
+import FileManager from "../manager/file/file.manager";
+import CompassManager from "../api/interactor/compass.interactor";
+import UserManager from "../api/interactor/user.interactor";
+import GroupManager from "../api/interactor/group.interactor";
+import OrganizationManager from "../api/interactor/organization.interactor";
+import RequestManager from "../api/interactor/request.interactor";
+import SessionManager from "../api/interactor/session.interactor";
+import TagManager from "../api/interactor/tag.interactor";
+import FirebaseStorageManager from "../manager/file/firebase.storage.manager";
+import NotificationManager from "../api/interactor/notification.interactor";
+import FeedbackManager from "../api/interactor/feedback.interactor";
+import StatisticsManager from "../api/interactor/statistics.interactor";
+import EmailManager from "../manager/email/mail.manager";
 
 let compassManager: CompassManager;
 let userManager: UserManager;
@@ -38,7 +38,7 @@ const getCompassManager = () => getManager(compassManager, CompassManager,
     getGroupDataController(), getOrganizationDataController(), requestDataController, getNotificationManager(), getStatisticsManager());
 
 const getUserManager = (): UserManager =>
-    getManager(userManager, UserManager, new EmailService(), new FileTransferService(getFirebaseStorageManager()));
+    getManager(userManager, UserManager, new EmailManager(), new FileManager(getFirebaseStorageManager()));
 
 const getGroupManager = (): GroupManager =>
     getManager(groupManager, GroupManager, getGroupDataController());

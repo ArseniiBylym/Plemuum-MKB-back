@@ -1,15 +1,15 @@
 import UserDataController from "../../data/datacontroller/user.datacontroller";
-import NotificationService from "../../service/notification/notification.service";
-import NotificationInterface from "../../service/notification/notification.interface";
+import NotificationInterface from "../../manager/notification/notification.interface";
 import { ErrorType, PlenuumError } from "../../util/errorhandler";
+import NotificationManager from "../../manager/notification/notification.manager";
 
-export default class NotificationManager {
+export default class NotificationInteractor {
 
-    private notificationService: NotificationService;
+    private notificationManager: NotificationManager;
     private userDataController: any;
 
     constructor(notificationInterface: NotificationInterface, userDataController: any) {
-        this.notificationService = new NotificationService(notificationInterface);
+        this.notificationManager = new NotificationManager(notificationInterface);
         this.userDataController = userDataController;
     }
 
@@ -44,12 +44,12 @@ export default class NotificationManager {
             return;
         }
         return Promise.all(user.notificationToken.map(
-            (token: any) => this.notificationService.sendNotification(token, template)))
+            (token: any) => this.notificationManager.sendNotification(token, template)))
     }
 
     async sendNotificationById(userId: string, template: Object) {
         const tokens = await this.userDataController.getNotificationTokens(userId);
         if (tokens.length === 0) return;
-        return Promise.all(tokens.map((token: any) => this.notificationService.sendNotification(token, template)))
+        return Promise.all(tokens.map((token: any) => this.notificationManager.sendNotification(token, template)))
     }
 }

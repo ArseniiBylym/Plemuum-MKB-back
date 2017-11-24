@@ -1,7 +1,7 @@
 import * as fs from "fs-extra";
 import * as sinon from 'sinon';
-import FileTransferService from "../../service/file/filetransfer.service";
 import { expect } from 'chai';
+import FileManager from "../../manager/file/file.manager";
 
 suite("Filetransfer tests", () => {
 
@@ -20,10 +20,10 @@ suite("Filetransfer tests", () => {
         storageManager.uploadFile.withArgs("plenuum/userPictures", "userId".valueOf(), picture.path).resolves(url);
         const unlink = sinon.stub(fs, "unlink");
         const open = sinon.stub(fs, "open");
-        const incomingBuffer = new Buffer(FileTransferService.MAGIC_NUMBERS['jpeg']);
+        const incomingBuffer = new Buffer(FileManager.MAGIC_NUMBERS['jpeg']);
         const read = sinon.stub(fs, "read").callsFake((fd, buffer) => incomingBuffer.copy(buffer));
 
-        const fileTransferService = new FileTransferService(storageManager);
+        const fileTransferService = new FileManager(storageManager);
         const result = await fileTransferService.uploadUserPicture(picture, "userId");
         unlink.restore();
         open.restore();

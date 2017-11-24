@@ -1,9 +1,9 @@
 import * as sinon from 'sinon';
-import TagManager from "../../api/manager/tag.manager";
 import { expect } from 'chai';
 import { fail } from "assert";
+import TagManager from "../../api/interactor/tag.interactor";
 
-suite("TagManager tests", () => {
+suite("TagInteractor tests", () => {
     suite("addNewTag", () => {
         test("Add new non-existing tag", async () => {
             const orgId = "orgId";

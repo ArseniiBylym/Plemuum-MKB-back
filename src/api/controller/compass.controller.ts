@@ -1,8 +1,8 @@
-import CompassManager from "../manager/compass.manager";
 import * as StatusCodes from 'http-status-codes';
 import { formError } from "../../util/errorhandler";
 import BaseController from "./base.controller";
 import { validate } from "../../util/input.validator";
+import CompassManager from "../interactor/compass.interactor";
 
 export default class CompassController extends BaseController {
 

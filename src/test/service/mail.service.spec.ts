@@ -1,8 +1,8 @@
-import EmailService from "../../service/email/mail.service";
 import { testUser } from "../mock/fixture.loader";
 import * as sinon from "sinon";
 import { expect } from "chai";
 import { fail } from 'assert';
+import EmailManager from "../../manager/email/mail.manager";
 
 suite("Mail service tests", () => {
 
@@ -10,7 +10,7 @@ suite("Mail service tests", () => {
     const email = testUser.email;
     const firstName = testUser.firstName;
     const organization: any = sinon.mock();
-    let emailService: EmailService;
+    let emailManager: EmailManager;
     const resultInfo = {info: "Info"};
 
     suite("sendWelcomeEmail", () => {
@@ -29,22 +29,22 @@ suite("Mail service tests", () => {
                     html: mockHtml
                 };
 
-                const options = EmailService.getMailOptions(mockEmail, mockHtml, mockSubject, mockMessage);
+                const options = EmailManager.getMailOptions(mockEmail, mockHtml, mockSubject, mockMessage);
                 expect(options).to.be.deep.equal(mockResponse);
             });
         });
 
         suite("Happy cases", () => {
             beforeEach(() => {
-                emailService = new EmailService();
+                emailManager = new EmailManager();
             });
 
             test("It should send mail successfuly", async () => {
                 const mockTransport = {
                     sendMail: sinon.mock().callsFake((options, callback) => callback(null, resultInfo))
                 };
-                const getTransportStub = sinon.stub(EmailService, "getTransport").returns(mockTransport);
-                const result = await emailService.sendWelcomeEmail(email, firstName, link, organization);
+                const getTransportStub = sinon.stub(EmailManager, "getTransport").returns(mockTransport);
+                const result = await emailManager.sendWelcomeEmail(email, firstName, link, organization);
                 getTransportStub.restore();
 
                 expect(result).to.not.be.undefined;
@@ -54,10 +54,10 @@ suite("Mail service tests", () => {
                 const mockTransport = {
                     sendMail: sinon.mock().callsFake((options, callback) => callback(null, resultInfo))
                 };
-                const getTransportStub = sinon.stub(EmailService, "getTransport").returns(mockTransport);
-                const getMailOptions = sinon.spy(EmailService, "getMailOptions");
-                const getHtmlFromEjsSpy = sinon.spy(emailService, "getHtmlFromEjs");
-                await emailService.sendWelcomeEmail(email, firstName, link, organization);
+                const getTransportStub = sinon.stub(EmailManager, "getTransport").returns(mockTransport);
+                const getMailOptions = sinon.spy(EmailManager, "getMailOptions");
+                const getHtmlFromEjsSpy = sinon.spy(emailManager, "getHtmlFromEjs");
+                await emailManager.sendWelcomeEmail(email, firstName, link, organization);
                 getTransportStub.restore();
                 getMailOptions.restore();
                 getHtmlFromEjsSpy.restore();
@@ -77,11 +77,11 @@ suite("Mail service tests", () => {
                 const mockTransport = {
                     sendMail: sinon.mock().callsFake((options, callback) => callback(new Error(errormessage), null))
                 };
-                const getTransportStub = sinon.stub(EmailService, "getTransport")
+                const getTransportStub = sinon.stub(EmailManager, "getTransport")
                     .returns(mockTransport);
 
                 try {
-                    await emailService.sendWelcomeEmail(email, firstName, link, organization);
+                    await emailManager.sendWelcomeEmail(email, firstName, link, organization);
                     fail('Should throw an error!');
                 }
                 catch (error) {
@@ -97,7 +97,7 @@ suite("Mail service tests", () => {
 
         suite("Happy cases", () => {
             beforeEach(() => {
-                emailService = new EmailService();
+                emailManager = new EmailManager();
             });
 
             test("It should send mail successfully and return info object", async () => {
@@ -105,8 +105,8 @@ suite("Mail service tests", () => {
                     sendMail: sinon.mock().callsFake((options, callback) => callback(null, resultInfo))
                 };
 
-                const getTransportStub = sinon.stub(EmailService, "getTransport").returns(mockTransport);
-                const result = await emailService.sendResetEmail(email, link);
+                const getTransportStub = sinon.stub(EmailManager, "getTransport").returns(mockTransport);
+                const result = await emailManager.sendResetEmail(email, link);
                 getTransportStub.restore();
                 expect(result).to.not.be.undefined;
             });
@@ -116,10 +116,10 @@ suite("Mail service tests", () => {
                     sendMail: sinon.mock().callsFake((options, callback) => callback(null, resultInfo))
                 };
 
-                const getTransportStub = sinon.stub(EmailService, "getTransport").returns(mockTransport);
-                const getHtmlFromEjsSpy = sinon.spy(emailService, "getHtmlFromEjs");
-                const getMailOptions = sinon.spy(EmailService, "getMailOptions");
-                await emailService.sendResetEmail(email, link);
+                const getTransportStub = sinon.stub(EmailManager, "getTransport").returns(mockTransport);
+                const getHtmlFromEjsSpy = sinon.spy(emailManager, "getHtmlFromEjs");
+                const getMailOptions = sinon.spy(EmailManager, "getMailOptions");
+                await emailManager.sendResetEmail(email, link);
                 getHtmlFromEjsSpy.restore();
                 getTransportStub.restore();
                 sinon.assert.calledWith(getHtmlFromEjsSpy, "resetpassword.ejs", {link: link});
@@ -133,11 +133,11 @@ suite("Mail service tests", () => {
                 const mockTransport = {
                     sendMail: sinon.mock().callsFake((options, callback) => callback(new Error(errormessage), null))
                 };
-                const getTransportStub = sinon.stub(EmailService, "getTransport")
+                const getTransportStub = sinon.stub(EmailManager, "getTransport")
                     .returns(mockTransport);
 
                 try {
-                    await emailService.sendResetEmail(email, link);
+                    await emailManager.sendResetEmail(email, link);
                     fail('Should throw an error!');
                 }
                 catch (error) {

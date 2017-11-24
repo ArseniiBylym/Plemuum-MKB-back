@@ -1,21 +1,21 @@
 import UserDataController from "../../data/datacontroller/user.datacontroller";
-import {resetPasswordDataController} from "../../data/datacontroller/resetpassword.datacontroller";
-import EmailService from "../../service/email/mail.service";
-import FileTransfer from "../../service/file/filetransfer.service";
-import {generateNewTokensForResetPassword} from "../../service/auth/token.manager";
-import {ErrorType, PlenuumError} from "../../util/errorhandler";
-import {UserModel} from "../../data/database/schema/common/user.schema";
+import { resetPasswordDataController } from "../../data/datacontroller/resetpassword.datacontroller";
+import { generateNewTokensForResetPassword } from "../../manager/auth/token.manager";
+import { ErrorType, PlenuumError } from "../../util/errorhandler";
+import { UserModel } from "../../data/database/schema/common/user.schema";
 import config from "../../../config/config";
-import {default as getLogger} from "../../util/logger";
+import { default as getLogger } from "../../util/logger";
+import FileManager from "../../manager/file/file.manager";
+import EmailManager from "../../manager/email/mail.manager";
 
-export default class UserManager {
+export default class UserInteractor {
 
-    private emailService: EmailService;
-    private fileTransferService: FileTransfer;
+    private emailManager: EmailManager;
+    private fileManager: FileManager;
 
-    constructor(emailService: EmailService, fileTransferService: FileTransfer) {
-        this.emailService = emailService;
-        this.fileTransferService = fileTransferService;
+    constructor(emailService: EmailManager, fileManager: FileManager) {
+        this.emailManager = emailService;
+        this.fileManager = fileManager;
     }
 
     async updateUser(user: UserModel) {
@@ -34,7 +34,7 @@ export default class UserManager {
             throw new PlenuumError("Token expired", ErrorType.FORBIDDEN);
         }
 
-        const {tokenExpiry, tokenExpired} = generateNewTokensForResetPassword();
+        const {tokenExpired} = generateNewTokensForResetPassword();
         await resetPasswordDataController.updateResetPassword(resetedPassword._id, tokenExpired);
 
         const updatedUser = await UserDataController.changeUserPasswordByUserId(resetedPassword.userId, newPassword);
@@ -58,12 +58,16 @@ export default class UserManager {
         const resetPasswordToken = resetPassword.token;
         const response = {email: user.email, link: link};
 
-        await this.emailService.sendResetEmail(user.email, link);
+        await this.emailManager.sendResetEmail(user.email, link);
         return {resetPasswordToken: resetPasswordToken, response: response};
     }
 
+    async userRegistrationFromCSV(csvFile: any) {
+        return this.fileManager.convertCSV2UserArray(csvFile);
+    }
+
     async profilePictureUpload(avatar: any, userId: string) {
-        const pictureUrl = await this.fileTransferService.uploadUserPicture(avatar, userId);
+        const pictureUrl = await this.fileManager.uploadUserPicture(avatar, userId);
         const updatedUser = await UserDataController.setUserPic(userId, pictureUrl);
 
         if (!updatedUser) {
@@ -92,7 +96,7 @@ export default class UserManager {
             .then((response) => {
                 let link = origin + "/set_new_password?token="
                     + response.token + "&email=" + email + "&welcome=true&name=" + firstName;
-                const mailService = new EmailService();
+                const mailService = new EmailManager();
                 mailService.sendWelcomeEmail(email, firstName, link, body.orgIds);
             })
             .catch((error) => {

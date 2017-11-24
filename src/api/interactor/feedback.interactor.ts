@@ -1,10 +1,10 @@
 import FeedbackDataController from "../../data/datacontroller/feedback.datacontroller";
 import UserDataController from "../../data/datacontroller/user.datacontroller";
 import { ErrorType, PlenuumError } from "../../util/errorhandler";
-import NotificationManager from "./notification.manager";
-import { TEMPLATE } from "../../service/notification/notification.service";
+import NotificationManager from "./notification.interactor";
+import { TEMPLATE } from "../../manager/notification/notification.manager";
 
-export default class FeedbackManager {
+export default class FeedbackInteractor {
 
     private notificationManager: NotificationManager;
 

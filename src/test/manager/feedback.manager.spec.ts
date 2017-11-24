@@ -1,12 +1,12 @@
 import UserDataController from "../../data/datacontroller/user.datacontroller";
 import * as sinon from "sinon";
 import FeedbackDataController from "../../data/datacontroller/feedback.datacontroller";
-import FeedbackManager from "../../api/manager/feedback.manager";
 import { PRIVACY, TYPE } from "../../data/models/organization/feedback.model";
 import { testUser } from "../mock/fixture.loader";
 import { expect } from 'chai';
 import { PlenuumError } from "../../util/errorhandler";
 import { fail } from "assert";
+import FeedbackManager from "../../api/interactor/feedback.interactor";
 
 const dummy: any = {};
 

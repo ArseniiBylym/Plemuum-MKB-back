@@ -5,7 +5,7 @@ import CompassDataController from "../../data/datacontroller/compass.datacontrol
 import { ErrorType, PlenuumError } from "../../util/errorhandler";
 import { UserModel } from "../../data/database/schema/common/user.schema";
 
-export default class GroupManager {
+export default class GroupInteractor {
 
     groupDataController: GroupDataController;
 

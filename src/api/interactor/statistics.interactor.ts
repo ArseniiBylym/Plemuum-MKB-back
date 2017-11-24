@@ -4,10 +4,10 @@ import { CompassStatistics, SkillScore } from "../../data/models/organization/co
 import CompassDataController from "../../data/datacontroller/compass.datacontroller";
 import CompassTodo from "../../data/models/organization/compass/compasstodo.model";
 import Group from "../../data/models/organization/group.model";
-import NotificationManager from "./notification.manager";
-import { TEMPLATE } from "../../service/notification/notification.service";
+import NotificationManager from "./notification.interactor";
+import { TEMPLATE } from "../../manager/notification/notification.manager";
 
-export default class StatisticsManager {
+export default class StatisticsInteractor {
 
     private notificationManager: NotificationManager;
 

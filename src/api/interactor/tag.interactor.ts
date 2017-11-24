@@ -1,7 +1,7 @@
 import { TagDataController } from "../../data/datacontroller/tag.datacontroller";
 import { ErrorType, PlenuumError } from "../../util/errorhandler";
 
-export default class TagManager {
+export default class TagInteractor {
 
     private tagDataController: TagDataController;
 
