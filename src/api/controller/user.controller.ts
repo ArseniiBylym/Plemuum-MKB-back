@@ -120,8 +120,7 @@ export default class UserController extends BaseController {
         if (!await validate(req, res)) {
             return;
         }
-
-        return UserDataController.changeUserPassword(req.body.email, req.body.newPassword)
+        return UserDataController.changeUserPassword(req.body.email, req.body.password, req.body.newPassword)
             .then((result: UserModel) =>
                 this.respond(!result ? StatusCodes.NOT_FOUND : StatusCodes.OK, req, res,
                     !result ? {error: "User not found"} : {message: "Password has been changed"}))

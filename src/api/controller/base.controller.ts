@@ -12,6 +12,7 @@ class BaseController {
         const statusCode = this.getErrorStatus(error);
         if (statusCode >= 500) {
             delete req.body.password;
+            delete req.body.newPassword;
             getLogger().error({
                 type: "error",
                 request: {
@@ -33,6 +34,7 @@ class BaseController {
 
     protected respond(status: number, request: any, response: any, message?: any) {
         delete request.body.password;
+        delete request.body.newPassword;
         response.status(status).send(message);
         try {
             getLogger().info({
