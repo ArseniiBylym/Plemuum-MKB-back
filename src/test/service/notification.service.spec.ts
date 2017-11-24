@@ -19,20 +19,20 @@ suite("Notification tests", () => {
         test("Template for feedback", () => {
             const template = TEMPLATE.FEEDBACK(testUser.firstName);
             const expected = {
-                body: `You received a feedback from ${testUser.firstName}`,  title: `New feedback`
+                body: `You received a feedback from ${testUser.firstName}`,  title: `New feedback`, data: {type: "FEEDBACK"}
             };
             expect(template).to.deep.equal(expected);
         });
 
         test("Template for request feedback", () => {
             const template = TEMPLATE.REQUEST(testUser.firstName);
-            const expected = { body: `${testUser.firstName} needs your feedback`, title: `New feedback request`};
+            const expected = { body: `${testUser.firstName} needs your feedback`, title: `New feedback request`, data: {type: "REQUEST"}};
             expect(template).to.deep.equal(expected);
         });
 
         test("Template for compass", () => {
             const template = TEMPLATE.COMPASS(testUser.firstName);
-            const expected = { body: `Would you like to help ${testUser.firstName} to improve?`, title: `New todo`};
+            const expected = { body: `Would you like to help ${testUser.firstName} to improve?`, title: `New todo`, data: {type: "COMPASS"}};
             expect(template).to.deep.equal(expected);
         });
 

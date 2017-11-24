@@ -12,13 +12,13 @@ export default class FirebaseNotification implements NotificationInterface {
 
     sendNotification (token: string, content: Object): Promise<admin.messaging.MessagingDevicesResponse> {
         const options = this.getOptions();
-        const payload = this.getpayload(content);
+        const payload = this.getPayload(content);
         return admin.messaging().sendToDevice(token, payload, options)
     }
 
-    getpayload (content: any): any {
-        const {body, title} = content;
-        return { notification: { title: title, body: body }};
+    getPayload (content: any): any {
+        const {body, title, data} = content;
+        return { notification: { title: title, body: body }, data: data};
     }
 
     getOptions() : any {
