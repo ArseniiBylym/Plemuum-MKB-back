@@ -142,9 +142,10 @@ export default class UserController extends BaseController {
     private async handleCSVUserRegistration(req: any): Promise<any> {
         const form = new formidable.IncomingForm();
         form.keepExtensions = true;
-        const {parseError, fields, files} = await this.parseForm(req, form);
+        const {parseError, files} = await this.parseForm(req, form);
         if (!parseError) {
-            return this.userManager.userRegistrationFromCSV(files.users, req.params.orgId);
+            this.userManager.userRegistrationFromCSV(files.users, req.params.orgId);
+            return {message: "Registration process has been initiated"}
         }
         throw new Error("Users could not be registered");
     }

@@ -8,6 +8,7 @@ import { default as getLogger } from "../../util/logger";
 import FileManager from "../../manager/file/file.manager";
 import EmailManager from "../../manager/email/mail.manager";
 import * as crypto from 'crypto';
+import { sleep } from "../../util/util";
 
 export default class UserInteractor {
 
@@ -64,11 +65,17 @@ export default class UserInteractor {
     }
 
     async userRegistrationFromCSV(csvFile: any, orgId: string) {
-        return Promise.all((await this.fileManager.convertCSV2UserArray(csvFile)).map(async (user: any) => {
+        const savedUsers = [];
+        const users = await this.fileManager.convertCSV2UserArray(csvFile);
+        for (let i = 0; i < users.length; i++) {
+            let user = users[i];
             user.orgIds = [orgId];
             user.password = crypto.randomBytes(16).toString('hex');
-            return this.saveUser(user, orgId);
-        }))
+            const savedUser = await this.saveUser(user, orgId);
+            savedUsers.push(savedUser);
+            await sleep(5000);
+        }
+        return savedUsers;
     }
 
     async profilePictureUpload(avatar: any, userId: string) {
@@ -81,7 +88,6 @@ export default class UserInteractor {
         return {avatar: pictureUrl}
     }
 
-    //This should be async
     async saveUser(body: any, orgId: string) {
         body.admin = body.admin && body.admin === 'true';
         const savedUser = await UserDataController.saveUser(body);
@@ -92,27 +98,29 @@ export default class UserInteractor {
         return savedUser;
     }
 
-    sendChangePasswordOnWelcome(user: any, orgIds: string) {
+    async sendChangePasswordOnWelcome(user: any, orgIds: string) {
         const origin = config.webappDomain;
         const {email, firstName, _id} = user;
         const {token, token_expiry} = UserDataController.generateToken(1);
         const data = {userId: _id, token: token, token_expiry: token_expiry, reseted: false};
-        resetPasswordDataController.saveResetPassword(data)
-            .then((response) => {
-                let link = origin + "/set_new_password?token="
-                    + response.token + "&email=" + email + "&welcome=true&name=" + firstName;
-                const mailService = new EmailManager();
-                mailService.sendWelcomeEmail(email, firstName, link, orgIds);
-            })
-            .catch((error) => {
-                getLogger().error({
-                    type: "error",
-                    request: {
-                        user: user
-                    },
-                    message: error,
-                    timeStamp: new Date()
-                });
+
+        try {
+            const response = await resetPasswordDataController.saveResetPassword(data);
+            let link = origin + "/set_new_password?token=" + response.token + "&email=" + email + "&welcome=true&name=" + firstName;
+            const mailService = new EmailManager();
+            return mailService.sendWelcomeEmail(email, firstName, link, orgIds)
+                .then(() => console.log(`E-mail for ${firstName} was sent to ${email}`))
+                .catch((error) => console.error(`Error sending e-mail to ${firstName}: ${error}`))
+        } catch (error) {
+            getLogger().error({
+                type: "error",
+                request: {
+                    user: user
+                },
+                message: error,
+                timeStamp: new Date()
             });
+        }
+
     }
 }
