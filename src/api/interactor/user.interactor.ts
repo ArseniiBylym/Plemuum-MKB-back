@@ -51,6 +51,7 @@ export default class UserInteractor {
 
     async resetPassword(email: string, origin: string = '', isWelcome: boolean) {
         const user = await UserDataController.getUserByEmail(email);
+        if (!user) throw new PlenuumError("User not found", ErrorType.NOT_FOUND);
         const {token, token_expiry} = UserDataController.generateToken(1);
         const data = {userId: String(user._id), token: token, token_expiry: token_expiry, reseted: false};
 
