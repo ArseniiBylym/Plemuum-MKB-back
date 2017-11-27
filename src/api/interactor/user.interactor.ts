@@ -7,6 +7,7 @@ import config from "../../../config/config";
 import { default as getLogger } from "../../util/logger";
 import FileManager from "../../manager/file/file.manager";
 import EmailManager from "../../manager/email/mail.manager";
+import * as crypto from 'crypto';
 
 export default class UserInteractor {
 
@@ -62,8 +63,12 @@ export default class UserInteractor {
         return {resetPasswordToken: resetPasswordToken, response: response};
     }
 
-    async userRegistrationFromCSV(csvFile: any) {
-        return this.fileManager.convertCSV2UserArray(csvFile);
+    async userRegistrationFromCSV(csvFile: any, orgId: string) {
+        return Promise.all((await this.fileManager.convertCSV2UserArray(csvFile)).map(async (user: any) => {
+            user.orgIds = [orgId];
+            user.password = crypto.randomBytes(16).toString('hex');
+            return this.saveUser(user, orgId);
+        }))
     }
 
     async profilePictureUpload(avatar: any, userId: string) {
@@ -77,17 +82,17 @@ export default class UserInteractor {
     }
 
     //This should be async
-    async saveUser(body: any, params: any) {
+    async saveUser(body: any, orgId: string) {
         body.admin = body.admin && body.admin === 'true';
         const savedUser = await UserDataController.saveUser(body);
         if (!savedUser) {
             throw new PlenuumError("User not saved", ErrorType.VALIDATION);
         }
-        this.sendChangePasswordOnWelcome(savedUser, body, params);
+        this.sendChangePasswordOnWelcome(savedUser, orgId);
         return savedUser;
     }
 
-    sendChangePasswordOnWelcome(user: any, body: any, params: any) {
+    sendChangePasswordOnWelcome(user: any, orgIds: string) {
         const origin = config.webappDomain;
         const {email, firstName, _id} = user;
         const {token, token_expiry} = UserDataController.generateToken(1);
@@ -97,14 +102,12 @@ export default class UserInteractor {
                 let link = origin + "/set_new_password?token="
                     + response.token + "&email=" + email + "&welcome=true&name=" + firstName;
                 const mailService = new EmailManager();
-                mailService.sendWelcomeEmail(email, firstName, link, body.orgIds);
+                mailService.sendWelcomeEmail(email, firstName, link, orgIds);
             })
             .catch((error) => {
                 getLogger().error({
                     type: "error",
                     request: {
-                        params: params,
-                        body: body,
                         user: user
                     },
                     message: error,

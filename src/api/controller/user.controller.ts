@@ -144,7 +144,7 @@ export default class UserController extends BaseController {
         form.keepExtensions = true;
         const {parseError, fields, files} = await this.parseForm(req, form);
         if (!parseError) {
-            return this.userManager.userRegistrationFromCSV(files.users);
+            return this.userManager.userRegistrationFromCSV(files.users, req.params.orgId);
         }
         throw new Error("Users could not be registered");
     }

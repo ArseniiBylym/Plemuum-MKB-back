@@ -72,9 +72,6 @@ export default (app: Express, userController: UserController) => {
         .post(passport.authenticate('jwt', {session: false}), checkAdmin(), userController.registerUser.bind(userController))
         .patch(passport.authenticate('jwt', {session: false}), checkAdmin(), userController.modifyUser.bind(userController));
 
-    app.route("/api/csv/users")
-        .post(passport.authenticate('jwt', {session: false}), checkAdmin(), userController.registerUsersFromCSV.bind(userController));
-
     /**
      * @api {GET} /api/organizations/:orgId/users  Get organization users
      * @apiVersion 2.0.0
@@ -107,7 +104,8 @@ export default (app: Express, userController: UserController) => {
      * ]
      */
     app.route("/api/organizations/:orgId/users")
-        .get(passport.authenticate('jwt', {session: false}), userController.getOrganizationUsers.bind(userController));
+        .get(passport.authenticate('jwt', {session: false}), userController.getOrganizationUsers.bind(userController))
+        .post(passport.authenticate('jwt', {session: false}), checkAdmin(), userController.registerUsersFromCSV.bind(userController));
 
     /**
      * @api {GET} /api/organizations/:orgId/users/:userId Get a specific user from an organization

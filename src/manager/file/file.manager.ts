@@ -41,10 +41,10 @@ export default class FileManager {
         const fileType = csvFile.type.split("/");
         if (fileType[1] !== 'csv') throw new PlenuumError("Unsupported file extension", ErrorType.NOT_ALLOWED);
         const csvString = await fs.readFile(csvFile.path, 'utf-8');
-        return this.csvJSON(csvString);
+        return this.csv2JSON(csvString);
     }
 
-    private csvJSON(csv: string) {
+    private csv2JSON(csv: string) {
         const lines = csv.split(/\r\n|\n/);
         lines.forEach((l) => l.trim());
         const result = [];
