@@ -70,8 +70,8 @@ export default class EmailManager {
         };
         return this.getHtmlFromEjs(RESET_PASSWORD_TEMPLATE, data)
             .then((html) => {
-                const transporter = EmailService.getTransport(HOST, PORT, SECURE, USERNAME, SECRET);
-                const mailOptions = EmailService.getMailOptions(email, html, "Plenuum password reset");
+                const transporter = EmailManager.getTransport(HOST, PORT, SECURE, USERNAME, SECRET);
+                const mailOptions = EmailManager.getMailOptions(email, html, "Plenuum password reset");
                 return new Promise((resolve, reject) => {
                     transporter.sendMail(mailOptions, (error: any, info: any) => error ? reject(error)
                         : resolve(info));
