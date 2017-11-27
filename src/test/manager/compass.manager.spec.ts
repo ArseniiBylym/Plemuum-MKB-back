@@ -4,7 +4,6 @@ import * as sinon from 'sinon';
 import * as Sinon from 'sinon';
 import UserDataController from "../../data/datacontroller/user.datacontroller";
 import CompassDataController from "../../data/datacontroller/compass.datacontroller";
-import CompassManager from "../../api/manager/compass.manager";
 import StatisticsDataController from "../../data/datacontroller/statistics.datacontroller";
 import Group from "../../data/models/organization/group.model";
 import { createSentence, createSkill, createSkillScore, skills } from "../util/statistics.manager.util";
@@ -14,10 +13,11 @@ import FeedbackDataController from "../../data/datacontroller/feedback.datacontr
 import { getScenarioOneGroups, getScenarioOneSkills, getScenarioOneUsers, } from "../util/test-scenerios";
 import { getRandomItem } from "../util/utils";
 import { testUser } from "../mock/fixture.loader";
+import CompassManager from "../../api/interactor/compass.interactor";
 
 const dummy: any = {};
 
-suite("CompassManager tests", () => {
+suite("CompassInteractor tests", () => {
 
     suite("getTodos", () => {
 

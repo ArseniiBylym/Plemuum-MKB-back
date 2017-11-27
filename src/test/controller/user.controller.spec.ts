@@ -10,7 +10,7 @@ suite("UserController", () => {
 
     const mockUser: User = TestObjectFactory.getJohnDoe();
 
-    suite("createNewUser", () => {
+    suite("registerUser", () => {
 
         test("Happy case: should call response send", async () => {
             const mockRequest: any = getRequestObject(true);
@@ -26,7 +26,7 @@ suite("UserController", () => {
             };
 
             const userController = new UserController(mockuserManager);
-            await userController.createNewUser(mockRequest, mockResponse);
+            await userController.registerUser(mockRequest, mockResponse);
 
             sinon.assert.calledWith(mockResponse.status, 201);
             sinon.assert.calledWith(mockResponse.send, mockUser)
@@ -46,7 +46,7 @@ suite("UserController", () => {
             };
 
             const userController = new UserController(mockuserManager);
-            await userController.createNewUser(mockRequest, mockResponse);
+            await userController.registerUser(mockRequest, mockResponse);
 
             sinon.assert.calledWith(mockResponse.status, 501);
             sinon.assert.calledWith(mockResponse.send, {error: "Mock error"})

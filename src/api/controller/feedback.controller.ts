@@ -2,7 +2,7 @@ import BaseController from "./base.controller";
 import { formError } from "../../util/errorhandler";
 import * as StatusCodes from 'http-status-codes';
 import { validate } from "../../util/input.validator";
-import FeedbackManager from "../manager/feedback.manager";
+import FeedbackManager from "../interactor/feedback.interactor";
 
 export default class FeedbackController extends BaseController {
 

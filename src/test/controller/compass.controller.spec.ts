@@ -1,9 +1,9 @@
 import CompassController from "../../api/controller/compass.controller";
 import * as sinon from 'sinon';
 import { ErrorType, PlenuumError } from "../../util/errorhandler";
-import CompassManager from "../../api/manager/compass.manager";
 import { getRequestObject } from "../util/testutil";
 import { testUser } from "../mock/fixture.loader";
+import CompassManager from "../../api/interactor/compass.interactor";
 
 suite("CompassController tests", () => {
 
@@ -34,7 +34,7 @@ suite("CompassController tests", () => {
             req.user = {_id: "userId"};
         });
 
-        test("Should call CompassManager and send result with 200", async () => {
+        test("Should call CompassInteractor and send result with 200", async () => {
             const mockTodo = sinon.mock();
             compassManager.answerCard = sinon.stub().resolves(mockTodo);
             await compassController.answerCard(req, res);
@@ -43,7 +43,7 @@ suite("CompassController tests", () => {
             sinon.assert.calledWith(res.send, mockTodo);
         });
 
-        test("If CompassManager throws a Plenuum error, should use the error status code and send the error", async () => {
+        test("If CompassInteractor throws a Plenuum error, should use the error status code and send the error", async () => {
             compassManager.answerCard = sinon.stub().rejects(new PlenuumError("Plenuum error", ErrorType.NOT_FOUND));
             await compassController.answerCard(req, res);
 
@@ -51,7 +51,7 @@ suite("CompassController tests", () => {
             sinon.assert.calledWith(res.send, {error: "Plenuum error"});
         });
 
-        test("If CompassManager throws a regular error, should send 500 and the error", async () => {
+        test("If CompassInteractor throws a regular error, should send 500 and the error", async () => {
             compassManager.answerCard = sinon.stub().rejects(new Error("Plenuum error"));
             await compassController.answerCard(req, res);
 
@@ -59,7 +59,7 @@ suite("CompassController tests", () => {
             sinon.assert.calledWith(res.send, {error: "Plenuum error"});
         });
 
-        test("If input is invalid, should return 400, an error with a hint and should not call CompassManager", async () => {
+        test("If input is invalid, should return 400, an error with a hint and should not call CompassInteractor", async () => {
             req.getValidationResult = sinon.stub().resolves({
                 isEmpty: sinon.stub().returns(false),
                 array: sinon.stub().returns(["Error hint"])
@@ -110,7 +110,7 @@ suite("CompassController tests", () => {
             req.body.sentencesAnswer = ["sentencesAnswer"];
         });
 
-        test("Should call CompassManager and send result with 200", async () => {
+        test("Should call CompassInteractor and send result with 200", async () => {
             const mockAnswer = sinon.mock();
             compassManager.answerCompass.resolves(mockAnswer);
             await compassController.answerCompass(req, res);
@@ -119,7 +119,7 @@ suite("CompassController tests", () => {
             sinon.assert.calledWith(res.send, mockAnswer);
         });
 
-        test("Should handle CompassManager error", async () => {
+        test("Should handle CompassInteractor error", async () => {
             compassManager.answerCompass.rejects(new PlenuumError("Error", 404));
             await compassController.answerCompass(req, res);
 
@@ -171,7 +171,7 @@ suite("CompassController tests", () => {
             req.body.sentencesAnswer = ["sentencesAnswer"];
         });
 
-        test("Should call CompassManager and send result with 200", async () => {
+        test("Should call CompassInteractor and send result with 200", async () => {
             const result = sinon.mock();
             const updateSkill = sinon.stub(CompassManager, "createOrUpdateSkill").resolves(result);
             await compassController.createOrUpdateSkill(req, res);
@@ -182,7 +182,7 @@ suite("CompassController tests", () => {
             sinon.assert.calledWith(res.send, result);
         });
 
-        test("Should handle CompassManager error", async () => {
+        test("Should handle CompassInteractor error", async () => {
             const updateSkill = sinon.stub(CompassManager, "createOrUpdateSkill").rejects(new PlenuumError("Error", 404));
             await compassController.createOrUpdateSkill(req, res);
 
@@ -240,7 +240,7 @@ suite("CompassController tests", () => {
             req.body.sentencesAnswer = ["sentencesAnswer"];
         });
 
-        test("Should call CompassManager and send result with 200", async () => {
+        test("Should call CompassInteractor and send result with 200", async () => {
             const result = sinon.mock();
             const createNewSkill = sinon.stub(CompassManager, "createOrUpdateSkill").resolves(result);
             await compassController.createOrUpdateSkill(req, res);
@@ -251,7 +251,7 @@ suite("CompassController tests", () => {
             sinon.assert.calledWith(res.send, result);
         });
 
-        test("Should handle CompassManager error", async () => {
+        test("Should handle CompassInteractor error", async () => {
             const createNewSkill = sinon.stub(CompassManager, "createOrUpdateSkill").rejects(new PlenuumError("Error", 404));
             await compassController.createOrUpdateSkill(req, res);
 
@@ -300,7 +300,7 @@ suite("CompassController tests", () => {
             req.body.sentencesAnswer = ["sentencesAnswer"];
         });
 
-        test("Should call CompassManager and send result with 200", async () => {
+        test("Should call CompassInteractor and send result with 200", async () => {
             const result = sinon.mock();
             compassManager.getStatistics = sinon.stub().resolves(result);
             await compassController.getStatistics(req, res);
@@ -309,7 +309,7 @@ suite("CompassController tests", () => {
             sinon.assert.calledWith(res.send, result);
         });
 
-        test("Should handle CompassManager error", async () => {
+        test("Should handle CompassInteractor error", async () => {
             compassManager.getStatistics = sinon.stub().rejects(new PlenuumError("Error", 404));
             await compassController.getStatistics(req, res);
 

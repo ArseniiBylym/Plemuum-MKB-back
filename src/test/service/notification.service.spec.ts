@@ -1,19 +1,19 @@
 import {testUser} from "../mock/fixture.loader";
 import * as sinon from "sinon";
 import {expect} from "chai";
-import NotificationService, {TEMPLATE} from "../../service/notification/notification.service";
+import NotificationManager, { TEMPLATE } from "../../manager/notification/notification.manager";
 
 suite("Notification tests", () => {
     const mockToken = "217c98da-92b0-48ca-b97e-22ee55a6eeb7";
 
     suite("Happy cases", () => {
 
-        let notificationService : NotificationService;
+        let notificationService : NotificationManager;
         before(() => {
             const mockService :any = {
                 sendNotification: sinon.stub().resolves("mock response")
             };
-            notificationService = new NotificationService(mockService);
+            notificationService = new NotificationManager(mockService);
         });
 
         test("Template for feedback", () => {
@@ -57,14 +57,14 @@ suite("Notification tests", () => {
 
     suite("Sad cases", () => {
 
-        let notificationService : NotificationService;
+        let notificationService : NotificationManager;
         let mockError : Error;
         before(() => {
             mockError = new Error("mock error");
             const mockService :any = {
                 sendNotification: sinon.stub().rejects(mockError)
             };
-            notificationService = new NotificationService(mockService);
+            notificationService = new NotificationManager(mockService);
         });
 
         test("Send compass  notification", async () => {

@@ -1,11 +1,11 @@
 import { RequestDataController } from "../../data/datacontroller/request.datacontroller";
 import UserDataController from "../../data/datacontroller/user.datacontroller";
 import { ErrorType, PlenuumError } from "../../util/errorhandler";
-import NotificationManager from "./notification.manager";
-import { TEMPLATE } from "../../service/notification/notification.service";
 import { UserModel } from "../../data/database/schema/common/user.schema";
+import NotificationManager from "./notification.interactor";
+import { TEMPLATE } from "../../manager/notification/notification.manager";
 
-export default class RequestManager {
+export default class RequestInteractor {
 
     private requestDataController: RequestDataController;
     private notificationManager: NotificationManager;

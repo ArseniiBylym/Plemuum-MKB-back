@@ -1,8 +1,8 @@
 import * as StatusCodes from 'http-status-codes';
 import { GroupModel } from "../../data/database/schema/organization/group.schema";
 import BaseController from "./base.controller";
-import GroupManager from "../manager/group.manager";
 import { validate } from "../../util/input.validator";
+import GroupManager from "../interactor/group.interactor";
 
 export default class GroupController extends BaseController {
 

@@ -6,7 +6,6 @@ import * as lodash from 'lodash';
 import { SkillModel } from "../../data/database/schema/organization/compass/skill.schema";
 import CompassAnswer from "../../data/models/organization/compass/compassanswer.model";
 import Skill from "../../data/models/organization/compass/skill.model";
-import StatisticsManager from "./statistics.manager";
 import StatisticsDataController from "../../data/datacontroller/statistics.datacontroller";
 import { GroupDataController } from "../../data/datacontroller/group.datacontroller";
 import Group from "../../data/models/organization/group.model";
@@ -20,12 +19,13 @@ import filterAsync from '../../util/asyncFilter';
 import { OrganizationModel } from "../../data/database/schema/organization/organization.schema";
 import { GroupModel } from "../../data/database/schema/organization/group.schema";
 import { CompassStatisticsModel } from "../../data/database/schema/organization/compass/compass.statistics.schema";
-import NotificationManager from "./notification.manager";
-import { TEMPLATE } from "../../service/notification/notification.service";
+import NotificationManager from "./notification.interactor";
+import StatisticsManager from "./statistics.interactor";
+import { TEMPLATE } from "../../manager/notification/notification.manager";
 
 const parser = require('cron-parser');
 
-export default class CompassManager {
+export default class CompassInteractor {
 
     groupDataController: GroupDataController;
     organizationDataController: OrganizationDataController;
@@ -133,10 +133,10 @@ export default class CompassManager {
 
     async answerCard(aboutUserId: string, ownerId: string, orgId: string) {
         const organization = await this.organizationDataController.getOrganizationByDbName(orgId);
-        CompassManager.checkOrganization(organization);
+        CompassInteractor.checkOrganization(organization);
 
-        const aboutUser: UserModel = await CompassManager.getAboutUser(organization.dbName, aboutUserId);
-        CompassManager.checkAboutUser(aboutUser);
+        const aboutUser: UserModel = await CompassInteractor.getAboutUser(organization.dbName, aboutUserId);
+        CompassInteractor.checkAboutUser(aboutUser);
 
         const aboutUserGroups = await this.groupDataController.getUserGroups(orgId, aboutUserId);
         const senderUserGroups = await this.groupDataController.getUserGroups(orgId, ownerId);
@@ -149,13 +149,13 @@ export default class CompassManager {
             }
         }));
 
-        CompassManager.checkAnswerCardRelation(answerGroups);
+        CompassInteractor.checkAnswerCardRelation(answerGroups);
 
         // Get skills that the target user has
         const targetSkills = await this.getUserSkillIds(orgId, aboutUserId);
 
         const aboutUserSkills = await CompassDataController.getSkillsByIds(orgId, targetSkills);
-        const todo = CompassManager.buildUpNewTodoResponse(ownerId, organization.todoSentenceNumber, aboutUserId, aboutUserSkills);
+        const todo = CompassInteractor.buildUpNewTodoResponse(ownerId, organization.todoSentenceNumber, aboutUserId, aboutUserSkills);
         return CompassDataController.saveCompassTodo(organization.dbName, todo);
     }
 
@@ -189,7 +189,7 @@ export default class CompassManager {
                     // Fetch skills from DB
                     const skills = await CompassDataController.getSkillsByIds(dbName, targetSkills);
                     // Build CompassTODO object
-                    const todo = CompassManager.buildUpNewTodoResponse(user._id, org.todoSentenceNumber, randomAboutUserId, skills);
+                    const todo = CompassInteractor.buildUpNewTodoResponse(user._id, org.todoSentenceNumber, randomAboutUserId, skills);
                     // Save built object
                     await CompassDataController.saveCompassTodo(dbName, todo);
                     // Send notification

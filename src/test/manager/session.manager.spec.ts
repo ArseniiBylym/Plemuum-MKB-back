@@ -1,10 +1,10 @@
 import UserDataController from "../../data/datacontroller/user.datacontroller";
 import * as sinon from "sinon";
-import SessionManager from "../../api/manager/session.manager";
 import { expect } from 'chai';
 import { fail } from "assert";
+import SessionManager from "../../api/interactor/session.interactor";
 
-suite("SessionManager tests", () => {
+suite("SessionInteractor tests", () => {
     suite("checkToken", () => {
         test("Reset token was expired", async () => {
             const token = "mocktoken";

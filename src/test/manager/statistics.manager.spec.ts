@@ -1,4 +1,3 @@
-import StatisticsManager from "../../api/manager/statistics.manager";
 import * as sinon from 'sinon';
 import StatisticsDataController from "../../data/datacontroller/statistics.datacontroller";
 import CompassDataController from "../../data/datacontroller/compass.datacontroller";
@@ -11,6 +10,7 @@ import {
     createSkillScore,
     skills
 } from "../util/statistics.manager.util";
+import StatisticsManager from "../../api/interactor/statistics.interactor";
 
 suite("Compass Statistics Manager tests", () => {
     const orgId = "orgId";
@@ -81,8 +81,8 @@ suite("Compass Statistics Manager tests", () => {
             const statisticsManager = new StatisticsManager(notificationManager);
             statisticsManager.updateStatistics = sinon.stub().resolves();
 
-            // const updateStatistics = sinon.stub(StatisticsManager, 'updateStatistics').resolves();
-            // await StatisticsManager.statisticsManager(answer, todo);
+            // const updateStatistics = sinon.stub(StatisticsInteractor, 'updateStatistics').resolves();
+            // await StatisticsInteractor.statisticsManager(answer, todo);
             //
             // updateStatistics.restore();
             // sinon.assert.calledWith(updateStatistics, answer, expectedStatistics);

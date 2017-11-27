@@ -1,7 +1,7 @@
 import BaseController from "./base.controller";
-import OrganizationManager from "../manager/organization.manager";
 import * as StatusCodes from 'http-status-codes';
 import { validate } from "../../util/input.validator";
+import OrganizationManager from "../interactor/organization.interactor";
 
 export default class OrganizationController extends BaseController {
 

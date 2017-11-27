@@ -1,7 +1,7 @@
 import BaseController from "./base.controller";
 import { Request, Response } from "express";
-import TagManager from "../manager/tag.manager";
 import * as StatusCodes from 'http-status-codes';
+import TagManager from "../interactor/tag.interactor";
 
 export default class TagController extends BaseController {
 

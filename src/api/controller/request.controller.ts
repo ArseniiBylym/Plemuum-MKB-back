@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import BaseController from "./base.controller";
-import RequestManager from "../manager/request.manager";
 import * as StatusCodes from 'http-status-codes';
 import { User } from "../../data/models/common/user.model";
 import { validate } from "../../util/input.validator";
+import RequestManager from "../interactor/request.interactor";
 
 export default class RequestController extends BaseController {
 

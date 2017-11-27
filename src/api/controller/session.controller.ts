@@ -1,8 +1,8 @@
 import BaseController from "./base.controller";
 import { Request, Response } from "express";
-import SessionManager from "../manager/session.manager";
 import * as StatusCodes from 'http-status-codes';
-import * as tokenManager from "../../service/auth/token.manager";
+import * as tokenManager from "../../manager/auth/token.manager";
+import SessionManager from "../interactor/session.interactor";
 
 export default class SessionController extends BaseController {
 
