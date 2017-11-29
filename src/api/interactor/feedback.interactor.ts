@@ -3,6 +3,7 @@ import UserDataController from "../../data/datacontroller/user.datacontroller";
 import { ErrorType, PlenuumError } from "../../util/errorhandler";
 import NotificationManager from "./notification.interactor";
 import { TEMPLATE } from "../../manager/notification/notification.manager";
+import { PRIVACY } from "../../data/models/organization/feedback.model";
 
 export default class FeedbackInteractor {
 
@@ -31,7 +32,8 @@ export default class FeedbackInteractor {
         }
         const savedFeedback = await FeedbackDataController.saveFeedback(orgId, feedback);
         try {
-            await this.notificationManager.sendNotificationById(feedback.recipientId, TEMPLATE.FEEDBACK(user.firstName));
+            await this.notificationManager.sendNotificationById(feedback.recipientId,
+                TEMPLATE.FEEDBACK((feedback.privacy && feedback.privacy.indexOf(PRIVACY.ANONYMOUS) !== -1) ? undefined : user.firstName));
         } catch (error) {
             console.error(error);
         }

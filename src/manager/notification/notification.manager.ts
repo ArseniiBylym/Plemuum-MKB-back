@@ -1,8 +1,8 @@
 import NotificationInterface from "./notification.interface";
 
 export const TEMPLATE = {
-    FEEDBACK: (name: string) => ({
-        body: `You received a feedback from ${name}`,
+    FEEDBACK: (name?: string) => ({
+        body: name ? `You received a feedback from ${name}`: 'You received an anonymous feedback',
         title: `New feedback`,
         data: {type: "FEEDBACK"}
     }),
