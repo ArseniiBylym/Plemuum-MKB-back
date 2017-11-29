@@ -3,10 +3,10 @@ import { assert, expect } from 'chai';
 import * as request from 'supertest';
 import * as TestObjectFactory from "../../util/testobject.factory"
 import * as modelValidator from "../../util/model.validator"
-import { authenticate, fixtureLoader, resetPassword, testAdmin, testUser } from "../mock/fixture.loader"
+import { adminAuthenticate, authenticate, fixtureLoader, resetPassword, testUser } from "../mock/fixture.loader"
 import { getDatabaseManager } from "../../factory/database.factory";
 import config from "../../../config/config";
-import { basicAuthHeader, bearerAuthHeader } from "../util/header.helper";
+import { bearerAuthHeader } from "../util/header.helper";
 
 suite("User request tests", () => {
 
@@ -30,7 +30,7 @@ suite("User request tests", () => {
         const url = `/api/users`;
 
         test("POST: Correct request response should contain a user and return 201", async () => {
-            const token = await authenticate(testAdmin);
+            const token = await adminAuthenticate();
             const response = await request(app)
                 .post(url)
                 .set(bearerAuthHeader(token))
@@ -87,7 +87,7 @@ suite("User request tests", () => {
         test('Should return 200', done => {
             request(app)
                 .post(url)
-                .send({ email: testUser.email })
+                .send({email: testUser.email})
                 .expect(200, done())
         });
     });
@@ -99,7 +99,7 @@ suite("User request tests", () => {
             const token = await resetPassword(testUser._id);
             const response = await request(app)
                 .post(url)
-                .send({ token: token, newPassword: "newPass" })
+                .send({token: token, newPassword: "newPass"})
                 .expect(200);
             expect(response.body).to.haveOwnProperty("successMessage");
         });

@@ -26,13 +26,20 @@ const UserDataController = {
         if (showAdmin) {
             query.select('+admin');
         }
-        if(showOrganizations) {
+        if (showOrganizations) {
             query.select('+orgIds');
         }
-        if(showUpdatedPasswordDate) {
+        if (showUpdatedPasswordDate) {
             query.select('+passwordUpdatedAt');
         }
         return query.lean().exec() as Promise<UserModel>;
+    },
+
+    getNotificationTokens: async function (userId: string) {
+        const query = UserCollection().findById(userId);
+        query.select('+notificationToken');
+        const user = await (query.lean().exec() as Promise<UserModel>);
+        return user.notificationToken;
     },
 
     getUserByIdFromOrg: function (orgId: string, userId: string, fields: string[] = []): Promise<UserModel> {
@@ -88,7 +95,14 @@ const UserDataController = {
             .exec() as Promise<ResetPasswordModel>
     },
 
-    changeUserPassword: function (email: string, newPassword: string): Promise<UserModel> {
+    changeUserPassword: async function (email: string, oldPassword: string, newPassword: string): Promise<UserModel> {
+        console.log("changeUserPassword");
+        const user = await UserCollection().findOne({email: email}, {password: 1});
+        console.log(user);
+        if(!user) throw new PlenuumError("User not found", ErrorType.NOT_FOUND);
+        if(!user.verifyPasswordSync(oldPassword)) throw new PlenuumError("Incorrect password", ErrorType.FORBIDDEN);
+
+        console.log("No validation error");
         return UserCollection().findOneAndUpdate({email: email}, {password: newPassword})
             .lean()
             .exec() as Promise<UserModel>;
@@ -153,7 +167,9 @@ const UserDataController = {
     getNotificationToken: function (userId: string, token: string): Promise<string> {
         return UserCollection().findById(userId).select('+notificationToken').lean().exec()
             .then((user: any) =>
-                user.notificationToken.find((elem: string) => { return elem === token }))
+                user.notificationToken.find((elem: string) => {
+                    return elem === token
+                }))
     }
 };
 

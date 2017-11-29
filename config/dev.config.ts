@@ -1,6 +1,6 @@
 import { Config } from "./config.interface";
 import { ENVIRONMENTS } from "./config";
-import { getDefaultFirebaseConfig } from "./firebase.config";
+import { getDefaultFirebaseConfig } from "./firebase/firebase.config";
 
 const devConfig: Config = {
     get env() {
@@ -13,7 +13,7 @@ const devConfig: Config = {
         return 'mongodb://localhost:27017'
     },
     get adminPwd() {
-        return 'incline diadem passed hoop'
+        return 'admin'
     },
     get plenuumBotEmail() {
         return "bot@plenuum.com"

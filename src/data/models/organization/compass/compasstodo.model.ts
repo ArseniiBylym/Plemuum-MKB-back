@@ -1,6 +1,6 @@
 interface CompassTodo {
     about: string;
-    recipient: string;
+    owner: string;
     createdBy: string;
     message: string;
     answered?: boolean;

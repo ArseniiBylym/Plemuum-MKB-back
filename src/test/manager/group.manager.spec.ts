@@ -1,10 +1,10 @@
-import GroupManager from "../../api/manager/group.manager";
 import * as sinon from 'sinon';
 import { assert, expect } from 'chai';
 import { getTestGroup } from "../../util/testobject.factory";
 import * as modelValidator from "../../util/model.validator";
 import UserDataController from "../../data/datacontroller/user.datacontroller";
 import { testUser } from "../mock/fixture.loader";
+import GroupManager from "../../api/interactor/group.interactor";
 
 suite("Group manager", () => {
 

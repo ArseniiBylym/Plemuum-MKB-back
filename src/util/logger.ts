@@ -1,17 +1,20 @@
-import { default as config, ENVIRONMENTS } from "../../config/config";
+import config, { ENVIRONMENTS } from "../../config/config";
 
-const winston = require("winston");
+const {createLogger, format, transports} = require("winston");
+const {json} = format;
 
-const logger = winston.createLogger({
-    level: 'info',
-    format: winston.format.json(),
-    transports: [
-        new winston.transports.Console({format: winston.format.json()})
-    ]
-});
-
-if (config.env !== ENVIRONMENTS.DEVELOPMENT) {
-    logger.add(new winston.transports.File({filename: './log/error.log', level: 'error'}));
+export default function getLogger() {
+    const logger = createLogger({
+        level: 'info',
+        format: json(),
+        transports: []
+    });
+    if (config.env === ENVIRONMENTS.DEVELOPMENT) {
+        logger.add(new transports.Console({format: json()}));
+    } else {
+        const currentDateString = new Date().toISOString().substr(0, 10);
+        logger.add(new transports.File({filename: `./log/error-${currentDateString}.log`, level: 'error'}));
+        logger.add(new transports.File({filename: `./log/info-${currentDateString}.log`, level: 'info'}));
+    }
+    return logger;
 }
-
-export default logger;

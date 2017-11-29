@@ -5,7 +5,7 @@ import Routes from './api/route/routes';
 import * as bodyParser from "body-parser";
 import * as path from "path";
 import * as logger from 'morgan';
-import passportInit from "./service/auth/passport.manager";
+import passportInit from "./manager/auth/passport.manager";
 import * as session from 'express-session';
 import * as expressValidator from 'express-validator';
 import * as cors from 'cors';
@@ -27,8 +27,6 @@ const app = (): Express => {
     //https://helmetjs.github.io/
     app.use(require('helmet')());
 
-    app.set("views", viewsPath);
-    app.set("view engine", "ejs");
     app.use(logger("dev"));
 
     const corsOptions = {

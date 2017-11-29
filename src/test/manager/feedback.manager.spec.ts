@@ -1,17 +1,18 @@
 import UserDataController from "../../data/datacontroller/user.datacontroller";
 import * as sinon from "sinon";
 import FeedbackDataController from "../../data/datacontroller/feedback.datacontroller";
-import FeedbackManager from "../../api/manager/feedback.manager";
 import { PRIVACY, TYPE } from "../../data/models/organization/feedback.model";
 import { testUser } from "../mock/fixture.loader";
 import { expect } from 'chai';
 import { PlenuumError } from "../../util/errorhandler";
 import { fail } from "assert";
+import FeedbackManager from "../../api/interactor/feedback.interactor";
+
+const dummy: any = {};
 
 suite("Feedback manager", () => {
 
     suite("postFeedback", () => {
-
         const orgId = "hipteam";
 
         test("Should call FeedbackDataController to save the feedback", async () => {
@@ -30,7 +31,11 @@ suite("Feedback manager", () => {
             getUserById.resolves(testUser);
             saveFeedback.resolves(feedback);
 
-            const feedbackManager = new FeedbackManager();
+            const notificationManager: any = {
+                sendNotificationById: sinon.stub().resolves()
+            };
+
+            const feedbackManager = new FeedbackManager(notificationManager);
             await feedbackManager.postFeedback(orgId, feedback);
 
             getUserById.restore();
@@ -38,6 +43,7 @@ suite("Feedback manager", () => {
 
             sinon.assert.calledWith(getUserById, orgId, "5984342227cd340363dc84aa");
             sinon.assert.calledWith(saveFeedback, orgId, feedback);
+            sinon.assert.calledOnce(notificationManager.sendNotificationById);
         });
 
 
@@ -54,7 +60,7 @@ suite("Feedback manager", () => {
 
             getUserById.resolves(null);
 
-            const feedbackManager = new FeedbackManager();
+            const feedbackManager = new FeedbackManager(dummy);
             try {
                 await feedbackManager.postFeedback(orgId, feedback);
                 fail("Should throw an exception")

@@ -570,6 +570,36 @@
 									"response": []
 								},
 								{
+									"name": "Modify organization",
+									"request": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"_id\": \"598b04c182664715590b7499\",\n    \"name\": \"hipteam-modified\",\n    \"dbName\": \"hipteam\",\n    \"todoSentenceNumber\": 3,\n    \"compassGenerationTime\": \"* * * */1 * *\"\n}"
+										},
+										"url": {
+											"raw": "http://localhost:5000/api/organizations",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "5000",
+											"path": [
+												"api",
+												"organizations"
+											]
+										},
+										"description": ""
+									},
+									"response": []
+								},
+								{
 									"name": "Get organizations",
 									"request": {
 										"method": "GET",
@@ -642,13 +672,32 @@
 									"response": []
 								},
 								{
-									"name": "Generate todos",
+									"name": "Create new tag copy",
 									"request": {
-										"method": "GET",
-										"header": [],
-										"body": {},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic YWRtaW46aW5jbGluZSBkaWFkZW0gcGFzc2VkIGhvb3A="
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "title",
+													"value": "New tag",
+													"description": "",
+													"type": "text"
+												}
+											]
+										},
 										"url": {
-											"raw": "http://localhost:5000/api/generatetodos",
+											"raw": "http://localhost:5000/api/organizations/hipteam/tags",
 											"protocol": "http",
 											"host": [
 												"localhost"
@@ -656,7 +705,165 @@
 											"port": "5000",
 											"path": [
 												"api",
-												"generatetodos"
+												"organizations",
+												"hipteam",
+												"tags"
+											]
+										},
+										"description": ""
+									},
+									"response": []
+								},
+								{
+									"name": "Generate todos",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {},
+										"url": {
+											"raw": "http://localhost:5000/api/organizations/hipteam/compass/todos/generate",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "5000",
+											"path": [
+												"api",
+												"organizations",
+												"hipteam",
+												"compass",
+												"todos",
+												"generate"
+											]
+										},
+										"description": ""
+									},
+									"response": []
+								},
+								{
+									"name": "Send notification message",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "email",
+													"value": "peter.szabo@hipteam.io",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "title",
+													"value": "Other test title",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "message",
+													"value": "Test message",
+													"description": "",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://localhost:5000/api/notification/send",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "5000",
+											"path": [
+												"api",
+												"notification",
+												"send"
+											]
+										},
+										"description": ""
+									},
+									"response": []
+								},
+								{
+									"name": "Get logs",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"body": {},
+										"url": {
+											"raw": "http://localhost:5000/api/logs?filter=2017-11-21T09:48:29.000Z",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "5000",
+											"path": [
+												"api",
+												"logs"
+											],
+											"query": [
+												{
+													"key": "filter",
+													"value": "2017-11-21T09:48:29.000Z",
+													"equals": true
+												}
+											]
+										},
+										"description": ""
+									},
+									"response": []
+								}
+							],
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "Session",
+							"description": "",
+							"item": [
+								{
+									"name": "Admin login",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "email",
+													"value": "admin",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "password",
+													"value": "Cocobongo1",
+													"description": "",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://localhost:5000/api/session/admin",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "5000",
+											"path": [
+												"api",
+												"session",
+												"admin"
 											]
 										},
 										"description": ""
@@ -1944,15 +2151,15 @@
 											]
 										},
 										"url": {
-											"raw": "http:///188.142.231.10:5000/api/users",
+											"raw": "https://api.staging.plenuum.com/api/users",
+											"protocol": "https",
 											"host": [
-												"http:"
+												"api",
+												"staging",
+												"plenuum",
+												"com"
 											],
-											"port": "",
 											"path": [
-												"",
-												"",
-												"188.142.231.10:5000",
 												"api",
 												"users"
 											]
@@ -2018,15 +2225,14 @@
 											]
 										},
 										"url": {
-											"raw": "http://188.142.231.10:5000/api/users",
-											"protocol": "http",
+											"raw": "https://api.staging.plenuum.com/api/users",
+											"protocol": "https",
 											"host": [
-												"188",
-												"142",
-												"231",
-												"10"
+												"api",
+												"staging",
+												"plenuum",
+												"com"
 											],
-											"port": "5000",
 											"path": [
 												"api",
 												"users"
@@ -2069,15 +2275,14 @@
 											]
 										},
 										"url": {
-											"raw": "http://188.142.231.10:5000/api/organizations/hipteam/groups/599312a31b31d008b6bd2782/users",
-											"protocol": "http",
+											"raw": "https://api.staging.plenuum.com/api/organizations/hipteam/groups/599312a31b31d008b6bd2782/users",
+											"protocol": "https",
 											"host": [
-												"188",
-												"142",
-												"231",
-												"10"
+												"api",
+												"staging",
+												"plenuum",
+												"com"
 											],
-											"port": "5000",
 											"path": [
 												"api",
 												"organizations",
@@ -2153,15 +2358,14 @@
 											]
 										},
 										"url": {
-											"raw": "http://188.142.231.10:5000/api/organizations/hipteam/groups",
-											"protocol": "http",
+											"raw": "https://api.staging.plenuum.com/api/organizations/hipteam/groups",
+											"protocol": "https",
 											"host": [
-												"188",
-												"142",
-												"231",
-												"10"
+												"api",
+												"staging",
+												"plenuum",
+												"com"
 											],
-											"port": "5000",
 											"path": [
 												"api",
 												"organizations",
@@ -2226,15 +2430,14 @@
 											]
 										},
 										"url": {
-											"raw": "http://188.142.231.10:5000/api/organizations/hipteam/groups",
-											"protocol": "http",
+											"raw": "https://api.staging.plenuum.com/api/organizations/hipteam/groups",
+											"protocol": "https",
 											"host": [
-												"188",
-												"142",
-												"231",
-												"10"
+												"api",
+												"staging",
+												"plenuum",
+												"com"
 											],
-											"port": "5000",
 											"path": [
 												"api",
 												"organizations",
@@ -2258,15 +2461,14 @@
 										],
 										"body": {},
 										"url": {
-											"raw": "http://188.142.231.10:5000/api/organizations/hipteam/groups",
-											"protocol": "http",
+											"raw": "https://api.staging.plenuum.com/api/organizations/hipteam/groups",
+											"protocol": "https",
 											"host": [
-												"188",
-												"142",
-												"231",
-												"10"
+												"api",
+												"staging",
+												"plenuum",
+												"com"
 											],
-											"port": "5000",
 											"path": [
 												"api",
 												"organizations",
@@ -2304,15 +2506,14 @@
 											]
 										},
 										"url": {
-											"raw": "http://188.142.231.10:5000/api/organizations/hipteam/groups/599312a31b31d008b6bd2782/users",
-											"protocol": "http",
+											"raw": "https://api.staging.plenuum.com/api/organizations/hipteam/groups/599312a31b31d008b6bd2782/users",
+											"protocol": "https",
 											"host": [
-												"188",
-												"142",
-												"231",
-												"10"
+												"api",
+												"staging",
+												"plenuum",
+												"com"
 											],
-											"port": "5000",
 											"path": [
 												"api",
 												"organizations",
@@ -2334,6 +2535,37 @@
 							"description": "",
 							"item": [
 								{
+									"name": "Get skills",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer f3179baac48c3ab502abdae36c5bff0855050bb8e592f0bea26ab372558fdb1e92f515d0330397df02b2492cb7dd8b1320cda31b80f338452dd7ab525fccb62d"
+											}
+										],
+										"body": {},
+										"url": {
+											"raw": "https://api.staging.plenuum.com/api/organizations/hipteam/skills",
+											"protocol": "https",
+											"host": [
+												"api",
+												"staging",
+												"plenuum",
+												"com"
+											],
+											"path": [
+												"api",
+												"organizations",
+												"hipteam",
+												"skills"
+											]
+										},
+										"description": ""
+									},
+									"response": []
+								},
+								{
 									"name": "Create/Update skill",
 									"request": {
 										"method": "PATCH",
@@ -2352,47 +2584,14 @@
 											"raw": "{\"_id\":\"5940f61e4d0d550007d863e5\", \"name\":\"Updated skill\",\"sentences\":[{\"message\":\"First sentence\"}],\"inactiveSentences\":[{\"message\":\"Second sentence\"}]}"
 										},
 										"url": {
-											"raw": "http://188.142.231.10:5000/api/organizations/hipteam/skills",
-											"protocol": "http",
+											"raw": "https://api.staging.plenuum.com/api/organizations/hipteam/skills",
+											"protocol": "https",
 											"host": [
-												"188",
-												"142",
-												"231",
-												"10"
-											],
-											"port": "5000",
-											"path": [
 												"api",
-												"organizations",
-												"hipteam",
-												"skills"
-											]
-										},
-										"description": ""
-									},
-									"response": []
-								},
-								{
-									"name": "Get skills",
-									"request": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Authorization",
-												"value": "Bearer f3179baac48c3ab502abdae36c5bff0855050bb8e592f0bea26ab372558fdb1e92f515d0330397df02b2492cb7dd8b1320cda31b80f338452dd7ab525fccb62d"
-											}
-										],
-										"body": {},
-										"url": {
-											"raw": "http://188.142.231.10:5000/api/organizations/hipteam/skills",
-											"protocol": "http",
-											"host": [
-												"188",
-												"142",
-												"231",
-												"10"
+												"staging",
+												"plenuum",
+												"com"
 											],
-											"port": "5000",
 											"path": [
 												"api",
 												"organizations",
@@ -2455,15 +2654,46 @@
 											]
 										},
 										"url": {
-											"raw": "http://188.142.231.10:5000/api/organizations",
-											"protocol": "http",
+											"raw": "https://api.staging.plenuum.com/api/organizations",
+											"protocol": "https",
 											"host": [
-												"188",
-												"142",
-												"231",
-												"10"
+												"api",
+												"staging",
+												"plenuum",
+												"com"
 											],
-											"port": "5000",
+											"path": [
+												"api",
+												"organizations"
+											]
+										},
+										"description": ""
+									},
+									"response": []
+								},
+								{
+									"name": "Modify organization",
+									"request": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"_id\": \"598b04c182664715590b7499\",\n    \"name\": \"hipteam-modified\",\n    \"dbName\": \"hipteam\",\n    \"todoSentenceNumber\": 3,\n    \"compassGenerationTime\": \"* * * */1 * *\"\n}"
+										},
+										"url": {
+											"raw": "https://api.staging.plenuum.com/api/organizations",
+											"protocol": "https",
+											"host": [
+												"api",
+												"staging",
+												"plenuum",
+												"com"
+											],
 											"path": [
 												"api",
 												"organizations"
@@ -2480,15 +2710,14 @@
 										"header": [],
 										"body": {},
 										"url": {
-											"raw": "http://188.142.231.10:5000/api/organizations",
-											"protocol": "http",
+											"raw": "https://api.staging.plenuum.com/api/organizations",
+											"protocol": "https",
 											"host": [
-												"188",
-												"142",
-												"231",
-												"10"
+												"api",
+												"staging",
+												"plenuum",
+												"com"
 											],
-											"port": "5000",
 											"path": [
 												"api",
 												"organizations"
@@ -2531,15 +2760,59 @@
 											]
 										},
 										"url": {
-											"raw": "http://188.142.231.10:5000/api/organizations/hipteam/tags",
-											"protocol": "http",
+											"raw": "https://api.staging.plenuum.com/api/organizations/hipteam/tags",
+											"protocol": "https",
 											"host": [
-												"188",
-												"142",
-												"231",
-												"10"
+												"api",
+												"staging",
+												"plenuum",
+												"com"
 											],
-											"port": "5000",
+											"path": [
+												"api",
+												"organizations",
+												"hipteam",
+												"tags"
+											]
+										},
+										"description": ""
+									},
+									"response": []
+								},
+								{
+									"name": "Create new tag copy",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic YWRtaW46aW5jbGluZSBkaWFkZW0gcGFzc2VkIGhvb3A="
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "title",
+													"value": "New tag",
+													"description": "",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "https://api.staging.plenuum.com/api/organizations/hipteam/tags",
+											"protocol": "https",
+											"host": [
+												"api",
+												"staging",
+												"plenuum",
+												"com"
+											],
 											"path": [
 												"api",
 												"organizations",
@@ -2554,22 +2827,161 @@
 								{
 									"name": "Generate todos",
 									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {},
+										"url": {
+											"raw": "https://api.staging.plenuum.com/api/organizations/hipteam/compass/todos/generate",
+											"protocol": "https",
+											"host": [
+												"api",
+												"staging",
+												"plenuum",
+												"com"
+											],
+											"path": [
+												"api",
+												"organizations",
+												"hipteam",
+												"compass",
+												"todos",
+												"generate"
+											]
+										},
+										"description": ""
+									},
+									"response": []
+								},
+								{
+									"name": "Send notification message",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "email",
+													"value": "peter.szabo@hipteam.io",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "title",
+													"value": "Other test title",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "message",
+													"value": "Test message",
+													"description": "",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "https://api.staging.plenuum.com/api/notification/send",
+											"protocol": "https",
+											"host": [
+												"api",
+												"staging",
+												"plenuum",
+												"com"
+											],
+											"path": [
+												"api",
+												"notification",
+												"send"
+											]
+										},
+										"description": ""
+									},
+									"response": []
+								},
+								{
+									"name": "Get logs",
+									"request": {
 										"method": "GET",
 										"header": [],
 										"body": {},
 										"url": {
-											"raw": "http://188.142.231.10:5000/api/generatetodos",
-											"protocol": "http",
+											"raw": "https://api.staging.plenuum.com/api/logs?filter=2017-11-21T09:48:29.000Z",
+											"protocol": "https",
 											"host": [
-												"188",
-												"142",
-												"231",
-												"10"
+												"api",
+												"staging",
+												"plenuum",
+												"com"
 											],
-											"port": "5000",
 											"path": [
 												"api",
-												"generatetodos"
+												"logs"
+											],
+											"query": [
+												{
+													"key": "filter",
+													"value": "2017-11-21T09:48:29.000Z",
+													"equals": true
+												}
+											]
+										},
+										"description": ""
+									},
+									"response": []
+								}
+							],
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "Session",
+							"description": "",
+							"item": [
+								{
+									"name": "Admin login",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "email",
+													"value": "admin",
+													"description": "",
+													"type": "text"
+												},
+												{
+													"key": "password",
+													"value": "Cocobongo1",
+													"description": "",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "https://api.staging.plenuum.com/api/session/admin",
+											"protocol": "https",
+											"host": [
+												"api",
+												"staging",
+												"plenuum",
+												"com"
+											],
+											"path": [
+												"api",
+												"session",
+												"admin"
 											]
 										},
 										"description": ""
@@ -2601,28 +3013,27 @@
 									"urlencoded": [
 										{
 											"key": "email",
-											"value": "admin@plenuum.com",
+											"value": "peter.szabo@hipteam.io",
 											"description": "",
 											"type": "text"
 										},
 										{
 											"key": "password",
-											"value": "admin",
+											"value": "asd1234",
 											"description": "",
 											"type": "text"
 										}
 									]
 								},
 								"url": {
-									"raw": "http://188.142.231.10:5000/api/session",
-									"protocol": "http",
+									"raw": "https://api.staging.plenuum.com/api/session",
+									"protocol": "https",
 									"host": [
-										"188",
-										"142",
-										"231",
-										"10"
+										"api",
+										"staging",
+										"plenuum",
+										"com"
 									],
-									"port": "5000",
 									"path": [
 										"api",
 										"session"
@@ -2644,15 +3055,14 @@
 								],
 								"body": {},
 								"url": {
-									"raw": "http://188.142.231.10:5000/api/session",
-									"protocol": "http",
+									"raw": "https://api.staging.plenuum.com/api/session",
+									"protocol": "https",
 									"host": [
-										"188",
-										"142",
-										"231",
-										"10"
+										"api",
+										"staging",
+										"plenuum",
+										"com"
 									],
-									"port": "5000",
 									"path": [
 										"api",
 										"session"
@@ -2684,15 +3094,14 @@
 									]
 								},
 								"url": {
-									"raw": "http://188.142.231.10:5000/api/session/validtoken",
-									"protocol": "http",
+									"raw": "https://api.staging.plenuum.com/api/session/validtoken",
+									"protocol": "https",
 									"host": [
-										"188",
-										"142",
-										"231",
-										"10"
+										"api",
+										"staging",
+										"plenuum",
+										"com"
 									],
-									"port": "5000",
 									"path": [
 										"api",
 										"session",
@@ -2725,15 +3134,14 @@
 									]
 								},
 								"url": {
-									"raw": "http://188.142.231.10:5000/api/session/reset-password",
-									"protocol": "http",
+									"raw": "https://api.staging.plenuum.com/api/session/reset-password",
+									"protocol": "https",
 									"host": [
-										"188",
-										"142",
-										"231",
-										"10"
+										"api",
+										"staging",
+										"plenuum",
+										"com"
 									],
-									"port": "5000",
 									"path": [
 										"api",
 										"session",
@@ -2772,15 +3180,14 @@
 									]
 								},
 								"url": {
-									"raw": "http://188.142.231.10:5000/api/session/set-password",
-									"protocol": "http",
+									"raw": "https://api.staging.plenuum.com/api/session/set-password",
+									"protocol": "https",
 									"host": [
-										"188",
-										"142",
-										"231",
-										"10"
+										"api",
+										"staging",
+										"plenuum",
+										"com"
 									],
-									"port": "5000",
 									"path": [
 										"api",
 										"session",
@@ -2825,15 +3232,14 @@
 									]
 								},
 								"url": {
-									"raw": "http://188.142.231.10:5000/api/session/password",
-									"protocol": "http",
+									"raw": "https://api.staging.plenuum.com/api/session/password",
+									"protocol": "https",
 									"host": [
-										"188",
-										"142",
-										"231",
-										"10"
+										"api",
+										"staging",
+										"plenuum",
+										"com"
 									],
-									"port": "5000",
 									"path": [
 										"api",
 										"session",
@@ -2877,15 +3283,14 @@
 									]
 								},
 								"url": {
-									"raw": "http://188.142.231.10:5000/api/users/me/notification",
-									"protocol": "http",
+									"raw": "https://api.staging.plenuum.com/api/users/me/notification",
+									"protocol": "https",
 									"host": [
-										"188",
-										"142",
-										"231",
-										"10"
+										"api",
+										"staging",
+										"plenuum",
+										"com"
 									],
-									"port": "5000",
 									"path": [
 										"api",
 										"users",
@@ -2929,15 +3334,14 @@
 									]
 								},
 								"url": {
-									"raw": "http://188.142.231.10:5000/api/users/me/notification",
-									"protocol": "http",
+									"raw": "https://api.staging.plenuum.com/api/users/me/notification",
+									"protocol": "https",
 									"host": [
-										"188",
-										"142",
-										"231",
-										"10"
+										"api",
+										"staging",
+										"plenuum",
+										"com"
 									],
-									"port": "5000",
 									"path": [
 										"api",
 										"users",
@@ -2975,15 +3379,14 @@
 									]
 								},
 								"url": {
-									"raw": "http://188.142.231.10:5000/api/users/me/notification",
-									"protocol": "http",
+									"raw": "https://api.staging.plenuum.com/api/users/me/notification",
+									"protocol": "https",
 									"host": [
-										"188",
-										"142",
-										"231",
-										"10"
+										"api",
+										"staging",
+										"plenuum",
+										"com"
 									],
-									"port": "5000",
 									"path": [
 										"api",
 										"users",
@@ -3028,15 +3431,14 @@
 									]
 								},
 								"url": {
-									"raw": "http://188.142.231.10:5000/api/organizations/hipteam/compass/todos",
-									"protocol": "http",
+									"raw": "https://api.staging.plenuum.com/api/organizations/hipteam/compass/todos",
+									"protocol": "https",
 									"host": [
-										"188",
-										"142",
-										"231",
-										"10"
+										"api",
+										"staging",
+										"plenuum",
+										"com"
 									],
-									"port": "5000",
 									"path": [
 										"api",
 										"organizations",
@@ -3068,15 +3470,14 @@
 									"raw": "{\"compassTodo\":\"59d4a8647efd4e09b8c172e3\",\"sender\":\"5984342227cd340363dc84af\",\"sentencesAnswer\":[{\"answer\":\"AGREE\",\"sentence\":{\"message\":\"Its willing to admit own mistakes\",\"_id\":\"599e88721a6ec6039715b541\"},\"skill\":{\"_id\":\"5940f5f44d0d550007d863dc\",\"name\":\"Integrity\",\"inactiveSentences\":[],\"sentences\":[{\"message\":\"Takes responsibility for own decisions and behavior.\",\"_id\":\"599e88721a6ec6039715b542\"},{\"message\":\"Its willing to admit own mistakes\",\"_id\":\"599e88721a6ec6039715b541\"},{\"message\":\"Questions practices which might violate rules of fairness.\",\"_id\":\"599e88721a6ec6039715b540\"}]}},{\"answer\":\"AGREE\",\"sentence\":{\"message\":\"Supports the development of their colleagues. Gives frequent, detailed feedback.\",\"_id\":\"599e88721a6ec6039715b544\"},\"skill\":{\"_id\":\"5940f6044d0d550007d863df\",\"name\":\"Performance Management\",\"inactiveSentences\":[],\"sentences\":[{\"message\":\"Defines clear and measurable objectives.\",\"_id\":\"599e88721a6ec6039715b546\"},{\"message\":\"Recognize great performance.\",\"_id\":\"599e88721a6ec6039715b545\"},{\"message\":\"Supports the development of their colleagues. Gives frequent, detailed feedback.\",\"_id\":\"599e88721a6ec6039715b544\"},{\"message\":\"Supports the develment of their colleagues.\",\"_id\":\"599e88721a6ec6039715b543\"}]}},{\"answer\":\"DISAGREE\",\"sentence\":{\"message\":\"Supports the develment of their colleagues.\",\"_id\":\"599e88721a6ec6039715b543\"},\"skill\":{\"_id\":\"5940f6044d0d550007d863df\",\"name\":\"Performance Management\",\"inactiveSentences\":[],\"sentences\":[{\"message\":\"Defines clear and measurable objectives.\",\"_id\":\"599e88721a6ec6039715b546\"},{\"message\":\"Recognize great performance.\",\"_id\":\"599e88721a6ec6039715b545\"},{\"message\":\"Supports the development of their colleagues. Gives frequent, detailed feedback.\",\"_id\":\"599e88721a6ec6039715b544\"},{\"message\":\"Supports the develment of their colleagues.\",\"_id\":\"599e88721a6ec6039715b543\"}]}}]}"
 								},
 								"url": {
-									"raw": "http://188.142.231.10:5000/api/organizations/hipteam/compass/answers",
-									"protocol": "http",
+									"raw": "https://api.staging.plenuum.com/api/organizations/hipteam/compass/answers",
+									"protocol": "https",
 									"host": [
-										"188",
-										"142",
-										"231",
-										"10"
+										"api",
+										"staging",
+										"plenuum",
+										"com"
 									],
-									"port": "5000",
 									"path": [
 										"api",
 										"organizations",
@@ -3101,15 +3502,14 @@
 								],
 								"body": {},
 								"url": {
-									"raw": "http://188.142.231.10:5000/api/organizations/hipteam/compass/statistics",
-									"protocol": "http",
+									"raw": "https://api.staging.plenuum.com/api/organizations/hipteam/compass/statistics",
+									"protocol": "https",
 									"host": [
-										"188",
-										"142",
-										"231",
-										"10"
+										"api",
+										"staging",
+										"plenuum",
+										"com"
 									],
-									"port": "5000",
 									"path": [
 										"api",
 										"organizations",
@@ -3134,15 +3534,14 @@
 								],
 								"body": {},
 								"url": {
-									"raw": "http://188.142.231.10:5000/api/organizations/hipteam/interacts",
-									"protocol": "http",
+									"raw": "https://api.staging.plenuum.com/api/organizations/hipteam/interacts",
+									"protocol": "https",
 									"host": [
-										"188",
-										"142",
-										"231",
-										"10"
+										"api",
+										"staging",
+										"plenuum",
+										"com"
 									],
-									"port": "5000",
 									"path": [
 										"api",
 										"organizations",
@@ -3173,15 +3572,14 @@
 								],
 								"body": {},
 								"url": {
-									"raw": "http://188.142.231.10:5000/api/organizations/hipteam/tags",
-									"protocol": "http",
+									"raw": "https://api.staging.plenuum.com/api/organizations/hipteam/tags",
+									"protocol": "https",
 									"host": [
-										"188",
-										"142",
-										"231",
-										"10"
+										"api",
+										"staging",
+										"plenuum",
+										"com"
 									],
-									"port": "5000",
 									"path": [
 										"api",
 										"organizations",
@@ -3212,15 +3610,14 @@
 								],
 								"body": {},
 								"url": {
-									"raw": "http://188.142.231.10:5000/api/organizations/hipteam/groups/599312971b31d008b6bd2781",
-									"protocol": "http",
+									"raw": "https://api.staging.plenuum.com/api/organizations/hipteam/groups/599312971b31d008b6bd2781",
+									"protocol": "https",
 									"host": [
-										"188",
-										"142",
-										"231",
-										"10"
+										"api",
+										"staging",
+										"plenuum",
+										"com"
 									],
-									"port": "5000",
 									"path": [
 										"api",
 										"organizations",
@@ -3245,15 +3642,14 @@
 								],
 								"body": {},
 								"url": {
-									"raw": "http://188.142.231.10:5000/api/organizations/hipteam/users/me/groups",
-									"protocol": "http",
+									"raw": "https://api.staging.plenuum.com/api/organizations/hipteam/users/me/groups",
+									"protocol": "https",
 									"host": [
-										"188",
-										"142",
-										"231",
-										"10"
+										"api",
+										"staging",
+										"plenuum",
+										"com"
 									],
-									"port": "5000",
 									"path": [
 										"api",
 										"organizations",
@@ -3274,15 +3670,14 @@
 								"header": [],
 								"body": {},
 								"url": {
-									"raw": "http://188.142.231.10:5000/api/organizations/hipteam/users/me/groups/answer-card-users",
-									"protocol": "http",
+									"raw": "https://api.staging.plenuum.com/api/organizations/hipteam/users/me/groups/answer-card-users",
+									"protocol": "https",
 									"host": [
-										"188",
-										"142",
-										"231",
-										"10"
+										"api",
+										"staging",
+										"plenuum",
+										"com"
 									],
-									"port": "5000",
 									"path": [
 										"api",
 										"organizations",
@@ -3336,15 +3731,14 @@
 									]
 								},
 								"url": {
-									"raw": "http://188.142.231.10:5000/api/organizations/hipteam/requests",
-									"protocol": "http",
+									"raw": "https://api.staging.plenuum.com/api/organizations/hipteam/requests",
+									"protocol": "https",
 									"host": [
-										"188",
-										"142",
-										"231",
-										"10"
+										"api",
+										"staging",
+										"plenuum",
+										"com"
 									],
-									"port": "5000",
 									"path": [
 										"api",
 										"organizations",
@@ -3373,15 +3767,14 @@
 								],
 								"body": {},
 								"url": {
-									"raw": "http://188.142.231.10:5000/api/organizations/hipteam/users/me/requests",
-									"protocol": "http",
+									"raw": "https://api.staging.plenuum.com/api/organizations/hipteam/users/me/requests",
+									"protocol": "https",
 									"host": [
-										"188",
-										"142",
-										"231",
-										"10"
+										"api",
+										"staging",
+										"plenuum",
+										"com"
 									],
-									"port": "5000",
 									"path": [
 										"api",
 										"organizations",
@@ -3407,15 +3800,14 @@
 								],
 								"body": {},
 								"url": {
-									"raw": "http://188.142.231.10:5000/api/organizations/hipteam/users/me/requests/sent",
-									"protocol": "http",
+									"raw": "https://api.staging.plenuum.com/api/organizations/hipteam/users/me/requests/sent",
+									"protocol": "https",
 									"host": [
-										"188",
-										"142",
-										"231",
-										"10"
+										"api",
+										"staging",
+										"plenuum",
+										"com"
 									],
-									"port": "5000",
 									"path": [
 										"api",
 										"organizations",
@@ -3442,15 +3834,14 @@
 								],
 								"body": {},
 								"url": {
-									"raw": "http://188.142.231.10:5000/api/organizations/hipteam/users/me/requests/received",
-									"protocol": "http",
+									"raw": "https://api.staging.plenuum.com/api/organizations/hipteam/users/me/requests/received",
+									"protocol": "https",
 									"host": [
-										"188",
-										"142",
-										"231",
-										"10"
+										"api",
+										"staging",
+										"plenuum",
+										"com"
 									],
-									"port": "5000",
 									"path": [
 										"api",
 										"organizations",
@@ -3477,15 +3868,14 @@
 								],
 								"body": {},
 								"url": {
-									"raw": "http://188.142.231.10:5000/api/organizations/hipteam/users/me/requests/59844c1cd0b5d006da3c9620",
-									"protocol": "http",
+									"raw": "https://api.staging.plenuum.com/api/organizations/hipteam/users/me/requests/59844c1cd0b5d006da3c9620",
+									"protocol": "https",
 									"host": [
-										"188",
-										"142",
-										"231",
-										"10"
+										"api",
+										"staging",
+										"plenuum",
+										"com"
 									],
-									"port": "5000",
 									"path": [
 										"api",
 										"organizations",
@@ -3512,15 +3902,14 @@
 								],
 								"body": {},
 								"url": {
-									"raw": "http://188.142.231.10:5000/api/organizations/hipteam/users/me/requests/59844c1cd0b5d006da3c9620/recipients",
-									"protocol": "http",
+									"raw": "https://api.staging.plenuum.com/api/organizations/hipteam/users/me/requests/59844c1cd0b5d006da3c9620/recipients",
+									"protocol": "https",
 									"host": [
-										"188",
-										"142",
-										"231",
-										"10"
+										"api",
+										"staging",
+										"plenuum",
+										"com"
 									],
-									"port": "5000",
 									"path": [
 										"api",
 										"organizations",
@@ -3555,15 +3944,14 @@
 								],
 								"body": {},
 								"url": {
-									"raw": "http://188.142.231.10:5000/api/organizations/hipteam/users/me/feedbacks",
-									"protocol": "http",
+									"raw": "https://api.staging.plenuum.com/api/organizations/hipteam/users/me/feedbacks",
+									"protocol": "https",
 									"host": [
-										"188",
-										"142",
-										"231",
-										"10"
+										"api",
+										"staging",
+										"plenuum",
+										"com"
 									],
-									"port": "5000",
 									"path": [
 										"api",
 										"organizations",
@@ -3643,15 +4031,14 @@
 									]
 								},
 								"url": {
-									"raw": "http://188.142.231.10:5000/api/organizations/hipteam/feedbacks",
-									"protocol": "http",
+									"raw": "https://api.staging.plenuum.com/api/organizations/hipteam/feedbacks",
+									"protocol": "https",
 									"host": [
-										"188",
-										"142",
-										"231",
-										"10"
+										"api",
+										"staging",
+										"plenuum",
+										"com"
 									],
-									"port": "5000",
 									"path": [
 										"api",
 										"organizations",
@@ -3675,15 +4062,14 @@
 								],
 								"body": {},
 								"url": {
-									"raw": "http://188.142.231.10:5000/api/organizations/hipteam/users/me/feedbacks/sent",
-									"protocol": "http",
+									"raw": "https://api.staging.plenuum.com/api/organizations/hipteam/users/me/feedbacks/sent",
+									"protocol": "https",
 									"host": [
-										"188",
-										"142",
-										"231",
-										"10"
+										"api",
+										"staging",
+										"plenuum",
+										"com"
 									],
-									"port": "5000",
 									"path": [
 										"api",
 										"organizations",
@@ -3710,15 +4096,14 @@
 								],
 								"body": {},
 								"url": {
-									"raw": "http://188.142.231.10:5000/api/organizations/hipteam/users/me/feedbacks/received",
-									"protocol": "http",
+									"raw": "https://api.staging.plenuum.com/api/organizations/hipteam/users/me/feedbacks/received",
+									"protocol": "https",
 									"host": [
-										"188",
-										"142",
-										"231",
-										"10"
+										"api",
+										"staging",
+										"plenuum",
+										"com"
 									],
-									"port": "5000",
 									"path": [
 										"api",
 										"organizations",
@@ -3752,15 +4137,14 @@
 								],
 								"body": {},
 								"url": {
-									"raw": "http://188.142.231.10:5000/api/organizations/hipteam/users",
-									"protocol": "http",
+									"raw": "https://api.staging.plenuum.com/api/organizations/hipteam/users",
+									"protocol": "https",
 									"host": [
-										"188",
-										"142",
-										"231",
-										"10"
+										"api",
+										"staging",
+										"plenuum",
+										"com"
 									],
-									"port": "5000",
 									"path": [
 										"api",
 										"organizations",
@@ -3784,15 +4168,14 @@
 								],
 								"body": {},
 								"url": {
-									"raw": "http://188.142.231.10:5000/api/organizations/hipteam/users/5984342227cd340363dc84c7",
-									"protocol": "http",
+									"raw": "https://api.staging.plenuum.com/api/organizations/hipteam/users/5984342227cd340363dc84c7",
+									"protocol": "https",
 									"host": [
-										"188",
-										"142",
-										"231",
-										"10"
+										"api",
+										"staging",
+										"plenuum",
+										"com"
 									],
-									"port": "5000",
 									"path": [
 										"api",
 										"organizations",
@@ -3817,15 +4200,14 @@
 								],
 								"body": {},
 								"url": {
-									"raw": "http://188.142.231.10:5000/api/users/me",
-									"protocol": "http",
+									"raw": "https://api.staging.plenuum.com/api/users/me",
+									"protocol": "https",
 									"host": [
-										"188",
-										"142",
-										"231",
-										"10"
+										"api",
+										"staging",
+										"plenuum",
+										"com"
 									],
-									"port": "5000",
 									"path": [
 										"api",
 										"users",
@@ -3862,15 +4244,14 @@
 									]
 								},
 								"url": {
-									"raw": "http://188.142.231.10:5000/api/users/me/avatar",
-									"protocol": "http",
+									"raw": "https://api.staging.plenuum.com/api/users/me/avatar",
+									"protocol": "https",
 									"host": [
-										"188",
-										"142",
-										"231",
-										"10"
+										"api",
+										"staging",
+										"plenuum",
+										"com"
 									],
-									"port": "5000",
 									"path": [
 										"api",
 										"users",
@@ -3884,6 +4265,159 @@
 						}
 					],
 					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "JOBS",
+			"description": "",
+			"item": [
+				{
+					"name": "Create TODO job",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"orgId\": \"hipteam\"\n}"
+						},
+						"url": {
+							"raw": "localhost:5001/hipteam/jobs/todo",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"hipteam",
+								"jobs",
+								"todo"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get jobs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "localhost:5001/hipteam/jobs",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"hipteam",
+								"jobs"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get job by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": \"5a096bdd4b777f08a18e0142\"\n}"
+						},
+						"url": {
+							"raw": "localhost:5001/jobs/5a0970710e3b160959708f0f",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"jobs",
+								"5a0970710e3b160959708f0f"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Start job",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "localhost:5001/hipteam/jobs/5a0b02797c0f012a708896dd/start",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"hipteam",
+								"jobs",
+								"5a0b02797c0f012a708896dd",
+								"start"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Stop job",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "localhost:5001/hipteam/jobs/5a0b02797c0f012a708896dd/stop",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"hipteam",
+								"jobs",
+								"5a0b02797c0f012a708896dd",
+								"stop"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Remove job",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "localhost:5001/jobs/5a0970710e3b160959708f0f",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"jobs",
+								"5a0970710e3b160959708f0f"
+							]
+						},
+						"description": ""
+					},
+					"response": []
 				}
 			]
 		}

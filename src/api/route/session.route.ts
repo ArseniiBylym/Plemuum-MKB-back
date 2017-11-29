@@ -6,7 +6,7 @@ import UserController from "../controller/user.controller";
 export default (app: Express, sessionController: SessionController, userController: UserController) => {
     /**
      * @api {POST} /api/session Log-in user
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName login
      * @apiGroup Session
      * @apiDescription If the user is authenticated successfully, a Bearer token will be returned.
@@ -29,7 +29,7 @@ export default (app: Express, sessionController: SessionController, userControll
 
     /**
      * @api {DELETE} /api/session Log-out user
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName logout
      * @apiGroup Session
      * @apiDescription Logging out. Token will be removed from the cookies. On mobile the client should remove it's token.
@@ -40,7 +40,7 @@ export default (app: Express, sessionController: SessionController, userControll
 
     /**
      * @api {POST} /api/session/admin Log-in as admin
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName admin-login
      * @apiGroup Session
      * @apiDescription Dedicated login endpoint for admins. If the user with the given credentials is not an admin, 403
@@ -64,7 +64,7 @@ export default (app: Express, sessionController: SessionController, userControll
 
     /**
      * @api {POST} /api/session/validtoken Valid token
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName validtoken
      * @apiGroup Session
      * @apiDescription Check if the token is still valid in the reset token.
@@ -91,7 +91,7 @@ export default (app: Express, sessionController: SessionController, userControll
 
     /**
      * @api {POST} /api/session/reset-password Reset user's password
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName resetPassword
      * @apiGroup Session
      * @apiDescription The user show intent to change his password to receive a link with a token.
@@ -108,32 +108,12 @@ export default (app: Express, sessionController: SessionController, userControll
      *     "link": "/set_new_password?token=a8d1b49ea5df75879719e64df8d197cbaa6b6ed631764bea7381a553c1b2495d8c8198c8cb2093d40da760dcea6bd4b829b08485d87b070a19264b05310637cb&email=john.doe@email.com"
      * }
      */
-
-    /**
-     * @api {POST} /api/resetPassword Reset user's password
-     * @apiVersion 2.0.0
-     * @apiName resetPassword
-     * @apiGroup Session
-     * @apiDescription The user show intent to change his password to receive a link with a token.
-     * This token has 1 day of expiration time, and after the new password being setted, it expire.
-     *
-     * @apiParam {String} email The user email
-     *
-     * @apiSuccess (Success 200) {String} email The user email
-     * @apiSuccess (Success 200) {String} link The reset link of the user
-     * @apiSuccessExample {json} Success-Response:
-     * HTTP/1.1 200 OK
-     * {
-     *     "email": "john.doe@email.com",
-     *     "link": "/set_new_password?token=a8d1b49ea5df75879719e64df8d197cbaa6b6ed631764bea7381a553c1b2495d8c8198c8cb2093d40da760dcea6bd4b829b08485d87b070a19264b05310637cb&email=john.doe@email.com"
-     * }
-     */
     app.route("/api/session/reset-password")
         .post(userController.resetPassword.bind(userController));
 
     /**
      * @api {POST} /api/set-password Set new password to user
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName setPassword
      * @apiGroup Session
      * @apiDescription Set the new password chosen by user to its account and generates a new token.
@@ -147,30 +127,12 @@ export default (app: Express, sessionController: SessionController, userControll
      *     "successMessage": "Your password was successfully changed. You can now go to Plenuum web app and log with new password"
      * }
      */
-
-    /**
-     * @api {POST} /api/setPassword Set new password to user
-     * @apiVersion 2.0.0
-     * @apiName setPassword
-     * @apiGroup Session
-     * @apiDescription Set the new password chosen by user to its account and generates a new token.
-     *
-     * @apiParam {String} token The new token for reset password
-     * @apiParam {String} newPassword The new password for the user account
-     *
-     * @apiSuccessExample {json} Success-Response:
-     * HTTP/1.1 200 OK
-     * {
-     *     "successMessage": "Your password was successfully changed. You can now go to Plenuum web app and log with new password"
-     * }
-     */
-
     app.route("/api/session/set-password")
         .post(userController.setPassword.bind(userController));
 
     /**
      * @api {POST} /api/session/password Change user password
-     * @apiVersion 2.0.1
+     * @apiVersion 2.0.0
      * @apiName changePassword
      * @apiGroup Session
      * @apiDescription Change the password of the user in side the app.
@@ -180,26 +142,6 @@ export default (app: Express, sessionController: SessionController, userControll
      * @apiParam (Body){String} email User's email
      * @apiParam (Body){String} password User's password
      * @apiParam (Body){String} newPassword The new desired password
-     *
-     * @apiSuccess (Success 200) {String} message Success message
-     *
-     * @apiSuccessExample {json} Success-Response:
-     * HTTP/1.1 200 OK
-     * {
-     *     "message": "Password has been changed"
-     * }
-     */
-
-    /**
-     * @api {POST} /api/user/password Change user password
-     * @apiVersion 2.0.0
-     * @apiName changePassword
-     * @apiGroup Session
-     * @apiDescription Change the password of the user in side the app.
-     *
-     * @apiParam {String} email User's email
-     * @apiParam {String} password User's password
-     * @apiParam {String} newPassword The new desired password
      *
      * @apiSuccess (Success 200) {String} message Success message
      *

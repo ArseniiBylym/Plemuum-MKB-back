@@ -7,15 +7,17 @@ services:
       - "5000"
     ports:
       - "5000:5000"
+    volumes:
+      - ./log:/app/log
     links:
       - mongo
     container_name: plenuum-backend
     environment:
         - NODE_ENV=staging
-        - DATABASE_URL=mongodb://mongo:27017
+        - DATABASE_URL=mongodb://mongo:28017
         - PLENUUM_BOT_EMAIL=bot@plenuum.com
         - PLENUUM_BOT_PWD=Cocobongo1
-        - ADMIN_PASSWORD=incline diadem passed hoop
+        - ADMIN_PASSWORD=Cocobongo1
         - WEBAPP_DOMAIN=http://localhost:3000
         - ADMIN_DOMAIN=http://localhost:8081
     depends_on:
@@ -24,10 +26,11 @@ services:
     stdin_open: true
   mongo:
     image: mongo:3.4.9
+    command: mongod --port 28017
     expose:
-          - "27017"
+          - "28017"
     ports:
-          - "27017:27017"
+          - "28017:28017"
     volumes:
       - mongodb:/data/db
     container_name: plenuum-db

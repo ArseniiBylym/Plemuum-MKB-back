@@ -12,7 +12,7 @@ import { resetPasswordDataController } from "../../data/datacontroller/resetpass
 import { CompassTodoCollection } from "../../data/database/schema/organization/compass/compasstodo.schema";
 import { StatisticsCollection } from "../../data/database/schema/organization/compass/compass.statistics.schema";
 import { CompassAnswerCollection } from "../../data/database/schema/organization/compass/compassanswer.schema";
-import SessionManager from "../../api/manager/session.manager";
+import SessionManager from "../../api/interactor/session.interactor";
 
 const testUser = {
     "firstName": "sheryl",
@@ -20,15 +20,6 @@ const testUser = {
     "email": "sheryl.grant@hipteam.io",
     "pictureUrl": "https://randomuser.me/api/portraits/women/85.jpg",
     "_id": "5984342227cd340363dc84af",
-};
-
-const testAdmin = {
-    "firstName": "peter",
-    "lastName": "szabo",
-    "email": "peter.szabo@hipteam.io",
-    "pictureUrl": "",
-    "_id": "5984342227cd340363dc84c7",
-    "admin": true
 };
 
 function fixtureLoader(): Promise<any> {
@@ -69,6 +60,11 @@ async function authenticate(testUser: any): Promise<string> {
     return (await sessionManager.login(testUser._id)).token;
 }
 
+async function adminAuthenticate(): Promise<string> {
+    const sessionManager = new SessionManager();
+    return (await sessionManager.loginAsAdmin()).token;
+}
+
 async function resetPassword(userId: string): Promise<any> {
     const expiry = new Date();
     expiry.setHours(expiry.getHours() + 5);
@@ -77,4 +73,4 @@ async function resetPassword(userId: string): Promise<any> {
     return resetPass.token;
 }
 
-export { fixtureLoader, authenticate, resetPassword, testUser, testAdmin }
+export { fixtureLoader, authenticate, adminAuthenticate, resetPassword, testUser }

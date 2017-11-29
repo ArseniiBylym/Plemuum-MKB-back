@@ -1,13 +1,13 @@
-import {Request, Response} from "express";
+import { Request, Response } from "express";
 import BaseController from "./base.controller";
 import UserDataController from "../../data/datacontroller/user.datacontroller";
-import {UserModel} from "../../data/database/schema/common/user.schema";
-import UserManager from "../manager/user.manager";
-import {formError} from "../../util/errorhandler";
+import { UserModel } from "../../data/database/schema/common/user.schema";
+import { formError } from "../../util/errorhandler";
 import * as StatusCodes from 'http-status-codes';
-import {validate} from "../../util/input.validator";
+import { validate } from "../../util/input.validator";
 import * as crypto from 'crypto';
 import config from "../../../config/config";
+import UserManager from "../interactor/user.interactor";
 
 const formidable = require('formidable');
 
@@ -20,7 +20,7 @@ export default class UserController extends BaseController {
         this.userManager = userManager;
     }
 
-    async createNewUser(req: any, res: Response) {
+    async registerUser(req: any, res: Response) {
         req.checkBody('firstName', 'Missing firstName').notEmpty();
         req.checkBody('lastName', 'Missing lastName').notEmpty();
         req.checkBody('email', 'Missing email').notEmpty();
@@ -35,8 +35,14 @@ export default class UserController extends BaseController {
         }
 
         return this.userManager.saveUser(req.body, req.params)
-            .then((result) => res.status(StatusCodes.CREATED).send(result))
-            .catch((err) => BaseController.handleError(err, req, res))
+            .then((result) => this.respond(StatusCodes.CREATED, req, res, result))
+            .catch((err) => this.handleError(err, req, res))
+    }
+
+    async registerUsersFromCSV(req: any, res: Response) {
+        return this.handleCSVUserRegistration(req)
+            .then((result) => this.respond(StatusCodes.OK, req, res, result))
+            .catch((err: Error) => res.status(400).send(formError(err)))
     }
 
     async modifyUser(req: any, res: Response) {
@@ -50,20 +56,20 @@ export default class UserController extends BaseController {
         }
 
         return this.userManager.updateUser(req.body)
-            .then((result) => res.status(StatusCodes.OK).send(result))
-            .catch((err) => BaseController.handleError(err, req, res));
+            .then((result) => this.respond(StatusCodes.OK, req, res, result))
+            .catch((err) => this.handleError(err, req, res));
     }
 
     async getOrganizationUsers(req: any, res: Response) {
         return UserDataController.getOrganizationUsers(req.params.orgId)
-            .then((result) => res.status(StatusCodes.OK).send(result))
-            .catch((err) => BaseController.handleError(err, req, res));
+            .then((result) => this.respond(StatusCodes.OK, req, res, result))
+            .catch((err) => this.handleError(err, req, res));
     }
 
     async getUserByIdFromOrganization(req: Request, res: Response) {
         return UserDataController.getUserByIdFromOrg(req.params.orgId, req.params.userId)
-            .then((result) => res.status(StatusCodes.OK).send(result))
-            .catch((err) => BaseController.handleError(err, req, res));
+            .then((result) => this.respond(StatusCodes.OK, req, res, result))
+            .catch((err) => this.handleError(err, req, res));
     }
 
     async getUserByToken(req: any, res: any) {
@@ -76,9 +82,9 @@ export default class UserController extends BaseController {
                 pictureUrl: req.user.pictureUrl,
                 orgIds: req.user.orgIds
             };
-            res.status(StatusCodes.OK).send(result);
+            this.respond(StatusCodes.OK, req, res, result);
         } catch (err) {
-            BaseController.handleError(err, req, res)
+            this.handleError(err, req, res)
         }
     }
 
@@ -92,10 +98,10 @@ export default class UserController extends BaseController {
 
         return this.userManager.resetPassword(req.body.email, config.webappDomain, req.query.welcome)
             .then((result) => {
-                res.status(StatusCodes.OK).send(result.response);
+                this.respond(StatusCodes.OK, req, res, result.response);
                 return result.resetPasswordToken;
             })
-            .catch((err) => BaseController.handleError(err, req, res));
+            .catch((err) => this.handleError(err, req, res));
     }
 
     async setPassword(req: any, res: any) {
@@ -107,8 +113,8 @@ export default class UserController extends BaseController {
         }
 
         return this.userManager.setPassword(req.body.token, req.body.newPassword)
-            .then((result) => { res.status(StatusCodes.OK).send(result) })
-            .catch((err) => BaseController.handleError(err, req, res));
+            .then((result) => this.respond(StatusCodes.OK, req, res, result))
+            .catch((err) => this.handleError(err, req, res));
     }
 
     async changePassword(req: Request, res: Response) {
@@ -120,26 +126,31 @@ export default class UserController extends BaseController {
         if (!await validate(req, res)) {
             return;
         }
-
-        return UserDataController.changeUserPassword(req.body.email, req.body.newPassword)
-            .then((updatedUser: UserModel) => res
-                .status(!updatedUser ? 404 : 200)
-                .send(!updatedUser ? {error: "User not found"} : {message: "Password has been changed"})
-            )
-            .catch((err) => BaseController.handleError(err, req, res));
+        return UserDataController.changeUserPassword(req.body.email, req.body.password, req.body.newPassword)
+            .then((result: UserModel) =>
+                this.respond(!result ? StatusCodes.NOT_FOUND : StatusCodes.OK, req, res,
+                    !result ? {error: "User not found"} : {message: "Password has been changed"}))
+            .catch((err) => this.handleError(err, req, res));
     }
 
     async setPicture(req: any, res: Response) {
-        return this.handleProfilePictureUpload(req, req.user._id)
-            .then((result) => res.status(StatusCodes.OK).send(result))
+        return this.handleProfilePictureUpload(req)
+            .then((result) => this.respond(StatusCodes.OK, req, res, result))
             .catch((err: Error) => res.status(400).send(formError(err)))
     }
 
-    showRegistrationForm(req: any, res: Response) {
-        res.render("newuser", {title: "Express", organizations: ["hipteam"]});
+    private async handleCSVUserRegistration(req: any): Promise<any> {
+        const form = new formidable.IncomingForm();
+        form.keepExtensions = true;
+        const {parseError, files} = await this.parseForm(req, form);
+        if (!parseError) {
+            this.userManager.userRegistrationFromCSV(files.users, req.params.orgId);
+            return {message: "Registration process has been initiated"}
+        }
+        throw new Error("Users could not be registered");
     }
 
-    private async handleProfilePictureUpload(req: any, userId: string): Promise<any> {
+    private async handleProfilePictureUpload(req: any): Promise<any> {
         const form = new formidable.IncomingForm();
         form.keepExtensions = true;
         const {parseError, fields, files} = await this.parseForm(req, form);
@@ -150,7 +161,7 @@ export default class UserController extends BaseController {
     }
 
     private async parseForm(req: any, form: any): Promise<any> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             form.parse(req, (parseError: any, fields: any, files: any) => resolve({parseError, fields, files}));
         });
     }

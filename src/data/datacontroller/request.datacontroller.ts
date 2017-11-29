@@ -1,8 +1,6 @@
 import { RequestCollection } from "../database/schema/organization/request.schema";
 import { Model, Types } from 'mongoose';
-import { UserCollection } from "../database/schema/common/user.schema";
 import UserDataController from "./user.datacontroller";
-
 
 interface RequestDataController {
     saveNewRequest: (organizationId: string, request: Object) => Promise<any>
