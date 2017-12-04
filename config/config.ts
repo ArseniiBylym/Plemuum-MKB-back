@@ -3,7 +3,7 @@ import defaultConfig from "./default.config"
 import { Config } from "./config.interface";
 
 export enum ENVIRONMENTS {
-    PRODUCTION = "prod",
+    PRODUCTION = "production",
     STAGING = "staging",
     TEST = "test",
     DEVELOPMENT = "dev",
