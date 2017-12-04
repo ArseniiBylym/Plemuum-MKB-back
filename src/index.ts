@@ -4,7 +4,7 @@ import config, { ENVIRONMENTS } from '../config/config';
 import { getDatabaseManager } from "./factory/database.factory";
 import * as cluster from 'cluster';
 
-if (cluster.isMaster && config.env === ENVIRONMENTS.STAGING || config.env === ENVIRONMENTS.PRODUCTION) {
+if (cluster.isMaster && (config.env === ENVIRONMENTS.STAGING || config.env === ENVIRONMENTS.PRODUCTION)) {
     // Count the machine's CPUs
     const cpuCount = require('os').cpus().length;
 
