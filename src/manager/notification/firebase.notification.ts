@@ -18,7 +18,7 @@ export default class FirebaseNotification implements NotificationInterface {
 
     getPayload (content: any): any {
         const {body, title, data} = content;
-        return { notification: { title: title, body: body }, data: data};
+        return { notification: { title: title, body: body }, data: data ? data : {}};
     }
 
     getOptions() : any {
