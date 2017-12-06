@@ -35,6 +35,9 @@ const defaultConfig: Config = {
     },
     get adminDomain() {
         return <string> process.env.ADMIN_DOMAIN;
+    },
+    get tokenHash() {
+        return <string> process.env.TOKEN_HASH;
     }
 };
 

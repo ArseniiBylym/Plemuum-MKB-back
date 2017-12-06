@@ -35,6 +35,9 @@ const devConfig: Config = {
     },
     get adminDomain() {
         return "http://localhost:8081";
+    },
+    get tokenHash() {
+        return 'HlP8IqXEfXyrP0LgZihWSyLwlcSlySc3H40yj9P2';
     }
 };
 
