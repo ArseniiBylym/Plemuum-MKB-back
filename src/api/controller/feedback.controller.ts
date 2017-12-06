@@ -42,7 +42,7 @@ export default class FeedbackController extends BaseController {
 
         req.body.senderId = req.user._id;
 
-        return this.feedbackManager.postFeedback(req.params.orgId, req.body)
+        return this.feedbackManager.postFeedback(req.params.orgId, req.user, req.body)
             .then((result) => this.respond(StatusCodes.CREATED, req, res, result))
             .catch((err) => res.status(this.getErrorStatus(err)).send(formError(err)));
     }
