@@ -38,7 +38,7 @@ const getCompassManager = () => getManager(compassManager, CompassManager,
     getGroupDataController(), getOrganizationDataController(), requestDataController, getNotificationManager(), getStatisticsManager());
 
 const getUserManager = (): UserManager =>
-    getManager(userManager, UserManager, new EmailManager(), new FileManager(getFirebaseStorageManager()));
+    getManager(userManager, UserManager, new EmailManager(), new FileManager(getFirebaseStorageManager()), getOrganizationDataController());
 
 const getGroupManager = (): GroupManager =>
     getManager(groupManager, GroupManager, getGroupDataController());

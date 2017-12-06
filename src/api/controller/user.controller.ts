@@ -34,7 +34,7 @@ export default class UserController extends BaseController {
             req.body.password = crypto.randomBytes(16).toString('hex');
         }
 
-        return this.userManager.saveUser(req.body, req.params)
+        return this.userManager.saveUser(req.body)
             .then((result) => this.respond(StatusCodes.CREATED, req, res, result))
             .catch((err) => this.handleError(err, req, res))
     }
