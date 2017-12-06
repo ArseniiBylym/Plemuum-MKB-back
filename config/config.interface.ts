@@ -12,4 +12,5 @@ export interface Config {
     workerTime: string;
     webappDomain: string;
     adminDomain: string;
+    tokenHash: string;
 }
