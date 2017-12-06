@@ -17,7 +17,8 @@ tests:
   PLENUUM_BOT_PWD:    "Cocobongo1",
   ADMIN_PASSWORD:     "incline diadem passed hoop",
   WEBAPP_DOMAIN:      "http://localhost:3000",
-  ADMIN_DOMAIN:       "http://localhost:8081"
+  ADMIN_DOMAIN:       "http://localhost:8081",
+  TOKEN_HASH:         "HlP8IqXEfXyrP0LgZihWSyLwlcSlySc3H40yj9P2"
  }
  script:
   - npm run start-ci-test

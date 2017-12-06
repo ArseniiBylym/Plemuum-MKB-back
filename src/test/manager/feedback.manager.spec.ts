@@ -14,7 +14,9 @@ suite("Feedback manager", () => {
 
     suite("postFeedback", () => {
         const orgId = "hipteam";
-
+        const sender: any = {
+            firstName: "Sender"
+        };
         test("Should call FeedbackDataController to save the feedback", async () => {
 
             const feedback: any = {
@@ -24,6 +26,7 @@ suite("Feedback manager", () => {
                 type: TYPE.CONTINUE,
                 tags: [],
             };
+
 
             const getUserById = sinon.stub(UserDataController, 'getUserByIdFromOrg');
             const saveFeedback = sinon.stub(FeedbackDataController, 'saveFeedback');
@@ -36,7 +39,7 @@ suite("Feedback manager", () => {
             };
 
             const feedbackManager = new FeedbackManager(notificationManager);
-            await feedbackManager.postFeedback(orgId, feedback);
+            await feedbackManager.postFeedback(orgId, sender, feedback);
 
             getUserById.restore();
             saveFeedback.restore();
@@ -62,7 +65,7 @@ suite("Feedback manager", () => {
 
             const feedbackManager = new FeedbackManager(dummy);
             try {
-                await feedbackManager.postFeedback(orgId, feedback);
+                await feedbackManager.postFeedback(orgId, sender, feedback);
                 fail("Should throw an exception")
             } catch (err) {
                 expect(err).to.be.instanceOf(PlenuumError);
