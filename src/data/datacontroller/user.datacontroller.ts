@@ -9,7 +9,6 @@ import { ErrorType, PlenuumError } from "../../util/errorhandler";
 const UserDataController = {
 
     saveUser: function (user: User): Promise<UserModel> {
-        user.passwordUpdatedAt = new Date();
         return new (UserCollection())(user).save()
             .then((savedUser) => UserCollection().findById(savedUser._id).lean().exec() as Promise<UserModel>)
     },
@@ -96,14 +95,10 @@ const UserDataController = {
     },
 
     changeUserPassword: async function (email: string, oldPassword: string, newPassword: string): Promise<UserModel> {
-        console.log("changeUserPassword");
         const user = await UserCollection().findOne({email: email}, {password: 1});
-        console.log(user);
         if(!user) throw new PlenuumError("User not found", ErrorType.NOT_FOUND);
         if(!user.verifyPasswordSync(oldPassword)) throw new PlenuumError("Incorrect password", ErrorType.FORBIDDEN);
-
-        console.log("No validation error");
-        return UserCollection().findOneAndUpdate({email: email}, {password: newPassword})
+        return UserCollection().findOneAndUpdate({email: email}, {password: newPassword, passwordUpdatedAt: new Date()})
             .lean()
             .exec() as Promise<UserModel>;
     },

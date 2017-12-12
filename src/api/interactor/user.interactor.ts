@@ -9,15 +9,18 @@ import FileManager from "../../manager/file/file.manager";
 import EmailManager from "../../manager/email/mail.manager";
 import * as crypto from 'crypto';
 import { sleep } from "../../util/util";
+import { OrganizationDataController } from "../../data/datacontroller/organization.datacontroller";
 
 export default class UserInteractor {
 
     private emailManager: EmailManager;
     private fileManager: FileManager;
+    private organizationDataController: OrganizationDataController;
 
-    constructor(emailService: EmailManager, fileManager: FileManager) {
+    constructor(emailService: EmailManager, fileManager: FileManager, organizationDataController: OrganizationDataController) {
         this.emailManager = emailService;
         this.fileManager = fileManager;
+        this.organizationDataController = organizationDataController;
     }
 
     async updateUser(user: UserModel) {
@@ -39,10 +42,11 @@ export default class UserInteractor {
         const {tokenExpired} = generateNewTokensForResetPassword();
         await resetPasswordDataController.updateResetPassword(resetedPassword._id, tokenExpired);
 
-        const updatedUser = await UserDataController.changeUserPasswordByUserId(resetedPassword.userId, newPassword);
-        if (!updatedUser) {
-            throw new PlenuumError("User not found", ErrorType.NOT_FOUND);
-        }
+        const user = await UserDataController.getUserById(resetedPassword.userId);
+        if (!user) throw new PlenuumError("User not found", ErrorType.NOT_FOUND);
+        await UserDataController.changeUserPasswordByUserId(resetedPassword.userId, newPassword);
+        user.passwordUpdatedAt = new Date();
+        await UserDataController.updateUser(user._id, user);
         return {
             successMessage: "Your password was successfully changed. You can now go to Plenuum " +
             "web app and log with new password"
@@ -89,17 +93,19 @@ export default class UserInteractor {
         return {avatar: pictureUrl}
     }
 
-    async saveUser(body: any, orgId: string) {
+    async saveUser(body: any, orgId?: string) {
         body.admin = body.admin && body.admin === 'true';
+        const organization = await this.organizationDataController.getOrganizationByDbName(orgId ? orgId : body.orgIds[0]);
+        body.passwordUpdatedAt = new Date();
         const savedUser = await UserDataController.saveUser(body);
         if (!savedUser) {
             throw new PlenuumError("User not saved", ErrorType.VALIDATION);
         }
-        this.sendChangePasswordOnWelcome(savedUser, orgId);
+        this.sendChangePasswordOnWelcome(savedUser, organization.name);
         return savedUser;
     }
 
-    async sendChangePasswordOnWelcome(user: any, orgIds: string) {
+    async sendChangePasswordOnWelcome(user: any, orgName: string) {
         const origin = config.webappDomain;
         const {email, firstName, _id} = user;
         const {token, token_expiry} = UserDataController.generateToken(1);
@@ -109,7 +115,7 @@ export default class UserInteractor {
             const response = await resetPasswordDataController.saveResetPassword(data);
             let link = origin + "/set_new_password?token=" + response.token + "&email=" + email + "&welcome=true&name=" + firstName;
             const mailService = new EmailManager();
-            return mailService.sendWelcomeEmail(email, firstName, link, orgIds)
+            return mailService.sendWelcomeEmail(email, firstName, link, orgName)
                 .then(() => console.log(`E-mail for ${firstName} was sent to ${email}`))
                 .catch((error) => console.error(`Error sending e-mail to ${firstName}: ${error}`))
         } catch (error) {
