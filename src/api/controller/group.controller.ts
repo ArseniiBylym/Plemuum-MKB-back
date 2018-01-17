@@ -15,7 +15,7 @@ export default class GroupController extends BaseController {
 
     async getGroups(req: any, res: any) {
         this.groupManager.getGroups(req.params.orgId)
-            .then((result: any[]) => this.respond(StatusCodes.CREATED, req, res, result))
+            .then((result: any[]) => this.respond(StatusCodes.OK, req, res, result))
             .catch((err: any) => this.handleError(err, req, res));
     };
 
