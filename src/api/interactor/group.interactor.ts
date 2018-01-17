@@ -16,15 +16,15 @@ export default class GroupInteractor {
     async getGroups(orgId: string,) {
         const allGroups: GroupModel[] = await this.groupDataController.getGroups(orgId);
         return Promise.all(allGroups.map(async (group: any) => {
-
-            group.users = await Promise.all(group.users.map((userId: string) =>
-                UserDataController.getUserByIdFromOrg(orgId, userId)));
+            group.users = await Promise.all(
+                group.users.map((userId: string) => UserDataController.getUserByIdFromOrg(orgId, userId)));
+            group.users = group.users.filter((u: any) => u);
 
             group.skills = await Promise.all(
                 group.skills.map((skillId: string) => CompassDataController.getSkillById(orgId, skillId)));
 
             return group;
-        }));
+        }))
     };
 
     async createGroup(orgId: string, group: any) {
