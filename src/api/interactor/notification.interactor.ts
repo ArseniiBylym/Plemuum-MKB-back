@@ -16,7 +16,7 @@ export default class NotificationInteractor {
     async setNotificationDevice(userId: string, token: string) {
         const tokenExists = await this.userDataController.getNotificationToken(userId, token);
         if (tokenExists) {
-            throw new PlenuumError("Token already exists", ErrorType.ALREADY_EXISTS);
+            return {message: "Notification token has been set"}
         } else {
             await this.userDataController.setUserNotificationDevice(userId, token);
             return {message: "Notification token has been set"}
