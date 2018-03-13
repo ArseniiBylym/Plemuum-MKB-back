@@ -2,24 +2,32 @@ import NotificationInterface from "./notification.interface";
 
 export const TEMPLATE = {
     FEEDBACK: (name?: string) => ({
-        body: name ? `You received a feedback from ${name}`: 'You received an anonymous feedback',
-        title: `New feedback`,
-        data: {type: "FEEDBACK"}
+        data: {
+            body: name ? `You received a feedback from ${name}` : 'You received an anonymous feedback',
+            title: `New feedback`,
+            type: "FEEDBACK"
+        }
     }),
     REQUEST: (name: string) => ({
-        body: `${name} needs your feedback`,
-        title: `New feedback request`,
-        data: {type: "REQUEST"}
+        data: {
+            body: `${name} needs your feedback`,
+            title: `New feedback request`,
+            type: "REQUEST"
+        }
     }),
     COMPASS: (name: string) => ({
-        body: `Would you like to help ${name} to improve?`,
-        title: `New todo`,
-        data: {type: "COMPASS"}
+        data: {
+            body: `Would you like to help ${name} to improve?`,
+            title: `New todo`,
+            type: "COMPASS"
+        }
     }),
     STATISTICS: () => ({
-        body: `Tap to see updated skill scores.`,
-        title: `Skill scores updated`,
-        data: {type: "STATISTICS"}
+        data: {
+            body: `Tap to see updated skill scores.`,
+            title: `Skill scores updated`,
+            type: "STATISTICS"
+        }
     }),
     GENERAL: (title: string, body: string) => ({title: title, body: body})
 };
