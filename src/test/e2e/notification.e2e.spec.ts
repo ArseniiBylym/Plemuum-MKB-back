@@ -73,8 +73,8 @@ suite("Notification request test", () => {
                 .post(url)
                 .send(TestObjectFactory.getTestNotificationToken())
                 .set(bearerAuthHeader(token))
-                .expect(409);
-            modelValidator.validateNotificationTokenResponse(response2.body, "error");
+                .expect(200);
+            modelValidator.validateNotificationTokenResponse(response2.body, "message");
         });
 
         test("Remove a notification token that do not exist", async () => {

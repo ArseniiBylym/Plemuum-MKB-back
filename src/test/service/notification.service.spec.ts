@@ -1,6 +1,6 @@
-import {testUser} from "../mock/fixture.loader";
+import { testUser } from "../mock/fixture.loader";
 import * as sinon from "sinon";
-import {expect} from "chai";
+import { expect } from "chai";
 import NotificationManager, { TEMPLATE } from "../../manager/notification/notification.manager";
 
 suite("Notification tests", () => {
@@ -8,9 +8,9 @@ suite("Notification tests", () => {
 
     suite("Happy cases", () => {
 
-        let notificationService : NotificationManager;
+        let notificationService: NotificationManager;
         before(() => {
-            const mockService :any = {
+            const mockService: any = {
                 sendNotification: sinon.stub().resolves("mock response")
             };
             notificationService = new NotificationManager(mockService);
@@ -19,20 +19,36 @@ suite("Notification tests", () => {
         test("Template for feedback", () => {
             const template = TEMPLATE.FEEDBACK(testUser.firstName);
             const expected = {
-                body: `You received a feedback from ${testUser.firstName}`,  title: `New feedback`, data: {type: "FEEDBACK"}
+                data: {
+                    body: `You received a feedback from ${testUser.firstName}`,
+                    title: `New feedback`,
+                    type: "FEEDBACK"
+                }
             };
             expect(template).to.deep.equal(expected);
         });
 
         test("Template for request feedback", () => {
             const template = TEMPLATE.REQUEST(testUser.firstName);
-            const expected = { body: `${testUser.firstName} needs your feedback`, title: `New feedback request`, data: {type: "REQUEST"}};
+            const expected = {
+                data: {
+                    body: `${testUser.firstName} needs your feedback`,
+                    title: `New feedback request`,
+                    type: "REQUEST"
+                }
+            };
             expect(template).to.deep.equal(expected);
         });
 
         test("Template for compass", () => {
             const template = TEMPLATE.COMPASS(testUser.firstName);
-            const expected = { body: `Would you like to help ${testUser.firstName} to improve?`, title: `New todo`, data: {type: "COMPASS"}};
+            const expected = {
+                data: {
+                    body: `Would you like to help ${testUser.firstName} to improve?`,
+                    title: `New todo`,
+                    type: "COMPASS"
+                }
+            };
             expect(template).to.deep.equal(expected);
         });
 
@@ -57,11 +73,11 @@ suite("Notification tests", () => {
 
     suite("Sad cases", () => {
 
-        let notificationService : NotificationManager;
-        let mockError : Error;
+        let notificationService: NotificationManager;
+        let mockError: Error;
         before(() => {
             mockError = new Error("mock error");
-            const mockService :any = {
+            const mockService: any = {
                 sendNotification: sinon.stub().rejects(mockError)
             };
             notificationService = new NotificationManager(mockService);
