@@ -22,6 +22,6 @@ export default class FirebaseNotification implements NotificationInterface {
     }
 
     getOptions(): any {
-        return {priority: "high", timeToLive: 60 * 60 * 24};
+        return {priority: "high", timeToLive: 60 * 60 * 24, content_available: true};
     }
 }
