@@ -4,6 +4,7 @@ export interface User {
     email: string;
     password: string;
     passwordUpdatedAt: Date;
+    lastActive: Date;
     admin: boolean;
     pictureUrl: string;
     orgIds: string[];

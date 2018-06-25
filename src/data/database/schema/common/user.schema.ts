@@ -15,6 +15,7 @@ let UserSchema = new Schema({
     admin: {required: true, type: Boolean, select: false, default: false},
     password: {type: String, required: true, bcrypt: true, select: false},
     passwordUpdatedAt: {required: true, type: Date, select: false, default: Date.now},
+    lastActive: {required: true, type: Date, default: Date.UTC(1970,0,1)},
     notificationToken: {required: false, type: [String], select: false}
 
 }, {versionKey: false, collection: USER_COLLECTION});
