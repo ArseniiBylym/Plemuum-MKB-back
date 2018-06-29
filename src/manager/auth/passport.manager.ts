@@ -60,15 +60,23 @@ function jwtAuth() {
             };
             next(null, admin);
         } else {
-            const user = await UserDataController.getUserById(payload.id, true, false, true);
-            if (!user) {
+            const user: UserModel = await UserDataController.getUserById(payload.id, true, false, true);
+
+            if (!validateUser(user, payload.createdAt)) {
                 next(null, false);
                 return;
             }
+
+            user.lastActive = new Date();
             user.admin = payload.admin;
-            next(null, new Date(payload.createdAt) >= user.passwordUpdatedAt ? user : false);
+            await UserDataController.updateUser(payload.id, user);
+            next(null, user);
         }
     });
+}
+
+function validateUser(user: UserModel, createdAt: any) {
+    return user && new Date(createdAt) >= user.passwordUpdatedAt;
 }
 
 export default passportInit

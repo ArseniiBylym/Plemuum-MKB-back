@@ -80,7 +80,8 @@ export default class UserController extends BaseController {
                 lastName: req.user.lastName,
                 email: req.user.email,
                 pictureUrl: req.user.pictureUrl,
-                orgIds: req.user.orgIds
+                orgIds: req.user.orgIds,
+                lastActive: req.user.lastActive
             };
             this.respond(StatusCodes.OK, req, res, result);
         } catch (err) {
