@@ -11,7 +11,7 @@ let UserSchema = new Schema({
     lastName: {required: true, type: String, index: true},
     email: {required: true, type: String, index: {unique: true}},
     pictureUrl: {required: false, type: String},
-    orgIds: {required: true, type: [String], select: false},
+    orgId: {type: String, required: true, select: false},
     admin: {required: true, type: Boolean, select: false, default: false},
     password: {type: String, required: true, bcrypt: true, select: false},
     passwordUpdatedAt: {required: true, type: Date, select: false, default: Date.now},

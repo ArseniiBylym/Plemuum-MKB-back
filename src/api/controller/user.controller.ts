@@ -24,7 +24,7 @@ export default class UserController extends BaseController {
         req.checkBody('firstName', 'Missing firstName').notEmpty();
         req.checkBody('lastName', 'Missing lastName').notEmpty();
         req.checkBody('email', 'Missing email').notEmpty();
-        req.checkBody('orgIds', 'User must be part of an organization (orgIds is missing or empty)').notEmpty();
+        req.checkBody('orgId', 'User must be part of an organization (orgId is missing or empty)').notEmpty();
 
         if (!await validate(req, res)) {
             return;
@@ -80,7 +80,7 @@ export default class UserController extends BaseController {
                 lastName: req.user.lastName,
                 email: req.user.email,
                 pictureUrl: req.user.pictureUrl,
-                orgIds: req.user.orgIds,
+                orgId: req.user.orgId,
                 lastActive: req.user.lastActive
             };
             this.respond(StatusCodes.OK, req, res, result);

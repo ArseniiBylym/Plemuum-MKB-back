@@ -19,7 +19,7 @@ function generateUsers(): Promise<any> {
                     password: resultUser.login.password,
                     tokens: [],
                     pictureUrl: resultUser.picture.large,
-                    orgIds: ['hipteam']
+                    orgId: 'hipteam'
                 };
                 users.push(plenuumUser);
             });

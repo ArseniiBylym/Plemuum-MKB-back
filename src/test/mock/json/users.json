@@ -7,9 +7,8 @@
     "lastActive": "1970-01-01 00:00:00.000Z",
     "pictureUrl": "https://randomuser.me/api/portraits/women/74.jpg",
     "_id": "5984342227cd340363dc84a9",
-    "orgIds": [
-      "hipteam"
-    ]
+    "orgId": "hipteam"
+
   },
   {
     "firstName": "peter",
@@ -20,9 +19,8 @@
     "pictureUrl": "",
     "_id": "5984342227cd340363dc84c7",
     "tokens": [],
-    "orgIds": [
-      "hipteam"
-    ],
+    "orgId":
+      "hipteam",
     "admin": true
   },
   {
@@ -34,9 +32,7 @@
     "pictureUrl": "https://randomuser.me/api/portraits/men/1.jpg",
     "_id": "5984342227cd340363dc84aa",
     "tokens": [],
-    "orgIds": [
-      "hipteam"
-    ]
+    "orgId": "hipteam"
   },
   {
     "firstName": "samantha",
@@ -47,9 +43,7 @@
     "pictureUrl": "https://randomuser.me/api/portraits/women/15.jpg",
     "_id": "5984342227cd340363dc84ab",
     "tokens": [],
-    "orgIds": [
-      "hipteam"
-    ]
+    "orgId":  "hipteam"
   },
   {
     "firstName": "liam",
@@ -60,9 +54,7 @@
     "pictureUrl": "https://randomuser.me/api/portraits/men/17.jpg",
     "_id": "5984342227cd340363dc84ac",
     "tokens": [],
-    "orgIds": [
-      "hipteam"
-    ]
+    "orgId": "hipteam"
   },
   {
     "firstName": "aaron",
@@ -73,9 +65,7 @@
     "pictureUrl": "https://randomuser.me/api/portraits/men/28.jpg",
     "_id": "5984342227cd340363dc84ad",
     "tokens": [],
-    "orgIds": [
-      "hipteam"
-    ]
+    "orgId": "hipteam"
   },
   {
     "firstName": "sergio",
@@ -86,9 +76,7 @@
     "pictureUrl": "https://randomuser.me/api/portraits/men/11.jpg",
     "_id": "5984342227cd340363dc84ae",
     "tokens": [],
-    "orgIds": [
-      "hipteam"
-    ]
+    "orgId": "hipteam"
   },
   {
     "firstName": "sheryl",
@@ -99,9 +87,7 @@
     "pictureUrl": "https://randomuser.me/api/portraits/women/85.jpg",
     "_id": "5984342227cd340363dc84af",
     "tokens": [],
-    "orgIds": [
-      "hipteam"
-    ]
+    "orgId": "hipteam"
   },
   {
     "firstName": "benjamin",
@@ -112,9 +98,7 @@
     "pictureUrl": "https://randomuser.me/api/portraits/men/99.jpg",
     "_id": "5984342227cd340363dc84b0",
     "tokens": [],
-    "orgIds": [
-      "hipteam"
-    ]
+    "orgId": "hipteam"
   },
   {
     "firstName": "darrell",
@@ -125,9 +109,7 @@
     "pictureUrl": "https://randomuser.me/api/portraits/men/43.jpg",
     "_id": "5984342227cd340363dc84b1",
     "tokens": [],
-    "orgIds": [
-      "hipteam"
-    ]
+    "orgId": "hipteam"
   },
   {
     "firstName": "wyatt",
@@ -138,9 +120,9 @@
     "pictureUrl": "https://randomuser.me/api/portraits/men/96.jpg",
     "_id": "5984342227cd340363dc84b2",
     "tokens": [],
-    "orgIds": [
+    "orgId":
       "hipteam"
-    ]
+
   },
   {
     "firstName": "frank",
@@ -151,9 +133,7 @@
     "pictureUrl": "https://randomuser.me/api/portraits/men/38.jpg",
     "_id": "5984342227cd340363dc84b3",
     "tokens": [],
-    "orgIds": [
-      "hipteam"
-    ]
+    "orgId": "hipteam"
   },
   {
     "firstName": "amber",
@@ -164,9 +144,7 @@
     "pictureUrl": "https://randomuser.me/api/portraits/women/46.jpg",
     "_id": "5984342227cd340363dc84b4",
     "tokens": [],
-    "orgIds": [
-      "hipteam"
-    ]
+    "orgId":"hipteam"
   },
   {
     "firstName": "ted",
@@ -177,9 +155,8 @@
     "pictureUrl": "https://randomuser.me/api/portraits/men/99.jpg",
     "_id": "5984342227cd340363dc84b5",
     "tokens": [],
-    "orgIds": [
-      "hipteam"
-    ]
+    "orgId":      "hipteam"
+
   },
   {
     "firstName": "rose",
@@ -190,9 +167,9 @@
     "pictureUrl": "https://randomuser.me/api/portraits/women/30.jpg",
     "_id": "5984342227cd340363dc84b6",
     "tokens": [],
-    "orgIds": [
+    "orgId":
       "hipteam"
-    ]
+
   },
   {
     "firstName": "abbie",
@@ -203,9 +180,9 @@
     "pictureUrl": "https://randomuser.me/api/portraits/women/88.jpg",
     "_id": "5984342227cd340363dc84b7",
     "tokens": [],
-    "orgIds": [
+    "orgId":
       "hipteam"
-    ]
+
   },
   {
     "firstName": "kim",
@@ -216,9 +193,9 @@
     "pictureUrl": "https://randomuser.me/api/portraits/women/5.jpg",
     "_id": "5984342227cd340363dc84b8",
     "tokens": [],
-    "orgIds": [
+    "orgId":
       "hipteam"
-    ]
+
   },
   {
     "firstName": "tracy",
@@ -229,9 +206,9 @@
     "pictureUrl": "https://randomuser.me/api/portraits/men/35.jpg",
     "_id": "5984342227cd340363dc84b9",
     "tokens": [],
-    "orgIds": [
+    "orgId":
       "hipteam"
-    ]
+
   },
   {
     "firstName": "julie",
@@ -242,9 +219,9 @@
     "pictureUrl": "https://randomuser.me/api/portraits/women/79.jpg",
     "_id": "5984342227cd340363dc84ba",
     "tokens": [],
-    "orgIds": [
+    "orgId":
       "hipteam"
-    ]
+
   },
   {
     "firstName": "amanda",
@@ -255,9 +232,9 @@
     "pictureUrl": "https://randomuser.me/api/portraits/women/28.jpg",
     "_id": "5984342227cd340363dc84bb",
     "tokens": [],
-    "orgIds": [
+    "orgId":
       "hipteam"
-    ]
+
   },
   {
     "firstName": "rosalyn",
@@ -268,9 +245,9 @@
     "pictureUrl": "https://randomuser.me/api/portraits/women/36.jpg",
     "_id": "5984342227cd340363dc84bc",
     "tokens": [],
-    "orgIds": [
+    "orgId":
       "hipteam"
-    ]
+
   },
   {
     "firstName": "leah",
@@ -281,9 +258,9 @@
     "pictureUrl": "https://randomuser.me/api/portraits/women/21.jpg",
     "_id": "5984342227cd340363dc84bd",
     "tokens": [],
-    "orgIds": [
+    "orgId":
       "hipteam"
-    ]
+
   },
   {
     "firstName": "erin",
@@ -294,9 +271,9 @@
     "pictureUrl": "https://randomuser.me/api/portraits/women/68.jpg",
     "_id": "5984342227cd340363dc84be",
     "tokens": [],
-    "orgIds": [
+    "orgId":
       "hipteam"
-    ]
+
   },
   {
     "firstName": "billy",
@@ -307,9 +284,9 @@
     "pictureUrl": "https://randomuser.me/api/portraits/men/47.jpg",
     "_id": "5984342227cd340363dc84bf",
     "tokens": [],
-    "orgIds": [
+    "orgId":
       "hipteam"
-    ]
+
   },
   {
     "firstName": "danielle",
@@ -320,9 +297,9 @@
     "pictureUrl": "https://randomuser.me/api/portraits/women/28.jpg",
     "_id": "5984342227cd340363dc84c0",
     "tokens": [],
-    "orgIds": [
+    "orgId":
       "hipteam"
-    ]
+
   },
   {
     "firstName": "seth",
@@ -333,9 +310,9 @@
     "pictureUrl": "https://randomuser.me/api/portraits/men/48.jpg",
     "_id": "5984342227cd340363dc84c1",
     "tokens": [],
-    "orgIds": [
+    "orgId":
       "hipteam"
-    ]
+
   },
   {
     "firstName": "lauren",
@@ -346,9 +323,9 @@
     "pictureUrl": "https://randomuser.me/api/portraits/women/11.jpg",
     "_id": "5984342227cd340363dc84c2",
     "tokens": [],
-    "orgIds": [
+    "orgId":
       "hipteam"
-    ]
+
   },
   {
     "firstName": "joey",
@@ -359,9 +336,9 @@
     "pictureUrl": "https://randomuser.me/api/portraits/men/50.jpg",
     "_id": "5984342227cd340363dc84c3",
     "tokens": [],
-    "orgIds": [
+    "orgId":
       "hipteam"
-    ]
+
   },
   {
     "firstName": "scott",
@@ -372,9 +349,9 @@
     "pictureUrl": "https://randomuser.me/api/portraits/men/70.jpg",
     "_id": "5984342227cd340363dc84c4",
     "tokens": [],
-    "orgIds": [
+    "orgId":
       "hipteam"
-    ]
+
   },
   {
     "firstName": "catherine",
@@ -385,9 +362,9 @@
     "pictureUrl": "https://randomuser.me/api/portraits/women/73.jpg",
     "_id": "5984342227cd340363dc84c5",
     "tokens": [],
-    "orgIds": [
+    "orgId":
       "hipteam"
-    ]
+
   },
   {
     "firstName": "sebastian",
@@ -398,8 +375,8 @@
     "pictureUrl": "https://randomuser.me/api/portraits/men/30.jpg",
     "_id": "5984342227cd340363dc84c6",
     "tokens": [],
-    "orgIds": [
+    "orgId":
       "hipteam"
-    ]
+
   }
 ]

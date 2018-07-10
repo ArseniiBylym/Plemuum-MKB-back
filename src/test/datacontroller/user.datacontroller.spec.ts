@@ -37,10 +37,10 @@ suite("UserDataController tests", () => {
 
     test("Get users from organization", (done) => {
         const testUsers: User[] = [
-            TestObjectFactory.getTestUserWithOrganizations("John", "Doe", ['hipteam']),
-            TestObjectFactory.getTestUserWithOrganizations("John", "Doe", ['hipteam', 'other']),
-            TestObjectFactory.getTestUserWithOrganizations("John", "Doe", ['other']),
-            TestObjectFactory.getTestUserWithOrganizations("John", "Doe", ['else'])
+            TestObjectFactory.getTestUserWithOrganizations("John", "Doe", 'hipteam'),
+            TestObjectFactory.getTestUserWithOrganizations("John", "Doe", 'hipteam'),
+            TestObjectFactory.getTestUserWithOrganizations("John", "Doe", 'other'),
+            TestObjectFactory.getTestUserWithOrganizations("John", "Doe", 'else')
         ];
         Promise.all([
                 UserDataController.saveUser(testUsers[0]),

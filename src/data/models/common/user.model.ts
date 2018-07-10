@@ -7,6 +7,6 @@ export interface User {
     lastActive: Date;
     admin: boolean;
     pictureUrl: string;
-    orgIds: string[];
+    orgId: string;
     notificationToken: string[];
 }

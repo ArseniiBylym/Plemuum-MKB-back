@@ -14,7 +14,7 @@ const UserDataController = {
     },
 
     getOrganizationUsers: function (orgId: string): Promise<UserModel[]> {
-        return UserCollection().find({orgIds: {$in: [orgId]}})
+        return UserCollection().find({orgId: {$eq: orgId}})
             .lean()
             .exec() as Promise<UserModel[]>;
     },
@@ -26,7 +26,7 @@ const UserDataController = {
             query.select('+admin');
         }
         if (showOrganizations) {
-            query.select('+orgIds');
+            query.select('+orgId');
         }
         if (showUpdatedPasswordDate) {
             query.select('+passwordUpdatedAt');
@@ -43,7 +43,7 @@ const UserDataController = {
 
     getUserByIdFromOrg: function (orgId: string, userId: string, fields: string[] = []): Promise<UserModel> {
         return UserCollection()
-            .findOne({$and: [{orgIds: {$in: [orgId]}}, {_id: userId}]}, fields.join(' '))
+            .findOne({$and: [{orgId: {$eq: orgId}}, {_id: userId}]}, fields.join(' '))
             .lean()
             .exec() as Promise<UserModel>;
     },
@@ -63,7 +63,7 @@ const UserDataController = {
     getUserByIdWithoutOrgId: function (userId: string, showOrgIds: boolean = false): Promise<UserModel> {
         const queryCmd = UserCollection().findById(userId);
         if (showOrgIds) {
-            queryCmd.select('+orgIds')
+            queryCmd.select('+orgId')
         }
         return queryCmd.exec() as Promise<UserModel>;
     },

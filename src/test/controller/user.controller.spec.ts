@@ -50,6 +50,27 @@ suite("UserController", () => {
 
             sinon.assert.calledWith(mockResponse.status, 501);
             sinon.assert.calledWith(mockResponse.send, {error: "Mock error"})
+        });
+
+        test("Happy case: should return user profile", async () => {
+            const mockRequest: any = getRequestObject(true);
+            mockRequest.user = mockUser;
+
+            const mockResponse: any = {
+                send: sinon.stub(),
+                status: sinon.stub().callsFake(() => mockResponse)
+            };
+
+            const mockuserManager: any = {
+                saveUser: sinon.stub().resolves(mockUser)
+            };
+
+            const userController = new UserController(mockuserManager);
+            await userController.getUserByToken(mockRequest, mockResponse);
+
+            sinon.assert.calledWith(mockResponse.status, 200);
+            sinon.assert.calledWith(mockResponse.send, mockUser)
+
         })
     });
 

@@ -213,7 +213,7 @@ suite("CompassInteractor tests", () => {
                 lastName: "lastName",
                 email: "email",
                 pictureUrl: "pictureUrl",
-                orgIds: ["orgIds"]
+                orgId: "orgId"
             };
             try {
                 const result = CompassManager.checkAboutUser(user);

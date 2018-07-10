@@ -54,7 +54,7 @@
 													"type": "text"
 												},
 												{
-													"key": "orgIds[0]",
+													"key": "orgId",
 													"value": "hipteam",
 													"description": "",
 													"type": "text"
@@ -126,7 +126,7 @@
 													"type": "text"
 												},
 												{
-													"key": "orgIds[0]",
+													"key": "orgId",
 													"value": "hipteam",
 													"description": "",
 													"type": "text"
@@ -2136,7 +2136,7 @@
 													"type": "text"
 												},
 												{
-													"key": "orgIds[0]",
+													"key": "orgId",
 													"value": "hipteam",
 													"description": "",
 													"type": "text"
@@ -2210,7 +2210,7 @@
 													"type": "text"
 												},
 												{
-													"key": "orgIds[0]",
+													"key": "orgId",
 													"value": "hipteam",
 													"description": "",
 													"type": "text"

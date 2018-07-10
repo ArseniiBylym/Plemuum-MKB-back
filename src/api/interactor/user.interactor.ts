@@ -74,7 +74,7 @@ export default class UserInteractor {
         const users = await this.fileManager.convertCSV2UserArray(csvFile);
         for (let i = 0; i < users.length; i++) {
             let user = users[i];
-            user.orgIds = [orgId];
+            user.orgId = orgId;
             user.password = crypto.randomBytes(16).toString('hex');
             const savedUser = await this.saveUser(user, orgId);
             savedUsers.push(savedUser);
@@ -95,7 +95,7 @@ export default class UserInteractor {
 
     async saveUser(body: any, orgId?: string) {
         body.admin = body.admin && body.admin === 'true';
-        const organization = await this.organizationDataController.getOrganizationByDbName(orgId ? orgId : body.orgIds[0]);
+        const organization = await this.organizationDataController.getOrganizationByDbName(orgId ? orgId : body.orgId);
         body.passwordUpdatedAt = new Date();
         const savedUser = await UserDataController.saveUser(body);
         if (!savedUser) {

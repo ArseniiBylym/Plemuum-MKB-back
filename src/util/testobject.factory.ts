@@ -4,11 +4,13 @@ import { User } from "../data/models/common/user.model";
 
 function getTestUser(firstName: string, lastName: string): any {
     return {
+        _id: '5a84007831fdc409bc538209',
+        lastActive: new Date(),
         firstName: firstName,
         lastName: lastName,
         email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}${Util.getRandomInt(1, 1000)}@email.com`,
         pictureUrl: "",
-        orgIds: ['hipteam', 'other'],
+        orgId: 'hipteam',
         password: "asd123"
     };
 }
@@ -20,17 +22,17 @@ function getRegisterTestUser(firstName: string, lastName: string) {
         email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}${Util.getRandomInt(1, 1000)}@email.com`,
         pictureUrl: "",
         password: "asd123",
-        orgIds: ['hipteam'],
+        orgId: 'hipteam',
     };
 }
 
-function getTestUserWithOrganizations(firstName: string, lastName: string, organizationIds: string[]): any {
+function getTestUserWithOrganizations(firstName: string, lastName: string, organizationId: string): any {
     return {
         firstName: firstName,
         lastName: lastName,
         email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}${Util.getRandomInt(1, 1000)}@email.com`,
         pictureUrl: "",
-        orgIds: organizationIds,
+        orgId: organizationId,
         password: "asd123"
     };
 }
