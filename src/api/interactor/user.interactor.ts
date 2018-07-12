@@ -10,6 +10,9 @@ import EmailManager from "../../manager/email/mail.manager";
 import * as crypto from 'crypto';
 import { sleep } from "../../util/util";
 import { OrganizationDataController } from "../../data/datacontroller/organization.datacontroller";
+const schedule = require('node-schedule');
+
+import sendEmailsInBackground from "../../workers/sendEmailsInBackground";
 
 export default class UserInteractor {
 
@@ -70,7 +73,8 @@ export default class UserInteractor {
     }
 
     async userRegistrationFromCSV(csvFile: any, orgId: string) {
-        const savedUsers = [];
+
+        const savedUsers: any[] = [];
         const users = await this.fileManager.convertCSV2UserArray(csvFile);
         for (let i = 0; i < users.length; i++) {
             let user = users[i];
@@ -78,8 +82,14 @@ export default class UserInteractor {
             user.password = crypto.randomBytes(16).toString('hex');
             const savedUser = await this.saveUser(user, orgId);
             savedUsers.push(savedUser);
-            await sleep(5000);
         }
+
+
+        //call background worker
+        let startTime = new Date(Date.now()+5000);
+        const j = schedule.scheduleJob({start: startTime}, function(){
+            sendEmailsInBackground(savedUsers);
+        });
         return savedUsers;
     }
 
@@ -96,12 +106,16 @@ export default class UserInteractor {
     async saveUser(body: any, orgId?: string) {
         body.admin = body.admin && body.admin === 'true';
         const organization = await this.organizationDataController.getOrganizationByDbName(orgId ? orgId : body.orgId);
+        //import not saved in db the orgName
+        body.orgName = organization.name;
+
         body.passwordUpdatedAt = new Date();
         const savedUser = await UserDataController.saveUser(body);
         if (!savedUser) {
             throw new PlenuumError("User not saved", ErrorType.VALIDATION);
         }
-        this.sendChangePasswordOnWelcome(savedUser, organization.name);
+
+        // this.sendChangePasswordOnWelcome(savedUser, organization.name);
         return savedUser;
     }
 

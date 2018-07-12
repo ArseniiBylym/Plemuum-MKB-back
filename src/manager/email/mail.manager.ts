@@ -47,7 +47,7 @@ export default class EmailManager {
         };
     };
 
-    public sendWelcomeEmail(email: string, firstName: string, link: string, organization: string): Promise<any> {
+    public sendWelcomeEmail(email: string, firstName: string, link: string, organization: string, transporter?:any): Promise<any> {
         const data = {
             firstName: firstName,
             company: organization,
@@ -56,7 +56,6 @@ export default class EmailManager {
         };
         return this.getHtmlFromEjs(WELCOME_TEMPLATE, data)
             .then((html) => {
-                const transporter = EmailManager.getTransport(HOST, PORT, SECURE, USERNAME, SECRET);
                 const mailOptions = EmailManager.getMailOptions(email, html, "Welcome to Plenuum");
                 return new Promise((resolve, reject) => {
                     transporter.sendMail(mailOptions, (error: any, info: any) => error ? reject(error) : resolve(info));
