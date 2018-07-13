@@ -3,14 +3,10 @@ import { resetPasswordDataController } from "../../data/datacontroller/resetpass
 import { generateNewTokensForResetPassword } from "../../manager/auth/token.manager";
 import { ErrorType, PlenuumError } from "../../util/errorhandler";
 import { UserModel } from "../../data/database/schema/common/user.schema";
-import config from "../../../config/config";
-import { default as getLogger } from "../../util/logger";
 import FileManager from "../../manager/file/file.manager";
 import EmailManager from "../../manager/email/mail.manager";
 import * as crypto from 'crypto';
-import { sleep } from "../../util/util";
 import { OrganizationDataController } from "../../data/datacontroller/organization.datacontroller";
-const schedule = require('node-schedule');
 
 import sendEmailsInBackground from "../../workers/sendEmailsInBackground";
 
@@ -84,12 +80,8 @@ export default class UserInteractor {
             savedUsers.push(savedUser);
         }
 
-
-        //call background worker
-        let startTime = new Date(Date.now()+5000);
-        const j = schedule.scheduleJob({start: startTime}, function(){
             sendEmailsInBackground(savedUsers);
-        });
+
         return savedUsers;
     }
 
@@ -106,42 +98,14 @@ export default class UserInteractor {
     async saveUser(body: any, orgId?: string) {
         body.admin = body.admin && body.admin === 'true';
         const organization = await this.organizationDataController.getOrganizationByDbName(orgId ? orgId : body.orgId);
-        //import not saved in db the orgName
         body.orgName = organization.name;
-
         body.passwordUpdatedAt = new Date();
         const savedUser = await UserDataController.saveUser(body);
         if (!savedUser) {
             throw new PlenuumError("User not saved", ErrorType.VALIDATION);
         }
 
-        // this.sendChangePasswordOnWelcome(savedUser, organization.name);
         return savedUser;
     }
 
-    async sendChangePasswordOnWelcome(user: any, orgName: string) {
-        const origin = config.webappDomain;
-        const {email, firstName, _id} = user;
-        const {token, token_expiry} = UserDataController.generateToken(1);
-        const data = {userId: _id, token: token, token_expiry: token_expiry, reseted: false};
-
-        try {
-            const response = await resetPasswordDataController.saveResetPassword(data);
-            let link = origin + "/set_new_password?token=" + response.token + "&email=" + email + "&welcome=true&name=" + firstName;
-            const mailService = new EmailManager();
-            return mailService.sendWelcomeEmail(email, firstName, link, orgName)
-                .then(() => console.log(`E-mail for ${firstName} was sent to ${email}`))
-                .catch((error) => console.error(`Error sending e-mail to ${firstName}: ${error}`))
-        } catch (error) {
-            getLogger().error({
-                type: "error",
-                request: {
-                    user: user
-                },
-                message: error,
-                timeStamp: new Date()
-            });
-        }
-
-    }
 }
