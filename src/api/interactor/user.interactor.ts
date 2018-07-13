@@ -72,11 +72,19 @@ export default class UserInteractor {
 
         const savedUsers: any[] = [];
         const users = await this.fileManager.convertCSV2UserArray(csvFile);
+
         for (let i = 0; i < users.length; i++) {
             let user = users[i];
             user.orgId = orgId;
             user.password = crypto.randomBytes(16).toString('hex');
-            const savedUser = await this.saveUser(user, orgId);
+            let savedUser;
+            try {
+                savedUser = await this.saveUser(user, orgId);
+            }
+            catch (e) {
+                console.log('Error creating user in user collection from csv: ',e.message);
+                continue
+            }
             savedUsers.push(savedUser);
         }
 
