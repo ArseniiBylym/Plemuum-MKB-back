@@ -61,7 +61,7 @@ export default class UserController extends BaseController {
     }
 
     async getOrganizationUsers(req: any, res: Response) {
-        return UserDataController.getOrganizationUsers(req.params.orgId)
+        return UserDataController.getOrganizationUsers(req.params.orgId, req.query)
             .then((result) => this.respond(StatusCodes.OK, req, res, result))
             .catch((err) => this.handleError(err, req, res));
     }

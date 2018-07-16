@@ -12,8 +12,14 @@ const UserDataController = {
             .then((savedUser) => UserCollection().findById(savedUser._id).lean().exec() as Promise<UserModel>)
     },
 
-    getOrganizationUsers: function (orgId: string): Promise<UserModel[]> {
-        return UserCollection().find({orgId: {$eq: orgId}})
+    getOrganizationUsers: function (orgId: string, query?: any): Promise<UserModel[]> {
+        let sort: any = {};
+        if (query && Array.isArray(query.sortColumn)) {
+            query.sortColumn.forEach((field: string, index: number) => {
+                sort[field] = query.sortType[index]
+            });
+        }
+        return UserCollection().find({orgId: {$eq: orgId}}).sort(sort)
             .lean()
             .exec() as Promise<UserModel[]>;
     },
