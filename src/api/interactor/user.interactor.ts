@@ -7,9 +7,7 @@ import FileManager from "../../manager/file/file.manager";
 import EmailManager from "../../manager/email/mail.manager";
 import * as crypto from 'crypto';
 import { OrganizationDataController } from "../../data/datacontroller/organization.datacontroller";
-
-import sendEmailsInBackground from "../../workers/sendEmailsInBackground";
-
+import agenda from "../../util/agenda";
 export default class UserInteractor {
 
     private emailManager: EmailManager;
@@ -85,11 +83,9 @@ export default class UserInteractor {
                 console.log('Error creating user in user collection from csv: ',e.message);
                 continue
             }
+            agenda.schedule(new Date(Date.now() + i*2000),'sendEmailsInBackground',  savedUser);
             savedUsers.push(savedUser);
         }
-
-            sendEmailsInBackground(savedUsers);
-
         return savedUsers;
     }
 
