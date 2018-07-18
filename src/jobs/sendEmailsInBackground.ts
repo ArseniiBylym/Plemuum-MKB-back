@@ -23,7 +23,6 @@ export default async function (agenda:any, transporter:any) {
             const mailService = new EmailManager();
             await mailService.sendWelcomeEmail(email, firstName, link, orgName, transporter);
             await done();
-            console.log(firstName);
         } catch (error) {
             getLogger().error({
                 type: "error",
