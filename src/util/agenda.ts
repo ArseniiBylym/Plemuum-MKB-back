@@ -2,7 +2,6 @@ const Agenda = require('agenda');
 const backgroundScripts = 'src/jobs';
 const fs = require('fs');
 import sendEmailsInBackground from '../jobs/sendEmailsInBackground';
-const mongoConnectionString = 'mongodb://localhost:27017/common';
 
 //for transporter
 import EmailManager from "../manager/email/mail.manager";
@@ -17,7 +16,7 @@ const transporter = EmailManager.getTransport(HOST, PORT, SECURE, USERNAME, SECR
 
 
 // or override the default collection name:
-let agenda = new Agenda({db: {address: mongoConnectionString, collection: 'jobs'}});
+let agenda = new Agenda({db: {address: config.mongoUrl, collection: 'jobs'}});
 let jobTypes:any = [];
 fs.readdirSync(backgroundScripts).forEach((file:any) => {
     jobTypes.push(file);
