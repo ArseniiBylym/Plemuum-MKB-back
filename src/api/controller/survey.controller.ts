@@ -60,7 +60,10 @@ export default class SurveyController extends BaseController {
         question._id = req.params.questionId;
         delete question.survey;
         return this.surveyManager.updateQuestion(req.params.orgId, question)
-            .then(result => this.respond(StatusCodes.OK, req, res, result))
+            .then(result => {
+                if (!result) { this.respond(StatusCodes.NOT_FOUND, req, res, { error: "Question not found." }); }
+                else { this.respond(StatusCodes.OK, req, res, result) }
+            })
             .catch((err) => res.status(this.getErrorStatus(err)).send(formError(err)));
     }
 
@@ -87,7 +90,10 @@ export default class SurveyController extends BaseController {
 
     async setSurveyTodoManager(req: any, res: any) {
         return this.surveyManager.setSurveyTodoManager(req.params.orgId, req.params.surveyTodoId, req.body.manager)
-            .then(result => this.respond(StatusCodes.OK, req, res, result))
+            .then(result => {
+                if (!result) { this.respond(StatusCodes.NOT_FOUND, req, res, { error: "Survey to do not found." }); }
+                else { this.respond(StatusCodes.OK, req, res, result) }
+            })
             .catch((err) => res.status(this.getErrorStatus(err)).send(formError(err)));
     }
 

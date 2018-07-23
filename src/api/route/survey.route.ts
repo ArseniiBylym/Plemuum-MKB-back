@@ -32,7 +32,7 @@ export default (app: Express, surveyController: SurveyController) => {
      *      "createdAt": "2018-07-23T06:50:01.781Z",
      *      "title": "survey 2",
      *      "owner": "5a84007831fdc409bc598202"
-    *    },
+     *    },
      *
      *       ...
      *   ]
@@ -47,13 +47,26 @@ export default (app: Express, surveyController: SurveyController) => {
      * @apiHeader {String} Authorization basic
      *
      * @apiParam (URL){String}                              orgId                 Organization id
-     * @apiParam (Body){String}                             title.
+     * @apiParam (Body){String}                             title                 Survey title
      * @apiParam (Body){Object[]}                           questions             Array of the questions for the sentences.
      *
      * @apiParamExample {json} Request-Example:
      *     {
      *       "title":"New survey",
-     *       "questions":[{"text":"question 1","required":true},{"text":"question 2","required":false}, ... ]
+     *       "questions":[
+     *                  {
+     *                    "text":"question 1",
+     *                    "required":true,
+     *                    "min": 1,
+     *                    "max": 60
+     *                  },
+     *                  {
+     *                    "text":"question 2",
+     *                    "required":false,
+     *                    "min": null,
+     *                    "max": 200
+     *                  },
+     *                   ... ]
      *     }
      *
      * @apiSuccess (Success 200) {Object}                   Survey                Оbject corresponding to the newly created survey.
@@ -77,8 +90,8 @@ export default (app: Express, surveyController: SurveyController) => {
      *     }
      */
     app.route("/api/organizations/:orgId/surveys")
-        .get(passport.authenticate('jwt', {session: false}), surveyController.getAllSurveys.bind(surveyController))
-        .post(passport.authenticate('jwt', {session: false}), surveyController.createSurvey.bind(surveyController))
+        .get(passport.authenticate('jwt', {session: false}), checkAdmin(), surveyController.getAllSurveys.bind(surveyController))
+        .post(passport.authenticate('jwt', {session: false}), checkAdmin(), surveyController.createSurvey.bind(surveyController))
 
     /**
      * @api {GET} /api/organizations/:orgId/surveys/:surveyId Survey - Get survey by id
@@ -108,6 +121,8 @@ export default (app: Express, surveyController: SurveyController) => {
      *             "createdAt": "2018-07-23T07:43:20.972Z",
      *             "text": "some question 1",
      *             "required": true,
+     *             "min": 0,
+     *             "max": 125,
      *             "survey": "5b5587187825ac2a047657b2"
      *         },
      *         {
@@ -116,6 +131,8 @@ export default (app: Express, surveyController: SurveyController) => {
      *             "createdAt": "2018-07-23T07:43:20.973Z",
      *             "text": "some question 2",
      *             "required": false,
+     *             "min": 0,
+     *             "max": 150,
      *             "survey": "5b5587187825ac2a047657b2"
      *         },
      *         ...
@@ -131,7 +148,7 @@ export default (app: Express, surveyController: SurveyController) => {
      *     }
     **/
    app.route("/api/organizations/:orgId/surveys/:surveyId")
-   .get(passport.authenticate('jwt', {session: false}), surveyController.getSurvey.bind(surveyController))
+   .get(passport.authenticate('jwt', {session: false}), checkAdmin(), surveyController.getSurvey.bind(surveyController))
 
     /**
      * @api {GET} /api/organizations/:orgId/questions/:questionId Questions - Get question by Id
@@ -152,7 +169,9 @@ export default (app: Express, surveyController: SurveyController) => {
      *      "updatedAt": "2018-07-23T07:43:20.973Z",
      *      "createdAt": "2018-07-23T07:43:20.973Z",
      *      "text": "some question",
-     *      "required": false,
+     *      "required": true,
+     *      "min": 10,
+     *      "max": 125,
      *      "survey": "5b5587187825ac2a047657b2"
      * }
      * 
@@ -164,9 +183,44 @@ export default (app: Express, surveyController: SurveyController) => {
      *       "error": "Qestion not found."
      *     }
     **/
+
+    /**
+     * @api {PATCH} /api/organizations/:orgId/questions/:questionId Update survey question by Id
+     * @apiName updateSurveyQuestion
+     * @apiPermission admin
+     * @apiHeader {String} Authorization basic
+     * 
+     * @apiParam (URL){String}              orgId               Organization id
+     * @apiParam (URL){String}              questionId          Question id
+     * @apiParam (Body){String}             text                Question text
+     * @apiParam (Body){Boolean}            required            Indicate mandatory field
+     * @apiParam (Body){Number}             max                 max character number
+     * @apiParam (Body){Number}             min                 min character number
+     * 
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     * {
+     *    "_id": "5b55c9885bcca52fbce8a781",
+     *    "updatedAt": "2018-07-23T15:07:23.029Z",
+     *    "createdAt": "2018-07-23T12:26:48.984Z",
+     *    "text": "test-min-max-patch",
+     *    "survey": "5b55c9885bcca52fbce8a77f",
+     *    "max": 250,
+     *    "min": null,
+     *    "required": false
+     * }
+     *
+     * @apiError 404 Not Found.
+     * 
+     * @apiErrorExample Error-Response:
+     *     HTTP/1.1 404 Not Found
+     *     {
+     *       "error": "Question to do not found."
+     *     }
+    **/
    app.route("/api/organizations/:orgId/questions/:questionId")
-   .get(passport.authenticate('jwt', {session: false}), surveyController.getQuestion.bind(surveyController))
-   .patch(passport.authenticate('jwt', {session: false}), surveyController.updateQuestion.bind(surveyController))
+   .get(passport.authenticate('jwt', {session: false}), checkAdmin(), surveyController.getQuestion.bind(surveyController))
+   .patch(passport.authenticate('jwt', {session: false}), checkAdmin(), surveyController.updateQuestion.bind(surveyController))
 
    /**
      * @api {GET} /api/organizations/:orgId/surveysTodo Survey - Get all surveys todo list for current user
@@ -183,12 +237,57 @@ export default (app: Express, surveyController: SurveyController) => {
 
     /**
      * @api {PATCH} /api/organizations/:orgId/surveysTodo/:surveyTodoId/manager Survey TODO - Set survey to do manager
+     * @apiName setManagerForSurveyTodo
+     * @apiHeader {String} Authorization basic
+     * 
+     * @apiParam (URL){String}              orgId               Organization id
+     * @apiParam (URL){String}              surveyTodoId        Survey to do id
+     * @apiParam (Body){String}             manager             manager's user id
+     * 
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     * {
+     *    "_id": "5b51bfa9563ff020d4ef5e48",
+     *    "survey": "5b51bf5b81b8af2cf8353290",
+     *    "respondent": "5a84007831fdc409bc598202",
+     *    "manager": "5a84007831fdc409bc598202",
+     *    "updatedAt": "2018-07-23T14:28:22.678Z",
+     *    "isCompleted": false
+     * }
+     * 
+     * * 
+     * @apiError 404 Not Found.
+     * 
+     * @apiErrorExample Error-Response:
+     *     HTTP/1.1 404 Not Found
+     *     {
+     *       "error": "Survey to do not found."
+     *     }
     **/
    app.route("/api/organizations/:orgId/surveysTodo/:surveyTodoId/manager")
    .patch(passport.authenticate('jwt', {session: false}), surveyController.setSurveyTodoManager.bind(surveyController))
 
    /**
-     * @api {GET} /api/organizations/:orgId/surveys/managers Surveys - Get managers list
+     * @api {GET} /api/organizations/:orgId/surveys/managers Surveys - Search manager
+     * @apiName searchManagerForSurveyTodo
+     * @apiHeader {String} Authorization basic
+     * 
+     * @apiParam (URL){String}              orgId         Organization id
+     * @apiParam (Query string){String}     q             manager's user id
+     * 
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     * [
+     *   {
+     *      "_id": "5a84007831fdc409bc59820b",
+     *      "firstName": "ben",
+     *      "lastName": "reyes",
+     *      "email": "plenuum.tester+9@hipteam.io",
+     *      "pictureUrl": "https://randomuser.me/api/portraits/men/90.jpg",
+     *      "orgIds": ["test-organization"]
+     *   },
+     *   ...
+     * ]
     **/
    app.route("/api/organizations/:orgId/surveys/search/manager")
     .get(passport.authenticate('jwt', {session: false}), surveyController.findManager.bind(surveyController))

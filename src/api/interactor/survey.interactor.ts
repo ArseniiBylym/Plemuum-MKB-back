@@ -21,7 +21,7 @@ export default class SurveyInteractor {
             return SurveyDataController.getEmployees(orgId);
         })
         .then((result) => {
-            sendSurveysTodo(orgId, newSurvey._id, result);
+            //sendSurveysTodo(orgId, newSurvey._id, result);
             return newSurvey;
         });
     }

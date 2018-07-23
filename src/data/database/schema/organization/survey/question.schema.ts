@@ -7,8 +7,10 @@ interface QuestionModel extends Question, Document {
 
 export let QuestionSchema = new Schema({
     survey: { type: Schema.Types.ObjectId, index: true  },
-    text: {required: false, type: String, index: true },
-    required: {required: false, type: Boolean, index: false },
+    text: {required: true, type: String, index: true },
+    required: {required: false, type: Boolean, index: false, default: false },
+    min: {required: false, type: Number, index: false, default: null },
+    max: {required: false, type: Number, index: false, default: null },
 }, {
     _id: true,
     timestamps: true,
@@ -17,6 +19,5 @@ export let QuestionSchema = new Schema({
 
 const QuestionCollection = (dbName: string) => getDatabaseManager().createCollection<QuestionModel>(
     dbName, "Question", QuestionSchema);
-
 
 export { QuestionModel, QuestionCollection };
