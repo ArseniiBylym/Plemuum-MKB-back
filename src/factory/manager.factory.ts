@@ -18,7 +18,9 @@ import NotificationManager from "../api/interactor/notification.interactor";
 import FeedbackManager from "../api/interactor/feedback.interactor";
 import StatisticsManager from "../api/interactor/statistics.interactor";
 import EmailManager from "../manager/email/mail.manager";
+import SurveyManager from "../api/interactor/survey.interactor";
 
+let surveyManager: SurveyManager;
 let compassManager: CompassManager;
 let userManager: UserManager;
 let groupManager: GroupManager;
@@ -33,6 +35,9 @@ let statisticsManager: StatisticsManager;
 let firebaseNotification = new FirebaseNotification(
     require(`../../config/firebase/${config.firebaseConfig.keyFileName}`),
     config.firebaseConfig.databaseUrl);
+
+const getSurveyManager = () => getManager(surveyManager, SurveyManager,
+    requestDataController);
 
 const getCompassManager = () => getManager(compassManager, CompassManager,
     getGroupDataController(), getOrganizationDataController(), requestDataController, getNotificationManager(), getStatisticsManager());
@@ -77,5 +82,5 @@ const getManager = (instance: any, manager: any, ...dependencies: any[]) => {
 
 export {
     getUserManager, getGroupManager, getOrganizationManager, getRequestManager, getSessionManager, getTagManager,
-    getFirebaseStorageManager, getNotificationManager, getFeedbackManager, getCompassManager, getStatisticsManager
+    getFirebaseStorageManager, getNotificationManager, getFeedbackManager, getCompassManager, getStatisticsManager, getSurveyManager
 }

@@ -1,12 +1,13 @@
 {
   "name": "plenuum-backend-v2",
   "version": "2.0.0",
-  "description": "",
+  "description": "1. \t[Rules of development](#rules-of-development)\r 2. \t[Getting Started](#getting-started)\r 3. \t[Running the application](#running-the-application)\r 4. \t[Testing](#testing)\r 5. \t[Version control](#version-control)\r 6. \t[Versioning](#versioning)\r 7. \t[Deployment](#deployment)\r 8. \t[Documents](#documents)\r 9.  [Installation for client developers](#installation-for-client-developers)",
   "private": true,
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "start-dev": "NODE_ENV=dev node index.js",
+    "start-dev-windows": "set NODE_ENV=dev&&node index.js",
     "start-staging": "NODE_ENV=staging node index.js",
     "start-ci-test": "NODE_ENV=test nyc --reporter=html ./node_modules/.bin/mocha -u tdd -r ts-node/register src/test/**/**.spec.ts",
     "generate-api-docs": "apidoc -i src -o docs/api",
@@ -38,7 +39,7 @@
   "devDependencies": {
     "@types/chai": "4.0.1",
     "@types/mocha": "2.2.41",
-    "@types/node": "8.0.17",
+    "@types/node": "^8.0.17",
     "@types/node-fetch": "1.6.7",
     "@types/request": "2.0.0",
     "@types/sinon": "2.3.3",
@@ -55,7 +56,7 @@
     "testdouble": "3.2.4",
     "ts-mockito": "2.0.2",
     "ts-node": "3.3.0",
-    "typescript": "2.4.2"
+    "typescript": "^2.4.2"
   },
   "dependencies": {
     "@google-cloud/storage": "1.2.1",
@@ -108,5 +109,12 @@
     "passport-jwt": "3.0.0",
     "passport-local": "1.0.0",
     "winston": "3.0.0-rc1"
+  },
+  "directories": {
+    "doc": "docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.com:hipteam/project/plenuum/plenuum-backend-v2.git"
   }
 }

@@ -7,6 +7,7 @@ import RequestRoute from './request.route';
 import SessionRoute from './session.route';
 import GroupRoute from './group.route';
 import CompassRoute from './compass.route';
+import SurveyRoute from './survey.route';
 import NotificationRoute from './notification.route';
 import LogRoute from './log.route';
 import * as ControllerFactory from '../../factory/controller.factory'
@@ -25,5 +26,6 @@ export default (express: Express) => {
     SessionRoute(express, ControllerFactory.getSessionController(), ControllerFactory.getUserController());
     GroupRoute(express, ControllerFactory.getGroupController());
     CompassRoute(express, ControllerFactory.getCompassController());
+    SurveyRoute(express, ControllerFactory.getSurveyController());
     LogRoute(express, new LogController());
 }
