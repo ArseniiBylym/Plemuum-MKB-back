@@ -36,8 +36,8 @@ let firebaseNotification = new FirebaseNotification(
     require(`../../config/firebase/${config.firebaseConfig.keyFileName}`),
     config.firebaseConfig.databaseUrl);
 
-const getSurveyManager = () => getManager(surveyManager, SurveyManager,
-    requestDataController);
+const getSurveyManager = (): SurveyManager =>
+    getManager(surveyManager, SurveyManager, getNotificationManager());
 
 const getCompassManager = () => getManager(compassManager, CompassManager,
     getGroupDataController(), getOrganizationDataController(), requestDataController, getNotificationManager(), getStatisticsManager());
