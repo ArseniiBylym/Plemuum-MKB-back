@@ -1,12 +1,18 @@
 import SurveyDataController from "../../data/datacontroller/survey.datacontroller";
-import { SurveyModel } from "../../data/database/schema/organization/survey/survey.schema";
-import { SurveyTodoModel } from "../../data/database/schema/organization/survey/surveyTodo.schema";
-import { QuestionModel } from "../../data/database/schema/organization/survey/question.schema";
-import sendSurveysTodo from "../../workers/sendSurveysTodo";
+import {SurveyModel} from "../../data/database/schema/organization/survey/survey.schema";
+import {SurveyTodoModel} from "../../data/database/schema/organization/survey/surveyTodo.schema";
+import {QuestionModel} from "../../data/database/schema/organization/survey/question.schema";
+import {UserModel} from "../../data/database/schema/common/user.schema";
+import { TEMPLATE } from "../../manager/notification/notification.manager";
+import NotificationManager from "./notification.interactor";
 import UserDataController from "../../data/datacontroller/user.datacontroller";
-import { String } from "aws-sdk/clients/sns";
-
 export default class SurveyInteractor {
+    private notificationManager: NotificationManager;
+
+    constructor(notificationManager: NotificationManager) {
+        this.notificationManager = notificationManager;
+    }
+
     async getAllSurveys(orgId: string) {
         return SurveyDataController.getAllSurveys(orgId);
     }
@@ -17,15 +23,36 @@ export default class SurveyInteractor {
 
     async createSurvey(orgId: string, survey: SurveyModel) {
         let newSurvey : SurveyModel;
+        let users : UserModel[];
         return SurveyDataController.createSurvey(orgId, survey)
-        .then((result) => {
-            newSurvey = result;
-            return SurveyDataController.getEmployees(orgId);
-        })
-        .then((result) => {
-            sendSurveysTodo(orgId, newSurvey._id, result);
-            return newSurvey;
-        });
+            .then((result) => {
+                newSurvey = result;
+                return UserDataController.getOrganizationUsers(orgId);
+            })
+            .then((result) => {
+                users = result;
+                let items : SurveyTodoModel[] = [];
+                for (let i=0;i<users.length;i++){
+                    items.push({respondent: users[i]._id, survey: newSurvey._id } as SurveyTodoModel);
+                }
+                return SurveyDataController.createManySurveyTodo(orgId, items);
+            })
+            .then((result) => {
+                this.sendSurveysTodo(orgId, users);
+                return newSurvey;
+            });
+    }
+
+    async sendSurveysTodo(orgId: string, employees: UserModel[]) {
+        for (let i = 0; i < employees.length; i++) {
+            try {
+                await this.notificationManager.sendNotificationById(employees[i]._id,
+                    TEMPLATE.SURVEY());
+            } catch (error) {
+                console.error(error);
+            }
+
+        }
     }
 
     async getQuestion(orgId: string, questionId: string) {

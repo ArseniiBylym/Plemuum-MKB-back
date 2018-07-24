@@ -219,8 +219,8 @@ export default (app: Express, surveyController: SurveyController) => {
      *     }
     **/
    app.route("/api/organizations/:orgId/questions/:questionId")
-   .get(passport.authenticate('jwt', {session: false}), /*checkAdmin(),*/ surveyController.getQuestion.bind(surveyController))
-   .patch(passport.authenticate('jwt', {session: false}), /*checkAdmin(),*/ surveyController.updateQuestion.bind(surveyController))
+   .get(passport.authenticate('jwt', {session: false}), checkAdmin(), surveyController.getQuestion.bind(surveyController))
+   .patch(passport.authenticate('jwt', {session: false}), checkAdmin(), surveyController.updateQuestion.bind(surveyController))
 
    /**
      * @api {GET} /api/organizations/:orgId/surveysTodo Survey - Get all surveys to do list for current user
