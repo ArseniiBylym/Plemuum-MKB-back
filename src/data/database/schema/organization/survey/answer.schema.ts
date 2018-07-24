@@ -11,6 +11,8 @@ export let AnswerSchema = new Schema({
     questionText: { required: true, type: String, index: false },
     answerText: { required: true, type: String, index: false },
     required: { required: false, type: Boolean, index: false },
+    min: {required: false, type: Number, index: false, default: null },
+    max: {required: false, type: Number, index: false, default: null },
 }, {
     _id: true,
     timestamps: true,

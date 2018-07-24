@@ -4,6 +4,7 @@ import { AnswerCollection, AnswerModel } from "../database/schema/organization/s
 import { SurveyTodoCollection, SurveyTodoModel } from "../database/schema/organization/survey/surveyTodo.schema";
 import { ObjectId } from "bson";
 import { UserModel, UserCollection } from "../database/schema/common/user.schema";
+import SurveyController from "../../api/controller/survey.controller";
 
 const SurveyDataController = {
     // For Plenuum Admin
@@ -79,8 +80,16 @@ const SurveyDataController = {
         return SurveyTodoCollection(orgId).find({respondent:userId,isCompleted:false }).sort({createdAt:-1}).lean().exec() as Promise<SurveyTodoModel[]>;
     },
 
+    getSurveysAfterDate: (orgId: string, date: Date): Promise<SurveyModel[]> => {
+        return SurveyCollection(orgId).find({createdAt: {$gt: date}}).lean().exec() as Promise<SurveyModel[]>;
+    },
+
     createSurveyTodo: (orgId: string, surveyTodo: SurveyTodoModel): Promise<SurveyTodoModel> => {
         return new (SurveyTodoCollection(orgId))(surveyTodo).save();
+    },
+
+    createManySurveyTodo: (orgId: string, surveysTodo: SurveyTodoModel[]): Promise<SurveyTodoModel[]> => {
+        return SurveyTodoCollection(orgId).insertMany(surveysTodo);
     },
 
     getSurveyTodo: (orgId: string, surveyTodoId:string, userId:string): Promise<any> => {
@@ -101,6 +110,8 @@ const SurveyDataController = {
                     $project: {
                         text: 1,
                         required: 1,
+                        min: 1,
+                        max: 1,
                     }
                 }, {
                     $lookup: {

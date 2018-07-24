@@ -4,6 +4,8 @@ interface Answer {
     questionText: string;
     answerText: string;
     required?: boolean;
+    min?: number;
+    max?: number;
 }
 
 export default Answer
