@@ -8,7 +8,7 @@ import {default as getLogger} from "../util/logger";
 
 export default async function (agenda:any, transporter:any) {
 
-    agenda.define('sendEmailsInBackground', async function(job:any, done:any) {
+    agenda.define('sendWelcomeEmailsInBackground', async function(job:any, done:any) {
 
         let user = job.attrs.data;
 
@@ -35,5 +35,4 @@ export default async function (agenda:any, transporter:any) {
         }
 
     })
-
 };

@@ -83,7 +83,7 @@ export default class UserInteractor {
                 console.log('Error creating user in user collection from csv: ',e.message);
                 continue
             }
-            agenda.schedule(new Date(Date.now() + i*2000),'sendEmailsInBackground',  savedUser);
+            agenda.schedule(new Date(Date.now() + i*2000),'sendWelcomeEmailsInBackground',  savedUser);
             savedUsers.push(savedUser);
         }
         return savedUsers;

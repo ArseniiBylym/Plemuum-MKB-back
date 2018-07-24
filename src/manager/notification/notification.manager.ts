@@ -1,6 +1,12 @@
 import NotificationInterface from "./notification.interface";
-
 export const TEMPLATE = {
+    SURVEY: () => ({
+        data: {
+            body: 'You received a survey',
+            title: `New survey`,
+            type: "SURVEY"
+        }
+    }),
     FEEDBACK: (name?: string) => ({
         data: {
             body: name ? `You received a feedback from ${name}` : 'You received an anonymous feedback',
