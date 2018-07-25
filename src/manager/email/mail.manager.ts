@@ -58,7 +58,7 @@ export default class EmailManager {
         };
         return this.getHtmlFromEjs(SURVEYNOTIFICATION_TEMPLATE, data)
             .then((html) => {
-                const mailOptions = EmailManager.getMailOptions(email, html, "Welcome to Plenuum");
+                const mailOptions = EmailManager.getMailOptions(email, html, "New survey");
                 return new Promise((resolve, reject) => {
                     transporter.sendMail(mailOptions, (error: any, info: any) => error ? reject(error) : resolve(info));
                 })
