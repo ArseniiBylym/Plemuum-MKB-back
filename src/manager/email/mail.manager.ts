@@ -12,6 +12,7 @@ const HOST = 'smtp.gmail.com';
 
 const MAIL_TEMPLATE_DIR = __dirname + "/content/";
 const WELCOME_TEMPLATE = "welcome.ejs";
+const SURVEYNOTIFICATION_TEMPLATE = "surveyNotification.ejs";
 const RESET_PASSWORD_TEMPLATE = "resetpassword.ejs";
 
 export default class EmailManager {
@@ -45,6 +46,23 @@ export default class EmailManager {
             text: message,
             html: html
         };
+    };
+
+
+    public sendSurveyNotificationEmail(email: string, firstName: string, link: string, organization: string, transporter?:any): Promise<any> {
+        const data = {
+            firstName: firstName,
+            company: organization,
+            email: email,
+            link: link
+        };
+        return this.getHtmlFromEjs(SURVEYNOTIFICATION_TEMPLATE, data)
+            .then((html) => {
+                const mailOptions = EmailManager.getMailOptions(email, html, "Welcome to Plenuum");
+                return new Promise((resolve, reject) => {
+                    transporter.sendMail(mailOptions, (error: any, info: any) => error ? reject(error) : resolve(info));
+                })
+            })
     };
 
     public sendWelcomeEmail(email: string, firstName: string, link: string, organization: string, transporter?:any): Promise<any> {

@@ -20,7 +20,6 @@ let agenda = new Agenda({db: {address: config.mongoUrl, collection: 'jobs'}});
 let jobTypes:any = [];
 fs.readdirSync(backgroundScripts).forEach((file:any) => {
     jobTypes.push(file);
-    console.log(file);
 });
 
 

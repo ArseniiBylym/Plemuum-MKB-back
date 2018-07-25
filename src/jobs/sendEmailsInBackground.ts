@@ -34,5 +34,32 @@ export default async function (agenda:any, transporter:any) {
             });
         }
 
+    });
+    agenda.define('sendSurveyNotificationEmailsInBackground', async function(job:any, done:any) {
+
+        let user = job.attrs.data;
+
+        const origin = config.webappDomain;
+        const {email, firstName, _id, orgName} = user;
+        const {token, token_expiry} = UserDataController.generateToken(1);
+        const data = {userId: _id, token: token, token_expiry: token_expiry, reseted: false};
+
+        try {
+            const response = await resetPasswordDataController.saveResetPassword(data);
+            let link = `${origin}/api/organizations/${user.orgId}/surveys/${user.surveyId}`;
+            const mailService = new EmailManager();
+            await mailService.sendSurveyNotificationEmail(email, firstName, link, orgName, transporter);
+            await done();
+        } catch (error) {
+            getLogger().error({
+                type: "error",
+                request: {
+                    user: user
+                },
+                message: error,
+                timeStamp: new Date()
+            });
+        }
+
     })
 };
