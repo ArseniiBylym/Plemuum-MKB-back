@@ -72,7 +72,7 @@ export default (app: Express, surveyController: SurveyController) => {
      * @apiSuccess (Success 200) {Object}                   Survey                Оbject corresponding to the newly created survey.
      * 
      * @apiSuccessExample {json} Success-Response:
-     * HTTP/1.1 200 OK
+     * HTTP/1.1 201 Created
      * {
      *      "updatedAt": "2018-07-23T09:32:11.997Z",
      *      "createdAt": "2018-07-23T09:32:11.997Z",

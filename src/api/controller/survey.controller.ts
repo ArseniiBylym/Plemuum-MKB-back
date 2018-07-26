@@ -42,7 +42,7 @@ export default class SurveyController extends BaseController {
         let survey: SurveyModel = req.body;
 
         return this.surveyManager.createSurvey(req.params.orgId, survey)
-            .then(result => this.respond(StatusCodes.OK, req, res, result))
+            .then(result => this.respond(StatusCodes.CREATED, req, res, result))
             .catch((err) => res.status(this.getErrorStatus(err)).send(formError(err)));
     }
 

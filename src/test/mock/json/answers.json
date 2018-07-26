@@ -1,0 +1,88 @@
+[
+    {
+        "_id":"5b55faf1a3f76d1354c03151",
+        "updatedAt":"2018-07-25 11:22:37.731Z",
+        "createdAt":"2018-07-25 11:22:37.731Z",
+        "surveyTodo":"5b557a9d82b9a800d4e29950",
+        "question":"5b5081c3aa357227f44fa503",
+        "questionText":"Survey 1 Question 1",
+        "answerText":"Answer 1 by liam.harris@example.com",
+        "required":true,
+        "min":10,
+        "max":250
+    },
+    {
+        "_id":"5b55faf1a3f76d1354c03152",
+        "updatedAt":"2018-07-25 11:22:37.731Z",
+        "createdAt":"2018-07-25 11:22:37.731Z",
+        "surveyTodo":"5b557a9d82b9a800d4e29950",
+        "question":"5b5081c3aa357227f44fa504",
+        "questionText":"Survey 1 Question 2",
+        "answerText":"Answer 2 by liam.harris@example.com",
+        "required":true,
+        "min":null,
+        "max":75
+    },
+    {
+        "_id":"5b55faf1a3f76d1354c03153",
+        "updatedAt":"2018-07-25 11:22:37.731Z",
+        "createdAt":"2018-07-25 11:22:37.731Z",
+        "surveyTodo":"5b557a9d82b9a800d4e29950",
+        "question":"5b5081c3aa357227f44fa505",
+        "questionText":"Survey 1 Question 3",
+        "answerText":"Answer 3 by liam.harris@example.com",
+        "required":false,
+        "min":5,
+        "max":null
+    },
+
+    {
+        "_id":"5b55faf1a3f76d1354c03154",
+        "updatedAt":"2018-07-25 11:25:17.731Z",
+        "createdAt":"2018-07-25 11:25:17.731Z",
+        "surveyTodo":"5b557a9d82b9a800d4e29951",
+        "question":"5b5081c3aa357227f44fa503",
+        "questionText":"Survey 1 Question 1",
+        "answerText":"Answer 1 by aaron.wood@example.com",
+        "required":true,
+        "min":10,
+        "max":250
+    },
+    {
+        "_id":"5b55faf1a3f76d1354c03155",
+        "updatedAt":"2018-07-25 11:25:17.731Z",
+        "createdAt":"2018-07-25 11:25:17.731Z",
+        "surveyTodo":"5b557a9d82b9a800d4e29951",
+        "question":"5b5081c3aa357227f44fa504",
+        "questionText":"Survey 1 Question 2",
+        "answerText":"Answer 2 by aaron.wood@example.com",
+        "required":true,
+        "min":null,
+        "max":75
+    },
+
+    {
+        "_id":"5b55faf1a3f76d1354c03156",
+        "updatedAt":"2018-07-25 11:26:26.731Z",
+        "createdAt":"2018-07-25 11:26:26.731Z",
+        "surveyTodo":"5b557a9d82b9a800d4e29953",
+        "question":"5b5081c3aa357227f44fa506",
+        "questionText":"Survey 2 Question 1",
+        "answerText":"Answer 1 by aaron.wood@example.com",
+        "required":false,
+        "min":null,
+        "max":null
+    },
+    {
+        "_id":"5b55faf1a3f76d1354c03157",
+        "updatedAt":"2018-07-25 11:26:26.731Z",
+        "createdAt":"2018-07-25 11:26:26.731Z",
+        "surveyTodo":"5b557a9d82b9a800d4e29953",
+        "question":"5b5081c3aa357227f44fa507",
+        "questionText":"Survey 2 Question 2",
+        "answerText":"Answer 2 by aaron.wood@example.com",
+        "required":true,
+        "min":5,
+        "max":75
+    }
+]

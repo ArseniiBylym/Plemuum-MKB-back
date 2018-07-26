@@ -13,6 +13,10 @@ import { CompassTodoCollection } from "../../data/database/schema/organization/c
 import { StatisticsCollection } from "../../data/database/schema/organization/compass/compass.statistics.schema";
 import { CompassAnswerCollection } from "../../data/database/schema/organization/compass/compassanswer.schema";
 import SessionManager from "../../api/interactor/session.interactor";
+import { SurveyCollection } from "../../data/database/schema/organization/survey/survey.schema";
+import { QuestionCollection } from "../../data/database/schema/organization/survey/question.schema";
+import { SurveyTodoCollection } from "../../data/database/schema/organization/survey/surveyTodo.schema";
+import { AnswerCollection } from "../../data/database/schema/organization/survey/answer.schema";
 
 const testUser = {
     "firstName": "sheryl",
@@ -36,6 +40,10 @@ function fixtureLoader(): Promise<any> {
         {model: CompassTodoCollection('hipteam'), mockFile: "compasstodo"},
         {model: CompassAnswerCollection('hipteam'), mockFile: null},
         {model: StatisticsCollection('hipteam'), mockFile: "statistics"},
+        {model: SurveyCollection('hipteam'), mockFile: "surveys"},
+        {model: QuestionCollection('hipteam'), mockFile: "questions"},
+        {model: SurveyTodoCollection('hipteam'), mockFile: "surveytodos"},
+        {model: AnswerCollection('hipteam'), mockFile: "answers"},
     ];
 
     /* Clear each collection */
