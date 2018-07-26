@@ -13,6 +13,86 @@ suite("Mail service tests", () => {
     let emailManager: EmailManager;
     const resultInfo = {info: "Info"};
 
+    suite("sendSurveyNotificationEmail", () => {
+
+        suite("Get Options", () => {
+            test("Should get the options correctly", () => {
+                const mockEmail = "mock email";
+                const mockHtml = "mock html";
+                const mockSubject = "mock subject";
+                const mockMessage = "mock message";
+                const mockResponse = {
+                    from: 'bot@plenuum.com',
+                    to: mockEmail,
+                    subject: mockSubject,
+                    text: mockMessage,
+                    html: mockHtml
+                };
+
+                const options = EmailManager.getMailOptions(mockEmail, mockHtml, mockSubject, mockMessage);
+                expect(options).to.be.deep.equal(mockResponse);
+            });
+        });
+
+        suite("Happy cases", () => {
+            beforeEach(() => {
+                emailManager = new EmailManager();
+            });
+
+            test("It should send mail successfuly", async () => {
+                const mockTransport = {
+                    sendMail: sinon.mock().callsFake((options, callback) => callback(null, resultInfo))
+                };
+                const getTransportStub = sinon.stub(EmailManager, "getTransport").returns(mockTransport);
+                const result = await emailManager.sendSurveyNotificationEmail(email, firstName, link, organization, mockTransport);
+                getTransportStub.restore();
+
+                expect(result).to.not.be.undefined;
+            });
+
+            test("Should use a surveyNotification email template", async () => {
+                const mockTransport = {
+                    sendMail: sinon.mock().callsFake((options, callback) => callback(null, resultInfo))
+                };
+                const getTransportStub = sinon.stub(EmailManager, "getTransport").returns(mockTransport);
+                const getMailOptions = sinon.spy(EmailManager, "getMailOptions");
+                const getHtmlFromEjsSpy = sinon.spy(emailManager, "getHtmlFromEjs");
+                await emailManager.sendSurveyNotificationEmail(email, firstName, link, organization, mockTransport);
+                getTransportStub.restore();
+                getMailOptions.restore();
+                getHtmlFromEjsSpy.restore();
+                sinon.assert.calledWith(getHtmlFromEjsSpy, "surveyNotification.ejs", {
+                    firstName: firstName,
+                    company: organization,
+                    email: email,
+                    link: link
+                });
+                sinon.assert.calledWith(getMailOptions, email);
+            });
+        });
+
+        suite("Failed cases", () => {
+            test("Should reject if there's an error", async () => {
+                const errormessage = "mock error";
+                const mockTransport = {
+                    sendMail: sinon.mock().callsFake((options, callback) => callback(new Error(errormessage), null))
+                };
+                const getTransportStub = sinon.stub(EmailManager, "getTransport")
+                    .returns(mockTransport);
+
+                try {
+                    await emailManager.sendSurveyNotificationEmail(email, firstName, link, organization, mockTransport);
+                    fail('Should throw an error!');
+                }
+                catch (error) {
+                    expect(error.message).to.be.equal(errormessage);
+                } finally {
+                    getTransportStub.restore();
+                }
+            });
+        });
+    });
+
     suite("sendWelcomeEmail", () => {
 
         suite("Get Options", () => {
@@ -148,4 +228,6 @@ suite("Mail service tests", () => {
             });
         })
     });
+
+
 });
