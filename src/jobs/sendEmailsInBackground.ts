@@ -61,5 +61,31 @@ export default async function (agenda:any, transporter:any) {
             });
         }
 
+    });
+    agenda.define('sendSurveyAnswers', async function(job:any, done:any) {
+
+        let surveyWithAnswers = job.attrs.data;
+        const {manager, respondent} = surveyWithAnswers.surveyTodo;
+        const managerData = await UserDataController.getUserById(manager, true, true, false);
+        const respondentData = await UserDataController.getUserById(respondent, true, true, false);
+        const {firstName, _id, orgId} = respondentData;
+
+        try {
+
+            const mailService = new EmailManager();
+            await mailService.sendSurveyAnswer(managerData.email, firstName, surveyWithAnswers,orgId, transporter);
+            await mailService.sendSurveyAnswer(respondentData.email, firstName, surveyWithAnswers,orgId, transporter);
+            await done();
+        } catch (error) {
+            getLogger().error({
+                type: "error",
+                request: {
+                    user: manager
+                },
+                message: error,
+                timeStamp: new Date()
+            });
+        }
+
     })
 };

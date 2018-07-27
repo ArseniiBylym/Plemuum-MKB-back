@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head></head>
+<body>
+<p>Completed servey: <%= surveyTitle %></p>
+<p>Surveyee: <%= firstName %> </p>
+<div style="margin:0 auto;text-align:center;width:100%">
+    <ul style="list-style:none; align: left" >
+        <% for(let i=0; i < questionsArr.length; i++) {%>
+        <li><%= i+1%>. question: <%= questionsArr[i] %></li>
+        <li><%= i+1%>. answare: <%= answersArr[i] %></li>
+        <% } %>
+    </ul>
+</div>
+
+<ul class="urlList" style="color:#4990e2">
+    <li><a href="http://app.plenuum.com/" style="text-decoration:none">Plenuum webapp</a></li>
+    <li><a href="https://itunes.apple.com/hu/app/plenuum-earlybird/id1180931406" style="text-decoration:none">Plenuum
+            iOS app</a></li>
+</ul>
+<p>If you have any questions, suggestions, or want to report a bug, shoot a message to Zoltan from Plenuum at <a
+            href="mailto:zoltan.kiricsi@plenuum.com" target="_blank" style="color:#4990e2;text-decoration:none">zoltan.kiricsi@plenuum.com</a>!
+</p><br>
+<p>All the best,<br>Plenuum Bot</p></body>
+</html>
