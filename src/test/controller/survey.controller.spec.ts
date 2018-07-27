@@ -3,6 +3,7 @@ import { getRequestObject } from "../util/testutil";
 import SurveyController from '../../api/controller/survey.controller';
 import { testUser } from '../mock/fixture.loader';
 import { anyFunction } from '../../../node_modules/ts-mockito/lib/ts-mockito';
+import { PlenuumError, ErrorType } from '../../util/errorhandler';
 
 suite("SurveyController unit tests", () => {
     let res: any;
@@ -177,6 +178,14 @@ suite("SurveyController unit tests", () => {
             sinon.assert.calledWith(surveyManager.getSurveyTodo, orgId, "surveyTodoId", testUser._id);
             sinon.assert.calledWith(res.status, 200);
             sinon.assert.calledWith(res.send, result);
+        });
+
+        test("If SurveyInteractor throws a Plenuum error NOT_FOUND, should send 404 and the error message", async () => {
+            surveyManager.getSurveyTodo = sinon.stub().rejects(new PlenuumError("Plenuum error", ErrorType.NOT_FOUND));
+            await surveyController.getSurveyTodo(req, res);
+
+            sinon.assert.calledWith(res.status, 404);
+            sinon.assert.calledWith(res.send, {error: "Plenuum error"});
         });
 
         test("If SurveyInteractor throws a internal error, should send 500 and the error", async () => {

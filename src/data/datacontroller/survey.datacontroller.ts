@@ -5,6 +5,7 @@ import { SurveyTodoCollection, SurveyTodoModel } from "../database/schema/organi
 import { ObjectId } from "bson";
 import { UserModel, UserCollection } from "../database/schema/common/user.schema";
 import SurveyController from "../../api/controller/survey.controller";
+import { PlenuumError, ErrorType } from "../../util/errorhandler";
 
 const SurveyDataController = {
     // For Plenuum Admin
@@ -100,7 +101,7 @@ const SurveyDataController = {
         .populate({ path: 'survey', model: SurveyCollection(orgId) , select:'_id title',}).lean().exec()
         .then((result) => {
             if(!result) {
-                throw new Error('Survey to do was not found');
+                throw new PlenuumError('Survey to do was not found', ErrorType.NOT_FOUND);
             }
             surveyTodo = result as SurveyTodoModel;
             return QuestionCollection(orgId)
@@ -145,6 +146,9 @@ const SurveyDataController = {
     },
 
     saveSurveyTodo: (orgId: string, surveyTodo: SurveyTodoModel): Promise<any> => {
+        if (surveyTodo.isCompleted) {
+            surveyTodo.completedAt = new Date();
+        }
         return AnswerCollection(orgId).remove({ surveyTodo: surveyTodo._id }).exec()
         .then(() => {
             if (surveyTodo && surveyTodo.answers) {

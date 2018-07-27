@@ -80,6 +80,44 @@ function getTestNotificationToken() {
     }
 }
 
+function getTestAllSurveysTodo() {
+    return [
+        {
+            "_id":"5b557a9d82b9a800d4e29951",
+            "createdAt":"2018-07-25 11:05:05.927Z",
+            "updatedAt":"2018-07-25 11:05:05.927Z",
+            "survey":"5b531d15617b0c1fb0c73658",
+            "respondent":"5984342227cd340363dc84ad",
+            "isCompleted":false
+        },
+        {
+            "_id":"5b557a9d82b9a800d4e29953",
+            "createdAt":"2018-07-25 11:15:05.927Z",
+            "updatedAt":"2018-07-25 11:15:05.927Z",
+            "survey":"5b531d15617b0c1fb0c73659",
+            "respondent":"5984342227cd340363dc84ad",
+            "isCompleted":false
+        }
+    ]
+}
+
+function getTestSurveysAfterDate() {
+    return [
+        {
+            "_id":"5b531d15617b0c1fb0c73658",
+            "createdAt":"2018-07-25 11:05:05.927Z",
+            "updatedAt":"2018-07-25 11:05:05.927Z",
+            "title": "Survey 1"
+        },
+        {
+            "_id":"5b531d15617b0c1fb0c73690",
+            "createdAt":"2018-07-25 11:05:05.927Z",
+            "updatedAt":"2018-07-25 11:05:05.927Z",
+            "title": "Survey 3"
+        },
+    ]
+}
+
 export {
     getTestUser,
     getJohnDoe,
@@ -89,5 +127,7 @@ export {
     getRegisterJohnDoe,
     getTestOrganization,
     getTestGroup,
-    getTestNotificationToken
+    getTestNotificationToken,
+    getTestAllSurveysTodo,
+    getTestSurveysAfterDate
 }
