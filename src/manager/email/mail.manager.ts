@@ -12,6 +12,7 @@ const HOST = 'smtp.gmail.com';
 
 const MAIL_TEMPLATE_DIR = __dirname + "/content/";
 const WELCOME_TEMPLATE = "welcome.ejs";
+const SURVEY_RESULT = "surveyResult.ejs";
 const SURVEYNOTIFICATION_TEMPLATE = "surveyNotification.ejs";
 const RESET_PASSWORD_TEMPLATE = "resetpassword.ejs";
 
@@ -59,6 +60,27 @@ export default class EmailManager {
         return this.getHtmlFromEjs(SURVEYNOTIFICATION_TEMPLATE, data)
             .then((html) => {
                 const mailOptions = EmailManager.getMailOptions(email, html, "New survey");
+                return new Promise((resolve, reject) => {
+                    transporter.sendMail(mailOptions, (error: any, info: any) => error ? reject(error) : resolve(info));
+                })
+            })
+    };
+
+    public sendSurveyAnswer(email: string, firstName: string, surveyWithAnswer:any, organization: string, transporter?:any): Promise<any> {
+        const answersArr = surveyWithAnswer.questions.map((itmes:any) => {return itmes.answer.answerText});
+        const questionsArr = surveyWithAnswer.questions.map((question:any) => {return question.text});
+        const surveyTitle = surveyWithAnswer.surveyTodo.survey.title;
+        const data = {
+            firstName: firstName,
+            company: organization,
+            email: email,
+            answersArr: answersArr,
+            questionsArr: questionsArr,
+            surveyTitle: surveyTitle
+        };
+        return this.getHtmlFromEjs(SURVEY_RESULT, data)
+            .then((html) => {
+                const mailOptions = EmailManager.getMailOptions(email, html, "Survey result");
                 return new Promise((resolve, reject) => {
                     transporter.sendMail(mailOptions, (error: any, info: any) => error ? reject(error) : resolve(info));
                 })

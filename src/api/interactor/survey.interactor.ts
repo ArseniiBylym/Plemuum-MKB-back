@@ -100,7 +100,12 @@ export default class SurveyInteractor {
     }
 
     async saveSurveyTodo(orgId: string, surveyTodo: SurveyTodoModel) {
-        return SurveyDataController.saveSurveyTodo(orgId, surveyTodo);
+        const result = await SurveyDataController.saveSurveyTodo(orgId, surveyTodo);
+        const {_id, respondent} = result;
+        if (_id){
+            const surveyWithAnswers = await SurveyDataController.getSurveyTodo(orgId, _id, respondent);
+            return await agenda.schedule(new Date(Date.now() + 2000),'sendSurveyAnswers',  surveyWithAnswers);
+        }
     }
 
     async setSurveyTodoManager(orgId: string, surveyTodoId: string, managerId: string) {

@@ -154,6 +154,7 @@ export default (app: Express, surveyController: SurveyController) => {
      * @api {GET} /api/organizations/:orgId/questions/:questionId Questions - Get question by Id
      * @apiVersion 2.0.0
      * @apiName getQuestionById
+     * @apiGroup Survey
      * @apiPermission admin
      * @apiHeader {String} Authorization basic
      * 
@@ -189,6 +190,7 @@ export default (app: Express, surveyController: SurveyController) => {
      * @apiName updateSurveyQuestion
      * @apiPermission admin
      * @apiHeader {String} Authorization basic
+     * @apiGroup Survey
      * 
      * @apiParam (URL){String}              orgId               Organization id
      * @apiParam (URL){String}              questionId          Question id
@@ -226,7 +228,7 @@ export default (app: Express, surveyController: SurveyController) => {
      * @api {GET} /api/organizations/:orgId/surveysTodo Survey - Get all surveys to do list for current user
      * @apiName getSurveysTodo
      * @apiHeader {String} Authorization basic
-     * 
+     * @apiGroup Survey
      * @apiParam (URL){String}              orgId               Organization id
      *
      * @apiSuccessExample {json} Success-Response:
@@ -251,9 +253,10 @@ export default (app: Express, surveyController: SurveyController) => {
     .get(passport.authenticate('jwt', {session: false}), surveyController.getAllSurveysTodo.bind(surveyController))
 
     /**
-     * @api {GET} /api/organizations/:orgId/surveysTodo/:surveyTodoId - Get survey to do by Id for current user
+     * @api {GET} /api/organizations/:orgId/surveysTodo/:surveyTodoId Get survey to do by Id for current user
      * @apiName getSurveyTodoById
      * @apiHeader {String} Authorization basic
+     * @apiGroup Survey
      * 
      * @apiParam (URL){String}              orgId               Organization id
      * @apiParam (URL){String}              surveyTodoId        Survey to do id
@@ -315,6 +318,7 @@ export default (app: Express, surveyController: SurveyController) => {
      * @api {PATCH} /api/organizations/:orgId/surveysTodo/:surveyTodoId - Save/Complete survey to do by Id for current user
      * @apiName getSurveyTodoById
      * @apiHeader {String} Authorization basic
+     * @apiGroup Survey
      * 
      * @apiParam (URL){String}              orgId               Organization id
      * @apiParam (URL){String}              surveyTodoId        Survey to do id
@@ -358,6 +362,7 @@ export default (app: Express, surveyController: SurveyController) => {
      * @api {PATCH} /api/organizations/:orgId/surveysTodo/:surveyTodoId/manager Survey TODO - Set survey to do manager
      * @apiName setManagerForSurveyTodo
      * @apiHeader {String} Authorization basic
+     * @apiGroup Survey
      * 
      * @apiParam (URL){String}              orgId               Organization id
      * @apiParam (URL){String}              surveyTodoId        Survey to do id
@@ -390,7 +395,7 @@ export default (app: Express, surveyController: SurveyController) => {
      * @api {GET} /api/organizations/:orgId/surveys/managers Surveys - Search manager
      * @apiName searchManagerForSurveyTodo
      * @apiHeader {String} Authorization basic
-     * 
+     * @apiGroup Survey
      * @apiParam (URL){String}              orgId         Organization id
      * @apiParam (Query string){String}     q             manager's user id
      * 

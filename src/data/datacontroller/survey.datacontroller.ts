@@ -177,6 +177,7 @@ const SurveyDataController = {
             if (!(result && result.n == result.ok)) {
                 throw new Error('Something went wrong wen save survey to do.');
             }
+            return surveyTodo;
         });
     },
 

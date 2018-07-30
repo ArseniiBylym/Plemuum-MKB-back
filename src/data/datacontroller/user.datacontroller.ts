@@ -13,15 +13,16 @@ const UserDataController = {
     },
 
     getOrganizationUsers: function (orgId: string, query?: any): Promise<UserModel[]> {
-        let sort: any = {};
-        if (query && Array.isArray(query.sortColumn)) {
-            query.sortColumn.forEach((field: string, index: number) => {
-                sort[field] = query.sortType[index]
-            });
+        let sort = {};
+        if (query && query.sort === 'firstNameLastName'){
+            sort = {firstName:1, lastName:1};
+        }
+        else if (query && query.sort === 'lastNameFirstName') {
+            sort = {lastName:1,firstName:1};
         }
         return UserCollection().find({orgId: {$eq: orgId}}).sort(sort)
-            .lean()
-            .exec() as Promise<UserModel[]>;
+                .lean()
+                .exec() as Promise<UserModel[]>;
     },
 
     getUserById: function (userId: string, showOrganizations: boolean = false, showAdmin: boolean = false,

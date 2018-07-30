@@ -73,7 +73,7 @@ export default (app: Express, userController: UserController) => {
         .patch(passport.authenticate('jwt', {session: false}), checkAdmin(), userController.modifyUser.bind(userController));
 
     /**
-     * @api {GET} /api/organizations/:orgId/users  Get organization users
+     * @api {GET} /api/organizations/:orgId/users?query  Get organization users, query parameter ("firstNameLastName", "lastNameFirstName") sorted the result
      * @apiVersion 2.0.0
      * @apiName getOrgUsers
      * @apiGroup User
@@ -150,9 +150,7 @@ export default (app: Express, userController: UserController) => {
      *     "lastName": "szabo",
      *     "email": "peter.szabo@hipteam.io",
      *     "pictureUrl": "",
-     *     "orgIds": [
-     *         "hipteam"
-     *     ]
+     *     "orgId": "hipteam"
      * }
      */
     app.route("/api/users/me")
