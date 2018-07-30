@@ -32,7 +32,7 @@ suite("SurveyController unit tests", () => {
     });
 
     suite("createSurvey", () => {
-        test("Should return 201, the saved survey and call SurveyInteractor if input is valid", async () => {
+        test("Should return 200, the saved survey and call SurveyInteractor if input is valid", async () => {
             var survey = { title: "newSurvey" };
 
             req.body = survey;
@@ -42,7 +42,7 @@ suite("SurveyController unit tests", () => {
             await surveyController.createSurvey(req, res);
 
             sinon.assert.calledWith(surveyManager.createSurvey, orgId, survey);
-            sinon.assert.calledWith(res.status, 201);
+            sinon.assert.calledWith(res.status, 200);
             sinon.assert.calledWith(res.send, survey);
         });
 

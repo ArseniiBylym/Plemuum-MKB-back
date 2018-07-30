@@ -236,7 +236,10 @@ export default (app: Express, surveyController: SurveyController) => {
      *   "_id": "5b571004dd224e30146c6cab",
      *   "updatedAt": "2018-07-24T11:39:48.232Z",
      *   "createdAt": "2018-07-24T11:39:48.232Z",
-     *   "survey": "5b54d5059c62573260a05f04",
+     *   "survey": {
+     *       "_id": "5b54d5059c62573260a05f04",
+     *       "title": "Survey 1"
+     *   },
      *   "respondent": "5a84007831fdc409bc598202",
      *   "isCompleted": false
      *  }

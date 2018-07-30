@@ -78,7 +78,7 @@ export default class SurveyInteractor {
             return SurveyDataController.getAllSurveysTodo(orgId, userId);
         })
         .then((result) => {
-            let allSurveysTodo = result.map((item) => { return String(item.survey) });
+            let allSurveysTodo = result.map((item) => { return String(item.survey._id) });
             let needSurveysTodo = allSurveysAfterDate.filter((item) => { return allSurveysTodo.indexOf(item) < 0 });
             if (needSurveysTodo && needSurveysTodo.length) {
                 let need = needSurveysTodo.map((item) => { return { survey: item, respondent: userId } as SurveyTodoModel } );

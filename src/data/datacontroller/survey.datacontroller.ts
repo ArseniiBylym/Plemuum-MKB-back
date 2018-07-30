@@ -78,7 +78,11 @@ const SurveyDataController = {
 
     // For MKB Employee
     getAllSurveysTodo: (orgId: string, userId:string): Promise<SurveyTodoModel[]> => {
-        return SurveyTodoCollection(orgId).find({respondent:userId,isCompleted:false }).sort({createdAt:-1}).lean().exec() as Promise<SurveyTodoModel[]>;
+        return SurveyTodoCollection(orgId).find({respondent:userId,isCompleted:false })
+        .populate({ path: 'survey', model: SurveyCollection(orgId) , select:'_id title',})
+        .sort({createdAt:-1})
+        .lean()
+        .exec() as Promise<SurveyTodoModel[]>;
     },
 
     getSurveysAfterDate: (orgId: string, date: Date): Promise<SurveyModel[]> => {
