@@ -5,7 +5,8 @@
         "updatedAt":"2018-07-25 11:05:05.927Z",
         "survey":"5b531d15617b0c1fb0c73658",
         "respondent":"5984342227cd340363dc84ac",
-        "isCompleted":false
+        "isCompleted":false,
+        "manager":"5984342227cd340363dc84c7"
     },
     {
         "_id":"5b557a9d82b9a800d4e29951",
@@ -13,7 +14,8 @@
         "updatedAt":"2018-07-25 11:05:05.927Z",
         "survey":"5b531d15617b0c1fb0c73658",
         "respondent":"5984342227cd340363dc84ad",
-        "isCompleted":false
+        "isCompleted":false,
+        "manager":"5984342227cd340363dc84c7"
     },
     {
         "_id":"5b557a9d82b9a800d4e29952",
@@ -21,7 +23,8 @@
         "updatedAt":"2018-07-25 11:05:05.927Z",
         "survey":"5b531d15617b0c1fb0c73658",
         "respondent":"5984342227cd340363dc84ae",
-        "isCompleted":false
+        "isCompleted":false,
+        "manager":"5984342227cd340363dc84c7"
     },
 
     {
@@ -30,7 +33,8 @@
         "updatedAt":"2018-07-25 11:15:05.927Z",
         "survey":"5b531d15617b0c1fb0c73659",
         "respondent":"5984342227cd340363dc84ad",
-        "isCompleted":false
+        "isCompleted":false,
+        "manager":"5984342227cd340363dc84c7"
     },
     {
         "_id":"5b557a9d82b9a800d4e29954",
@@ -38,7 +42,8 @@
         "updatedAt":"2018-07-25 11:15:05.927Z",
         "survey":"5b531d15617b0c1fb0c73659",
         "respondent":"5984342227cd340363dc84ae",
-        "isCompleted":false
+        "isCompleted":false,
+        "manager":"5984342227cd340363dc84c7"
     },
     {
         "_id":"5b557a9d82b9a800d4e29955",
@@ -46,7 +51,8 @@
         "updatedAt":"2018-07-25 11:15:05.927Z",
         "survey":"5b531d15617b0c1fb0c73659",
         "respondent":"5984342227cd340363dc84af",
-        "isCompleted":false
+        "isCompleted":false,
+        "manager":"5984342227cd340363dc84c7"
     },
     {
         "_id":"5b557a9d82b9a800d4e29956",
@@ -54,6 +60,7 @@
         "updatedAt":"2018-07-25 11:15:05.927Z",
         "survey":"5b531d15617b0c1fb0c73659",
         "respondent":"5984342227cd340363dc84b0",
-        "isCompleted":false
+        "isCompleted":false,
+        "manager":"5984342227cd340363dc84c7"
     }
 ]

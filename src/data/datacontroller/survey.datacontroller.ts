@@ -142,6 +142,9 @@ const SurveyDataController = {
         })
         .then((result) => {
             return { surveyTodo, questions: result }
+        })
+        .catch((error) => {
+            throw new PlenuumError('Survey to do was not found', ErrorType.NOT_FOUND);
         });
     },
 
@@ -163,6 +166,7 @@ const SurveyDataController = {
                 _id:surveyTodo._id}, {
                     manager: surveyTodo.manager,
                     isCompleted: surveyTodo.isCompleted,
+                    completedAt: surveyTodo.completedAt
                 }).exec()
         })
         .then((result) => {
@@ -179,11 +183,14 @@ const SurveyDataController = {
         });
     },
 
-    findManager: (orgId: string, keyword: string): Promise<UserModel[]> => {
+    findManager: (orgId: string, keyword?: string): Promise<UserModel[]> => {
         if(!keyword) keyword = '';
         return UserCollection()
             .find({$and: [
-                    {orgIds: {$eq: orgId}},
+                    {$or: [
+                        {orgIds: {$eq: orgId}},
+                        {orgId: {$eq: orgId}},
+                    ]},
                     {admin: false}, 
                      {$or: [
                         {firstName: {$regex: keyword, $options: 'i'}},
