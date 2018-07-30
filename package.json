@@ -111,7 +111,8 @@
     "passport-jwt": "3.0.0",
     "passport-local": "1.0.0",
     "sharp": "^0.20.5",
-    "winston": "3.0.0-rc1"
+    "winston": "3.0.0-rc1",
+    "xlsx": "^0.13.3"
   },
   "directories": {
     "doc": "docs"

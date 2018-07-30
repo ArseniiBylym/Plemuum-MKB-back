@@ -253,6 +253,78 @@ export default (app: Express, surveyController: SurveyController) => {
     .get(passport.authenticate('jwt', {session: false}), surveyController.getAllSurveysTodo.bind(surveyController))
 
     /**
+     * @api {GET} /api/organizations/:orgId/survey/:surveyId/excel Survey - Get all answers by surveyId in excel file
+     * @apiName getAllSurveysTodo
+     * @apiHeader {String} Authorization basic
+     * @apiGroup Admin
+     * @apiParam (URL){String}              orgId               Organization id
+     * @apiParam (URL){String}              surveyId               Survey id
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     * [
+     * {
+     *   "updatedAt": "2018-07-27T15:10:37.212Z",
+     *  "createdAt": "2018-07-27T14:01:09.851Z",
+     *   "isCompleted": true,
+     *   "employeeId": "5984342227cd340363dc84aa",
+     *   "employeeFirstName": "bill",
+     *   "employeeLastName": "allen",
+     *   "employeeEmail": "szimkovics.tamas@gmail.com",
+     *   "managerId": "5984342227cd340363dc84b0",
+     *   "managerFirstName": "benjamin",
+     *   "managerLastName": "macrae",
+     *   "managerEmail": "szimkovics.tamas+1@gmail.com",
+     *   "Answer string 1": "2",
+     *   "Answer string 2": "4"
+    },
+     {
+      *   "updatedAt": "2018-07-27T14:01:09.880Z",
+      *   "createdAt": "2018-07-27T14:01:09.880Z",
+      *   "isCompleted": false,
+      *   "employeeId": "5984342227cd340363dc84bb",
+      *   "employeeFirstName": "aaron",
+      *   "employeeLastName": "hayes",
+      *   "employeeEmail": "amanda.hayes@example.com"
+     },
+     * ...
+     * ]
+     *
+     **/
+    app.route("/api/organizations/:orgId/survey/:surveyId/excel")
+        .get(passport.authenticate('jwt', {session: false}), surveyController.getAllAnswersSurvey.bind(surveyController));
+
+    /**
+     * @api {GET} /api/organizations/:orgId/survey/:surveyId/uncompleted/excel Survey - Get all users who uncompleted survey in excel file
+     * @apiName getAllUserWhoUncompletedSurvey
+     * @apiHeader {String} Authorization basic
+     * @apiGroup Admin
+     * @apiParam (URL){String}              orgId               Organization id
+     * @apiParam (URL){String}              surveyId               Survey id
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     * [
+     * {
+     *       "employeeId": "5984342227cd340363dc84a9",
+     *       "employeeFirstName": "christina",
+     *       "employeeLastName": "jacobs",
+     *       "employeeEmail": "christina.jacobs@example.com"
+     *   },
+     * {
+     *    "employeeId": "5984342227cd340363dc84c7",
+     *    "employeeFirstName": "peter",
+     *   "employeeLastName": "szabo",
+     *    "employeeEmail": "peter.szabo@hipteam.io"
+     * }, ...
+     * ]
+     *
+     **/
+    app.route("/api/organizations/:orgId/survey/:surveyId/uncompleted/excel")
+        .get(passport.authenticate('jwt', {session: false}), surveyController.getAllUserWhoUncompletedSurvey.bind(surveyController));
+
+
+    /**
      * @api {GET} /api/organizations/:orgId/surveysTodo/:surveyTodoId Get survey to do by Id for current user
      * @apiName getSurveyTodoById
      * @apiHeader {String} Authorization basic
@@ -415,5 +487,6 @@ export default (app: Express, surveyController: SurveyController) => {
     **/
    app.route("/api/organizations/:orgId/surveys/search/manager")
     .get(passport.authenticate('jwt', {session: false}), surveyController.findManager.bind(surveyController))
+
 
 }
