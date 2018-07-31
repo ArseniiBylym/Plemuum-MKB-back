@@ -22,6 +22,7 @@ import { CompassStatisticsModel } from "../../data/database/schema/organization/
 import NotificationManager from "./notification.interactor";
 import StatisticsManager from "./statistics.interactor";
 import { TEMPLATE } from "../../manager/notification/notification.manager";
+import SurveyManager from "../interactor/survey.interactor";
 
 const parser = require('cron-parser');
 
@@ -32,14 +33,16 @@ export default class CompassInteractor {
     requestDataController: RequestDataController;
     notificationManager: NotificationManager;
     statisticsManager: StatisticsManager;
+    surveyManager: SurveyManager;
 
     constructor(groupDataController: GroupDataController, organizationDataController: OrganizationDataController,
-                requestDataController: RequestDataController, notificationManager: NotificationManager, statisticsManager: StatisticsManager) {
+                requestDataController: RequestDataController, notificationManager: NotificationManager, statisticsManager: StatisticsManager, surveyManager: SurveyManager) {
         this.groupDataController = groupDataController;
         this.requestDataController = requestDataController;
         this.organizationDataController = organizationDataController;
         this.notificationManager = notificationManager;
         this.statisticsManager = statisticsManager;
+        this.surveyManager = surveyManager;
     }
 
     async getTodos(orgId: string, userId: string) {
@@ -49,9 +52,11 @@ export default class CompassInteractor {
             if (feedbacks.length === 0) return request
         });
         const compassTodos = await CompassDataController.getTodosForOwner(orgId, userId);
+        const surveysTodo = await this.surveyManager.getAllSurveysTodo(orgId, userId);
         return {
             requests: activeRequests,
-            compassTodo: compassTodos
+            compassTodo: compassTodos,
+            surveysTodo: surveysTodo
         }
     };
 

@@ -40,7 +40,7 @@ const getSurveyManager = (): SurveyManager =>
     getManager(surveyManager, SurveyManager, getNotificationManager());
 
 const getCompassManager = () => getManager(compassManager, CompassManager,
-    getGroupDataController(), getOrganizationDataController(), requestDataController, getNotificationManager(), getStatisticsManager());
+    getGroupDataController(), getOrganizationDataController(), requestDataController, getNotificationManager(), getStatisticsManager(), getSurveyManager());
 
 const getUserManager = (): UserManager =>
     getManager(userManager, UserManager, new EmailManager(), new FileManager(getFirebaseStorageManager()), getOrganizationDataController());
