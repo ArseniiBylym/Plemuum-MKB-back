@@ -68,15 +68,21 @@ export default class GroupInteractor {
         let userIds: string[] = [];
         answerCardGroups.forEach((group) => userIds = userIds.concat(group.users));
 
-        const users = await Promise.all(userIds.map(async (userId) => await UserDataController.getUserByIdFromOrg(orgId, userId)));
+        const users = await Promise.all(userIds.map(async (userId) => {
+            try {
+                return await UserDataController.getUserByIdFromOrg(orgId, userId);
+            } catch (error) {
+                return null;
+            }
+        }));
 
-        return this.filterUserDoubling(users).filter((user) => user._id.toString() !== userId.toString());
+        return this.filterUserDoubling(users).filter((user : any) => user && user._id.toString() !== userId.toString());
     }
 
-    filterUserDoubling(array: UserModel[]): UserModel[] {
+    filterUserDoubling(array: any[]): UserModel[] {
         const result: any[] = [];
         array.forEach((element) => {
-            const index = result.findIndex((e) => e._id.toString() === element._id.toString());
+            const index = result.findIndex((e) => e && element && e._id.toString() === element._id.toString());
             if (index === -1) {
                 result.push(element)
             }
