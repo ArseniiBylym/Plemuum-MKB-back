@@ -197,7 +197,7 @@ const SurveyDataController = {
 
         return SurveyTodoCollection(orgId)
         .findOne({ _id: surveyTodoId, respondent: userId })
-        .populate({ path: 'survey', model: SurveyCollection(orgId) , select:'_id title',}).lean().exec()
+        .populate({ path: 'survey', model: SurveyCollection(orgId) , select:'_id title',}).exec()
         .then((result) => {
             if(!result) {
                 throw new PlenuumError('Survey to do was not found', ErrorType.NOT_FOUND);
@@ -221,9 +221,21 @@ const SurveyDataController = {
                         as: 'answer'
                     }
                 }, {
-                    $unwind: { path:'$answer', preserveNullAndEmptyArrays: true }
-                }, {
-                    $match: { $or: [{ "answer" : { $exists : false } }, {"answer.surveyTodo": surveyTodo._id}] }
+                    "$addFields": {
+                        "answer": {
+                            "$arrayElemAt": [
+                                {
+                                    "$filter": {
+                                        "input": "$answer",
+                                        "as": "answ",
+                                        "cond": {
+                                            "$eq": [ "$$answ.surveyTodo", surveyTodo._id ]
+                                        }
+                                    }
+                                }, 0
+                            ]
+                        }
+                    }
                 }, {
                     $project: {
                         'answer.surveyTodo': 0,

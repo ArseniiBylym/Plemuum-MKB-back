@@ -9,7 +9,7 @@ export let AnswerSchema = new Schema({
     surveyTodo: { type: Schema.Types.ObjectId, index: true },
     question: { type: Schema.Types.ObjectId, index: true },
     questionText: { required: true, type: String, index: false },
-    answerText: { required: true, type: String, index: false },
+    answerText: { required: false, type: String, index: false },
     required: { required: false, type: Boolean, index: false },
     min: {required: false, type: Number, index: false, default: null },
     max: {required: false, type: Number, index: false, default: null },
