@@ -6,12 +6,45 @@ import { TEMPLATE } from "../../manager/notification/notification.manager";
 import NotificationManager from "./notification.interactor";
 import UserDataController from "../../data/datacontroller/user.datacontroller";
 import agenda from "../../util/agenda";
+import * as XLSX from "xlsx";
 
 export default class SurveyInteractor {
     private notificationManager: NotificationManager;
 
     constructor(notificationManager: NotificationManager) {
         this.notificationManager = notificationManager;
+    }
+
+    async getAllUserWhoUncompletedSurvey(orgId: string, surveyId: string) {
+
+        return SurveyDataController.getAllUserWhoUncompletedSurvey(orgId, surveyId)
+            .then(async (result:any) => {
+                //result export to xlsx
+                const ws = await XLSX.utils.json_to_sheet(result,
+                    {header:["employeeId","employeeFirstName","employeeLastName", "employeeEmail"]});
+                const wb = await XLSX.utils.book_new();
+                await XLSX.utils.book_append_sheet(wb, ws, "uncompleted");
+                /* generate an XLSX file */
+                await XLSX.writeFile(wb, `./media/${surveyId}_survey_uncompleted.xlsx`);
+                return result;
+            })
+    }
+
+    async getAllAnswersSurvey(orgId: string, surveyId: string) {
+
+        return SurveyDataController.getAllAnswersSurvey(orgId, surveyId)
+            .then(async (result:any) => {
+                //result export to xlsx
+                const ws = await XLSX.utils.json_to_sheet(result,
+                    {header:["createdAt","employeeId","employeeFirstName","employeeLastName",
+                            "employeeEmail","isCompleted", "updatedAt", "managerId", "managerFirstName",
+                        "managerLastName", "managerEmail"]});
+                const wb = await XLSX.utils.book_new();
+                await XLSX.utils.book_append_sheet(wb, ws, "survey_answers");
+                /* generate an XLSX file */
+                await XLSX.writeFile(wb, `./media/${surveyId}_survey_answers.xlsx`);
+                return result;
+            })
     }
 
     async getAllSurveys(orgId: string) {

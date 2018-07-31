@@ -9,6 +9,101 @@ import { PlenuumError, ErrorType } from "../../util/errorhandler";
 
 const SurveyDataController = {
     // For Plenuum Admin
+
+    getAllUserWhoUncompletedSurvey: (orgId: string, surveyId:string): Promise<SurveyModel[]> => {
+        return SurveyTodoCollection(orgId).aggregate(
+            [{
+                $match: {survey: new ObjectId(surveyId), isCompleted:false}
+            }
+            ])
+            .cursor({ async: true })
+            .then(async (result:any)=>{
+                const resultArr = await result.toArray();
+                const unnecessaryProp:any = ["_id", "updatedAt", "createdAt", "survey", "respondent", "isCompleted"];
+                let userData;
+                // get user data
+                for (let i = 0; i<resultArr.length; i++) {
+                    userData = await UserCollection()
+                        .findById(resultArr[i].respondent, {_id:1, firstName:1, lastName:1, email:1});
+                    if (userData) {
+                        resultArr[i].employeeId = userData._id.toString();
+                        resultArr[i].employeeFirstName = userData.firstName;
+                        resultArr[i].employeeLastName = userData.lastName;
+                        resultArr[i].employeeEmail = userData.email;
+                    }
+                    for (let key in resultArr[i]){
+                        if (unnecessaryProp.includes(key)){
+                            delete resultArr[i][key]
+                        }
+                    }
+                }
+                return resultArr;
+            })
+    },
+    getAllAnswersSurvey: (orgId: string, surveyId:string): Promise<SurveyModel[]> => {
+        return SurveyTodoCollection(orgId).aggregate(
+            [{
+
+                $match: {survey: new ObjectId(surveyId)}
+            }, {
+                $lookup: {
+                    from: 'answers',
+                    localField: '_id',
+                    foreignField: 'surveyTodo',
+                    as: 'answers'
+                }
+            },{
+                $project: {
+                    'answers._id': 0,
+                    'answers.updatedAt': 0,
+                    'answers.question': 0,
+                    'answers.questionText': 0,
+                    'answers.required': 0,
+                    'answers.surveyTodo': 0,
+                    'answers.max': 0,
+                    'answers.min': 0,
+                    'answers.createdAt': 0,
+                }
+            }
+            ])
+            .cursor({ async: true })
+            .then(async (result:any)=>{
+                const resultArr = await result.toArray();
+                let userData;
+                let managerData;
+                let unnecessaryProp:any = ["answers","survey", "_id", "respondent",  "managerData", "manager"];
+                // get user and manager data
+                for (let i = 0; i<resultArr.length; i++) {
+                    userData = await UserCollection()
+                        .findById(resultArr[i].respondent, {_id:1, firstName:1, lastName:1, email:1});
+                    if (userData) {
+                        resultArr[i].employeeId = userData._id.toString();
+                        resultArr[i].employeeFirstName = userData.firstName;
+                        resultArr[i].employeeLastName = userData.lastName;
+                        resultArr[i].employeeEmail = userData.email;
+                    }
+                    managerData  =resultArr[i].managerData = await UserCollection()
+                        .findById(resultArr[i].manager,{_id:1, firstName:1, lastName:1, email:1});
+                    if (managerData){
+                        resultArr[i].managerId = managerData._id.toString();
+                        resultArr[i].managerFirstName = managerData.firstName;
+                        resultArr[i].managerLastName = managerData.lastName;
+                        resultArr[i].managerEmail = managerData.email;
+                    }
+
+                    for (let j = 0; j<resultArr[i].answers.length; j++){
+                        resultArr[i][`Answer string ${j+1}`] = resultArr[i].answers[j].answerText;
+                    }
+                    for (let key in resultArr[i]){
+                        if (unnecessaryProp.includes(key)){
+                            delete resultArr[i][key]
+                        }
+                    }
+                }
+                return resultArr;
+            })
+    },
+
     getAllSurveys: (orgId: string): Promise<SurveyModel[]> => {
         return SurveyCollection(orgId).find({}).sort({createdAt:-1}).lean().exec() as Promise<SurveyModel[]>;
     },

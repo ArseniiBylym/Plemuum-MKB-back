@@ -15,6 +15,18 @@ export default class SurveyController extends BaseController {
         this.surveyManager = surveyManager;
     }
 
+    async getAllAnswersSurvey(req: any, res: any) {
+        return this.surveyManager.getAllAnswersSurvey(req.params.orgId, req.params.surveyId)
+            .then(result => this.respond(StatusCodes.OK, req, res, result))
+            .catch((err) => res.status(this.getErrorStatus(err)).send(formError(err)));
+    }
+
+    async getAllUserWhoUncompletedSurvey(req: any, res: any) {
+        return this.surveyManager.getAllUserWhoUncompletedSurvey(req.params.orgId, req.params.surveyId)
+            .then(result => this.respond(StatusCodes.OK, req, res, result))
+            .catch((err) => res.status(this.getErrorStatus(err)).send(formError(err)));
+    }
+
     async getAllSurveys(req: any, res: any) {
         return this.surveyManager.getAllSurveys(req.params.orgId)
             .then(result => this.respond(StatusCodes.OK, req, res, result))
