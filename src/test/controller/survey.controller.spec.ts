@@ -270,4 +270,27 @@ suite("SurveyController unit tests", () => {
             sinon.assert.calledWith(res.send, {error: "Internal server error"});
         });
     });
+
+    suite("Get all answers by surveyId", () => {
+        test("Should return 200, list of users and answers to a survey", async () => {
+            req.params.surveyId = 'surveyId';
+            let result = [{surveyAnswer: "surveyAnswer"}];
+            surveyManager.getAllAnswersSurvey = sinon.stub().resolves(result);
+
+            const surveyController = new SurveyController(surveyManager);
+            await surveyController.getAllAnswersSurvey(req, res);
+
+            sinon.assert.calledWith(surveyManager.getAllAnswersSurvey, orgId, 'surveyId' );
+            sinon.assert.calledWith(res.status, 200);
+            sinon.assert.calledWith(res.send, result);
+        });
+
+        test("If SurveyInteractor throws a internal error, should send 500 and the error", async () => {
+            surveyManager.getAllAnswersSurvey = sinon.stub().rejects(new Error("Internal server error"));
+            await surveyController.getAllAnswersSurvey(req, res);
+
+            sinon.assert.calledWith(res.status, 500);
+            sinon.assert.calledWith(res.send, {error: "Internal server error"});
+        });
+    });
 });

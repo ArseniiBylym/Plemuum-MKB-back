@@ -52,6 +52,18 @@ suite("Notification tests", () => {
             expect(template).to.deep.equal(expected);
         });
 
+        test("Template for survey", () => {
+            const template = TEMPLATE.SURVEY();
+            const expected = {
+                data: {
+                    body: 'You received a survey',
+                    title: `New survey`,
+                    type: "SURVEY"
+                }
+            };
+            expect(template).to.deep.equal(expected);
+        });
+
         test("Send feedback notification", async () => {
             const template = TEMPLATE.FEEDBACK(testUser.firstName);
             await notificationService.sendNotification(mockToken, template)
@@ -66,6 +78,12 @@ suite("Notification tests", () => {
 
         test("Send compass  notification", async () => {
             const template = TEMPLATE.COMPASS(testUser.firstName);
+            await notificationService.sendNotification(mockToken, template)
+                .then((result) => expect(result).to.not.be.undefined);
+        });
+
+        test("Send survey  notification", async () => {
+            const template = TEMPLATE.SURVEY();
             await notificationService.sendNotification(mockToken, template)
                 .then((result) => expect(result).to.not.be.undefined);
         });
