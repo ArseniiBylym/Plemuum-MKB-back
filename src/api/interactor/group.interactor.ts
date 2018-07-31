@@ -4,7 +4,7 @@ import UserDataController from "../../data/datacontroller/user.datacontroller";
 import CompassDataController from "../../data/datacontroller/compass.datacontroller";
 import { ErrorType, PlenuumError } from "../../util/errorhandler";
 import { UserModel } from "../../data/database/schema/common/user.schema";
-
+import * as  _ from "lodash"
 export default class GroupInteractor {
 
     groupDataController: GroupDataController;
@@ -80,13 +80,9 @@ export default class GroupInteractor {
     }
 
     filterUserDoubling(array: any[]): UserModel[] {
-        const result: any[] = [];
-        array.forEach((element) => {
-            const index = result.findIndex((e) => e && element && e._id.toString() === element._id.toString());
-            if (index === -1) {
-                result.push(element)
-            }
-        });
+        let result: any[];
+        result = _.compact(array);
+        result = _.uniqBy(result, (item:any)=> item._id.toString());
         return result;
     };
 }
