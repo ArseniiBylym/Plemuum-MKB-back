@@ -8,6 +8,7 @@ import { validate } from "../../util/input.validator";
 import * as crypto from 'crypto';
 import config from "../../../config/config";
 import UserManager from "../interactor/user.interactor";
+import agenda from "../../util/agenda";
 
 const formidable = require('formidable');
 
@@ -35,7 +36,10 @@ export default class UserController extends BaseController {
         }
 
         return this.userManager.saveUser(req.body)
-            .then((result) => this.respond(StatusCodes.CREATED, req, res, result))
+            .then((result) => {
+                agenda.schedule(new Date(Date.now() + 2000),'sendWelcomeEmailsInBackground',  result);
+                this.respond(StatusCodes.CREATED, req, res, result)
+            })
             .catch((err) => this.handleError(err, req, res))
     }
 
