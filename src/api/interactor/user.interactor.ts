@@ -74,7 +74,6 @@ export default class UserInteractor {
         for (let i = 0; i < users.length; i++) {
             let user = users[i];
             user.orgId = orgId;
-            user.password = crypto.randomBytes(16).toString('hex');
             let savedUser;
             try {
                 savedUser = await this.saveUser(user, orgId);
