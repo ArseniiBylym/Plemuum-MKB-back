@@ -38,6 +38,7 @@ suite("SurveyInteractor unit tests", () => {
         test("Should return a list of survey to do objects for current user", async () => {
             const userId = "5984342227cd340363dc84ad";
             const testSurveysTodo = getTestAllSurveysTodo();
+            const getAllSurveyTodos = sinon.stub(SurveyDataController, 'getAllSurveyTodos').resolves(testSurveysTodo);
             const getAllSurveysTodo = sinon.stub(SurveyDataController, 'getAllSurveysTodo').resolves(testSurveysTodo);
             const getSurveysAfterDate = sinon.stub(SurveyDataController, 'getSurveysAfterDate').resolves([]);
             const createManySurveyTodo = sinon.stub(SurveyDataController, 'createManySurveyTodo').resolves([]);
@@ -47,9 +48,11 @@ suite("SurveyInteractor unit tests", () => {
             chai.assert.isArray(result);
             chai.assert.lengthOf(result, testSurveysTodo.length);
             sinon.assert.calledOnce(getSurveysAfterDate);
+            sinon.assert.calledOnce(getAllSurveyTodos);
             sinon.assert.calledOnce(getAllSurveysTodo);
             sinon.assert.notCalled(createManySurveyTodo);
 
+            getAllSurveyTodos.restore();
             getAllSurveysTodo.restore();
             getSurveysAfterDate.restore();
             createManySurveyTodo.restore();
@@ -60,6 +63,7 @@ suite("SurveyInteractor unit tests", () => {
             const testSurveysTodo = getTestAllSurveysTodo();
             const testSurveysAfterDate = getTestSurveysAfterDate();
 
+            const getAllSurveyTodos = sinon.stub(SurveyDataController, 'getAllSurveyTodos').resolves(testSurveysTodo);
             const getAllSurveysTodo = sinon.stub(SurveyDataController, 'getAllSurveysTodo').resolves(testSurveysTodo);
             const getSurveysAfterDate = sinon.stub(SurveyDataController, 'getSurveysAfterDate').resolves(testSurveysAfterDate);
             const createManySurveyTodo = sinon.stub(SurveyDataController, 'createManySurveyTodo').resolves([testSurveysAfterDate[1]]);
@@ -69,8 +73,10 @@ suite("SurveyInteractor unit tests", () => {
             chai.assert.isArray(result);
             sinon.assert.calledOnce(getSurveysAfterDate);
             sinon.assert.calledOnce(createManySurveyTodo);
-            sinon.assert.calledTwice(getAllSurveysTodo);
+            sinon.assert.calledOnce(getAllSurveysTodo);
+            sinon.assert.calledOnce(getAllSurveyTodos);
 
+            getAllSurveyTodos.restore();
             getAllSurveysTodo.restore();
             getSurveysAfterDate.restore();
             createManySurveyTodo.restore();

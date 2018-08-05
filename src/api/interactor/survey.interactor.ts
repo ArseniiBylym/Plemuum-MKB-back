@@ -101,31 +101,18 @@ export default class SurveyInteractor {
     }
 
     async getAllSurveysTodo(orgId: string, userId: string) {
-        let allSurveysAfterDate : string[];
         let currentDate = new Date();
         let needDate = new Date(currentDate.setMonth(currentDate.getMonth() - 1));
 
-        return SurveyDataController.getSurveysAfterDate(orgId, needDate)
-        .then((result) => {
-            allSurveysAfterDate = result.map((item) => { return String(item._id) });
-            return SurveyDataController.getAllSurveysTodo(orgId, userId);
-        })
-        .then((result) => {
-            let allSurveysTodo = result.map((item) => { return String(item.survey._id) });
-            let needSurveysTodo = allSurveysAfterDate.filter((item) => { return allSurveysTodo.indexOf(item) < 0 });
-            if (needSurveysTodo && needSurveysTodo.length) {
-                let need = needSurveysTodo.map((item) => { return { survey: item, respondent: userId } as SurveyTodoModel } );
-                return SurveyDataController.createManySurveyTodo(orgId, need)
-                    .then((result) => {
-                        return SurveyDataController.getAllSurveysTodo(orgId, userId)
-                    })
-                    .then((result) => {
-                        return result;
-                    });
-            } else {
-                return result;
-            }
-        })
+        let allSurveysAfterDate = (await SurveyDataController.getSurveysAfterDate(orgId, needDate)).map((item) => { return String(item._id) });
+
+        let allSurveysTodo = (await SurveyDataController.getAllSurveyTodos(orgId, userId)).map((item) => { return String(item.survey._id) });
+        let needSurveysTodo = allSurveysAfterDate.filter((item) => { return allSurveysTodo.indexOf(item) < 0 });
+        if (needSurveysTodo && needSurveysTodo.length) {
+            let need = needSurveysTodo.map((item) => { return { survey: item, respondent: userId } as SurveyTodoModel } );
+            await SurveyDataController.createManySurveyTodo(orgId, need);
+        }
+        return await SurveyDataController.getAllSurveysTodo(orgId, userId);
     }
 
     async getSurveyTodo(orgId: string, surveyTodoId: string, userId: string) {
