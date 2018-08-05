@@ -1,6 +1,7 @@
 import Feedback from "../models/organization/feedback.model";
 import { Model, Query } from "mongoose";
 import { FeedbackCollection } from "../database/schema/organization/feedback.schema";
+import { UserModel, UserCollection } from "../database/schema/common/user.schema";
 
 const FeedbackDataController = {
 
@@ -14,6 +15,12 @@ const FeedbackDataController = {
 
     getIncomingFeedbacks: function (organizationId: string, userId: string): Promise<any> {
         return FeedbackCollection(organizationId).find({recipientId: userId}).lean().exec();
+    },
+
+    getAbuseReport: function (organizationId: string, userId: string): Promise<any> {
+        return FeedbackCollection(organizationId).find({recipientId: userId})
+        .populate({ path: 'senderId', model: UserCollection(), select:'_id firstName lastName email',})
+        .lean().exec();
     },
 
     saveFeedback: function (organizationId: string, feedback: Feedback): Promise<any> {

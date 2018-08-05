@@ -190,4 +190,7 @@ export default (app: Express, feedbackController: FeedbackController) => {
      */
     app.route("/api/organizations/:orgId/users/me/feedbacks/received")
         .get(passport.authenticate('jwt', {session: false}), feedbackController.getIncomingFeedbacks.bind(feedbackController));
+
+    app.route("/api/organizations/:orgId/users/:userId/abuse")
+        .get(passport.authenticate('jwt', {session: false}), feedbackController.getAbuseReport.bind(feedbackController));
 }
