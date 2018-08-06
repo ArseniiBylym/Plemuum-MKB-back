@@ -27,21 +27,45 @@ export default class FeedbackInteractor {
         return FeedbackDataController.getIncomingFeedbacks(orgId, userId)
     }
 
-    async getAbuseReport(orgId: string, userId: string) {
-        return FeedbackDataController.getAbuseReport(orgId, userId)
+    async getSentFeedbacksReport(orgId: string, userId: string) {
+        return FeedbackDataController.getSentFeedbacksReport(orgId, userId)
             .then(async (result:any) => {
-                let res = result.map((item:any) => { return {
+                let res = result.filter((item : any) => item && item.senderId && item.recipientId).map((item:any) => { return {
                     createdAt:item.createdAt.toString(),
-                    firstName: item.senderId.firstName,
-                    lastName: item.senderId.lastName,
-                    email: item.senderId.email,
+                    sender: item.senderId.firstName + ' ' + item.senderId.lastName,
+                    "sender email": item.senderId.email,
+                    "recipient firstName": item.recipientId.firstName,
+                    "recipient lastName": item.recipientId.lastName,
+                    "recipient email": item.recipientId.email,
                     message: item.message,
                     type: item.type}
                 });
                 //result export to xlsx
                 const ws = await XLSX.utils.json_to_sheet(res);
                 const wb = await XLSX.utils.book_new();
-                await XLSX.utils.book_append_sheet(wb, ws, "feedback report");
+                await XLSX.utils.book_append_sheet(wb, ws, "SentFeedbacksReport");
+                /* generate an XLSX file */
+                return XLSX.write(wb, {bookType:'xlsx', type:'buffer'});
+            })
+    }
+
+    async getIncomingFeedbacksReport(orgId: string, userId: string) {
+        return FeedbackDataController.getIncomingFeedbacksReport(orgId, userId)
+            .then(async (result:any) => {
+                let res = result.filter((item : any) => item && item.senderId && item.recipientId).map((item:any) => { return {
+                    createdAt:item.createdAt.toString(),
+                    recipient: item.recipientId.firstName + ' ' + item.recipientId.lastName,
+                    "recipient email": item.recipientId.email,
+                    "sender firstName": item.senderId.firstName,
+                    "sender lastName": item.senderId.lastName,
+                    "sender email": item.senderId.email,
+                    message: item.message,
+                    type: item.type}
+                });
+                //result export to xlsx
+                const ws = await XLSX.utils.json_to_sheet(res);
+                const wb = await XLSX.utils.book_new();
+                await XLSX.utils.book_append_sheet(wb, ws, "IncomingFeedbacksReport");
                 /* generate an XLSX file */
                 return XLSX.write(wb, {bookType:'xlsx', type:'buffer'});
             })

@@ -31,8 +31,18 @@ export default class FeedbackController extends BaseController {
             .catch((err) => res.status(this.getErrorStatus(err)).send(formError(err)));
     }
 
-    async getAbuseReport(req: any, res: any,) {
-        return this.feedbackManager.getAbuseReport(req.params.orgId, req.params.userId)
+    async getSentFeedbacksReport(req: any, res: any,) {
+        return this.feedbackManager.getSentFeedbacksReport(req.params.orgId, req.params.userId)
+            .then((result) => {
+                res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                res.setHeader("Content-Disposition", "attachment; filename=report.xlsx");
+                res.status(200).send(result);
+            })
+            .catch((err) => res.status(this.getErrorStatus(err)).send(formError(err)));
+    }
+
+    async getIncomingFeedbacksReport(req: any, res: any,) {
+        return this.feedbackManager.getIncomingFeedbacksReport(req.params.orgId, req.params.userId)
             .then((result) => {
                 res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
                 res.setHeader("Content-Disposition", "attachment; filename=report.xlsx");

@@ -191,6 +191,10 @@ export default (app: Express, feedbackController: FeedbackController) => {
     app.route("/api/organizations/:orgId/users/me/feedbacks/received")
         .get(passport.authenticate('jwt', {session: false}), feedbackController.getIncomingFeedbacks.bind(feedbackController));
 
-    app.route("/api/organizations/:orgId/users/:userId/abuse")
-        .get(passport.authenticate('jwt', {session: false}), feedbackController.getAbuseReport.bind(feedbackController));
+
+    app.route("/api/organizations/:orgId/users/:userId/report/incoming-feedbacks")
+        .get(passport.authenticate('jwt', {session: false}), feedbackController.getIncomingFeedbacksReport.bind(feedbackController));
+
+    app.route("/api/organizations/:orgId/users/:userId/report/sent-feedbacks")
+        .get(passport.authenticate('jwt', {session: false}), feedbackController.getSentFeedbacksReport.bind(feedbackController));
 }

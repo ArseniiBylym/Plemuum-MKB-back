@@ -17,9 +17,17 @@ const FeedbackDataController = {
         return FeedbackCollection(organizationId).find({recipientId: userId}).lean().exec();
     },
 
-    getAbuseReport: function (organizationId: string, userId: string): Promise<any> {
+    getSentFeedbacksReport: function (organizationId: string, userId: string): Promise<any> {
+        return FeedbackCollection(organizationId).find({senderId: userId})
+        .populate({ path: 'senderId', model: UserCollection(), select:'_id firstName lastName email',})
+        .populate({ path: 'recipientId', model: UserCollection(), select:'_id firstName lastName email',})
+        .lean().exec();
+    },
+
+    getIncomingFeedbacksReport: function (organizationId: string, userId: string): Promise<any> {
         return FeedbackCollection(organizationId).find({recipientId: userId})
         .populate({ path: 'senderId', model: UserCollection(), select:'_id firstName lastName email',})
+        .populate({ path: 'recipientId', model: UserCollection(), select:'_id firstName lastName email',})
         .lean().exec();
     },
 
