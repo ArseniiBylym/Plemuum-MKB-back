@@ -31,11 +31,12 @@ export default class FeedbackInteractor {
         return FeedbackDataController.getAbuseReport(orgId, userId)
             .then(async (result:any) => {
                 let res = result.map((item:any) => { return {
-                    createdAt:String(item.createdAt),
+                    createdAt:item.createdAt.toString(),
                     firstName: item.senderId.firstName,
                     lastName: item.senderId.lastName,
                     email: item.senderId.email,
-                    message: item.message}
+                    message: item.message,
+                    type: item.type}
                 });
                 //result export to xlsx
                 const ws = await XLSX.utils.json_to_sheet(res);
