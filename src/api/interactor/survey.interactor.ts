@@ -42,8 +42,9 @@ export default class SurveyInteractor {
                 const wb = await XLSX.utils.book_new();
                 await XLSX.utils.book_append_sheet(wb, ws, "survey_answers");
                 /* generate an XLSX file */
-                await XLSX.writeFile(wb, `./media/${surveyId}_survey_answers.xlsx`);
-                return result;
+                //await XLSX.writeFile(wb, `./media/${surveyId}_survey_answers.xlsx`);
+                //return result;
+                return XLSX.write(wb, {bookType:'xlsx', type:'buffer'});
             })
     }
 
