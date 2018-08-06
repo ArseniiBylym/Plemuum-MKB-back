@@ -317,7 +317,6 @@ const SurveyDataController = {
                         {lastName: {$regex: keyword, $options: 'i'}}
                     ]},
             ]})
-            .limit(10)
             .lean()
             .exec() as Promise<UserModel[]>;
     },
