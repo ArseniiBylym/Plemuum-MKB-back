@@ -17,12 +17,7 @@ export default class SurveyController extends BaseController {
 
     async getAllAnswersSurvey(req: any, res: any) {
         return this.surveyManager.getAllAnswersSurvey(req.params.orgId, req.params.surveyId)
-            //.then(result => this.respond(StatusCodes.OK, req, res, result))
-            .then((result) => {
-                res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-                res.setHeader("Content-Disposition", "attachment; filename=report.xlsx");
-                res.status(200).send(result);
-            })
+            .then(result => this.respond(StatusCodes.OK, req, res, result))
             .catch((err) => res.status(this.getErrorStatus(err)).send(formError(err)));
     }
 
