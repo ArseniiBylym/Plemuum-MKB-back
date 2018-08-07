@@ -74,30 +74,34 @@ const SurveyDataController = {
                 let unnecessaryProp:any = ["answers","survey", "_id", "respondent",  "managerData", "manager"];
                 // get user and manager data
                 for (let i = 0; i<resultArr.length; i++) {
-                    userData = await UserCollection()
-                        .findById(resultArr[i].respondent, {_id:1, firstName:1, lastName:1, email:1});
-                    if (userData) {
-                        resultArr[i].employeeId = userData._id.toString();
-                        resultArr[i].employeeFirstName = userData.firstName;
-                        resultArr[i].employeeLastName = userData.lastName;
-                        resultArr[i].employeeEmail = userData.email;
-                    }
-                    managerData  =resultArr[i].managerData = await UserCollection()
-                        .findById(resultArr[i].manager,{_id:1, firstName:1, lastName:1, email:1});
-                    if (managerData){
-                        resultArr[i].managerId = managerData._id.toString();
-                        resultArr[i].managerFirstName = managerData.firstName;
-                        resultArr[i].managerLastName = managerData.lastName;
-                        resultArr[i].managerEmail = managerData.email;
-                    }
-
-                    for (let j = 0; j<resultArr[i].answers.length; j++){
-                        resultArr[i][`Answer string ${j+1}`] = resultArr[i].answers[j].answerText;
-                    }
-                    for (let key in resultArr[i]){
-                        if (unnecessaryProp.includes(key)){
-                            delete resultArr[i][key]
+                    try {
+                        userData = await UserCollection()
+                            .findById(resultArr[i].respondent, {_id:1, firstName:1, lastName:1, email:1});
+                        if (userData) {
+                            resultArr[i].employeeId = userData._id.toString();
+                            resultArr[i].employeeFirstName = userData.firstName;
+                            resultArr[i].employeeLastName = userData.lastName;
+                            resultArr[i].employeeEmail = userData.email;
                         }
+
+                        managerData  =resultArr[i].managerData = await UserCollection()
+                            .findById(resultArr[i].manager,{_id:1, firstName:1, lastName:1, email:1});
+                        if (managerData){
+                            resultArr[i].managerId = managerData._id.toString();
+                            resultArr[i].managerFirstName = managerData.firstName;
+                            resultArr[i].managerLastName = managerData.lastName;
+                            resultArr[i].managerEmail = managerData.email;
+                        }
+
+                        for (let j = 0; j<resultArr[i].answers.length; j++){
+                            resultArr[i][`Answer string ${j+1}`] = resultArr[i].answers[j].answerText;
+                        }
+                        for (let key in resultArr[i]){
+                            if (unnecessaryProp.includes(key)){
+                                delete resultArr[i][key]
+                            }
+                        }
+                    } catch (e) {
                     }
                 }
                 return resultArr;
