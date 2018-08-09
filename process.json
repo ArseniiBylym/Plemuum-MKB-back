@@ -11,7 +11,8 @@
         "PLENUUM_BOT_PWD": "Cocobongo1",
         "ADMIN_PASSWORD": "incline diadem passed hoop",
         "WEBAPP_DOMAIN": "http://188.142.231.10:8083",
-        "ADMIN_DOMAIN": "http://188.142.231.10:8082"
+        "ADMIN_DOMAIN": "http://188.142.231.10:8082",
+        "SENGRID_TOKEN":      "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"
       }
     }
   ]

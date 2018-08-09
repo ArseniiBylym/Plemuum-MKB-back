@@ -38,8 +38,10 @@ const devConfig: Config = {
     },
     get tokenHash() {
         return 'HlP8IqXEfXyrP0LgZihWSyLwlcSlySc3H40yj9P2';
+    },
+    get plenuumSengridToken() {
+      return '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';
     }
 };
 
 export default devConfig
-

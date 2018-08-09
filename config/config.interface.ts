@@ -13,4 +13,5 @@ export interface Config {
     webappDomain: string;
     adminDomain: string;
     tokenHash: string;
+    plenuumSengridToken: string;
 }

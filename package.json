@@ -61,6 +61,7 @@
   },
   "dependencies": {
     "@google-cloud/storage": "1.2.1",
+    "@sendgrid/mail": "^6.3.1",
     "@types/body-parser": "1.16.4",
     "@types/cors": "2.8.1",
     "@types/cron": "1.2.1",

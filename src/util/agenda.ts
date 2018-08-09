@@ -2,6 +2,7 @@ const Agenda = require('agenda');
 const backgroundScripts = 'src/jobs';
 const fs = require('fs');
 import sendEmailsInBackground from '../jobs/sendEmailsInBackground';
+import * as sgMail from '@sendgrid/mail';
 
 //for transporter
 import EmailManager from "../manager/email/mail.manager";
@@ -9,10 +10,9 @@ import config from "../../config/config";
 
 const USERNAME = config.plenuumBotEmail;
 const SECRET = config.plenuumBotPass;
-const SECURE = true; // This has effect on port, use carefully
-const PORT = SECURE ? 465 : 587;
-const HOST = 'smtp.gmail.com';
-const transporter = EmailManager.getTransport(HOST, PORT, SECURE, USERNAME, SECRET);
+const SENGRID_TOKEN = config.plenuumSengridToken;
+
+const transporter = sgMail.setApiKey(SENGRID_TOKEN);
 
 
 // or override the default collection name:

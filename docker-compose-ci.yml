@@ -19,6 +19,7 @@ services:
         - WEBAPP_DOMAIN=http://localhost:3000
         - ADMIN_DOMAIN=http://localhost:8081
         - TOKEN_HASH=HlP8IqXEfXyrP0LgZihWSyLwlcSlySc3H40yj9P2
+        - SENGRID_TOKEN=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
     depends_on:
       - mongo
     tty: true

@@ -1,14 +1,13 @@
 import config from "../../../config/config";
 import * as nodemailer from 'nodemailer';
 import { promisify } from "util";
+import * as sgMail from '@sendgrid/mail';
 
 const ejs = require('ejs');
 
 const USERNAME = config.plenuumBotEmail;
 const SECRET = config.plenuumBotPass;
-const SECURE = true; // This has effect on port, use carefully
-const PORT = SECURE ? 465 : 587;
-const HOST = 'smtp.gmail.com';
+const SENGRID_TOKEN = config.plenuumSengridToken;
 
 const MAIL_TEMPLATE_DIR = __dirname + "/content/";
 const WELCOME_TEMPLATE = "welcome.ejs";
@@ -20,17 +19,8 @@ export default class EmailManager {
 
     renderFile = promisify(ejs.renderFile);
 
-    static getTransport(host: string, port: number, secure: boolean, username: string, password: string) {
-        return nodemailer.createTransport({
-            host: host,
-            port: port,
-            secure: secure,
-            auth: {
-                user: username,
-                pass: password
-            },
-            debug: config.debugMode
-        });
+    static getTransport(key: string) {
+        sgMail.setApiKey(key);
     };
 
     getHtmlFromEjs(template: string, data: any): Promise<any> {
@@ -59,6 +49,7 @@ export default class EmailManager {
         };
         return this.getHtmlFromEjs(SURVEYNOTIFICATION_TEMPLATE, data)
             .then((html) => {
+                EmailManager.getTransport(SENGRID_TOKEN);
                 const mailOptions = EmailManager.getMailOptions(email, html, "New survey");
                 return new Promise((resolve, reject) => {
                     transporter.sendMail(mailOptions, (error: any, info: any) => error ? reject(error) : resolve(info));
@@ -80,6 +71,7 @@ export default class EmailManager {
         };
         return this.getHtmlFromEjs(SURVEY_RESULT, data)
             .then((html) => {
+                EmailManager.getTransport(SENGRID_TOKEN);
                 const mailOptions = EmailManager.getMailOptions(email, html, "Survey result");
                 return new Promise((resolve, reject) => {
                     transporter.sendMail(mailOptions, (error: any, info: any) => error ? reject(error) : resolve(info));
@@ -96,9 +88,10 @@ export default class EmailManager {
         };
         return this.getHtmlFromEjs(WELCOME_TEMPLATE, data)
             .then((html) => {
+                EmailManager.getTransport(SENGRID_TOKEN);
                 const mailOptions = EmailManager.getMailOptions(email, html, "Welcome to Plenuum");
                 return new Promise((resolve, reject) => {
-                    transporter.sendMail(mailOptions, (error: any, info: any) => error ? reject(error) : resolve(info));
+                  sgMail.send(mailOptions);
                 })
             })
     };
@@ -109,11 +102,10 @@ export default class EmailManager {
         };
         return this.getHtmlFromEjs(RESET_PASSWORD_TEMPLATE, data)
             .then((html) => {
-                const transporter = EmailManager.getTransport(HOST, PORT, SECURE, USERNAME, SECRET);
+                EmailManager.getTransport(SENGRID_TOKEN);
                 const mailOptions = EmailManager.getMailOptions(email, html, "Plenuum password reset");
                 return new Promise((resolve, reject) => {
-                    transporter.sendMail(mailOptions, (error: any, info: any) => error ? reject(error)
-                        : resolve(info));
+                    sgMail.send(mailOptions);
                 })
             });
     };

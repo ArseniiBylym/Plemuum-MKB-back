@@ -38,10 +38,10 @@ const defaultConfig: Config = {
     },
     get tokenHash() {
         return <string> process.env.TOKEN_HASH;
+    },
+    get plenuumSengridToken() {
+      return <string> process.env.SENGRID_TOKEN;
     }
 };
 
 export default defaultConfig
-
-
-
