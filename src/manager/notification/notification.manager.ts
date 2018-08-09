@@ -35,7 +35,13 @@ export const TEMPLATE = {
             type: "STATISTICS"
         }
     }),
-    GENERAL: (title: string, body: string) => ({title: title, body: body})
+    GENERAL: (title: string, body: string) => ({
+        data: {
+            title: title, 
+            body: body,
+            type: "GENERAL"
+        }
+    })
 };
 
 export default class NotificationManager {
