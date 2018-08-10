@@ -33,7 +33,7 @@ deploy_job:
   stage: deploy
   script:
   - apt-get update
-  - apt-get install -y python python-pip curl unzip groff
+  - apt-get install -y python python-pip python-dev curl unzip groff
   - pip install awsebcli
   - curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip" && unzip awscli-bundle.zip && ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
   - ./node_modules/.bin/tsc --outDir ./
