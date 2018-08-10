@@ -1,25 +1,40 @@
 image: node:8.4.0
 
 cache:
- paths:
+  paths:
   - node_modules/
 
 services:
- - mongo:3.4.9
+- mongo:3.4.9
 
 before_script:
- - npm i --silent
+- npm i --silent
+
+stages:
+- tests
+- deploy
 
 tests:
- variables: {
-  DATABASE_URL:       "mongodb://mongo:27017",
-  PLENUUM_BOT_EMAIL:  "bot@plenuum.com",
-  PLENUUM_BOT_PWD:    "Cocobongo1",
-  ADMIN_PASSWORD:     "incline diadem passed hoop",
-  WEBAPP_DOMAIN:      "http://localhost:3000",
-  ADMIN_DOMAIN:       "http://localhost:8081",
-  TOKEN_HASH:         "HlP8IqXEfXyrP0LgZihWSyLwlcSlySc3H40yj9P2",
-  SENGRID_TOKEN:      "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"
- }
- script:
+  stage: tests
+  variables: {
+    DATABASE_URL:       "mongodb://mongo:27017",
+    PLENUUM_BOT_EMAIL:  "bot@plenuum.com",
+    PLENUUM_BOT_PWD:    "Cocobongo1",
+    ADMIN_PASSWORD:     "incline diadem passed hoop",
+    WEBAPP_DOMAIN:      "http://localhost:3000",
+    ADMIN_DOMAIN:       "http://localhost:8081",
+    TOKEN_HASH:         "HlP8IqXEfXyrP0LgZihWSyLwlcSlySc3H40yj9P2",
+    SENGRID_TOKEN:      "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"
+  }
+  script:
   - npm run start-ci-test
+
+deploy_job:
+  stage: deploy
+  script:
+  - apt-get install -y python python-pip curl unzip groff
+  - pip install awsebcli
+  - curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip" && unzip awscli-bundle.zip && ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
+  - ./node_modules/.bin/tsc --outDir ./
+  -  eb deploy plenuum-backend
+  when: manual
