@@ -1,7 +1,7 @@
 import * as fs from "fs-extra";
 import StorageManager from './storage.manager';
 import { ErrorType, PlenuumError } from "../../util/errorhandler";
-import  * as sharp  from "sharp";
+//import  * as sharp  from "sharp";
 
 export default class FileManager {
     public static SUPPORTED_IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif'];
@@ -37,6 +37,7 @@ export default class FileManager {
         const url = await this.storageManager.uploadFile(destination, fileName, picture.path);
 
         //create thumbnail
+        /*
         await sharp(picture.path)
             .resize(300)
             .toBuffer()
@@ -49,6 +50,7 @@ export default class FileManager {
                 });
             })
             .catch( err => console.log(err) );
+        */
         await this.storageManager.uploadFile(destination, thumbFileName, picture.path);
 
         fs.unlink(picture.path);
