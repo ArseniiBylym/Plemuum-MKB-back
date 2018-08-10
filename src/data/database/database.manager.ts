@@ -13,7 +13,7 @@ export default class DatabaseManager {
 
         this.connectionPromise = new Promise((resolve, reject) => {
             if (!this.dbConnection) {
-                this.dbConnection = mongoose.createConnection(mongoUrl);
+                this.dbConnection = mongoose.connect(mongoUrl, { useMongoClient: true });
                 // CONNECTION EVENTS
                 // When successfully connected
                 this.dbConnection.on('connected', () => {
