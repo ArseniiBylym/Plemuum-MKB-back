@@ -57,7 +57,7 @@ export default class FileManager {
 
     public async convertCSV2UserArray(csvFile: any): Promise<any[]> {
         const fileType = csvFile.type.split("/");
-        if (fileType[1] !== 'csv') throw new PlenuumError("Unsupported file extension", ErrorType.NOT_ALLOWED);
+        if (!(fileType[1] === 'csv' || csvFile.name.split('.').pop() === 'csv')) throw new PlenuumError(csvFile.type, ErrorType.NOT_ALLOWED);
         const csvString = await fs.readFile(csvFile.path, 'utf-8');
         return this.csv2JSON(csvString);
     }
