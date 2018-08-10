@@ -83,7 +83,7 @@ export default class SurveyInteractor {
                 await this.notificationManager.sendNotificationById(employees[i]._id,
                     TEMPLATE.SURVEY());
                 //send email
-                //await agenda.schedule(new Date(Date.now() + i*2000),'sendSurveyNotificationEmailsInBackground',  employees[i]);
+                await agenda.schedule(new Date(Date.now() + i*2000),'sendSurveyNotificationEmailsInBackground',  employees[i]);
             } catch (error) {
                 console.error(error);
                 break
@@ -121,11 +121,10 @@ export default class SurveyInteractor {
     async saveSurveyTodo(orgId: string, surveyTodo: SurveyTodoModel) {
         const result = await SurveyDataController.saveSurveyTodo(orgId, surveyTodo);
         const {_id, respondent} = result;
-        if (_id){
+        if (_id) {
+            const surveyWithAnswers = await SurveyDataController.getSurveyTodo(orgId, _id, respondent);
+            await agenda.schedule(new Date(Date.now() + 2000),'sendSurveyAnswers',  surveyWithAnswers);
             return await SurveyDataController.getSurveyTodo(orgId, _id, respondent);
-
-            // const surveyWithAnswers = await SurveyDataController.getSurveyTodo(orgId, _id, respondent);
-            // return await agenda.schedule(new Date(Date.now() + 2000),'sendSurveyAnswers',  surveyWithAnswers);
         }
     }
 
