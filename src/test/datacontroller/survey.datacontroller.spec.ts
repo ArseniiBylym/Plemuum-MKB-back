@@ -191,10 +191,13 @@ suite("Survey datacontroller", () => {
     suite("findManager", () => {
         test("Should be able to search manager for survey to do", async () => {
             const keyword = "ma";
-
+            try {
             let result = await SurveyDataController.findManager(orgID, keyword);
             chai.should().exist(result);
             chai.expect(result).length(4);
+            } catch (e) {
+                console.log("error: " + e);
+            }
         });
     });
 

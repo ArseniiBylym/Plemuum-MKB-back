@@ -51,8 +51,16 @@ export default class EmailManager {
             .then((html) => {
                 EmailManager.getTransport(SENGRID_TOKEN);
                 const mailOptions = EmailManager.getMailOptions(email, html, "New survey");
+<<<<<<< HEAD
                 return Promise.resolve(sgMail.send(mailOptions))
             })
+=======
+                return new Promise((resolve, reject) => {
+                    console.log("sending mail");
+                    sgMail.send(mailOptions).catch((err) => reject(err));
+                })
+            }).catch((err) => console.log("error sending survey notif mail: " + err));
+>>>>>>> log sendgrid errors, avoid  UnhandledPromiseRejectionWarning, TODO: mock sendgrid https://github.com/sendgrid/sendgrid-nodejs/issues/141
     };
 
     public sendSurveyAnswer(email: string, manager:any, respondent:any, surveyWithAnswer:any, organization: string, transporter?:any, forManager?:Boolean): Promise<any> {
@@ -72,8 +80,10 @@ export default class EmailManager {
             .then((html) => {
                 EmailManager.getTransport(SENGRID_TOKEN);
                 const mailOptions = EmailManager.getMailOptions(email, html, "Survey result");
-                return Promise.resolve(sgMail.send(mailOptions))
-            })
+                return new Promise((resolve, reject) => {
+                    sgMail.send(mailOptions).catch((err) => reject(err));
+                })
+            }).catch((err) => {console.log("mail send error: " + err)});
     };
 
     public sendWelcomeEmail(email: string, firstName: string, link: string, organization: string, transporter?:any): Promise<any> {
@@ -88,8 +98,12 @@ export default class EmailManager {
             .then((html) => {
                 EmailManager.getTransport(SENGRID_TOKEN);
                 const mailOptions = EmailManager.getMailOptions(email, html, "Welcome to Plenuum");
-                return Promise.resolve(sgMail.send(mailOptions))
-            })
+                return new Promise((resolve, reject) => {
+                    sgMail.send(mailOptions).catch((err) => reject(err));
+                }).catch((e) => {
+                    console.log("failed to send 'Welcome' email: " + e);
+                });
+            }).catch((err) => console.log("welcome mail send error: " + err));
     };
 
     public async sendResetEmail(email: string, link: string, firstName?: string): Promise<any> {
@@ -101,8 +115,10 @@ export default class EmailManager {
             .then((html) => {
                 EmailManager.getTransport(SENGRID_TOKEN);
                 const mailOptions = EmailManager.getMailOptions(email, html, "Plenuum password reset");
-                return Promise.resolve(sgMail.send(mailOptions))
-            });
+                return new Promise((resolve, reject) => {
+                    sgMail.send(mailOptions).catch((err) => reject(err));
+                })
+            }).catch((err) => { console.log("reset mail send error: " + err); });
     };
 
 }
