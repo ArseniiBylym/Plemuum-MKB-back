@@ -5,7 +5,7 @@ cache:
   - node_modules/
 
 services:
-- mongo:3.4.9
+ - mongo:3.4.16
 
 before_script:
 - npm i --silent
