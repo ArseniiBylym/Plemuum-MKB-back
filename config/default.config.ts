@@ -7,7 +7,7 @@ const defaultConfig: Config = {
         return <string> process.env.NODE_ENV;
     },
     get port() {
-        return '5000';
+        return <string> process.env.PORT;
     },
     get mongoUrl() {
         return <string> process.env.DATABASE_URL
