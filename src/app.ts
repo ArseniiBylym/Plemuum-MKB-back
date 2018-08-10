@@ -11,7 +11,10 @@ import * as expressValidator from 'express-validator';
 import * as cors from 'cors';
 import OrganizationChecker from "./middleware/organization.checker";
 import { getOrganizationDataController } from "./data/datacontroller/organization.datacontroller";
-import { default as config } from "../config/config";
+import {default as config, ENVIRONMENTS} from "../config/config";
+import * as Raven from 'raven';
+
+Raven.config(config.SentryDSN).install(); // http://93b4bdafa81d43888094ee3452fe861c@52.59.111.52:9000/2
 
 const viewsPath = [path.join(__dirname, "./view"), path.join(__dirname, "./email/raw")];
 const sessionOptions = {
@@ -26,6 +29,10 @@ const app = (): Express => {
 
     //https://helmetjs.github.io/
     app.use(require('helmet')());
+
+    if (process.env.NODE_ENV === ENVIRONMENTS.DEVELOPMENT) {
+        app.use(Raven.requestHandler());
+    }
 
     app.use(logger("dev"));
 
@@ -89,6 +96,14 @@ const app = (): Express => {
             const file = path.join(__dirname, '../docs/postman/', 'api-v2.postman.json');
             res.download(file.toString());
         });
+
+    app.use(Raven.errorHandler());
+    app.use(function onError(err: any, req: any, res: any, next: any) {
+        // The error id is attached to `res.sentry` to be returned
+        // and optionally displayed to the user for support.
+        res.statusCode = 500;
+        res.end(res.sentry + '\n');
+    });
 
     return app;
 };

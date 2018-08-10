@@ -41,6 +41,9 @@ const devConfig: Config = {
     },
     get plenuumSengridToken() {
       return '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';
+    },
+    get SentryDSN() {
+        return <string> '';
     }
 };
 

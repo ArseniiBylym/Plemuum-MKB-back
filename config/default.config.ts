@@ -41,6 +41,9 @@ const defaultConfig: Config = {
     },
     get plenuumSengridToken() {
       return <string> process.env.SENGRID_TOKEN;
+    },
+    get SentryDSN() {
+        return <string> process.env.SENTRY_DSN;
     }
 };
 

@@ -14,4 +14,5 @@ export interface Config {
     adminDomain: string;
     tokenHash: string;
     plenuumSengridToken: string;
+    SentryDSN: string;
 }
