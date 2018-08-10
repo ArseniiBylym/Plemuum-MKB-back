@@ -1,5 +1,4 @@
 import config from "../../../config/config";
-import * as nodemailer from 'nodemailer';
 import { promisify } from "util";
 import * as sgMail from '@sendgrid/mail';
 
@@ -52,7 +51,7 @@ export default class EmailManager {
                 EmailManager.getTransport(SENGRID_TOKEN);
                 const mailOptions = EmailManager.getMailOptions(email, html, "New survey");
                 return new Promise((resolve, reject) => {
-                    transporter.sendMail(mailOptions, (error: any, info: any) => error ? reject(error) : resolve(info));
+                    sgMail.send(mailOptions);
                 })
             })
     };
@@ -74,7 +73,7 @@ export default class EmailManager {
                 EmailManager.getTransport(SENGRID_TOKEN);
                 const mailOptions = EmailManager.getMailOptions(email, html, "Survey result");
                 return new Promise((resolve, reject) => {
-                    transporter.sendMail(mailOptions, (error: any, info: any) => error ? reject(error) : resolve(info));
+                    sgMail.send(mailOptions);
                 })
             })
     };
