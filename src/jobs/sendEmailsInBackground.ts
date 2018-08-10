@@ -3,6 +3,7 @@ import UserDataController from "../data/datacontroller/user.datacontroller";
 import config from "../../config/config";
 import {resetPasswordDataController} from "../data/datacontroller/resetpassword.datacontroller";
 import {default as getLogger} from "../util/logger";
+import * as Raven from "raven";
 
 
 
@@ -24,6 +25,7 @@ export default async function (agenda:any, transporter:any) {
             await mailService.sendWelcomeEmail(email, firstName, link, orgName, transporter);
             await done();
         } catch (error) {
+            Raven.captureException(error);
             getLogger().error({
                 type: "error",
                 request: {

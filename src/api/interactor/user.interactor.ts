@@ -8,6 +8,8 @@ import EmailManager from "../../manager/email/mail.manager";
 import * as crypto from 'crypto';
 import { OrganizationDataController } from "../../data/datacontroller/organization.datacontroller";
 import agenda from "../../util/agenda";
+import * as Raven from 'raven';
+
 export default class UserInteractor {
 
     private emailManager: EmailManager;
@@ -80,6 +82,7 @@ export default class UserInteractor {
             }
             catch (e) {
                 console.log('Error creating user in user collection from csv: ',e.message);
+                Raven.captureException(e);
                 continue
             }
             agenda.schedule(new Date(Date.now() + i*2000),'sendWelcomeEmailsInBackground',  savedUser);

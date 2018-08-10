@@ -30,7 +30,7 @@ const app = (): Express => {
     //https://helmetjs.github.io/
     app.use(require('helmet')());
 
-    if (process.env.NODE_ENV === ENVIRONMENTS.DEVELOPMENT) {
+    if (process.env.NODE_ENV === ENVIRONMENTS.PRODUCTION) {
         app.use(Raven.requestHandler());
     }
 
@@ -97,14 +97,15 @@ const app = (): Express => {
             res.download(file.toString());
         });
 
-    app.use(Raven.errorHandler());
-    app.use(function onError(err: any, req: any, res: any, next: any) {
-        // The error id is attached to `res.sentry` to be returned
-        // and optionally displayed to the user for support.
-        res.statusCode = 500;
-        res.end(res.sentry + '\n');
-    });
-
+    if (process.env.NODE_ENV === ENVIRONMENTS.PRODUCTION) {
+        app.use(Raven.errorHandler());
+        app.use(function onError(err: any, req: any, res: any, next: any) {
+            // The error id is attached to `res.sentry` to be returned
+            // and optionally displayed to the user for support.
+            res.statusCode = 500;
+            res.end(res.sentry + '\n');
+        });
+    }
     return app;
 };
 
