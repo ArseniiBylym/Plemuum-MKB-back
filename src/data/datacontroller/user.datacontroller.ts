@@ -54,6 +54,13 @@ const UserDataController = {
             .exec() as Promise<UserModel>;
     },
 
+    getUserByIdsFromOrg: function (orgId: string, userIds: string[], fields: string[] = []): Promise<UserModel[]> {
+        return UserCollection()
+            .find({$and: [{orgId: {$eq: orgId}}, {_id: {$in: userIds}}]}, fields.join(' '))
+            .lean()
+            .exec() as Promise<UserModel[]>;
+    },
+
     getUsersByIds: function (orgId: string, userIds: string[]): Promise<UserModel[]> {
         return UserCollection().find({_id: {$in: userIds}})
             .lean()

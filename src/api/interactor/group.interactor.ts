@@ -17,12 +17,9 @@ export default class GroupInteractor {
     async getGroups(orgId: string,) {
         const allGroups: GroupModel[] = await this.groupDataController.getGroups(orgId);
         return Promise.all(allGroups.map(async (group: any) => {
-            group.users = await Promise.all(
-                group.users.map((userId: string) => UserDataController.getUserByIdFromOrg(orgId, userId)));
-            group.users = group.users.filter((u: any) => u);
+            group.users = await UserDataController.getUserByIdFromOrg(orgId, group.users);
 
-            group.skills = await Promise.all(
-                group.skills.map((skillId: string) => CompassDataController.getSkillById(orgId, skillId)));
+            group.skills = await CompassDataController.getSkillsByIds(orgId, group.skills);
 
             return group;
         }))
@@ -38,6 +35,14 @@ export default class GroupInteractor {
             throw new PlenuumError("Group not found", ErrorType.NOT_FOUND);
         }
         return group;
+    }
+
+    async getGroupsByIds(orgId: string, groupIds: string[]): Promise<Group[]> {
+        const groups = await this.groupDataController.getGroupsByIds(orgId, groupIds);
+        if (!groups) {
+            throw new PlenuumError("Group not found", ErrorType.NOT_FOUND);
+        }
+        return groups;
     }
 
     async getUserGroups(orgId: string, userId: string) {
@@ -65,17 +70,11 @@ export default class GroupInteractor {
         let answerCardGroupIds: string[] = [];
         userGroups.forEach((group) => answerCardGroupIds = answerCardGroupIds.concat(group.answerCardRelations));
 
-        const answerCardGroups = await Promise.all(answerCardGroupIds.map(async (groupId) => await this.getGroupById(orgId, groupId)));
+        const answerCardGroups = await this.getGroupsByIds(orgId,answerCardGroupIds);
         let userIds: string[] = [];
         answerCardGroups.forEach((group) => userIds = userIds.concat(group.users));
 
-        const users = await Promise.all(userIds.map(async (userId) => {
-            try {
-                return await UserDataController.getUserByIdFromOrg(orgId, userId);
-            } catch (error) {
-                return null;
-            }
-        }));
+        const users = await UserDataController.getUserByIdsFromOrg(orgId, userIds);
 
         return this.filterUserDoubling(users).filter((user : any) => user && user._id.toString() !== userId.toString());
     }
