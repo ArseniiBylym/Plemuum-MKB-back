@@ -51,16 +51,11 @@ export default class EmailManager {
             .then((html) => {
                 EmailManager.getTransport(SENGRID_TOKEN);
                 const mailOptions = EmailManager.getMailOptions(email, html, "New survey");
-<<<<<<< HEAD
-                return Promise.resolve(sgMail.send(mailOptions))
-            })
-=======
                 return new Promise((resolve, reject) => {
                     console.log("sending mail");
                     sgMail.send(mailOptions).catch((err) => reject(err));
                 })
             }).catch((err) => console.log("error sending survey notif mail: " + err));
->>>>>>> log sendgrid errors, avoid  UnhandledPromiseRejectionWarning, TODO: mock sendgrid https://github.com/sendgrid/sendgrid-nodejs/issues/141
     };
 
     public sendSurveyAnswer(email: string, manager:any, respondent:any, surveyWithAnswer:any, organization: string, transporter?:any, forManager?:Boolean): Promise<any> {
