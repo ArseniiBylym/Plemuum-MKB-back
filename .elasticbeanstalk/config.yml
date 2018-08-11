@@ -1,0 +1,18 @@
+branch-defaults:
+        default:
+             environment: plenuum-backend
+environment-defaults:
+        live:
+             branch: null
+             repository: null
+global:
+        application_name: plenuum
+        default_ec2_keyname: null
+        default_platform: arn:aws:elasticbeanstalk:eu-central-1::platform/64bit Amazon Linux 2017.03 v4.2.0 running Node.js
+        default_region: eu-central-1
+        instance_profile: null
+        platform_name: null
+        platform_version: null
+        profile: null
+        sc: null
+        workspace_type: Application
