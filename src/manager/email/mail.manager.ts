@@ -98,9 +98,10 @@ export default class EmailManager {
             })
     };
 
-    public async sendResetEmail(email: string, link: string): Promise<any> {
+    public async sendResetEmail(email: string, link: string, firstName?: string): Promise<any> {
         const data = {
-            link: link
+            link: link,
+            firstName: firstName
         };
         return this.getHtmlFromEjs(RESET_PASSWORD_TEMPLATE, data)
             .then((html) => {

@@ -64,7 +64,7 @@ export default class UserInteractor {
         const resetPasswordToken = resetPassword.token;
         const response = {email: user.email, link: link};
 
-        await this.emailManager.sendResetEmail(user.email, link);
+        await this.emailManager.sendResetEmail(user.email, link, user.firstName);
         return {resetPasswordToken: resetPasswordToken, response: response};
     }
 

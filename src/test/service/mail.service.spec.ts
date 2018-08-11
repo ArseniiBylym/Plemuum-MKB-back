@@ -187,7 +187,7 @@ suite("Mail service tests", () => {
                 };
 
                 const getTransportStub = sinon.stub(EmailManager, "getTransport").returns(mockTransport);
-                const result = emailManager.sendResetEmail(email, link);
+                const result = emailManager.sendResetEmail(email, link, firstName);
                 getTransportStub.restore();
                 expect(result).to.not.be.undefined;
             });
@@ -200,7 +200,7 @@ suite("Mail service tests", () => {
                 const getTransportStub = sinon.stub(EmailManager, "getTransport").returns(mockTransport);
                 const getHtmlFromEjsSpy = sinon.spy(emailManager, "getHtmlFromEjs");
                 const getMailOptions = sinon.spy(EmailManager, "getMailOptions");
-                emailManager.sendResetEmail(email, link);
+                emailManager.sendResetEmail(email, link, firstName);
                 getHtmlFromEjsSpy.restore();
                 getTransportStub.restore();
                 sinon.assert.calledWith(getHtmlFromEjsSpy, "resetpassword.ejs", {link: link});
@@ -218,7 +218,7 @@ suite("Mail service tests", () => {
                     .returns(mockTransport);
 
                 try {
-                    emailManager.sendResetEmail(email, link);
+                    emailManager.sendResetEmail(email, link, firstName);
                     fail('Should throw an error!');
                 }
                 catch (error) {
