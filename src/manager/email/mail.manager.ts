@@ -85,7 +85,8 @@ export default class EmailManager {
             firstName: firstName,
             company: organization,
             email: email,
-            link: link
+            link: link,
+            privacyLink: `${config.webappDomain}/privacy`
         };
         return this.getHtmlFromEjs(WELCOME_TEMPLATE, data)
             .then((html) => {

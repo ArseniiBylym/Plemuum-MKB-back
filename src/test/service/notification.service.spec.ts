@@ -23,6 +23,11 @@ suite("Notification tests", () => {
                     body: `You received a feedback from ${testUser.firstName}`,
                     title: `New feedback`,
                     type: "FEEDBACK"
+                },
+                notification: {
+                    body: `You received a feedback from ${testUser.firstName}`,
+                    title: `New feedback`,
+                    type: "FEEDBACK"
                 }
             };
             expect(template).to.deep.equal(expected);
@@ -32,6 +37,11 @@ suite("Notification tests", () => {
             const template = TEMPLATE.REQUEST(testUser.firstName);
             const expected = {
                 data: {
+                    body: `${testUser.firstName} needs your feedback`,
+                    title: `New feedback request`,
+                    type: "REQUEST"
+                },
+                notification: {
                     body: `${testUser.firstName} needs your feedback`,
                     title: `New feedback request`,
                     type: "REQUEST"
@@ -47,7 +57,12 @@ suite("Notification tests", () => {
                     body: `Would you like to help ${testUser.firstName} to improve?`,
                     title: `New todo`,
                     type: "COMPASS"
-                }
+                },
+                notification: {
+                    body: `Would you like to help ${testUser.firstName} to improve?`,
+                    title: `New todo`,
+                    type: "COMPASS"
+                },
             };
             expect(template).to.deep.equal(expected);
         });
@@ -56,6 +71,11 @@ suite("Notification tests", () => {
             const template = TEMPLATE.SURVEY();
             const expected = {
                 data: {
+                    body: 'You received a survey',
+                    title: `New survey`,
+                    type: "SURVEY"
+                },
+                notification: {
                     body: 'You received a survey',
                     title: `New survey`,
                     type: "SURVEY"

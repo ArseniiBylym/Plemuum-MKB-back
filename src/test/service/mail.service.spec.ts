@@ -3,6 +3,7 @@ import * as sinon from "sinon";
 import { expect } from "chai";
 import { fail } from 'assert';
 import EmailManager from "../../manager/email/mail.manager";
+import config from "../../../config/config";
 
 suite("Mail service tests", () => {
 
@@ -144,7 +145,8 @@ suite("Mail service tests", () => {
                     firstName: firstName,
                     company: organization,
                     email: email,
-                    link: link
+                    link: link,
+                    privacyLink: `${config.webappDomain}/privacy`
                 });
                 // sinon.assert.calledWith(getMailOptions, email);
             });

@@ -2,26 +2,26 @@
 <html>
 <head></head>
 <body>
-<p>Hi <%= firstName %>,</p>
-<p>You have been invited to use Plenuum at <%= company %>. Plenuum is designed to help you give frequent feedback at your
-    organization to promote feedback culture and facilitate personal development.</p>
-<p><span style="font-weight:700">Start by setting your password</span><br></p>
-<div style="margin:0 auto;text-align:center;width:100%">
-    <ul class="emailPasswordList" style="list-style:none">
-        <li><a style="text-decoration:none"><%= email %></a></li>
-        <li><a href="<%= link %>" class="setPassword"
-               style="background:#35a9db;border-radius:2px;box-shadow:0 2px 4px 0 rgba(0,0,0,.14);color:#FFF;display:inline-block;font-weight:400;margin-bottom:25px;margin-top:16px;padding:17px;text-decoration:none;width:166px">Set
-                your password</a></li>
+    <p>Szia <%= firstName %>,</p>
+    <p>Meghívást kaptál a Plenuum használatára a(z) <%= company %> szervezetben.</p>
+    <p>A Plenuum egy valós idejű visszajelzést elősegítő rendszer, aminek célja a gyakori visszajelzés adás és kérés beépítése a szervezeti kultúrába, így segítve a személyes fejlődést és a csapatkohézió erősítését. Továbbá a 2018 féléves TÉR értékelés rögzítésére is a Plenuum alkalmazáson belül lesz lehetőséged.</p>
+    <p><span style="font-weight:bold">Kérlek első lépésként állítsd be a jelszavad:</span></p>
+    <div>
+        <ul>
+            <li style="margin-bottom: 6px">A felhasználó neved: feedback@plenuum.com</li>
+            <li style="margin-bottom: 6px"><a style="color: #1155CC" href="<%= link %>">A jelszavad erre a linkre kattintva állíthatod be.</a></li>
+        </ul>
+    </div>
+    <p>A regisztrációval elfogadod, hogy a Plenuum rendszer használatához szükséges adataidat az MKB Bank Zrt. munkáltató, mint adatkezelő a fent leírt célból felhasználja, illetőleg adataidat az alkalmazás üzemeltetője, a Hipteam Korlátolt Felelősségű Társaság adatfeldolgozó kezelje. Részletes adatvédelmi tájékoztatást az alábbi linkeken találsz, kérjük ezeket figyelmesen olvasd el a regisztráció előtt.</p>
+    <p>A Plenuum-ot a böngésződön kívül okostelefon alkalmazásként is használhatod, így bárhol, bármikor adhatsz és kaphatsz visszajelzéseket.</p>
+    <ul>
+        <li style="margin-bottom: 6px">Böngészőből elérhető <a style="color: #1155CC" href="https://app.plenuum.com">Plenuum Web</a> Alkalmazás</li>
+        <li style="margin-bottom: 6px"><a style="color: #1155CC" href="https://itunes.apple.com/hu/app/plenuum-earlybird/id1180931406">Plenuum iOS</a> Alkalmazás (<a style="color: #1155CC" href="link">iOS telepítési útmutató</a>)</li>
+        <li style="margin-bottom: 6px"><a style="color: #1155CC" href="<%= privacyLink %>">Plenuum Android</a> Alkalmazás (<a style="color: #1155CC" href="link">Android telepítési útmutató</a>)</li>
+        <li style="margin-bottom: 6px"><a style="color: #1155CC" href="https://app.plenuum.com/privacy">Plenuum Adatkezelési Útmutató</a></li>
+        <li style="margin-bottom: 6px"><a style="color: #1155CC" href="http://mozaik2/sites/humanpolitika/Documents/MKB%20Munkavállalói%20Adatkezelési%20Tájékoztató.pdf">MKB Bank munkavállalói adatkezelési tájékoztató</a> (csak belső hálózatról)</li>
+        <li style="margin-bottom: 6px"><a style="color: #1155CC" href="http://mozaik/sites/humanpolitika/Documents/Plenuum%20felhasznaloi%20kezikonyv.pdf"> Felhasználói Kézikönyv</a> (csak belső hálózatról)</li>
     </ul>
-</div>
-<p><span style="font-weight:700">Start using Plenuum:</span></p>
-<ul class="urlList" style="color:#4990e2">
-    <li><a href="http://app.plenuum.com/" style="text-decoration:none">Plenuum webapp</a></li>
-    <li><a href="https://itunes.apple.com/hu/app/plenuum-earlybird/id1180931406" style="text-decoration:none">Plenuum
-            iOS app</a></li>
-</ul>
-<p>If you have any questions, suggestions, or want to report a bug, shoot a message to Zoltan from Plenuum at <a
-            href="mailto:zoltan.kiricsi@plenuum.com" target="_blank" style="color:#4990e2;text-decoration:none">zoltan.kiricsi@plenuum.com</a>!
-</p><br>
-<p>All the best,<br>Plenuum Bot</p></body>
+    <p>Üdvözlettel, <br> A Plenuum Csapata</p>
+</body>
 </html>
