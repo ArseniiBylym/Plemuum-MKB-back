@@ -5,10 +5,20 @@ export const TEMPLATE = {
             body: 'You received a survey',
             title: `New survey`,
             type: "SURVEY"
+        },
+        notification: {
+            body: 'You received a survey',
+            title: `New survey`,
+            type: "SURVEY"
         }
     }),
     FEEDBACK: (name?: string) => ({
         data: {
+            body: name ? `You received a feedback from ${name}` : 'You received an anonymous feedback',
+            title: `New feedback`,
+            type: "FEEDBACK"
+        },
+        notification: {
             body: name ? `You received a feedback from ${name}` : 'You received an anonymous feedback',
             title: `New feedback`,
             type: "FEEDBACK"
@@ -19,10 +29,20 @@ export const TEMPLATE = {
             body: `${name} needs your feedback`,
             title: `New feedback request`,
             type: "REQUEST"
+        },
+        notification: {
+            body: `${name} needs your feedback`,
+            title: `New feedback request`,
+            type: "REQUEST"
         }
     }),
     COMPASS: (name: string) => ({
         data: {
+            body: `Would you like to help ${name} to improve?`,
+            title: `New todo`,
+            type: "COMPASS"
+        },
+        notification: {
             body: `Would you like to help ${name} to improve?`,
             title: `New todo`,
             type: "COMPASS"
@@ -33,10 +53,20 @@ export const TEMPLATE = {
             body: `Tap to see updated skill scores.`,
             title: `Skill scores updated`,
             type: "STATISTICS"
+        },
+        notification: {
+            body: `Tap to see updated skill scores.`,
+            title: `Skill scores updated`,
+            type: "STATISTICS"
         }
     }),
     GENERAL: (title: string, body: string) => ({
         data: {
+            title: title, 
+            body: body,
+            type: "GENERAL"
+        },
+        notification: {
             title: title, 
             body: body,
             type: "GENERAL"
