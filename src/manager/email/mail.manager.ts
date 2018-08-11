@@ -53,7 +53,9 @@ export default class EmailManager {
                 const mailOptions = EmailManager.getMailOptions(email, html, "New survey");
                 return new Promise((resolve, reject) => {
                     console.log("sending mail");
-                    sgMail.send(mailOptions).catch((err) => reject(err));
+                    sgMail.send(mailOptions)
+                        .then(result => resolve(result))
+                        .catch((err) => reject(err));
                 })
             }).catch((err) => console.log("error sending survey notif mail: " + err));
     };
@@ -76,7 +78,9 @@ export default class EmailManager {
                 EmailManager.getTransport(SENGRID_TOKEN);
                 const mailOptions = EmailManager.getMailOptions(email, html, "Survey result");
                 return new Promise((resolve, reject) => {
-                    sgMail.send(mailOptions).catch((err) => reject(err));
+                    sgMail.send(mailOptions)
+                        .then(result => resolve(result))
+                        .catch((err) => reject(err));
                 })
             }).catch((err) => {console.log("mail send error: " + err)});
     };
@@ -94,7 +98,9 @@ export default class EmailManager {
                 EmailManager.getTransport(SENGRID_TOKEN);
                 const mailOptions = EmailManager.getMailOptions(email, html, "Welcome to Plenuum");
                 return new Promise((resolve, reject) => {
-                    sgMail.send(mailOptions).catch((err) => reject(err));
+                    sgMail.send(mailOptions)
+                        .then(result => resolve(result))
+                        .catch((err) => reject(err));
                 }).catch((e) => {
                     console.log("failed to send 'Welcome' email: " + e);
                 });
@@ -111,7 +117,9 @@ export default class EmailManager {
                 EmailManager.getTransport(SENGRID_TOKEN);
                 const mailOptions = EmailManager.getMailOptions(email, html, "Plenuum password reset");
                 return new Promise((resolve, reject) => {
-                    sgMail.send(mailOptions).catch((err) => reject(err));
+                    sgMail.send(mailOptions)
+                        .then(result => resolve(result))
+                        .catch((err) => reject(err));
                 })
             }).catch((err) => { console.log("reset mail send error: " + err); });
     };
