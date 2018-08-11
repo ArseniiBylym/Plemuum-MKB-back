@@ -51,9 +51,7 @@ export default class EmailManager {
             .then((html) => {
                 EmailManager.getTransport(SENGRID_TOKEN);
                 const mailOptions = EmailManager.getMailOptions(email, html, "New survey");
-                return new Promise((resolve, reject) => {
-                    sgMail.send(mailOptions);
-                })
+                return Promise.resolve(sgMail.send(mailOptions))
             })
     };
 
@@ -74,9 +72,7 @@ export default class EmailManager {
             .then((html) => {
                 EmailManager.getTransport(SENGRID_TOKEN);
                 const mailOptions = EmailManager.getMailOptions(email, html, "Survey result");
-                return new Promise((resolve, reject) => {
-                    sgMail.send(mailOptions);
-                })
+                return Promise.resolve(sgMail.send(mailOptions))
             })
     };
 
@@ -92,9 +88,7 @@ export default class EmailManager {
             .then((html) => {
                 EmailManager.getTransport(SENGRID_TOKEN);
                 const mailOptions = EmailManager.getMailOptions(email, html, "Welcome to Plenuum");
-                return new Promise((resolve, reject) => {
-                  sgMail.send(mailOptions);
-                })
+                return Promise.resolve(sgMail.send(mailOptions))
             })
     };
 
@@ -107,9 +101,7 @@ export default class EmailManager {
             .then((html) => {
                 EmailManager.getTransport(SENGRID_TOKEN);
                 const mailOptions = EmailManager.getMailOptions(email, html, "Plenuum password reset");
-                return new Promise((resolve, reject) => {
-                    sgMail.send(mailOptions);
-                })
+                return Promise.resolve(sgMail.send(mailOptions))
             });
     };
 

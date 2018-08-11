@@ -85,7 +85,7 @@ export default class UserInteractor {
                 Raven.captureException(e);
                 continue
             }
-            agenda.schedule(new Date(Date.now() + i*2000),'sendWelcomeEmailsInBackground',  savedUser);
+            agenda.schedule(new Date(Date.now() + (i + 1)*2000),'sendWelcomeEmailsInBackground',  savedUser);
             savedUsers.push(savedUser);
         }
         return savedUsers;
