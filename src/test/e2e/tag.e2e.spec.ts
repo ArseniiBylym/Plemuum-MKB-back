@@ -1,5 +1,5 @@
 import * as request from 'supertest';
-import app from "../../app";
+import { createApp } from "../../app";
 import { assert, expect } from 'chai';
 import { adminAuthenticate, authenticate, fixtureLoader, testUser } from "../mock/fixture.loader";
 import * as modelValidator from "../../util/model.validator";
@@ -10,7 +10,7 @@ import { bearerAuthHeader } from "../util/header.helper";
 suite("Tag request tests", () => {
 
     before(async () => {
-        await getDatabaseManager().openConnection(config.mongoUrl);
+        await getDatabaseManager(config.mongoUrl).openConnection();
         await fixtureLoader();
     });
 
@@ -22,7 +22,7 @@ suite("Tag request tests", () => {
 
         test("POST: should return 201", async () => {
             const token = await adminAuthenticate();
-            const response = await request(app)
+            const response = await request(createApp())
                 .post(url)
                 .set(bearerAuthHeader(token))
                 .send({title: "TestTagTitle"})
@@ -32,7 +32,7 @@ suite("Tag request tests", () => {
 
         test("POST: should not be able to post a tag with an already existing title", async () => {
             const token = await adminAuthenticate();
-            const response = await request(app)
+            const response = await request(createApp())
                 .post(url)
                 .set(bearerAuthHeader(token))
                 .send({title: "TestTitle"})
@@ -47,7 +47,7 @@ suite("Tag request tests", () => {
         const url = `/api/organizations/${orgId}/tags`;
         test("Response should contain an array and return 200", async () => {
             const token = await authenticate(testUser);
-            const response = await request(app)
+            const response = await request(createApp())
                 .get(url)
                 .set(bearerAuthHeader(token))
                 .expect(200);

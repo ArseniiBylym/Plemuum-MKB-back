@@ -1,5 +1,6 @@
 import { GroupDataController } from "../../data/datacontroller/group.datacontroller";
 import { GroupModel } from "../../data/database/schema/organization/group.schema";
+import { Group } from "../../data/models/organization/group.model";
 import UserDataController from "../../data/datacontroller/user.datacontroller";
 import CompassDataController from "../../data/datacontroller/compass.datacontroller";
 import { ErrorType, PlenuumError } from "../../util/errorhandler";
@@ -31,7 +32,7 @@ export default class GroupInteractor {
         return this.groupDataController.createGroup(orgId, group)
     }
 
-    async getGroupById(orgId: string, groupId: string) {
+    async getGroupById(orgId: string, groupId: string): Promise<Group> {
         const group = await this.groupDataController.getGroupById(orgId, groupId);
         if (!group) {
             throw new PlenuumError("Group not found", ErrorType.NOT_FOUND);

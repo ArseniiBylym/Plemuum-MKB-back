@@ -5,7 +5,7 @@ import * as Sinon from 'sinon';
 import UserDataController from "../../data/datacontroller/user.datacontroller";
 import CompassDataController from "../../data/datacontroller/compass.datacontroller";
 import StatisticsDataController from "../../data/datacontroller/statistics.datacontroller";
-import Group from "../../data/models/organization/group.model";
+import { Group } from "../../data/models/organization/group.model";
 import { createSentence, createSkill, createSkillScore, skills } from "../util/statistics.manager.util";
 import { validateCompassTodo } from "../../util/model.validator";
 import { fail } from "assert";

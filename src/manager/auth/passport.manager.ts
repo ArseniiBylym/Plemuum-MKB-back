@@ -29,14 +29,14 @@ function localAuth() {
             return password === config.adminPwd ? done(null, true) : done(null, false)
         } else {
             UserCollection().findOne({email: email}, {password: 1})
-                .then((user: UserModel) => {
+                .then((user: UserModel | null) => {
                     return !user
                         ? done(null, false)
                         : !user.verifyPasswordSync(password)
                             ? done(null, false)
                             : done(null, user);
                 })
-                .catch(err => done(err));
+                .catch((err: any) => done(err));
         }
     })
 }

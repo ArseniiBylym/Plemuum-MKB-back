@@ -1,5 +1,5 @@
 import * as request from 'supertest';
-import app from "../../app";
+import { createApp } from "../../app";
 import { bearerAuthHeader } from "../util/header.helper";
 import { getTestOrganization } from "../../util/testobject.factory";
 import { getDatabaseManager } from "../../factory/database.factory";
@@ -11,7 +11,7 @@ import { expect } from 'chai';
 suite("Organization request tests", () => {
 
     before((done) => {
-        getDatabaseManager().openConnection(config.mongoUrl)
+        getDatabaseManager(config.mongoUrl).openConnection()
             .then(() => fixtureLoader())
             .then(value => done())
             .catch((error) => {
@@ -30,7 +30,7 @@ suite("Organization request tests", () => {
         const url = "/api/organizations";
         test("Register new organization, should return 201", async () => {
             const token = await adminAuthenticate();
-            const response = await request(app)
+            const response = await request(createApp())
                 .post(url)
                 .set(bearerAuthHeader(token))
                 .send(getTestOrganization())
@@ -43,7 +43,7 @@ suite("Organization request tests", () => {
             newOrg.dbName = "hipteam"; // this organization is part of the mocks
 
             const token = await adminAuthenticate();
-            const response = await request(app)
+            const response = await request(createApp())
                 .post(url)
                 .set(bearerAuthHeader(token))
                 .send(newOrg)

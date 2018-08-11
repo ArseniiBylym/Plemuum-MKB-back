@@ -3,7 +3,7 @@ import StatisticsDataController from "../../data/datacontroller/statistics.datac
 import { CompassStatistics, SkillScore } from "../../data/models/organization/compass/compass.statistics.model";
 import CompassDataController from "../../data/datacontroller/compass.datacontroller";
 import CompassTodo from "../../data/models/organization/compass/compasstodo.model";
-import Group from "../../data/models/organization/group.model";
+import { Group } from "../../data/models/organization/group.model";
 import NotificationManager from "./notification.interactor";
 import { TEMPLATE } from "../../manager/notification/notification.manager";
 

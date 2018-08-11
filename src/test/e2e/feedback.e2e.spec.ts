@@ -1,7 +1,7 @@
 import { assert, expect } from 'chai';
 import * as request from 'supertest';
 import * as TestObjectFactory from "../../util/testobject.factory"
-import app from '../../app';
+import { createApp } from '../../app';
 import { authenticate, fixtureLoader, testUser } from "../mock/fixture.loader";
 import * as modelValidator from "../../util/model.validator"
 import Feedback from "../../data/models/organization/feedback.model";
@@ -15,7 +15,7 @@ const userId = testUser._id;
 suite("Feedback request test", () => {
 
     before(async () => {
-        await getDatabaseManager().openConnection(config.mongoUrl);
+        await getDatabaseManager(config.mongoUrl).openConnection();
         await fixtureLoader();
     });
 
@@ -26,7 +26,7 @@ suite("Feedback request test", () => {
 
         test("response should be an array and return 200", async () => {
             const token = await authenticate(testUser);
-            const response = await request(app)
+            const response = await request(createApp())
                 .get(url)
                 .set(bearerAuthHeader(token))
                 .expect(200);
@@ -40,7 +40,7 @@ suite("Feedback request test", () => {
 
         test("response should contain a feedback object and return 201", async () => {
             const token = await authenticate(testUser);
-            const response = await request(app)
+            const response = await request(createApp())
                 .post(url)
                 .set(bearerAuthHeader(token))
                 .send(TestObjectFactory.getTestFeedback())
@@ -55,7 +55,7 @@ suite("Feedback request test", () => {
 
         test("response should contain an error object and return 400", async () => {
             const token = await authenticate(testUser);
-            const response = await request(app)
+            const response = await request(createApp())
                 .post(url)
                 .set(bearerAuthHeader(token))
                 .send(feedbackForm)
@@ -79,7 +79,7 @@ suite("Feedback request test", () => {
 
         test("response should contain an error object and return 400", async () => {
             const token = await authenticate(testUser);
-            const response = await request(app)
+            const response = await request(createApp())
                 .post(url)
                 .set(bearerAuthHeader(token))
                 .send(feedbackForm)
@@ -93,7 +93,7 @@ suite("Feedback request test", () => {
 
         test("response should be an array", async () => {
             const token = await authenticate(testUser);
-            const response = await request(app)
+            const response = await request(createApp())
                 .get(url)
                 .set(bearerAuthHeader(token))
                 .expect(200);
@@ -110,7 +110,7 @@ suite("Feedback request test", () => {
 
         test("response should be an array", async () => {
             const token = await authenticate(testUser);
-            const response = await request(app)
+            const response = await request(createApp())
                 .get(url)
                 .set(bearerAuthHeader(token))
                 .expect(200);

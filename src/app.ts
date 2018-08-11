@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { Express } from 'express';
+import { Application } from 'express';
 import * as passport from 'passport';
 import Routes from './api/route/routes';
 import * as bodyParser from "body-parser";
@@ -23,7 +23,7 @@ const sessionOptions = {
     saveUninitialized: false
 };
 
-const app = (): Express => {
+export function createApp(): Application {
 
     const app = express();
 
@@ -113,5 +113,3 @@ const app = (): Express => {
     }
     return app;
 };
-
-export default app();

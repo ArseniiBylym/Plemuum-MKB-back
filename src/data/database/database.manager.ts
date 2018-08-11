@@ -1,16 +1,17 @@
 import * as mongoose from 'mongoose';
-import { Document, Model, Schema } from 'mongoose';
+import { Document, Model, Schema, Connection } from 'mongoose';
 
 export default class DatabaseManager {
     private dbConnection: mongoose.Connection;
+    private connectionPromise: Promise<Connection>;
 
-    constructor() {
+    constructor(mongoUrl: string) {
         /* Use default Promise for mongoose */
         (mongoose as any).Promise = global.Promise;
-    }
 
-    public openConnection(mongoUrl: string): Promise<any> {
-        return new Promise((resolve, reject) => {
+        this.dbConnection = null as any;
+
+        this.connectionPromise = new Promise((resolve, reject) => {
             if (!this.dbConnection) {
                 this.dbConnection = mongoose.createConnection(mongoUrl);
                 // CONNECTION EVENTS
@@ -33,6 +34,12 @@ export default class DatabaseManager {
                 resolve();
             }
         });
+
+
+    }
+
+    public openConnection(): Promise<any> {
+        return this.connectionPromise;
     }
 
     public closeConnection(): Promise<any> {

@@ -14,7 +14,7 @@ suite("Group datacontroller", () => {
 
     before((done) => {
         groupDataController = getGroupDataController();
-        getDatabaseManager().openConnection(config.mongoUrl)
+        getDatabaseManager(config.mongoUrl).openConnection()
             .then(() => fixtureLoader())
             .then(value => done())
             .catch((error) => {

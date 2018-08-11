@@ -2,7 +2,7 @@ import { getDatabaseManager } from "../../factory/database.factory";
 import config from "../../../config/config";
 import * as request from 'supertest';
 import { adminAuthenticate, authenticate, fixtureLoader, testUser } from "../mock/fixture.loader";
-import app from "../../app";
+import { createApp } from "../../app";
 import { basicAuthHeader, bearerAuthHeader } from "../util/header.helper";
 import { expect, should } from 'chai';
 import Skill from "../../data/models/organization/compass/skill.model";
@@ -13,7 +13,7 @@ const orgId = 'hipteam';
 suite("Compass request test", () => {
 
     before((done) => {
-        getDatabaseManager().openConnection(config.mongoUrl)
+        getDatabaseManager(config.mongoUrl).openConnection()
             .then(() => fixtureLoader())
             .then(value => done())
             .catch((error) => {
@@ -34,7 +34,7 @@ suite("Compass request test", () => {
 
         test("Should be able to get a fresh todo", async () => {
             const token = await authenticate(testUser);
-            const response = await request(app)
+            const response = await request(createApp())
                 .post(url)
                 .send({aboutUserId: "5984342227cd340363dc84c7"})
                 .set(bearerAuthHeader(token))
@@ -52,7 +52,7 @@ suite("Compass request test", () => {
         test("Should get user error if user does not exist with the given ID", async () => {
             const token = await authenticate(testUser);
             // That recipientId does not exist in the mock user list
-            const response = await request(app)
+            const response = await request(createApp())
                 .post(url)
                 .send({aboutUserId: "5984342227cd340363dd84ae"})
                 .set(bearerAuthHeader(token))
@@ -69,7 +69,7 @@ suite("Compass request test", () => {
 
         test("Should be able to send an answer, should get 200", async () => {
             const token = await authenticate(testUser);
-            const response = await request(app).post(url).send({
+            const response = await request(createApp()).post(url).send({
                 compassTodo: "599e89e390adc5039fbc285b",
                 sender: "5984342227cd340363dc84af",
                 sentencesAnswer: [
@@ -187,7 +187,7 @@ suite("Compass request test", () => {
 
         test("Should be able to create a new skill, it should return 201 and the created skill object", async () => {
             const token = await adminAuthenticate();
-            const response = await request(app)
+            const response = await request(createApp())
                 .patch(url)
                 .set(bearerAuthHeader(token))
                 .send(newSkill)
@@ -208,7 +208,7 @@ suite("Compass request test", () => {
 
         test("Should get and error with status 400 if request body is empty", async () => {
             const token = await adminAuthenticate();
-            const response = await request(app)
+            const response = await request(createApp())
                 .patch(url)
                 .set(bearerAuthHeader(token))
                 .expect(400);
@@ -225,7 +225,7 @@ suite("Compass request test", () => {
                 inactiveSentences: []
             };
             const token = await adminAuthenticate();
-            const response = await request(app)
+            const response = await request(createApp())
                 .patch(url)
                 .set(bearerAuthHeader(token))
                 .send(newSkill)
@@ -261,7 +261,7 @@ suite("Compass request test", () => {
                 ]
             };
             const token = await adminAuthenticate();
-            const response = await request(app)
+            const response = await request(createApp())
                 .patch(url)
                 .set(bearerAuthHeader(token))
                 .send(newSkill)
@@ -279,7 +279,7 @@ suite("Compass request test", () => {
             const url = `/api/organizations/${orgId}/compass/todos/generate`;
             const result = {"message": "TODOs were generated successfully"};
             const token = await adminAuthenticate();
-            const response = await request(app)
+            const response = await request(createApp())
                 .post(url)
                 .set(bearerAuthHeader(token))
                 .expect(200);

@@ -1,4 +1,4 @@
-import app from '../../app';
+import { createApp } from '../../app';
 import { assert, expect } from 'chai';
 import * as request from 'supertest';
 import * as TestObjectFactory from "../../util/testobject.factory"
@@ -11,7 +11,7 @@ import { bearerAuthHeader } from "../util/header.helper";
 suite("User request tests", () => {
 
     before((done) => {
-        getDatabaseManager().openConnection(config.mongoUrl)
+        getDatabaseManager(config.mongoUrl).openConnection()
             .then(() => fixtureLoader())
             .then(value => done())
             .catch((error) => {
@@ -31,7 +31,7 @@ suite("User request tests", () => {
 
         test("POST: Correct request response should contain a user and return 201", async () => {
             const token = await adminAuthenticate();
-            const response = await request(app)
+            const response = await request(createApp())
                 .post(url)
                 .set(bearerAuthHeader(token))
                 .send(TestObjectFactory.getRegisterJohnDoe())
@@ -47,7 +47,7 @@ suite("User request tests", () => {
         test('Response should return an array of users and status 200', done => {
             authenticate(testUser)
                 .then(token => {
-                    request(app)
+                    request(createApp())
                         .get(url)
                         .set(bearerAuthHeader(token))
                         .expect(200)
@@ -68,7 +68,7 @@ suite("User request tests", () => {
         test('Should return 200', done => {
             authenticate(testUser)
                 .then(token => {
-                    request(app)
+                    request(createApp())
                         .get(url)
                         .set(bearerAuthHeader(token))
                         .expect(200)
@@ -85,7 +85,7 @@ suite("User request tests", () => {
     suite.skip('Reset user password', () => {
         const url = `/api/resetPassword`;
         test('Should return 200', done => {
-            request(app)
+            request(createApp())
                 .post(url)
                 .send({email: testUser.email})
                 .expect(200, done())
@@ -97,7 +97,7 @@ suite("User request tests", () => {
 
         test('Should return 200 with a success message', async () => {
             const token = await resetPassword(testUser._id);
-            const response = await request(app)
+            const response = await request(createApp())
                 .post(url)
                 .send({token: token, newPassword: "newPass"})
                 .expect(200);
@@ -109,7 +109,7 @@ suite("User request tests", () => {
         const url = `/api/session/password`;
 
         test('Should return 200', done => {
-            request(app)
+            request(createApp())
                 .post(url)
                 .send({
                     email: testUser.email,

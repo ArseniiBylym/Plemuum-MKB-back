@@ -10,7 +10,7 @@ suite("Survey datacontroller", () => {
     const orgID = "hipteam";
 
     before((done) => {
-        getDatabaseManager().openConnection(config.mongoUrl)
+        getDatabaseManager(config.mongoUrl).openConnection()
             .then(() => fixtureLoader())
             .then(value => done())
             .catch((error) => {

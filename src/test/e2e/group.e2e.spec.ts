@@ -2,7 +2,7 @@ import { getDatabaseManager } from "../../factory/database.factory";
 import config from "../../../config/config";
 import { adminAuthenticate, authenticate, fixtureLoader, testUser } from "../mock/fixture.loader";
 import * as request from 'supertest';
-import app from "../../app";
+import { createApp } from "../../app";
 import { bearerAuthHeader } from "../util/header.helper";
 import { validateGroup } from "../../util/model.validator";
 import { getTestGroup } from "../../util/testobject.factory";
@@ -13,7 +13,7 @@ suite("Group request test", () => {
     const orgId = "hipteam";
 
     before(async () => {
-        await getDatabaseManager().openConnection(config.mongoUrl);
+        await getDatabaseManager(config.mongoUrl).openConnection();
         await fixtureLoader();
     });
 
@@ -23,7 +23,7 @@ suite("Group request test", () => {
         test("Should be able to create a group, response should contain a group object, return 201", async () => {
             const url = `/api/organizations/${orgId}/groups`;
             const token = await adminAuthenticate();
-            const response = await request(app)
+            const response = await request(createApp())
                 .post(url)
                 .send(getTestGroup())
                 .set(bearerAuthHeader(token))
@@ -37,7 +37,7 @@ suite("Group request test", () => {
             const groupID = "599312971b31d008b6bd2781";
             const url = `/api/organizations/${orgId}/groups/${groupID}`;
             const token = await authenticate(testUser);
-            const response = await request(app)
+            const response = await request(createApp())
                 .get(url)
                 .send(getTestGroup())
                 .set(bearerAuthHeader(token))
@@ -55,7 +55,7 @@ suite("Group request test", () => {
             const url = `/api/organizations/${orgId}/users/me/groups`;
 
             const token = await authenticate(testUser);
-            const response = await request(app)
+            const response = await request(createApp())
                 .get(url)
                 .send(getTestGroup())
                 .set(bearerAuthHeader(token))
@@ -73,7 +73,7 @@ suite("Group request test", () => {
             const url = `/api/organizations/${orgId}/groups/${groupID}/users`;
 
             const token = await adminAuthenticate();
-            const response = await request(app)
+            const response = await request(createApp())
                 .post(url)
                 .send({userId: userID})
                 .set(bearerAuthHeader(token))
@@ -89,7 +89,7 @@ suite("Group request test", () => {
             const url = `/api/organizations/${orgId}/groups/${groupID}/users`;
 
             const token = await adminAuthenticate();
-            const response = await request(app)
+            const response = await request(createApp())
                 .post(url)
                 .send({userId: userID})
                 .set(bearerAuthHeader(token))
@@ -108,7 +108,7 @@ suite("Group request test", () => {
             const url = `/api/organizations/${orgId}/groups/${groupID}/users`;
 
             const token = await adminAuthenticate();
-            const response = await request(app)
+            const response = await request(createApp())
                 .delete(url)
                 .send({userId: userID})
                 .set(bearerAuthHeader(token))
@@ -125,7 +125,7 @@ suite("Group request test", () => {
             const url = `/api/organizations/${orgId}/groups/${groupID}/users`;
 
             const token = await adminAuthenticate();
-            const response = await request(app)
+            const response = await request(createApp())
                 .delete(url)
                 .send({userId: userID})
                 .set(bearerAuthHeader(token))
@@ -148,7 +148,7 @@ suite("Group request test", () => {
             const url = `/api/organizations/${orgId}/groups`;
 
             const token = await adminAuthenticate();
-            const response = await request(app)
+            const response = await request(createApp())
                 .patch(url)
                 .send(testGroup)
                 .set(bearerAuthHeader(token))
@@ -171,7 +171,7 @@ suite("Group request test", () => {
             const url = `/api/organizations/${orgId}/groups`;
 
             const token = await adminAuthenticate();
-            const response = await request(app)
+            const response = await request(createApp())
                 .patch(url)
                 .send(testGroup)
                 .set(bearerAuthHeader(token))
@@ -194,7 +194,7 @@ suite("Group request test", () => {
             };
 
             const token = await authenticate(testUser);
-            const response = await request(app)
+            const response = await request(createApp())
                 .get(url)
                 .set(bearerAuthHeader(token))
                 .expect(200);

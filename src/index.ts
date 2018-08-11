@@ -1,4 +1,4 @@
-import app from './app'
+import { createApp } from './app';
 import * as http from "http";
 import config, { ENVIRONMENTS } from '../config/config';
 import { getDatabaseManager } from "./factory/database.factory";
@@ -21,9 +21,9 @@ if (cluster.isMaster && (config.env === ENVIRONMENTS.STAGING || config.env === E
 
 // Code to run if we're in a worker process
 } else {
-    const server: http.Server = http.createServer(app);
+    const server: http.Server = http.createServer(createApp());
 
-    getDatabaseManager().openConnection(config.mongoUrl)
+    getDatabaseManager().openConnection()
         .then(() => {
             server.listen(config.port);
             server.on("error", (error: Error) => console.error(`Error starting  server ${error}`));

@@ -8,7 +8,7 @@ import CompassAnswer from "../../data/models/organization/compass/compassanswer.
 import Skill from "../../data/models/organization/compass/skill.model";
 import StatisticsDataController from "../../data/datacontroller/statistics.datacontroller";
 import { GroupDataController } from "../../data/datacontroller/group.datacontroller";
-import Group from "../../data/models/organization/group.model";
+import { Group } from "../../data/models/organization/group.model";
 import Sentence from "../../data/models/organization/compass/sentence.model";
 import { ErrorType, PlenuumError } from "../../util/errorhandler";
 import { OrganizationDataController } from "../../data/datacontroller/organization.datacontroller";

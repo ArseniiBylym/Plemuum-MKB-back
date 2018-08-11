@@ -1,5 +1,7 @@
 import { Connection, Document, Model, Schema } from "mongoose";
 import { getDatabaseManager } from "../../../../factory/database.factory"
+import { Group } from "../../../models/organization/group.model";
+
 let GroupSchema = new Schema({
     name: {required: true, type: String, index: {unique: true}},
     users: {required: false, type: [String]},
@@ -9,12 +11,7 @@ let GroupSchema = new Schema({
 
 }, {versionKey: false, timestamps: true});
 
-import Group from "../../../models/organization/group.model";
+export interface GroupModel extends Group, Document {}
 
-interface GroupModel extends Group, Document {
-}
-
-const GroupCollection = (dbName: string): Model<GroupModel> => getDatabaseManager().createCollection<GroupModel>(
+export const GroupCollection = (dbName: string): Model<GroupModel> => getDatabaseManager().createCollection<GroupModel>(
     dbName, "Group", GroupSchema);
-
-export { GroupModel, GroupCollection };

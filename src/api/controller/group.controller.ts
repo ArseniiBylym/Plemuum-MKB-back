@@ -1,6 +1,7 @@
 import * as StatusCodes from 'http-status-codes';
 import { GroupModel } from "../../data/database/schema/organization/group.schema";
 import BaseController from "./base.controller";
+import { Group } from "../../data/models/organization/group.model";
 import { validate } from "../../util/input.validator";
 import GroupManager from "../interactor/group.interactor";
 
@@ -32,9 +33,13 @@ export default class GroupController extends BaseController {
     }
 
     async getGroupById(req: any, res: any) {
-        return this.groupManager.getGroupById(req.params.orgId, req.params.groupId)
-            .then((result: GroupModel) => this.respond(StatusCodes.OK, req, res, result))
-            .catch((err: any) => this.handleError(err, req, res));
+        return this
+                .groupManager
+                .getGroupById(req.params.orgId, req.params.groupId)
+                .then((result: Group) => {
+                    this.respond(StatusCodes.OK, req, res, result)
+                })
+                .catch((err: any) => this.handleError(err, req, res));
     }
 
     async getUserGroups(req: any, res: any) {

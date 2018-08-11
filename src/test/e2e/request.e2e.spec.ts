@@ -1,5 +1,5 @@
 import * as request from 'supertest';
-import app from "../../app";
+import { createApp } from "../../app";
 import { assert, expect } from 'chai';
 import * as modelValidator from "../../util/model.validator"
 import Request from "../../data/models/organization/request.model";
@@ -15,7 +15,7 @@ const requestId = "59844c1cd0b5d006da3c961d";
 suite("Request entity related request tests", () => {
 
     before(async () => {
-        await getDatabaseManager().openConnection(config.mongoUrl);
+        await getDatabaseManager(config.mongoUrl).openConnection();
         await fixtureLoader();
     });
 
@@ -31,7 +31,7 @@ suite("Request entity related request tests", () => {
             };
 
             const token = await authenticate(testUser);
-            const response = await request(app)
+            const response = await request(createApp())
                 .post(url)
                 .set(bearerAuthHeader(token))
                 .send(requestForm)
@@ -45,7 +45,7 @@ suite("Request entity related request tests", () => {
                 requestMessage: 'Message'
             };
             const token = await authenticate(testUser);
-            const response = await request(app)
+            const response = await request(createApp())
                 .post(url)
                 .set(bearerAuthHeader(token))
                 .send(incorrectRequestForm)
@@ -59,7 +59,7 @@ suite("Request entity related request tests", () => {
 
         test("Should be able to get all request for user", async () => {
             const token = await authenticate(testUser);
-            const response = await request(app)
+            const response = await request(createApp())
                 .get(url)
                 .set(bearerAuthHeader(token))
                 .expect(200);
@@ -76,7 +76,7 @@ suite("Request entity related request tests", () => {
 
         test("Should be able to get user's sent requests", async () => {
             const token = await authenticate(testUser);
-            const response = await request(app)
+            const response = await request(createApp())
                 .get(url)
                 .set(bearerAuthHeader(token))
                 .expect(200);
@@ -93,7 +93,7 @@ suite("Request entity related request tests", () => {
         const url = `/api/organizations/${orgId}/users/me/requests/received`;
         test("Should be able to get user's received requests", async () => {
             const token = await authenticate(testUser);
-            const response = await request(app)
+            const response = await request(createApp())
                 .get(url)
                 .set(bearerAuthHeader(token))
                 .expect(200);
@@ -110,7 +110,7 @@ suite("Request entity related request tests", () => {
         const url = `/api/organizations/${orgId}/users/me/requests/${requestId}`;
         test("Should be able to get a single request", async () => {
             const token = await authenticate(testUser);
-            const response = await request(app)
+            const response = await request(createApp())
                 .get(url)
                 .set(bearerAuthHeader(token))
                 .expect(200);
@@ -123,7 +123,7 @@ suite("Request entity related request tests", () => {
         const url = `/api/organizations/${orgId}/users/me/requests/${requestId}/recipients`;
         test("Should be able to get the recipients of a request", async () => {
             const token = await authenticate(testUser);
-            const response = await request(app)
+            const response = await request(createApp())
                 .get(url)
                 .set(bearerAuthHeader(token))
                 .expect(200);

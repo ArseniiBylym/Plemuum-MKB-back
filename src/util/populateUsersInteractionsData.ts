@@ -8,7 +8,8 @@ import {GroupCollection} from "../data/database/schema/organization/group.schema
 async function populateUsersInteractionsData () {
     //connect to stagging mongo db
     // mongodb://admin:4jFyAXbwfjH6HmM@37.139.29.52:27017
-    await getDatabaseManager().openConnection('mongodb://admin:4jFyAXbwfjH6HmM@37.139.29.52:27017');
+    const mongoUri = 'mongodb://admin:4jFyAXbwfjH6HmM@37.139.29.52:27017';
+    await getDatabaseManager(mongoUri).openConnection();
     let users = await UserCollection().find({orgId:"hipteam"});
     const numberOfUsers = users.length;
     // $or: [{_id:"5a168d585f2c5d0018d79764"},{_id: "5b51eb855271410017e4b694"}, {_id: "5b51eb855271410017e4b696"},

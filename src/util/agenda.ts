@@ -14,6 +14,10 @@ const SENGRID_TOKEN = config.plenuumSengridToken;
 
 const transporter = sgMail.setApiKey(SENGRID_TOKEN);
 
+if (typeof config.mongoUrl !== "string") {
+    console.log("mongo url not configured. maybe you're missing a NODE_ENV setting?")
+    process.exit(1);
+}
 
 // or override the default collection name:
 let agenda = new Agenda({db: {address: config.mongoUrl, collection: 'jobs'}});

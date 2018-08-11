@@ -1,5 +1,5 @@
 import * as request from 'supertest';
-import app from "../../app";
+import { createApp } from "../../app";
 import { authenticate, fixtureLoader, testUser } from "../mock/fixture.loader";
 import { getDatabaseManager } from "../../factory/database.factory";
 import config from "../../../config/config";
@@ -11,7 +11,7 @@ const userId = testUser._id;
 
 suite("Survey request test", () => {
     before(async () => {
-        await getDatabaseManager().openConnection(config.mongoUrl);
+        await getDatabaseManager(config.mongoUrl).openConnection();
         await fixtureLoader();
     });
 
@@ -22,7 +22,7 @@ suite("Survey request test", () => {
 
         test("Should be able to get all surveys to do list for current user", async () => {
             const token = await authenticate(testUser);
-            const response = await request(app)
+            const response = await request(createApp())
                 .get(url)
                 .set(bearerAuthHeader(token))
                 .expect(200);
@@ -39,7 +39,7 @@ suite("Survey request test", () => {
 
         test("Should be able to get survey to do by Id for current user", async () => {
             const token = await authenticate(testUser);
-            const response = await request(app)
+            const response = await request(createApp())
                 .get(url)
                 .set(bearerAuthHeader(token))
                 .expect(200);
@@ -50,7 +50,7 @@ suite("Survey request test", () => {
 
         test("Should be able to return 404 if survey to do does not exist", async () => {
             const token = await authenticate(testUser);
-            const response = await request(app)
+            const response = await request(createApp())
                 .get(badUrl)
                 .set(bearerAuthHeader(token))
                 .expect(404);
@@ -80,7 +80,7 @@ suite("Survey request test", () => {
             };
 
             const token = await authenticate(testUser);
-            const response = await request(app)
+            const response = await request(createApp())
                 .patch(url)
                 .set(bearerAuthHeader(token))
                 .send(surveyTodo)
@@ -94,7 +94,7 @@ suite("Survey request test", () => {
 
         test("Should be able to search manager for survey to do", async () => {
             const token = await authenticate(testUser);
-            const response = await request(app)
+            const response = await request(createApp())
                 .get(url)
                 .set(bearerAuthHeader(token))
                 .expect(200);

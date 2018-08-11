@@ -2,7 +2,7 @@ import { getDatabaseManager } from "../../factory/database.factory";
 import config from "../../../config/config";
 import { authenticate, fixtureLoader, testUser } from "../mock/fixture.loader";
 import * as request from 'supertest';
-import app from "../../app";
+import { createApp } from "../../app";
 import { bearerAuthHeader } from "../util/header.helper";
 import * as TestObjectFactory from "../../util/testobject.factory"
 import * as modelValidator from "../../util/model.validator"
@@ -10,7 +10,7 @@ import * as modelValidator from "../../util/model.validator"
 suite("Notification request test", () => {
 
     before((done) => {
-        getDatabaseManager().openConnection(config.mongoUrl)
+        getDatabaseManager(config.mongoUrl).openConnection()
             .then(() => fixtureLoader())
             .then(value => done())
             .catch((error) => {
@@ -28,7 +28,7 @@ suite("Notification request test", () => {
         test("Add a notification token that do not exist", async () => {
             const url = '/api/users/me/notification';
             const token = await authenticate(testUser);
-            const response = await request(app)
+            const response = await request(createApp())
                 .post(url)
                 .send(TestObjectFactory.getTestNotificationToken())
                 .set(bearerAuthHeader(token))
@@ -40,14 +40,14 @@ suite("Notification request test", () => {
             const url = '/api/users/me/notification';
             const token = await authenticate(testUser);
 
-            const postResponse = await request(app)
+            const postResponse = await request(createApp())
                 .post(url)
                 .send(TestObjectFactory.getTestNotificationToken())
                 .set(bearerAuthHeader(token))
                 .expect(200);
             modelValidator.validateNotificationTokenResponse(postResponse.body, "message");
 
-            const deleteResponse = await request(app)
+            const deleteResponse = await request(createApp())
                 .delete(url)
                 .send(TestObjectFactory.getTestNotificationToken())
                 .set(bearerAuthHeader(token))
@@ -62,14 +62,14 @@ suite("Notification request test", () => {
             const url = '/api/users/me/notification';
             const token = await authenticate(testUser);
 
-            const response1 = await request(app)
+            const response1 = await request(createApp())
                 .post(url)
                 .send(TestObjectFactory.getTestNotificationToken())
                 .set(bearerAuthHeader(token))
                 .expect(200);
             modelValidator.validateNotificationTokenResponse(response1.body, "message");
 
-            const response2 = await request(app)
+            const response2 = await request(createApp())
                 .post(url)
                 .send(TestObjectFactory.getTestNotificationToken())
                 .set(bearerAuthHeader(token))
@@ -81,7 +81,7 @@ suite("Notification request test", () => {
             const url = '/api/users/me/notification';
             const token = await authenticate(testUser);
 
-            const response1 = await request(app)
+            const response1 = await request(createApp())
                 .delete(url)
                 .send(TestObjectFactory.getTestNotificationToken())
                 .set(bearerAuthHeader(token))
