@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head></head>
+<body>
+<p>Szia <%= manager.firstName %> </p>
+<p><b><%= respondent.lastName %> <%= respondent.firstName %></b> kitöltött egy <b><%= surveyTitle %></b> kérdőívet és Téged jelölt meg vezetőjeként. Alább láthatod a kérdőívben adott válaszait.</p>
+<div style="margin:0 auto;width:100%">
+    <% for(let i=0; i < questionsArr.length; i++) {%>
+        <p><span style="font-weight:bold"><%= questionsArr[i] %></span></p>
+        <p><%= answersArr[i] %></p>
+    <% } %>
+</div>
+<p>
+    Ezzel az üzenettel kapcsolatban további tennivalód nincs, azt kizárólag tájékoztatásul küldtük el Neked. A TÉR értékeléssel kapcsolatos kérdés vagy probléma esetén fordulj a HR Partneredhez!
+</p>
+<p>
+    Amennyiben bármilyen kérdésed vagy észrevételed volna a Plenuum-mal kapcsolatban, kérlek küldd el emailben az <a style="color: #1155CC" href="mailto:mkb@plenuum.com">mkb@plenuum.com</a>-ra. Ha valaki, akkor mi igazán fontosnak tartjuk a visszajelzéseket :)
+</p>
+<br>
+<p>Üdvözlettel, <br> A Plenuum Csapata</p>
+</body>
+</html>

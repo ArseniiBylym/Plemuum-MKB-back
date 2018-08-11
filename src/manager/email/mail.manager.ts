@@ -11,6 +11,7 @@ const SENGRID_TOKEN = config.plenuumSengridToken;
 const MAIL_TEMPLATE_DIR = __dirname + "/content/";
 const WELCOME_TEMPLATE = "welcome.ejs";
 const SURVEY_RESULT = "surveyResult.ejs";
+const SURVEY_RESULT_FOR_MANAGER = "surveyResultForManager.ejs";
 const SURVEYNOTIFICATION_TEMPLATE = "surveyNotification.ejs";
 const RESET_PASSWORD_TEMPLATE = "resetpassword.ejs";
 
@@ -56,19 +57,20 @@ export default class EmailManager {
             })
     };
 
-    public sendSurveyAnswer(email: string, firstName: string, surveyWithAnswer:any, organization: string, transporter?:any): Promise<any> {
+    public sendSurveyAnswer(email: string, manager:any, respondent:any, surveyWithAnswer:any, organization: string, transporter?:any, forManager?:Boolean): Promise<any> {
         const answersArr = surveyWithAnswer.questions.map((itmes:any) => {return itmes.answer.answerText});
         const questionsArr = surveyWithAnswer.questions.map((question:any) => {return question.text});
         const surveyTitle = surveyWithAnswer.surveyTodo.survey.title;
         const data = {
-            firstName: firstName,
+            manager: manager,
+            respondent: respondent,
             company: organization,
             email: email,
             answersArr: answersArr,
             questionsArr: questionsArr,
             surveyTitle: surveyTitle
         };
-        return this.getHtmlFromEjs(SURVEY_RESULT, data)
+        return this.getHtmlFromEjs(forManager ? SURVEY_RESULT_FOR_MANAGER : SURVEY_RESULT, data)
             .then((html) => {
                 EmailManager.getTransport(SENGRID_TOKEN);
                 const mailOptions = EmailManager.getMailOptions(email, html, "Survey result");
