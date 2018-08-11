@@ -75,8 +75,8 @@ export default async function (agenda:any, transporter:any) {
         try {
 
             const mailService = new EmailManager();
-            await mailService.sendSurveyAnswer(managerData.email, manager, respondent, surveyWithAnswers,orgId, transporter, true);
-            await mailService.sendSurveyAnswer(respondentData.email, manager, respondent, surveyWithAnswers,orgId, transporter, false);
+            await mailService.sendSurveyAnswer(managerData.email, managerData, respondentData, surveyWithAnswers,orgId, transporter, true);
+            await mailService.sendSurveyAnswer(respondentData.email, managerData, respondentData, surveyWithAnswers,orgId, transporter, false);
             await done();
         } catch (error) {
             getLogger().error({

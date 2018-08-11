@@ -3,7 +3,7 @@
 <head></head>
 <body>
 <p>Szia <%= manager.firstName %> </p>
-<p><b><%= respondent.lastName %> <%= respondent.firstName %></b> kitöltött egy <b><%= surveyTitle %></b> kérdőívet és Téged jelölt meg vezetőjeként. Alább láthatod a kérdőívben adott válaszait.</p>
+<p><span style="font-weight:bold"><%= respondent.lastName %> <%= respondent.firstName %></span> kitöltött egy <span style="font-weight:bold"><%= surveyTitle %></span> kérdőívet és Téged jelölt meg vezetőjeként. Alább láthatod a kérdőívben adott válaszait.</p>
 <div style="margin:0 auto;width:100%">
     <% for(let i=0; i < questionsArr.length; i++) {%>
         <p><span style="font-weight:bold"><%= questionsArr[i] %></span></p>
