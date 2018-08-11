@@ -203,7 +203,7 @@ suite("Mail service tests", () => {
                 emailManager.sendResetEmail(email, link, firstName);
                 getHtmlFromEjsSpy.restore();
                 getTransportStub.restore();
-                sinon.assert.calledWith(getHtmlFromEjsSpy, "resetpassword.ejs", {link: link});
+                sinon.assert.calledWith(getHtmlFromEjsSpy, "resetpassword.ejs", {link: link, firstName:firstName});
                 // sinon.assert.calledWith(getMailOptions, email);
             });
         });
