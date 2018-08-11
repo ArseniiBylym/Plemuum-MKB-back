@@ -6,7 +6,7 @@ VOLUME /app/log
 COPY . ./
 RUN npm install && \
     npm run generate-api-docs && \
-    tsc && \
+    ./node_modules/.bin/tsc && \
     rm -rf /app && \
     mv ./dist /app && \
     cp config/firebase/*.json /app/config/firebase && \
