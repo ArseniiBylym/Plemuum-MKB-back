@@ -90,6 +90,11 @@ const app = (): Express => {
         res.sendFile('index.html', express.static(path.join(__dirname, '../docs/api')));
     });
 
+    /* Health check */
+    app.use('/health', function onError(req: any, res: any, next: any) {
+        res.end('Ok\n');
+    });
+
     /* Serve Postman collection */
     app.route('/docs/postman')
         .get(passport.authenticate('basic', {session: false}), (req, res) => {
