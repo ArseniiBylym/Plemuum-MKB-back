@@ -37,7 +37,6 @@ export default class UserController extends BaseController {
 
         return this.userManager.saveUser(req.body)
             .then((result) => {
-                agenda.schedule(new Date(Date.now() + 2000),'sendWelcomeEmailsInBackground',  result);
                 this.respond(StatusCodes.CREATED, req, res, result)
             })
             .catch((err) => this.handleError(err, req, res))

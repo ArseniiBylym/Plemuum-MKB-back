@@ -72,20 +72,25 @@ export default class UserInteractor {
 
         const savedUsers: any[] = [];
         const users = await this.fileManager.convertCSV2UserArray(csvFile);
+        const organization = await this.organizationDataController.getOrganizationByDbName(orgId);
 
         for (let i = 0; i < users.length; i++) {
             let user = users[i];
             user.orgId = orgId;
+            user.passwordUpdatedAt = new Date();
             let savedUser;
             try {
-                savedUser = await this.saveUser(user, orgId);
+                savedUser = await UserDataController.saveUser(user);
+                if (!savedUser) {
+                    throw new PlenuumError("User not saved", ErrorType.VALIDATION);
+                }
             }
             catch (e) {
                 console.log('Error creating user in user collection from csv: ',e.message);
                 Raven.captureException(e);
                 continue
             }
-            agenda.schedule(new Date(Date.now() + (i + 1)*2000),'sendWelcomeEmailsInBackground',  savedUser);
+            agenda.schedule(new Date(Date.now() + (i + 1)*2000),'sendWelcomeEmailsInBackground', Object.assign({orgName:organization.name}, savedUser));
             savedUsers.push(savedUser);
         }
         return savedUsers;
@@ -104,12 +109,13 @@ export default class UserInteractor {
     async saveUser(body: any, orgId?: string) {
         body.admin = body.admin && body.admin === 'true';
         const organization = await this.organizationDataController.getOrganizationByDbName(orgId ? orgId : body.orgId);
-        body.orgName = organization.name;
         body.passwordUpdatedAt = new Date();
         const savedUser = await UserDataController.saveUser(body);
         if (!savedUser) {
             throw new PlenuumError("User not saved", ErrorType.VALIDATION);
         }
+
+        agenda.schedule(new Date(Date.now() + 2000),'sendWelcomeEmailsInBackground', Object.assign({orgName:organization.name}, savedUser));
 
         return savedUser;
     }
