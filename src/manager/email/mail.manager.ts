@@ -64,9 +64,12 @@ export default class EmailManager {
         const answersArr = surveyWithAnswer.questions.map((itmes:any) => {return itmes.answer.answerText});
         const questionsArr = surveyWithAnswer.questions.map((question:any) => {return question.text});
         const surveyTitle = surveyWithAnswer.surveyTodo.survey.title;
+
         const data = {
-            manager: manager,
-            respondent: respondent,
+            managerFirstName: manager.firstName,
+            managerLastName: manager.lastName,
+            respondentFirstName: respondent.firstName,
+            respondentLastName: respondent.lastName,
             company: organization,
             email: email,
             answersArr: answersArr,
@@ -76,7 +79,7 @@ export default class EmailManager {
         return this.getHtmlFromEjs(forManager ? SURVEY_RESULT_FOR_MANAGER : SURVEY_RESULT, data)
             .then((html) => {
                 EmailManager.getTransport(SENGRID_TOKEN);
-                const mailOptions = EmailManager.getMailOptions(email, html, "Survey result");
+                const mailOptions = EmailManager.getMailOptions(email, html, `Kitöltött TÉR kérdőív (${respondent.lastName} ${respondent.firstName})- Összefoglaló`);
                 return new Promise((resolve, reject) => {
                     sgMail.send(mailOptions)
                         .then(result => resolve(result))

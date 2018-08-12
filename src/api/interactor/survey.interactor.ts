@@ -123,8 +123,8 @@ export default class SurveyInteractor {
         const {_id, respondent} = result;
         if (_id) {
             const surveyWithAnswers = await SurveyDataController.getSurveyTodo(orgId, _id, respondent);
-            await agenda.schedule(new Date(Date.now() + 2000),'sendSurveyAnswers',  surveyWithAnswers);
-            return await SurveyDataController.getSurveyTodo(orgId, _id, respondent);
+            await agenda.schedule(new Date(Date.now() + 2000),'sendSurveyAnswers', surveyWithAnswers);
+            return surveyWithAnswers;
         }
     }
 

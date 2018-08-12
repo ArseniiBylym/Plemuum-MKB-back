@@ -65,7 +65,6 @@ export default async function (agenda:any, transporter:any) {
 
     });
     agenda.define('sendSurveyAnswers', async function(job:any, done:any) {
-
         let surveyWithAnswers = job.attrs.data;
         const {manager, respondent} = surveyWithAnswers.surveyTodo;
         const managerData = await UserDataController.getUserById(manager, true, true, false);
