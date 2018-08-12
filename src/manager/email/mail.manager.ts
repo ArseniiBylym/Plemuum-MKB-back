@@ -79,7 +79,7 @@ export default class EmailManager {
         return this.getHtmlFromEjs(forManager ? SURVEY_RESULT_FOR_MANAGER : SURVEY_RESULT, data)
             .then((html) => {
                 EmailManager.getTransport(SENGRID_TOKEN);
-                const mailOptions = EmailManager.getMailOptions(email, html, `Kitöltött TÉR kérdőív (${respondent.lastName} ${respondent.firstName})- Összefoglaló`);
+                const mailOptions = EmailManager.getMailOptions(email, html, forManager ? `Kitöltött TÉR kérdőív (${respondent.lastName} ${respondent.firstName})- Összefoglaló` : "Kitöltött TÉR kérdőív - Összefoglaló");
                 return new Promise((resolve, reject) => {
                     sgMail.send(mailOptions)
                         .then(result => resolve(result))
