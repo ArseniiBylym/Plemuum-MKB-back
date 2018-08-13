@@ -17,7 +17,7 @@ export default class GroupInteractor {
     async getGroups(orgId: string,) {
         const allGroups: GroupModel[] = await this.groupDataController.getGroups(orgId);
         return Promise.all(allGroups.map(async (group: any) => {
-            group.users = await UserDataController.getUserByIdFromOrg(orgId, group.users);
+            group.users = await UserDataController.getUserByIdsFromOrg(orgId, group.users);
 
             group.skills = await CompassDataController.getSkillsByIds(orgId, group.skills);
 
