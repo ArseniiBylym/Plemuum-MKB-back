@@ -15,7 +15,7 @@ export default async function (agenda:any, transporter:any) {
 
         const origin = config.webappDomain;
         const {email, firstName, _id, orgName} = user;
-        const {token, token_expiry} = UserDataController.generateToken(1);
+        const {token, token_expiry} = UserDataController.generateToken(60);
         const data = {userId: _id, token: token, token_expiry: token_expiry, reseted: false};
 
         try {
