@@ -83,7 +83,7 @@ export default class SurveyInteractor {
                 await this.notificationManager.sendNotificationById(employees[i]._id,
                     TEMPLATE.SURVEY());
                 //send email
-                await agenda.schedule(new Date(Date.now() + i*2000),'sendSurveyNotificationEmailsInBackground',  employees[i]);
+                // await agenda.schedule(new Date(Date.now() + i*2000),'sendSurveyNotificationEmailsInBackground',  employees[i]);
             } catch (error) {
                 console.error(error);
                 break
