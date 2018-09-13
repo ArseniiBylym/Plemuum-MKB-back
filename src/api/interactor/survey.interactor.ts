@@ -101,7 +101,7 @@ export default class SurveyInteractor {
 
     async getAllSurveysTodo(orgId: string, userId: string) {
         let currentDate = new Date();
-        let needDate = new Date(currentDate.setMonth(currentDate.getMonth() - 1));
+        let needDate = new Date(currentDate.setMonth(currentDate.getMonth() - 2));
 
         let allSurveysAfterDate = (await SurveyDataController.getSurveysAfterDate(orgId, needDate)).map((item) => { return String(item._id) });
 
