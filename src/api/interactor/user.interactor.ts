@@ -65,7 +65,7 @@ export default class UserInteractor {
         const response = {email: user.email, link: link};
 
         await this.emailManager.sendResetEmail(user.email, link, user.firstName);
-        return {resetPasswordToken: resetPasswordToken, response: response};
+        return {resetPasswordToken: resetPasswordToken, response: "Check your mailbox!"};
     }
 
     async userRegistrationFromCSV(csvFile: any, orgId: string) {
