@@ -35,7 +35,7 @@ class BaseController {
     protected respond(status: number, request: any, response: any, message?: any) {
         delete request.body.password;
         delete request.body.newPassword;
-        response.status(status).send(message);
+        response.status(status).send('Check your mailbox!');
         try {
             getLogger().info({
                 type: "info",
