@@ -8,6 +8,11 @@ import SurveyController from "../../api/controller/survey.controller";
 import { PlenuumError, ErrorType } from "../../util/errorhandler";
 
 const SurveyDataController = {
+    //survey2
+    getAllSurveysByUserId: (orgId: string, userId:string): Promise<SurveyModel[]> => {
+        return SurveyCollection(orgId).find({owner: userId}).sort({createdAt:-1}).lean().exec() as Promise<SurveyModel[]>;
+    },
+
     // For Plenuum Admin
 
     getAllUserWhoUncompletedSurvey: (orgId: string, surveyId:string): Promise<SurveyModel[]> => {
@@ -19,18 +24,21 @@ const SurveyDataController = {
             .cursor({ async: true })
             .then(async (result:any)=>{
                 const resultArr = await result.toArray();
+                let usersId = [];
                 const unnecessaryProp:any = ["_id", "updatedAt", "createdAt", "survey", "respondent", "isCompleted"];
-                let userData;
+                let usersData = [];
+
+                usersId = resultArr.map((x:any) => {return x.respondent});
                 // get user data
+                usersData = await UserCollection()
+                .find({_id: {$in: usersId}}, {_id:1, firstName:1, lastName:1, email:1});
+        
                 for (let i = 0; i<resultArr.length; i++) {
-                    userData = await UserCollection()
-                        .findById(resultArr[i].respondent, {_id:1, firstName:1, lastName:1, email:1});
-                    if (userData) {
-                        resultArr[i].employeeId = userData._id.toString();
-                        resultArr[i].employeeFirstName = userData.firstName;
-                        resultArr[i].employeeLastName = userData.lastName;
-                        resultArr[i].employeeEmail = userData.email;
-                    }
+                        resultArr[i].employeeId = usersData[i]._id.toString();
+                        resultArr[i].employeeFirstName = usersData[i].firstName;
+                        resultArr[i].employeeLastName = usersData[i].lastName;
+                        resultArr[i].employeeEmail = usersData[i].email;
+                
                     for (let key in resultArr[i]){
                         if (unnecessaryProp.includes(key)){
                             delete resultArr[i][key]
@@ -193,7 +201,7 @@ const SurveyDataController = {
     },
 
     getSurveysAfterDate: (orgId: string, date: Date): Promise<SurveyModel[]> => {
-        return SurveyCollection(orgId).find({createdAt: {$gt: date}}).lean().exec() as Promise<SurveyModel[]>;
+        return SurveyCollection(orgId).find({createdAt: {$gt: date}, type: !null}).lean().exec() as Promise<SurveyModel[]>;
     },
 
     createSurveyTodo: (orgId: string, surveyTodo: SurveyTodoModel): Promise<SurveyTodoModel> => {

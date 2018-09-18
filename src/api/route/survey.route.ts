@@ -4,6 +4,12 @@ import * as passport from 'passport';
 import checkAdmin from '../../middleware/admin.checker';
 
 export default (app: Express, surveyController: SurveyController) => {
+//routs for dymanic survey
+    app.route("/api/organizations/:orgId/surveys/:surveysType")
+    .get(passport.authenticate('jwt', {session: false}), surveyController.getAllSurveysByUserId.bind(surveyController))
+    .post(passport.authenticate('jwt', {session: false}), surveyController.createSurveyDynamic.bind(surveyController))
+
+//end of dymanic roots
    /**
      * @api {GET} /api/organizations/:orgId/surveys Survey - Get all surveys list
      * @apiVersion 2.0.0

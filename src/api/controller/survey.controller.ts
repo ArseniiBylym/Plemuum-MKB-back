@@ -15,6 +15,33 @@ export default class SurveyController extends BaseController {
         this.surveyManager = surveyManager;
     }
 
+    //dinamic type of survey
+    async getAllSurveysByUserId(req: any, res: any) {
+        return this.surveyManager.getAllSurveysByUserId(req.params.orgId, req.user._id)
+            .then(result => this.respond(StatusCodes.OK, req, res, result))
+            .catch((err) => res.status(this.getErrorStatus(err)).send(formError(err)));
+    }
+
+    async createSurveyDynamic(req: any, res: any) {
+
+        req.checkBody('title', 'Missing title').notEmpty();
+        req.checkBody('description', 'Missing description').notEmpty();
+        req.checkBody('expiritDate', 'Missing expiritDate').notEmpty();
+        
+        if (!await validate(req, res)) {
+            return;
+        }
+        let HR = req.user.HR ? req.user.HR : false; 
+        req.body.owner = req.user._id;
+        req.body.type = req.params.surveysType ? req.params.surveysType : null; 
+        let survey: SurveyModel = req.body;
+        return this.surveyManager.createSurveyDynamic(req.params.orgId, survey, HR)
+            .then(result => this.respond(StatusCodes.OK, req, res, result))
+            .catch((err) => res.status(this.getErrorStatus(err)).send(formError(err)));
+    }
+
+    //end of dinamuc type
+
     async getAllAnswersSurvey(req: any, res: any) {
         return this.surveyManager.getAllAnswersSurvey(req.params.orgId, req.params.surveyId)
             .then(result => this.respond(StatusCodes.OK, req, res, result))
