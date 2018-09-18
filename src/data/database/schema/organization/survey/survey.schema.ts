@@ -12,6 +12,10 @@ interface SurveyModel extends Survey, Document {
 export let SurveySchema = new Schema({
     owner: {required: true, type: String, index: true},
     title: {required: false, type: String, index: true},
+    description: {required: false, type: String, index: true},
+    respondents: {required: false, type: Array, index: true},
+    type: {required: false, type: Number, index: true},
+    expiritDate: {required: false, type: Date, index: true},
     numberOfQuestions: {required: false, type: Number, index: false},
     sendingOutAt: {required: false, type: Date, index: false},
 }, {

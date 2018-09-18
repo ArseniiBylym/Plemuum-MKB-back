@@ -9,4 +9,5 @@ export interface User {
     pictureUrl: string;
     orgId: string;
     notificationToken: string[];
+    HR?: boolean;
 }
