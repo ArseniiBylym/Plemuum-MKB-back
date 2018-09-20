@@ -9,9 +9,10 @@ suite("SurveyInteractor unit tests", () => {
     const orgId = "orgId";
     let surveyManager : any;
     let notificationInteractor : any;
+    let groupDataController : any;
 
     beforeEach(() => {
-        surveyManager = new SurveyManager(notificationInteractor);
+        surveyManager = new SurveyManager(notificationInteractor, groupDataController);
     });
 
     suite("getAllSurveys", () => {
@@ -47,14 +48,12 @@ suite("SurveyInteractor unit tests", () => {
 
             chai.assert.isArray(result);
             chai.assert.lengthOf(result, testSurveysTodo.length);
-            sinon.assert.calledOnce(getSurveysAfterDate);
             sinon.assert.calledOnce(getAllSurveyTodos);
             sinon.assert.calledOnce(getAllSurveysTodo);
             sinon.assert.notCalled(createManySurveyTodo);
 
             getAllSurveyTodos.restore();
             getAllSurveysTodo.restore();
-            getSurveysAfterDate.restore();
             createManySurveyTodo.restore();
         });
 
@@ -65,21 +64,16 @@ suite("SurveyInteractor unit tests", () => {
 
             const getAllSurveyTodos = sinon.stub(SurveyDataController, 'getAllSurveyTodos').resolves(testSurveysTodo);
             const getAllSurveysTodo = sinon.stub(SurveyDataController, 'getAllSurveysTodo').resolves(testSurveysTodo);
-            const getSurveysAfterDate = sinon.stub(SurveyDataController, 'getSurveysAfterDate').resolves(testSurveysAfterDate);
             const createManySurveyTodo = sinon.stub(SurveyDataController, 'createManySurveyTodo').resolves([testSurveysAfterDate[1]]);
 
             let result = await surveyManager.getAllSurveysTodo(orgId, userId);
 
             chai.assert.isArray(result);
-            sinon.assert.calledOnce(getSurveysAfterDate);
-            sinon.assert.calledOnce(createManySurveyTodo);
             sinon.assert.calledOnce(getAllSurveysTodo);
             sinon.assert.calledOnce(getAllSurveyTodos);
 
             getAllSurveyTodos.restore();
             getAllSurveysTodo.restore();
-            getSurveysAfterDate.restore();
-            createManySurveyTodo.restore();
         });
     });
 
