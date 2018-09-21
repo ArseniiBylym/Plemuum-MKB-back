@@ -8,9 +8,111 @@ import SurveyController from "../../api/controller/survey.controller";
 import { PlenuumError, ErrorType } from "../../util/errorhandler";
 
 const SurveyDataController = {
-    //survey2
+
+    getAllAnswersSurveyById: (orgId: string, surveyId:string): Promise<SurveyModel[]> => {
+        return SurveyTodoCollection(orgId).aggregate(
+            [{
+
+                $match: {survey: new ObjectId(surveyId), isCompleted: true}
+            }, {
+                $lookup: {
+                    from: 'answers',
+                    localField: '_id',
+                    foreignField: 'surveyTodo',
+                    as: 'answers'
+                }
+            },{
+                $lookup: {
+                    from: 'questions',
+                    localField: 'survey',
+                    foreignField: 'survey',
+                    as: 'questions'
+                }
+            },{
+                $project: {
+                    'questions.text':1,
+                    'questions.type':1,
+                    'questions.required':1,
+                    'answers.answerText' : 1,
+                    '_id' : 0
+                }
+            }
+            ])
+            .cursor({ async: true })
+            .then(async (result:any)=>{
+                const resultArr = await result.toArray();
+                let formatingArr:any = [];
+                let questionTextArr = ['Kérdés sorszáma'];
+                questionTextArr = questionTextArr.concat(resultArr[0].questions.map((x:any) => 
+                    {return `${x.text} ( ${x.type} )`+ ((x.required) ? '*': '')}));
+                formatingArr.push(questionTextArr);
+
+                for (let i = 0; resultArr.length > i; i++) {
+                    let answersArr = [i+1];
+                    for (let j = 0; resultArr[i].answers.length > j; j++){
+                    answersArr.push(resultArr[i].answers[j].answerText)
+                    }
+                    formatingArr.push(answersArr)
+                }
+                return formatingArr;
+            })
+    },
+
     getAllSurveysByUserId: (orgId: string, userId:string): Promise<SurveyModel[]> => {
-        return SurveyCollection(orgId).find({owner: userId}).sort({createdAt:-1}).lean().exec() as Promise<SurveyModel[]>;
+        return SurveyCollection(orgId).aggregate(
+            [{
+                $match: {owner: userId.toString() }
+            },{
+                $lookup: {
+                    from: 'surveytodos',
+                    localField: '_id',
+                    foreignField: 'survey',
+                    as: 'surveytodos'
+                }
+            },{
+                $project: {
+                    complitedSurveyTodos: {
+                       $size : {
+                        $filter: {
+                          input: "$surveytodos",
+                          as: "surveytodo",
+                          cond: { "$eq" : ["$$surveytodo.isCompleted", true]  }
+                       }
+                    }
+                    },
+                    allSurveyTodos: {$size: "$surveytodos"},
+                    title : 1,
+                    expiritDate : 1,
+                    createdAt : 1
+                 }
+            },{
+                $sort : {createdAt:-1}
+            }
+            ])
+            .exec() as any;
+    },
+
+    createSurveyDynamic: (orgId: string, survey: SurveyModel): Promise<SurveyModel> => {
+        let newSurvey : SurveyModel;
+        return new (SurveyCollection(orgId))(survey).save()
+        .then((result) => {
+            newSurvey = result;
+            if (survey.questions) {
+                survey.questions.forEach(function(value,index,array){
+                    array[index].survey = newSurvey._id;
+                    if (value.type && value.type === 'text' ) value.max = 500 
+                });
+            };
+            return QuestionCollection(orgId).insertMany(survey.questions);
+        })
+        .then((result) => {
+            if (survey.questions) {
+                if (!(result && result.length == survey.questions.length)) {
+                    throw new Error('Something went wrong wen create survey.');
+                }
+            };
+            return newSurvey;
+        });
     },
 
     // For Plenuum Admin
@@ -194,14 +296,14 @@ const SurveyDataController = {
 
     getAllSurveysTodo: (orgId: string, userId:string): Promise<SurveyTodoModel[]> => {
         return SurveyTodoCollection(orgId).find({respondent:userId,isCompleted:false })
-        .populate({ path: 'survey', model: SurveyCollection(orgId) , select:'_id title',})
+        .populate({ path: 'survey', model: SurveyCollection(orgId) , select:'_id title type expiritDate',})
         .sort({createdAt:-1})
         .lean()
         .exec() as Promise<SurveyTodoModel[]>;
     },
 
     getSurveysAfterDate: (orgId: string, date: Date): Promise<SurveyModel[]> => {
-        return SurveyCollection(orgId).find({createdAt: {$gt: date}, type: !null}).lean().exec() as Promise<SurveyModel[]>;
+        return SurveyCollection(orgId).find({createdAt: {$gt: date}}).lean().exec() as Promise<SurveyModel[]>;
     },
 
     createSurveyTodo: (orgId: string, surveyTodo: SurveyTodoModel): Promise<SurveyTodoModel> => {
@@ -228,6 +330,7 @@ const SurveyDataController = {
                     $match: {survey: surveyTodo.survey._id}
                 }, {
                     $project: {
+                        type: 1,
                         text: 1,
                         required: 1,
                         min: 1,

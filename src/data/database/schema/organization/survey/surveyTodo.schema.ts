@@ -14,6 +14,7 @@ export let SurveyTodoSchema = new Schema({
     survey: { required: true, type: Schema.Types.ObjectId, index: true },
     isCompleted: { required: true, type: Boolean, default: false, index: false },
     completedAt: { required: false, type: Date, index: false },
+    surveyType:  { required: false, type: Number, index: true },
 }, {
     _id: true,
     timestamps: true,

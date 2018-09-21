@@ -1,5 +1,5 @@
 interface Question {
-    type?: number;
+    type?: string;
     answerValues?: string [];
     survey: any;
     text: string;

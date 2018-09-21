@@ -4,12 +4,115 @@ import * as passport from 'passport';
 import checkAdmin from '../../middleware/admin.checker';
 
 export default (app: Express, surveyController: SurveyController) => {
-//routs for dymanic survey
-    app.route("/api/organizations/:orgId/surveys/:surveysType")
+//survey2 apis
+
+/**
+     * @api {GET} /api/organizations/:orgId/surveys/:surveyType Survey - Get all surveys2 list for current user
+     * @apiVersion 2.0.0
+     * @apiName getAllSurveys
+     * @apiGroup Survey
+     * @apiPermission user
+     * @apiHeader Authorization basic
+     *
+     * @apiParam (URL){String} orgId Organization id
+     * @apiParam (URL){String} surveyType kind of survey use string "2"
+     * 
+     * @apiSuccess (Success 200) {Survey[]} - Array of surveys
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     *   [
+     *       {
+     *           "_id": "5ba38c9700818d34af369411",
+     *           "createdAt": "2018-09-20T12:03:35.152Z",
+     *           "title": "Survey title",
+     *           "expiritDate": "2018-10-22T15:51:41.696Z",
+     *           "complitedSurveyTodos": 2,
+     *           "allSurveyTodos": 3
+     *       },
+     *        ...
+     *   ]
+     */
+
+    /**
+     * @api {POST} /api/organizations/:orgId/surveys/:surveyType Create new survey2
+     * @apiVersion 2.0.0
+     * @apiName createSurvey2
+     * @apiGroup Survey
+     * @apiPermission user
+     * @apiHeader {String} Authorization basic
+     *
+     * @apiParam (URL){String}                              orgId                 Organization id
+     * @apiParam (URL){String}                              surveyType            Kind of survey use string "2"
+     * @apiParam (Body){String}                             title                 Survey title
+     * @apiParam (Body){String}                             description           Survey description
+     * @apiParam (Body){String[]}                           respondents           Those who receive the survey. Three option: [orgName], [group1Id, group2Id,..], [user1Id, user2Id,...]
+     * @apiParam (Body){Date}                               expiritDate           Survey expirit date 
+     * @apiParam (Body){Object[]}                           questions             Array of the questions for the sentences. Have new field "type" string 3 option: "text", "1-6", "yes-no"
+     *
+     * @apiParamExample {json} Request-Example:
+     *    {
+     *       "title":"Survey title",
+     *       "description": "This is description of survey",
+     *       "respondents": ["599312a81b31d008b6bd2783"],
+     *       "expiritDate": "2018-10-22 18:51:41.696",
+     *       "questions":[{"type": "text" ,"text":"2+2?","required":true,"min":10,"max":0},
+     *                   {"type": "text", "text":"4+4?","required":false,"min":null}, 
+     *                   {"type": "1-6", "text":"How do you feel?", "required":false},
+	 *   		         {"type": "yes-no", "text":"Do you like beer?", "required":true}]
+     *    }
+     *
+     * @apiSuccess (Success 200) {Object}                   Survey                Оbject corresponding to the newly created survey.
+     * 
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     * {
+     *      "updatedAt": "2018-09-20T12:03:35.152Z",
+            "createdAt": "2018-09-20T12:03:35.152Z",
+            "title": "Survey title",
+            "description": "This is description of survey",
+            "expiritDate": "2018-10-22T15:51:41.696Z",
+            "owner": "5984342227cd340363dc84a9",
+            "type": 2,
+            "_id": "5ba38c9700818d34af369411",
+            "respondents": [
+                 "599312a81b31d008b6bd2783"
+            ]
+     * }
+     * 
+     * @apiError Something went wrong wen create survey.
+     * 
+     * @apiErrorExample Error-Response:
+     *     HTTP/1.1 500 Internal server error
+     *     {
+     *       "error": "Something went wrong wen create survey."
+     *     }
+     */
+    app.route("/api/organizations/:orgId/surveys/:surveyType")
     .get(passport.authenticate('jwt', {session: false}), surveyController.getAllSurveysByUserId.bind(surveyController))
     .post(passport.authenticate('jwt', {session: false}), surveyController.createSurveyDynamic.bind(surveyController))
 
-//end of dymanic roots
+    /**
+     * @api {GET} /api/organizations/:orgId/survey/:surveyType/:surveyId/excel Survey - Get all answers by surveyId in excel file
+     * @apiName getAllSurveysTodo
+     * @apiHeader {String} Authorization basic
+     * @apiGroup Survey
+     * @apiParam (URL){String}              orgId               Organization id
+     * @apiParam (URL){String}              surveyId            Survey id
+     * @apiParam (URL){String}              surveyType          Kind of survey use string "2"
+     *
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     * Downloaded {survey.title}.xlsx file 
+     *
+     *
+     **/
+
+    app.route("/api/organizations/:orgId/survey/:surveyType/:surveyId/excel")
+        .get(passport.authenticate('jwt', {session: false}), surveyController.getAllAnswersSurveyById.bind(surveyController));
+
+
    /**
      * @api {GET} /api/organizations/:orgId/surveys Survey - Get all surveys list
      * @apiVersion 2.0.0

@@ -6,6 +6,7 @@ import SurveyManager from "../interactor/survey.interactor";
 import { SurveyTodoModel } from '../../data/database/schema/organization/survey/surveyTodo.schema';
 import { SurveyModel } from '../../data/database/schema/organization/survey/survey.schema';
 import { QuestionModel } from '../../data/database/schema/organization/survey/question.schema';
+import * as path from 'path';
 
 export default class SurveyController extends BaseController {
     surveyManager: SurveyManager;
@@ -15,7 +16,7 @@ export default class SurveyController extends BaseController {
         this.surveyManager = surveyManager;
     }
 
-    //dinamic type of survey
+    //survey2 controller
     async getAllSurveysByUserId(req: any, res: any) {
         return this.surveyManager.getAllSurveysByUserId(req.params.orgId, req.user._id)
             .then(result => this.respond(StatusCodes.OK, req, res, result))
@@ -31,16 +32,23 @@ export default class SurveyController extends BaseController {
         if (!await validate(req, res)) {
             return;
         }
-        let HR = req.user.HR ? req.user.HR : false; 
+        if (req.body.questions && req.body.questions.length > 20) { this.respond(StatusCodes.FORBIDDEN, req, res, { error: "To many question." }); }
+        let HR = (req.user.roles && req.user.roles.indexOf('HR') !== -1) ? true : false; 
         req.body.owner = req.user._id;
-        req.body.type = req.params.surveysType ? req.params.surveysType : null; 
+        req.body.type = req.params.surveyType ? req.params.surveyType : null; 
         let survey: SurveyModel = req.body;
         return this.surveyManager.createSurveyDynamic(req.params.orgId, survey, HR)
             .then(result => this.respond(StatusCodes.OK, req, res, result))
             .catch((err) => res.status(this.getErrorStatus(err)).send(formError(err)));
     }
 
-    //end of dinamuc type
+    async getAllAnswersSurveyById(req: any, res: any) {
+        return this.surveyManager.getAllAnswersSurveyById(req.params.orgId, req.params.surveyId, req.params.surveyType, req.user._id)
+            .then(result => res.download(path.join(__dirname + '../../../../'+result[0]),result[1] ))
+            .catch((err) => res.status(this.getErrorStatus(err)).send(formError(err)));
+    }
+
+    //end survey2
 
     async getAllAnswersSurvey(req: any, res: any) {
         return this.surveyManager.getAllAnswersSurvey(req.params.orgId, req.params.surveyId)

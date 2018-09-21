@@ -7,6 +7,7 @@ interface Survey {
     title?: string;
     numberOfQuestions?: number;
     sendingOutAt?: Date;
+    surveyType? : number;
 }
 
 export default Survey

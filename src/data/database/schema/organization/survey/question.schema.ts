@@ -6,7 +6,7 @@ interface QuestionModel extends Question, Document {
 }
 
 export let QuestionSchema = new Schema({
-    type: { required: false, type: Number, index: true  },
+    type: { required: false, type: String, index: true  },
     answerValues: { required: false, type: Array, index: true  },
     survey: { type: Schema.Types.ObjectId, index: true  },
     text: {required: true, type: String, index: true },

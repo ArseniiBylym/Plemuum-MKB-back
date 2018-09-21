@@ -8,6 +8,7 @@ import UserDataController from "../../data/datacontroller/user.datacontroller";
 import { GroupDataController }  from "../../data/datacontroller/group.datacontroller";
 import agenda from "../../util/agenda";
 import * as XLSX from "xlsx";
+import * as _ from "lodash";
 
 export default class SurveyInteractor {
     private notificationManager: NotificationManager;
@@ -18,7 +19,7 @@ export default class SurveyInteractor {
         this.groupDataController = groupDataController;
 
     }
-    //dymanic survey
+    //Survey2 interactors
     async getAllSurveysByUserId(orgId: string, userId: string) {
         return SurveyDataController.getAllSurveysByUserId(orgId, userId);
     }
@@ -26,10 +27,10 @@ export default class SurveyInteractor {
         let newSurvey : SurveyModel;
         let respondentsArr = await this.analysisRespondentsId(orgId, survey.respondents, HR); 
         if (respondentsArr.length > 20 && !HR || respondentsArr.length == 0){
-            throw new Error('To many respondents or invalid responsId');
+            throw new Error('To many respondents or invalid Id of respondent');
         }
         else {
-        return SurveyDataController.createSurvey(orgId, survey)
+        return SurveyDataController.createSurveyDynamic(orgId, survey)
             .then((result) => {
                 newSurvey = result;
             })
@@ -37,7 +38,6 @@ export default class SurveyInteractor {
             .then(()=>{return newSurvey})
         }
     }
-
 
     async analysisRespondentsId(orgId:string, respondentsId:any, HR:boolean){
         let respondents:any = [];
@@ -49,17 +49,39 @@ export default class SurveyInteractor {
         }
         //if group
         else if (groupsId.indexOf(respondentsId[0]) !== -1) {
-            console.log(groupsId.indexOf(respondentsId[0]))
-            let group:any = await this.groupDataController.getGroupById(orgId, respondentsId[0])
-            respondents = await UserDataController.getUsersByIds(orgId, group.users)
+            for (let i = 0; i<respondentsId.length; i++){
+            let group:any = await this.groupDataController.getGroupById(orgId, respondentsId[i]);
+            respondents = respondents.concat(await UserDataController.getUsersByIds(orgId, group.users));
+            }
         }
         //array of users
         else {
-            respondents = await UserDataController.getUsersByIds(orgId, respondentsId);
+            try{
+                respondents = await UserDataController.getUsersByIds(orgId, respondentsId);
+                }
+            catch(error) {
+                console.error(error.message);
+            }
         } 
-        return respondents;
+        return respondents = _.uniqBy(respondents, (item:any)=> item._id.toString());
     }
-    //end dymanic
+
+    async getAllAnswersSurveyById(orgId: string, surveyId: string, surveyType: string, userId: string) {
+        return SurveyDataController.getAllAnswersSurveyById(orgId, surveyId)
+            .then(async (result:any) => {
+                //result export to xlsx
+                const ws = await XLSX.utils.json_to_sheet(result,{skipHeader:true});
+                const wb = await XLSX.utils.book_new();
+                await XLSX.utils.book_append_sheet(wb, ws, "survey_answers");
+                /* generate an XLSX file */
+                let survey:any = await this.getSurvey(orgId, surveyId);
+                if (survey.owner != userId) throw new Error ("It's not your survey!");
+                let path = `./media/${survey.title}_${survey._id}.xlsx`;
+                await XLSX.writeFile(wb, path);
+                return [path, `${survey.title}.xlsx`];
+            })
+    }
+    //end survey2
 
 
     async getAllUserWhoUncompletedSurvey(orgId: string, surveyId: string) {
@@ -123,7 +145,7 @@ export default class SurveyInteractor {
                     surveyTodos.push( {
                         survey: newSurvey._id,
                         respondent: employees[i]._id
-                    } as SurveyTodoModel);
+                    } as any);
                 }
             }
         //write todos in db
@@ -151,21 +173,23 @@ export default class SurveyInteractor {
     }
 
     async getAllSurveysTodo(orgId: string, userId: string) {
-        let currentDate = new Date();
-        //get expiritDate survey
-        let expiriteSurveyTodo = await SurveyDataController.getAllSurveysTodo(orgId, userId);
-        //get general survey with 2 month expirite
-        let needDate = new Date(currentDate.setMonth(currentDate.getMonth() - 2));
-
-        let allSurveysAfterDate = (await SurveyDataController.getSurveysAfterDate(orgId, needDate)).map((item) => { return String(item._id) });
-
+        //get old type of survey
+        let allOldSurveysId:any = (await SurveyDataController.getAllSurveys(orgId)).filter((item) => !item.expiritDate );
+        allOldSurveysId = allOldSurveysId.map((item:any) => { return String(item._id)} );
+        //all survey todo
         let allSurveysTodo = (await SurveyDataController.getAllSurveyTodos(orgId, userId)).map((item) => { return String(item.survey._id) });
-        let needSurveysTodo = allSurveysAfterDate.filter((item) => { return allSurveysTodo.indexOf(item) < 0 });
+        // filter survey with not inculde in survey todo
+        let needSurveysTodo = allOldSurveysId.filter((item:any) => { return allSurveysTodo.indexOf(item) < 0 });
         if (needSurveysTodo && needSurveysTodo.length) {
-            let need = needSurveysTodo.map((item) => { return { survey: item, respondent: userId } as SurveyTodoModel } );
+        //create survey todo who later registred
+            let need = needSurveysTodo.map((item:any) => { return { survey: item, respondent: userId } as SurveyTodoModel } );
             await SurveyDataController.createManySurveyTodo(orgId, need);
         }
-        return await SurveyDataController.getAllSurveysTodo(orgId, userId);
+        let currentDate = new Date();
+        //get all uncomplited survey
+        let uncomplitedSurveyTodo = await SurveyDataController.getAllSurveysTodo(orgId, userId);
+        let filterExpiritDateSurveyTodo = uncomplitedSurveyTodo.filter(x => x.survey.expiritDate ? x.survey.expiritDate >= currentDate : true);
+        return filterExpiritDateSurveyTodo;
     }
 
     async getSurveyTodo(orgId: string, surveyTodoId: string, userId: string) {
@@ -177,6 +201,10 @@ export default class SurveyInteractor {
         const {_id, respondent} = result;
         if (_id) {
             const surveyWithAnswers = await SurveyDataController.getSurveyTodo(orgId, _id, respondent);
+
+            if (surveyWithAnswers.surveyTodo.surveyType && surveyWithAnswers.surveyTodo.surveyType == 2) {
+                return surveyWithAnswers;
+            } 
             await agenda.schedule(new Date(Date.now() + 2000),'sendSurveyAnswers', surveyWithAnswers);
             return surveyWithAnswers;
         }
