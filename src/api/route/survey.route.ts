@@ -7,9 +7,9 @@ export default (app: Express, surveyController: SurveyController) => {
 //survey2 apis
 
 /**
-     * @api {GET} /api/organizations/:orgId/surveys/:surveyType Survey - Get all surveys2 list for current user
+     * @api {GET} /api/organizations/:orgId/surveys/:surveyType  Survey2 - Get all surveys2 list for current user
      * @apiVersion 2.0.0
-     * @apiName getAllSurveys
+     * @apiName getAllSurveys2
      * @apiGroup Survey
      * @apiPermission user
      * @apiHeader Authorization basic
@@ -35,7 +35,7 @@ export default (app: Express, surveyController: SurveyController) => {
      */
 
     /**
-     * @api {POST} /api/organizations/:orgId/surveys/:surveyType Create new survey2
+     * @api {POST} /api/organizations/:orgId/surveys/:surveyType Survey2 - Create new survey2
      * @apiVersion 2.0.0
      * @apiName createSurvey2
      * @apiGroup Survey
@@ -93,7 +93,7 @@ export default (app: Express, surveyController: SurveyController) => {
     .post(passport.authenticate('jwt', {session: false}), surveyController.createSurveyDynamic.bind(surveyController))
 
     /**
-     * @api {GET} /api/organizations/:orgId/survey/:surveyType/:surveyId/excel Survey - Get all answers by surveyId in excel file
+     * @api {GET} /api/organizations/:orgId/survey/:surveyType/:surveyId/excel Survey2 - Get all answers by surveyId in excel file
      * @apiName getAllSurveysTodo
      * @apiHeader {String} Authorization basic
      * @apiGroup Survey
@@ -113,15 +113,15 @@ export default (app: Express, surveyController: SurveyController) => {
         .get(passport.authenticate('jwt', {session: false}), surveyController.getAllAnswersSurveyById.bind(surveyController));
 
     /**
-     * @api {GET} /api/organizations/:orgId/survey/:surveyType/:surveyId/detail Survey - Get survey2 detail
+     * @api {GET} /api/organizations/:orgId/survey/:surveyType/:surveyId/detail  Survey2 - Get survey2 detail
      * @apiVersion 2.0.0
-     * @apiName getSurveyById
+     * @apiName getSurveyDetailById
      * @apiGroup Survey
-     * @apiPermission admin
+     * @apiPermission user
      * @apiHeader {String} Authorization basic
      * 
      * @apiParam (URL){String}              orgId               Organization id
-     * 
+     * @apiParam (URL){String}              surveyType          Kind of survey use string "2"
      * @apiParam (URL){String}              surveyId            Survey id
      * 
      * @apiSuccess (Success 200) {Object}                   Survey                Оbject corresponding the survey model.
@@ -188,7 +188,7 @@ export default (app: Express, surveyController: SurveyController) => {
 
         //end survey2 apis
    /**
-     * @api {GET} /api/organizations/:orgId/surveys Survey - Get all surveys list
+     * @api {GET} /api/organizations/:orgId/surveys  Get all surveys list
      * @apiVersion 2.0.0
      * @apiName getAllSurveys
      * @apiGroup Survey
@@ -277,7 +277,7 @@ export default (app: Express, surveyController: SurveyController) => {
         .post(passport.authenticate('jwt', {session: false}), checkAdmin(), surveyController.createSurvey.bind(surveyController))
 
     /**
-     * @api {GET} /api/organizations/:orgId/surveys/:surveyId Survey - Get survey by id
+     * @api {GET} /api/organizations/:orgId/surveys/:surveyId  Get survey by id
      * @apiVersion 2.0.0
      * @apiName getSurveyById
      * @apiGroup Survey
@@ -408,7 +408,7 @@ export default (app: Express, surveyController: SurveyController) => {
    .patch(passport.authenticate('jwt', {session: false}), checkAdmin(), surveyController.updateQuestion.bind(surveyController))
 
    /**
-     * @api {GET} /api/organizations/:orgId/surveysTodo Survey - Get all surveys to do list for current user
+     * @api {GET} /api/organizations/:orgId/surveysTodo  Get all surveys to do list for current user
      * @apiName getSurveysTodo
      * @apiHeader {String} Authorization basic
      * @apiGroup Survey
@@ -436,7 +436,7 @@ export default (app: Express, surveyController: SurveyController) => {
     .get(passport.authenticate('jwt', {session: false}), surveyController.getAllSurveysTodo.bind(surveyController))
 
     /**
-     * @api {GET} /api/organizations/:orgId/survey/:surveyId/excel Survey - Get all answers by surveyId in excel file
+     * @api {GET} /api/organizations/:orgId/survey/:surveyId/excel Survey2 - Get all answers by surveyId in excel file
      * @apiName getAllSurveysTodo
      * @apiHeader {String} Authorization basic
      * @apiGroup Admin
@@ -478,7 +478,7 @@ export default (app: Express, surveyController: SurveyController) => {
         .get(passport.authenticate('jwt', {session: false}), surveyController.getAllAnswersSurvey.bind(surveyController));
 
     /**
-     * @api {GET} /api/organizations/:orgId/survey/:surveyId/uncompleted/excel Survey - Get all users who uncompleted survey in excel file
+     * @api {GET} /api/organizations/:orgId/survey/:surveyId/uncompleted/excel  Get all users who uncompleted survey in excel file
      * @apiName getAllUserWhoUncompletedSurvey
      * @apiHeader {String} Authorization basic
      * @apiGroup Admin
@@ -570,7 +570,7 @@ export default (app: Express, surveyController: SurveyController) => {
     **/
 
     /**
-     * @api {PATCH} /api/organizations/:orgId/surveysTodo/:surveyTodoId - Save/Complete survey to do by Id for current user
+     * @api {PATCH} /api/organizations/:orgId/surveysTodo/:surveyTodoId  Save/Complete survey to do by Id for current user
      * @apiName getSurveyTodoById
      * @apiHeader {String} Authorization basic
      * @apiGroup Survey
