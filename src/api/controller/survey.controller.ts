@@ -47,7 +47,12 @@ export default class SurveyController extends BaseController {
             .then(result => res.download(path.join(__dirname + '../../../../'+result[0]),result[1] ))
             .catch((err) => res.status(this.getErrorStatus(err)).send(formError(err)));
     }
-
+    
+    async getSurveyDetail(req: any, res: any) {
+        return this.surveyManager.getSurveyDetail(req.params.orgId, req.params.surveyId)
+            .then(result => this.respond(StatusCodes.OK, req, res, result))
+            .catch((err) => res.status(this.getErrorStatus(err)).send(formError(err)));
+    }
     //end survey2
 
     async getAllAnswersSurvey(req: any, res: any) {

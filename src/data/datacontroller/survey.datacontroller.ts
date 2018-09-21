@@ -8,7 +8,7 @@ import SurveyController from "../../api/controller/survey.controller";
 import { PlenuumError, ErrorType } from "../../util/errorhandler";
 
 const SurveyDataController = {
-
+//survey2 datacontroller
     getAllAnswersSurveyById: (orgId: string, surveyId:string): Promise<SurveyModel[]> => {
         return SurveyTodoCollection(orgId).aggregate(
             [{
@@ -112,6 +112,58 @@ const SurveyDataController = {
                 }
             };
             return newSurvey;
+        });
+    },
+
+    getSurveyDetail: (orgId: string, surveyId: string): Promise<SurveyModel> => {
+        return SurveyCollection(orgId).aggregate(
+        [{
+            $match: { _id: new ObjectId(surveyId) }
+        },
+        {
+            $lookup: {
+                from: 'questions',
+                localField: '_id',
+                foreignField: 'survey',
+                as: 'questions'
+            }
+        },{
+            $lookup: {
+                from: 'surveytodos',
+                localField: '_id',
+                foreignField: 'survey',
+                as: 'surveytodos'
+            }
+        },{
+            $project: {
+                complitedSurveyTodos: {
+                   $size : {
+                    $filter: {
+                      input: "$surveytodos",
+                      as: "surveytodo",
+                      cond: { "$eq" : ["$$surveytodo.isCompleted", true]  }
+                   }
+                }
+                },
+                allSurveyTodos: {$size: "$surveytodos"},
+                title : 1,
+                description : 1,
+                expiritDate : 1,
+                createdAt : 1,
+                updatedAt : 1,
+                type : 1,
+                questions : 1,
+                respondents : 1
+
+             } 
+        }])
+        .cursor({ async: true })
+        .exec()
+        .then((result:any) => {
+            return result.toArray();
+        })
+        .then((result:any) => {
+            return result[0];
         });
     },
 
