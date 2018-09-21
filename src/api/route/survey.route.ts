@@ -112,7 +112,81 @@ export default (app: Express, surveyController: SurveyController) => {
     app.route("/api/organizations/:orgId/survey/:surveyType/:surveyId/excel")
         .get(passport.authenticate('jwt', {session: false}), surveyController.getAllAnswersSurveyById.bind(surveyController));
 
+    /**
+     * @api {GET} /api/organizations/:orgId/survey/:surveyType/:surveyId/detail Survey - Get survey2 detail
+     * @apiVersion 2.0.0
+     * @apiName getSurveyById
+     * @apiGroup Survey
+     * @apiPermission admin
+     * @apiHeader {String} Authorization basic
+     * 
+     * @apiParam (URL){String}              orgId               Organization id
+     * 
+     * @apiParam (URL){String}              surveyId            Survey id
+     * 
+     * @apiSuccess (Success 200) {Object}                   Survey                Оbject corresponding the survey model.
+     * 
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     ** {
+     *       "_id": "5ba4a721f3722f1f9fc84347",
+     *       "updatedAt": "2018-09-21T08:09:05.266Z",
+     *       "createdAt": "2018-09-21T08:09:05.266Z",
+     *       "title": "Survey 2",
+     *       "description": "This is description of survey",
+     *       "expiritDate": "2018-10-22T15:51:41.696Z",
+     *       "type": 2,
+     *       "respondents": [
+     *           {
+     *               "name": "christina",
+     *               "imgUrl": "https://randomuser.me/api/portraits/women/74.jpg"
+     *           },
+     *           {
+     *               "name": "bill",
+     *               "imgUrl": "https://randomuser.me/api/portraits/men/1.jpg"
+     *           },
+     *           {
+     *               "name": "samantha",
+     *               "imgUrl": "https://randomuser.me/api/portraits/women/15.jpg"
+     *           },
+     *           {
+     *               "name": "liam",
+     *               "imgUrl": "https://randomuser.me/api/portraits/men/17.jpg"
+     *           },...
+     *           
+     *       ],
+     *       "questions": [
+     *           {
+     *               "_id": "5ba4a721f3722f1f9fc84348",
+     *               "updatedAt": "2018-09-21T08:09:05.285Z",
+     *               "createdAt": "2018-09-21T08:09:05.285Z",
+     *               "type": "text",
+     *               "text": "2+2",
+     *               "survey": "5ba4a721f3722f1f9fc84347",
+     *               "max": 500,
+     *               "min": 10,
+     *               "required": true,
+     *               "answerValues": []
+     *           }, ...
+     *       ],
+     *       "complitedSurveyTodos": 0,
+     *       "allSurveyTodos": 3
+     *   }
+     * 
+     * @apiError 404 Not Found.
+     * 
+     * @apiErrorExample Error-Response:
+     *     HTTP/1.1 404 Not Found
+     *     {
+     *       "error": "Survey not found."
+     *     }
+    **/
 
+    app.route("/api/organizations/:orgId/survey/:surveyType/:surveyId/detail")
+        .get(passport.authenticate('jwt', {session: false}), surveyController.getSurveyDetail.bind(surveyController));
+    
+
+        //end survey2 apis
    /**
      * @api {GET} /api/organizations/:orgId/surveys Survey - Get all surveys list
      * @apiVersion 2.0.0

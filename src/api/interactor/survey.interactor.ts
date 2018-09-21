@@ -25,7 +25,7 @@ export default class SurveyInteractor {
     }
     async createSurveyDynamic(orgId: string, survey: SurveyModel, HR:boolean) {
         let newSurvey : SurveyModel;
-        let respondentsArr = await this.analysisRespondentsId(orgId, survey.respondents, HR); 
+        let respondentsArr = await this.analysisRespondentsId(orgId, survey.respondents); 
         if (respondentsArr.length > 20 && !HR || respondentsArr.length == 0){
             throw new Error('To many respondents or invalid Id of respondent');
         }
@@ -39,7 +39,7 @@ export default class SurveyInteractor {
         }
     }
 
-    async analysisRespondentsId(orgId:string, respondentsId:any, HR:boolean){
+    async analysisRespondentsId(orgId:string, respondentsId:any){
         let respondents:any = [];
         let groups:any = await this.groupDataController.getGroups(orgId);
         let groupsId = groups.map((x:any)=> {return x._id.toString()}); 
@@ -80,6 +80,17 @@ export default class SurveyInteractor {
                 await XLSX.writeFile(wb, path);
                 return [path, `${survey.title}.xlsx`];
             })
+    }
+
+    async getSurveyDetail(orgId: string, surveyId: string) {
+        return SurveyDataController.getSurveyDetail(orgId, surveyId)
+        .then(async (result:any) => {
+             let respondentsId = await this.analysisRespondentsId(orgId, result.respondents);
+             let usersId = await UserDataController.getUsersByIds(orgId, respondentsId);
+             let usersFirstNameImgUrl = usersId.map((user:any)=> {return {name: user.firstName, imgUrl: user.pictureUrl}});
+             result.respondents = usersFirstNameImgUrl;
+             return result;  
+        })
     }
     //end survey2
 
