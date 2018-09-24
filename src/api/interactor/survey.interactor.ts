@@ -1,5 +1,6 @@
 import SurveyDataController from "../../data/datacontroller/survey.datacontroller";
 import {SurveyModel} from "../../data/database/schema/organization/survey/survey.schema";
+import {SurveyTemplateModel} from "../../data/database/schema/organization/survey/surveyTemplate.schema";
 import {SurveyTodoModel} from "../../data/database/schema/organization/survey/surveyTodo.schema";
 import {QuestionModel} from "../../data/database/schema/organization/survey/question.schema";
 import { TEMPLATE } from "../../manager/notification/notification.manager";
@@ -92,6 +93,31 @@ export default class SurveyInteractor {
              return result;  
         })
     }
+    //surveyTemplate interactor
+    async getAllSurveyTemplatesByUserId(orgId: string, userId: string, roles: String []) {
+        if (roles.indexOf('HR') === -1){
+        return SurveyDataController.getDefaultSurveyTemplate(orgId);
+        }
+        else 
+        return SurveyDataController.getDefaulAndHRtSurveyTemplate(orgId);
+    }
+    async createSurveyTemplate(orgId: string, surveyTemplate: SurveyTemplateModel) {
+        return SurveyDataController.createSurveyTemplate(orgId, surveyTemplate)
+            .then((result) => {
+                return result;
+            });
+    }
+    async deleteSurveyTemplateById(orgId: string, surveyTemplateId: string) {
+        return SurveyDataController.deleteSurveyTemplateById(orgId, surveyTemplateId)
+            .then((result:any) => {
+                if (result.result.n === 1){
+                return "Survey template deleted";
+                }
+                else  return "Survey template not found";
+            });
+    }
+
+
     //end survey2
 
 
