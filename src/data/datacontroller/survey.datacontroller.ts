@@ -387,6 +387,7 @@ const SurveyDataController = {
                         required: 1,
                         min: 1,
                         max: 1,
+                        answerValues: 1
                     }
                 }, {
                     $lookup: {
