@@ -21,6 +21,18 @@ export default class UserController extends BaseController {
         this.userManager = userManager;
     }
 
+    async updateUserManager(req: any, res: any) {
+        req.checkBody('managerId', 'Missing managerId').notEmpty();
+
+        if (!await validate(req, res)) {
+            return;
+        }
+
+        return this.userManager.updateUserManager(req.user._id.toString(), req.body.managerId)
+            .then((result) => this.respond(StatusCodes.OK, req, res, result))
+            .catch((err) => this.handleError(err, req, res));
+    }
+
     async registerUser(req: any, res: Response) {
         req.checkBody('firstName', 'Missing firstName').notEmpty();
         req.checkBody('lastName', 'Missing lastName').notEmpty();
@@ -84,7 +96,8 @@ export default class UserController extends BaseController {
                 email: req.user.email,
                 pictureUrl: req.user.pictureUrl,
                 orgId: req.user.orgId,
-                lastActive: req.user.lastActive
+                lastActive: req.user.lastActive,
+                managerId: req.user.managerId
             };
             this.respond(StatusCodes.OK, req, res, result);
         } catch (err) {

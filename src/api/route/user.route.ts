@@ -18,6 +18,51 @@ import checkAdmin from '../../middleware/admin.checker';
 export default (app: Express, userController: UserController) => {
 
     /**
+     * @api {PATCH} /api/users/updateUserManager Update user's manager
+     * @apiVersion 2.0.0
+     * @apiName updateUserManager
+     * @apiGroup User
+     * @apiPermission user
+     *
+     * @apiParam (Body){String}             managerId             ManagerId
+     * 
+     * @apiParamExample {json} Request-Example:
+     *    {
+     *       "managerId": "5a84007831fdc409bc598202"
+     *    }
+     *
+     * @apiSuccess (Success 200) {User} - Updated user object
+     * 
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     * {
+     *  "_id": "5984342227cd340363dc84c7",
+     *   "firstName": "peter",
+     *   "lastName": "szabo",
+     *   "email": "peter.szabo@hipteam.io",
+     *   "lastActive": "2018-09-26T13:08:52.105Z",
+     *   "pictureUrl": "",
+     *   "roles": [
+     *       ""
+     *   ],  
+     *   "managerId": "5a84007831fdc409bc598202",
+     * }
+     * 
+     * * 
+     * @apiError 404 Not Found.
+     * 
+     * @apiErrorExample Error-Response:
+     *     HTTP/1.1 404 Not Found
+     *     {
+     *       "error": "Manager not found."
+     *     }
+    **/
+
+    app.route("/api/users/updateUserManager")
+        .patch(passport.authenticate('jwt', {session: false}),userController.updateUserManager.bind(userController));
+
+
+    /**
      * @api {POST} /api/users User - Create new user
      * @apiVersion 2.0.0
      * @apiName register
