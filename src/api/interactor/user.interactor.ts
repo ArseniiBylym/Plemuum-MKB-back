@@ -22,6 +22,22 @@ export default class UserInteractor {
         this.organizationDataController = organizationDataController;
     }
 
+    async updateUserManager(userId:string, managerId:string) {
+        try {
+            await UserDataController.getUserById(managerId);
+        }
+        catch (e) {
+            throw new PlenuumError("Manager not found", ErrorType.NOT_FOUND);
+        }
+        if (managerId === userId) throw new PlenuumError("The user can not be himself a manager", ErrorType.FORBIDDEN);
+
+        const updatedUser = await UserDataController.updateUserManagerId(userId, managerId);
+        if (!updatedUser) {
+            throw new PlenuumError("User not found", ErrorType.NOT_FOUND);
+        }
+        return updatedUser;
+    }  
+
     async updateUser(user: UserModel) {
         const id = user._id;
         delete user._id;

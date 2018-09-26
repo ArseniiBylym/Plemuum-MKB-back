@@ -11,7 +11,8 @@ function getTestUser(firstName: string, lastName: string): any {
         email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}${Util.getRandomInt(1, 1000)}@email.com`,
         pictureUrl: "",
         orgId: 'hipteam',
-        password: "asd123"
+        password: "asd123",
+        managerId: ""
     };
 }
 
