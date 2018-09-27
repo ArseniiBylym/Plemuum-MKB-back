@@ -23,12 +23,7 @@ export default class UserInteractor {
     }
 
     async updateUserManager(userId:string, managerId:string) {
-        try {
-            await UserDataController.getUserById(managerId);
-        }
-        catch (e) {
-            throw new PlenuumError("Manager not found", ErrorType.NOT_FOUND);
-        }
+       
         if (managerId === userId) throw new PlenuumError("The user can not be himself a manager", ErrorType.FORBIDDEN);
 
         const updatedUser = await UserDataController.updateUserManagerId(userId, managerId);

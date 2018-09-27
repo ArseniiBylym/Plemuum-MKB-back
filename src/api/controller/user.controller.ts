@@ -23,11 +23,7 @@ export default class UserController extends BaseController {
 
     async updateUserManager(req: any, res: any) {
         req.checkBody('managerId', 'Missing managerId').notEmpty();
-
-        if (!await validate(req, res)) {
-            return;
-        }
-
+        
         return this.userManager.updateUserManager(req.user._id.toString(), req.body.managerId)
             .then((result) => this.respond(StatusCodes.OK, req, res, result))
             .catch((err) => this.handleError(err, req, res));
