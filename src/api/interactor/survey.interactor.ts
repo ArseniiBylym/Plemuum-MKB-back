@@ -26,10 +26,19 @@ export default class SurveyInteractor {
     async createSurveyDynamic(orgId: string, survey: SurveyModel, HR:boolean) {
         let newSurvey : SurveyModel;
         let respondentsArr = await this.analysisRespondentsId(orgId, survey.respondents); 
+        let yesNo = ["yes", "no"];
+        let scala = ["1 (Disagree strongly)", "2", "3", "4", "5", "6 (Agree strongly)"];
+
         if (respondentsArr.length > 20 && !HR || respondentsArr.length == 0){
             throw new Error('To many respondents or invalid Id of respondent');
         }
-        else {
+        else { 
+            survey.questions.forEach((question:any)=> 
+                {
+                    if (question.type === 'yes-no') question.answerValues = yesNo
+                    else if (question.type === '1-6') question.answerValues = scala
+                }
+             )
         return SurveyDataController.createSurveyDynamic(orgId, survey)
             .then((result) => {
                 newSurvey = result;
