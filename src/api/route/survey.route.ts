@@ -48,7 +48,7 @@ export default (app: Express, surveyController: SurveyController) => {
      * @apiParam (Body){String}                             description           Survey description
      * @apiParam (Body){String[]}                           respondents           Those who receive the survey. Three option: [orgName], [group1Id, group2Id,..], [user1Id, user2Id,...]
      * @apiParam (Body){Date}                               expiritDate           Survey expirit date 
-     * @apiParam (Body){Object[]}                           questions             Array of the questions for the sentences. Have new field "type" string 3 option: "text", "1-6", "yes-no"
+     * @apiParam (Body){Object[]}                           questions             Array of the questions for the sentences. Have new field "type" string 3 option: "text", "1-6", "yes-no". If answerValues empty arr used default value.
      *
      * @apiParamExample {json} Request-Example:
      *    {
@@ -58,8 +58,8 @@ export default (app: Express, surveyController: SurveyController) => {
      *       "expiritDate": "2018-10-22 18:51:41.696",
      *       "questions":[{"type": "text" ,"text":"2+2?","required":true,"min":10,"max":0},
      *                   {"type": "text", "text":"4+4?","required":false,"min":null}, 
-     *                   {"type": "1-6", "text":"How do you feel?", "required":false},
-	 *   		         {"type": "yes-no", "text":"Do you like beer?", "required":true}]
+     *                   {"type": "1-6", "text":"How do you feel?", "required":false, "answerValues": []},
+	 *   		         {"type": "yes-no", "text":"Do you like beer?", "required":true}, "answerValues": ["igen", "nem"]]
      *    }
      *
      * @apiSuccess (Success 200) {Object}                   Survey                Оbject corresponding to the newly created survey.
