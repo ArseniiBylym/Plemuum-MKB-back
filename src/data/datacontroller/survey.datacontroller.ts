@@ -391,7 +391,7 @@ const SurveyDataController = {
 
         return SurveyTodoCollection(orgId)
         .findOne({ _id: surveyTodoId, respondent: userId })
-        .populate({ path: 'survey', model: SurveyCollection(orgId) , select:'_id title',}).lean().exec()
+        .populate({ path: 'survey', model: SurveyCollection(orgId) , select:'_id title description',}).lean().exec()
         .then((result) => {
             if(!result) {
                 throw new PlenuumError('Survey to do was not found', ErrorType.NOT_FOUND);
