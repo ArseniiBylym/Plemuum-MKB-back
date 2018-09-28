@@ -110,7 +110,7 @@ export default (app: Express, surveyController: SurveyController) => {
      **/
 
     app.route("/api/organizations/:orgId/survey/:surveyType/:surveyId/excel")
-        .get(passport.authenticate('jwt', {session: false}), surveyController.getAllAnswersSurveyById.bind(surveyController));
+        .get(passport.authenticate('jwt', {session: true}), surveyController.getAllAnswersSurveyById.bind(surveyController));
 
     /**
      * @api {GET} /api/organizations/:orgId/survey/:surveyType/:surveyId/detail  Survey2 - Get survey2 detail
@@ -185,6 +185,135 @@ export default (app: Express, surveyController: SurveyController) => {
     app.route("/api/organizations/:orgId/survey/:surveyType/:surveyId/detail")
         .get(passport.authenticate('jwt', {session: false}), surveyController.getSurveyDetail.bind(surveyController));
     
+    //surveyTemplate apis
+    /**
+     * @api {GET} /api/organizations/:orgId/surveys/surveyTemplate/:surveyType  SurveyTemplate - Get all survey templates list
+     * @apiVersion 2.0.0
+     * @apiName getAllSurveyTemplates
+     * @apiGroup Survey
+     * @apiPermission user
+     * @apiHeader Authorization basic
+     *
+     * @apiParam (URL){String} orgId Organization id
+     * @apiParam (URL){String} surveyType kind of survey use string "2"
+     * 
+     * @apiSuccess (Success 200) {Survey[]} - Array of surveys
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     *   [
+     *       {
+     *           "_id": "5ba8cc23a54c2a2a18f36bdb",
+     *           "updatedAt": "2018-09-24T11:36:03.222Z",
+     *           "createdAt": "2018-09-24T11:36:03.222Z",
+     *           "templateTitle": "This is the template title",
+     *           "title": "Survey tilte",
+     *           "description": "This is description of survey",
+     *           "expiritDate": "2019-10-22T15:51:41.696Z",
+     *           "owner": "5984342227cd340363dc84c7",
+     *           "questions": [
+     *               {
+     *                   "max": 0,
+     *                   "min": 10,
+     *                   "required": true,
+     *                  "text": "2+2",
+     *                   "type": "text"
+     *               },
+     *               ...
+     *           ],
+     *           "respondents": [],
+     *           "visible": [
+     *               "all"
+     *           ]
+     *       },
+     *       ...
+     *   ]
+     */
+
+    /**
+     * @api {POST} /api/organizations/:orgId/surveys/surveyTemplate/:surveyType  SurveyTemplate Create new survey template
+     * @apiVersion 2.0.0
+     * @apiName createSurvey2
+     * @apiGroup Survey
+     * @apiPermission user
+     * @apiHeader {String} Authorization basic
+     *
+     * @apiParam (URL){String}                              orgId                 Organization id
+     * @apiParam (URL){String}                              surveyType            Kind of survey use string "2"
+     * @apiParam (Body){String}                             templateTitle         Survey template title
+     * @apiParam (Body){String[]}                           visible               Who can see the template? Two option: ["all"], ["HR"]
+     * @apiParam (Body){String}                             title                 Survey title
+     * @apiParam (Body){String}                             description           Survey description
+     * @apiParam (Body){Date}                               expiritDate           Survey expirit date 
+     * @apiParam (Body){Object[]}                           questions             Array of the questions for the sentences. Have new field "type" string 3 option: "text", "1-6", "yes-no"
+     *
+     * @apiParamExample {json} Request-Example:
+     *    {
+     *       "templateTitle" : "This is the template title",
+	 *       "visible" : ["all"],
+     *       "title":"Survey title",
+     *       "description": "This is description of survey",
+     *       "expiritDate": "2018-10-22 18:51:41.696",
+     *       "questions":[{"type": "text" ,"text":"2+2?","required":true,"min":10,"max":0},
+     *                   ,...
+     *    }
+     *
+     * @apiSuccess (Success 200) {Object}                   Survey                Оbject corresponding to the newly created survey.
+     * 
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     * {
+     *      "updatedAt": "2018-09-24T11:36:06.929Z",
+            "createdAt": "2018-09-24T11:36:06.929Z",
+            "templateTitle": "This is the template title",
+            "title": "Survey tilte",
+            "description": "This is description of survey",
+            "expiritDate": "2019-10-22T15:51:41.696Z",
+            "owner": "5984342227cd340363dc84c7",
+            "_id": "5ba8cc26a54c2a2a18f36bdc",
+            "questions": [
+                {
+                    "max": 0,
+                    "min": 10,
+                    "required": true,
+                    "text": "2+2",
+                    "type": "text"
+                },...
+     * }
+     * 
+     */
+
+     /**
+     * @api {DELETE} /api/organizations/:orgId/surveys/surveyTemplate/:surveyType  SurveyTemplate Delete survey template
+     * @apiVersion 2.0.0
+     * @apiName deleteSurveyTemplate
+     * @apiGroup Survey
+     * @apiPermission user
+     * @apiHeader {String} Authorization basic
+     *
+     * @apiParam (URL){String}                              orgId                 Organization id
+     * @apiParam (URL){String}                              surveyType            Kind of survey use string "2"
+     * @apiParam (Body){String}                             surveyTemplateId      Survey template id
+     *
+     * @apiParamExample {json} Request-Example:
+     *    {
+     *       "surveyTemplateId" : "5ba8cc26a54c2a2a18f36bdc"
+     *    }
+     *
+     * @apiSuccess (Success 200) {Object}                   Survey                Оbject corresponding to the newly created survey.
+     * 
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     *  {
+     *   "Survey template not found"
+     *   }
+     * 
+     */
+
+    app.route("/api/organizations/:orgId/surveys/surveyTemplate/:surveyType")
+        .get(passport.authenticate('jwt', {session: false}), surveyController.getAllSurveyTemplatesByUserId.bind(surveyController))
+        .post(passport.authenticate('jwt', {session: false}), surveyController.createSurveyTemplate.bind(surveyController))
+        .delete(passport.authenticate('jwt', {session: false}), surveyController.deleteSurveyTemplateById.bind(surveyController))
 
         //end survey2 apis
    /**

@@ -5,8 +5,10 @@ import { validate } from "../../util/input.validator";
 import SurveyManager from "../interactor/survey.interactor";
 import { SurveyTodoModel } from '../../data/database/schema/organization/survey/surveyTodo.schema';
 import { SurveyModel } from '../../data/database/schema/organization/survey/survey.schema';
+import { SurveyTemplateModel } from '../../data/database/schema/organization/survey/surveyTemplate.schema';
 import { QuestionModel } from '../../data/database/schema/organization/survey/question.schema';
 import * as path from 'path';
+import * as fs from 'fs';
 
 export default class SurveyController extends BaseController {
     surveyManager: SurveyManager;
@@ -44,7 +46,11 @@ export default class SurveyController extends BaseController {
 
     async getAllAnswersSurveyById(req: any, res: any) {
         return this.surveyManager.getAllAnswersSurveyById(req.params.orgId, req.params.surveyId, req.params.surveyType, req.user._id)
-            .then(result => res.download(path.join(__dirname + '../../../../'+result[0]),result[1] ))
+            .then(result => {res.download(path.join(__dirname + '../../../../'+result[0]),result[1], ()=>{
+                fs.unlink(path.join(__dirname + '../../../../'+result[0]), function(err){
+                    if(err) return console.log(err);
+                })
+            })})          
             .catch((err) => res.status(this.getErrorStatus(err)).send(formError(err)));
     }
     
@@ -53,6 +59,36 @@ export default class SurveyController extends BaseController {
             .then(result => this.respond(StatusCodes.OK, req, res, result))
             .catch((err) => res.status(this.getErrorStatus(err)).send(formError(err)));
     }
+
+    //surveyTemplate
+    async getAllSurveyTemplatesByUserId(req: any, res: any) {
+        return this.surveyManager.getAllSurveyTemplatesByUserId(req.params.orgId, req.user._id, req.user.roles)
+            .then(result => this.respond(StatusCodes.OK, req, res, result))
+            .catch((err) => res.status(this.getErrorStatus(err)).send(formError(err)));
+    }
+
+    async createSurveyTemplate(req: any, res: any) {
+        req.checkBody('title', 'Missing survey name').notEmpty();
+
+        if (!await validate(req, res)) {
+            return;
+        }
+        
+        req.body.owner = req.user._id;
+
+        let surveyTemplate: SurveyTemplateModel = req.body;
+
+        return this.surveyManager.createSurveyTemplate(req.params.orgId, surveyTemplate)
+            .then(result => this.respond(StatusCodes.OK, req, res, result))
+            .catch((err) => res.status(this.getErrorStatus(err)).send(formError(err)));
+    }
+
+    async deleteSurveyTemplateById(req: any, res: any) {
+        return this.surveyManager.deleteSurveyTemplateById(req.params.orgId, req.body.surveyTemplateId)
+            .then(result => this.respond(StatusCodes.OK, req, res, result))
+            .catch((err) => res.status(this.getErrorStatus(err)).send(formError(err)));
+    }
+
     //end survey2
 
     async getAllAnswersSurvey(req: any, res: any) {

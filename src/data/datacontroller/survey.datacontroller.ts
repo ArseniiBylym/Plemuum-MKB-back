@@ -2,6 +2,7 @@ import { SurveyCollection, SurveyModel } from "../database/schema/organization/s
 import { QuestionCollection, QuestionModel } from "../database/schema/organization/survey/question.schema";
 import { AnswerCollection, AnswerModel } from "../database/schema/organization/survey/answer.schema";
 import { SurveyTodoCollection, SurveyTodoModel } from "../database/schema/organization/survey/surveyTodo.schema";
+import { SurveyTemplateCollection, SurveyTemplateModel } from "../database/schema/organization/survey/surveyTemplate.schema";
 import { ObjectId } from "bson";
 import { UserModel, UserCollection } from "../database/schema/common/user.schema";
 import SurveyController from "../../api/controller/survey.controller";
@@ -165,6 +166,25 @@ const SurveyDataController = {
         .then((result:any) => {
             return result[0];
         });
+    },
+
+    //surveyTemplate
+
+    getDefaultSurveyTemplate: (orgId: string): Promise<SurveyTemplateModel[]> => {
+        return SurveyTemplateCollection(orgId).find({visible : 'all'}).sort({createdAt:-1}).lean().exec() as Promise<SurveyTemplateModel[]>;
+    },
+
+    getDefaulAndHRtSurveyTemplate: (orgId: string): Promise<SurveyTemplateModel[]> => {
+        return SurveyTemplateCollection(orgId).find({$or : [{visible : 'all'}, {visible : 'HR'}]}).sort({createdAt:-1}).lean().exec() as Promise<SurveyTemplateModel[]>;
+    },
+
+    createSurveyTemplate: (orgId: string, surveyTemplate: SurveyTemplateModel): Promise<SurveyTemplateModel> => {
+        return new (SurveyTemplateCollection(orgId))(surveyTemplate).save();
+    },
+
+    deleteSurveyTemplateById: (orgId: string, surveyTemplateId: string): Promise<SurveyTemplateModel> => {
+        return SurveyTemplateCollection(orgId).remove({ _id: surveyTemplateId })
+        .lean().exec() as Promise<SurveyTemplateModel>;
     },
 
     // For Plenuum Admin
