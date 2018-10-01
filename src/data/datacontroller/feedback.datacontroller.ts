@@ -31,6 +31,12 @@ const FeedbackDataController = {
         .lean().exec();
     },
 
+    getIncomingFeedbacksReportForExcelFile: function (organizationId: string, userId: string): Promise<any> {
+        return FeedbackCollection(organizationId).find({recipientId: userId}, {_id: 0, message:1, type: 1,updatedAt:1, privacy:1 })
+        .populate({ path: 'senderId', model: UserCollection(), select:'firstName lastName',}).sort({createdAt:-1})
+        .lean().exec();
+    },
+
     saveFeedback: function (organizationId: string, feedback: Feedback): Promise<any> {
         return new (FeedbackCollection(organizationId))(feedback).save();
     },

@@ -7,6 +7,12 @@ import { ErrorType, PlenuumError } from "../../util/errorhandler";
 
 const UserDataController = {
 
+    getLineManagerEmployees: function (orgId: string, userId: string): Promise<UserModel[]> {
+        return UserCollection().find({orgId: orgId, managerId: userId}).sort({firstName:1, lastName:1})
+                .lean()
+                .exec() as Promise<UserModel[]>;
+    },
+
     saveUser: function (user: User): Promise<UserModel> {
         return new (UserCollection())(user).save()
             .then((savedUser) => UserCollection().findById(savedUser._id).lean().exec() as Promise<UserModel>)

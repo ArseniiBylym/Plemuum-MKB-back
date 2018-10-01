@@ -17,6 +17,93 @@ import checkAdmin from '../../middleware/admin.checker';
  */
 export default (app: Express, userController: UserController) => {
 
+     /**
+     * @api {GET} /api/organizations/:orgId/myTeam/users  Get my team users. If HR user get all user in org else use managerId field in user data.
+     * @apiVersion 2.0.0
+     * @apiName getMyTeamUsers
+     * @apiGroup User
+     * @apiHeader {String} Authorization Bearer token
+     *
+     * @apiParam (URL){String} orgId Organization id
+     *
+     * @apiSuccess (Success 200) {User[]} - Array of users
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     * [
+     *   {
+     *   "_id": "5984342227cd340363dc84be",
+     *   "firstName": "erin",
+     *   "lastName": "ellis",
+     *   "email": "erin.ellis@example.com",
+     *   "lastActive": "1970-01-01T00:00:00.000Z",
+     *   "pictureUrl": "https://randomuser.me/api/portraits/women/68.jpg",
+     *   "roles": [],
+     *   "managerId": "5984342227cd340363dc84c7"
+     *   },
+     *  {
+     *   "_id": "5984342227cd340363dc84ab",
+     *   "firstName": "samantha",
+     *   "lastName": "clark",
+     *   "email": "samantha.clark@example.com",
+     *   "lastActive": "1970-01-01T00:00:00.000Z",
+     *   "pictureUrl": "https://randomuser.me/api/portraits/women/15.jpg",
+     *   "roles": [],
+     *   "managerId": "5984342227cd340363dc84c7"
+     * } ...
+     * ]
+     */
+        
+    app.route("/api/organizations/:orgId/myTeam/users")
+        .get(passport.authenticate('jwt', {session: false}), userController.getMyTeamUsers.bind(userController))
+    
+    /**
+     * @api {GET} /api/organizations/:orgId/:userId/feedbacks/excel Get user all publick feedbacks in excel file
+     * @apiName getFeedbackInExcelFile
+     * @apiHeader {String} Authorization basic
+     * @apiGroup User
+     * @apiParam (URL){String}              orgId               Organization id
+     * @apiParam (URL){String}              userId              User id
+     *
+     *
+     **/
+
+    app.route("/api/organizations/:orgId/:userId/feedbacks/excel")
+        .get(passport.authenticate('jwt', {session: false}), userController.getUserFeedbacksExcel.bind(userController))
+
+    /**
+     * @api {GET} /api/organizations/:orgId/:userId/skillScores/excel Get user skill scores in excel file
+     * @apiName getFeedbackInExcelFile
+     * @apiHeader {String} Authorization basic
+     * @apiGroup User
+     * @apiParam (URL){String}              orgId               Organization id
+     * @apiParam (URL){String}              userId              User id
+     *
+     **/
+
+    app.route("/api/organizations/:orgId/:userId/skillScores/excel")
+        .get(passport.authenticate('jwt', {session: false}), userController.getUserSkillScoresExcel.bind(userController))
+
+    /**
+     * @api {GET} /api/organizations/:orgId/:userId/numberOfPublicFeedbacksAndSkillScores  Get number of public feedbacks and skill scores by userId
+     * @apiVersion 2.0.0
+     * @apiName getNumberOfFeedbacksAndSkillScores
+     * @apiGroup User
+     * @apiHeader {String} Authorization Bearer token
+     *
+     * @apiParam (URL){String}              orgId               Organization id
+     * @apiParam (URL){String}              userId              User id
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     * {
+     *   "numberOfpublicFeedback": 11,
+     *   "numberOfSkillScores": 3
+     * }
+     */
+        
+    app.route("/api/organizations/:orgId/:userId/numberOfPublicFeedbacksAndSkillScores")
+        .get(passport.authenticate('jwt', {session: false}), userController.getUserNumberOfPublicFeedbacksAndSkillScores.bind(userController))
     /**
      * @api {POST} /api/users User - Create new user
      * @apiVersion 2.0.0

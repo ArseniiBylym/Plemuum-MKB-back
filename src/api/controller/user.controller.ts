@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import BaseController from "./base.controller";
 import UserDataController from "../../data/datacontroller/user.datacontroller";
+import FeedbackDataController from "../../data/datacontroller/feedback.datacontroller";
+import StatisticDataController from "../../data/datacontroller/statistics.datacontroller";
 import { UserModel } from "../../data/database/schema/common/user.schema";
 import { formError } from "../../util/errorhandler";
 import * as StatusCodes from 'http-status-codes';
@@ -9,6 +11,10 @@ import * as crypto from 'crypto';
 import config from "../../../config/config";
 import UserManager from "../interactor/user.interactor";
 import agenda from "../../util/agenda";
+import * as fs from "fs";
+import * as path from "path";
+
+
 
 const formidable = require('formidable');
 
@@ -19,6 +25,65 @@ export default class UserController extends BaseController {
     constructor(userManager: UserManager) {
         super();
         this.userManager = userManager;
+    }
+
+    async getUserNumberOfPublicFeedbacksAndSkillScores(req: any, res: Response) {
+        return FeedbackDataController.getIncomingFeedbacks(req.params.orgId, req.params.userId)
+            .then(async(result) => {
+                result = await result.filter((feedback: any) => (feedback.privacy[0] !== 'PRIVATE'))
+                return { "numberOfpublicFeedback": result.length, "numberOfSkillScores": 0 }
+            })
+            .then(async (result) => {
+                let skillScores = await StatisticDataController.getStatisticsByUserIdForExcelFile(req.params.orgId, req.params.userId);
+                result.numberOfSkillScores = (skillScores && skillScores.skillScores) ? skillScores.skillScores.length : 0;
+                return result
+            })
+            .then((result) => this.respond(StatusCodes.OK, req, res, result))
+            .catch((err: Error) => res.status(400).send(formError(err)))
+    }
+
+    async getMyTeamUsers(req: any, res: Response) {
+        let HR = (req.user.roles && req.user.roles.indexOf('HR') !== -1) ? true : false; 
+        let users;
+        try {
+            if (HR) {
+                users = await UserDataController.getOrganizationUsers(req.params.orgId)
+            }
+            else {
+                users = await UserDataController.getLineManagerEmployees(req.params.orgId, req.user._id.toString())
+            }
+            return this.respond(StatusCodes.OK, req, res, users)
+        }
+        catch (err) {
+            this.handleError(err, req, res)
+        }
+        
+    }
+
+    async getUserFeedbacksExcel(req: any, res: Response) {
+       
+        return this.userManager.getUserFeedbacksExcel(req.params.orgId, req.params.userId)
+            .then((result) => {
+                res.download(path.join(__dirname + '../../../../' + result[0]), result[1], () => {
+                    fs.unlink(path.join(__dirname + '../../../../' + result[0]), function (err) {
+                        if (err) return console.log(err);
+                    })
+                })
+            })
+            .catch((err) => this.handleError(err, req, res));
+    }
+
+    async getUserSkillScoresExcel(req: any, res: Response) {
+
+        return this.userManager.getUserSkillScoresExcel(req.params.orgId, req.params.userId)
+            .then((result) => {
+                res.download(path.join(__dirname + '../../../../' + result[0]), result[1], () => {
+                    fs.unlink(path.join(__dirname + '../../../../' + result[0]), function (err) {
+                        if (err) return console.log(err);
+                    })
+                })
+            })
+            .catch((err) => this.handleError(err, req, res));
     }
 
     async registerUser(req: any, res: Response) {
