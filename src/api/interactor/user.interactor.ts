@@ -51,7 +51,7 @@ export default class UserInteractor {
         /* generate an XLSX file */
         let user = await UserDataController.getUserById(userId);
         let date = moment().format('YYYY-MM-DD');
-        let filename = `Visszajelzések_${user.lastName}_${user.firstName}_${date}.xlsx`
+        let filename = `feedbacks_${user.lastName}_${user.firstName}_${date}.xlsx`
         let path = `./media/${filename}`;
         await XLSX.writeFile(wb, path);
         return [path, filename];
@@ -95,7 +95,7 @@ export default class UserInteractor {
         /* generate an XLSX file */
         let user = await UserDataController.getUserById(userId);
         let date = moment().format('YYYY-MM-DD');
-        let filename = `Készségpontok_${user.lastName}_${user.firstName}_${date}.xlsx`
+        let filename = `skills_${user.lastName}_${user.firstName}_${date}.xlsx`
         let path = `./media/${filename}`;
         await XLSX.writeFile(wb, path);
         return [path, filename];
