@@ -13,6 +13,12 @@ export default class FeedbackController extends BaseController {
         this.feedbackManager = feedbackManager;
     }
 
+    async sendReportAbusiveFeedback(req: any, res: any,) {
+        return this.feedbackManager.sendReportAbusiveFeedback(req.params.orgId, req.params.feedbackId)
+            .then((result) => this.respond(StatusCodes.OK, req, res, result))
+            .catch((err) => res.status(this.getErrorStatus(err)).send(formError(err)));
+    }
+
     async getFeedbacks(req: any, res: any,) {
         return this.feedbackManager.getFeedbacks(req.params.orgId, req.user._id)
             .then((result) => this.respond(StatusCodes.OK, req, res, result))

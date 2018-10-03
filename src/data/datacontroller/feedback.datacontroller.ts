@@ -5,6 +5,13 @@ import { UserModel, UserCollection } from "../database/schema/common/user.schema
 
 const FeedbackDataController = {
 
+    getDataSetForAbusiveReport: function (organizationId: string,  feedbackId:string): Promise<any> {
+        return FeedbackCollection(organizationId).findOne({_id: feedbackId})
+        .populate({ path: 'senderId', model: UserCollection(), select:'_id firstName lastName email',})
+        .populate({ path: 'recipientId', model: UserCollection(), select:'_id firstName lastName email',})
+        .lean().exec();
+    },
+
     getAllFeedback: function (organizationId: string, userId: string): Promise<any> {
         return FeedbackCollection(organizationId).find({$or: [{senderId: userId}, {recipientId: userId}]}).lean().exec();
     },

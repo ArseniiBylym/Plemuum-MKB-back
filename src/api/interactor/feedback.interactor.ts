@@ -6,6 +6,7 @@ import { TEMPLATE } from "../../manager/notification/notification.manager";
 import { PRIVACY } from "../../data/models/organization/feedback.model";
 import { User } from "../../data/models/common/user.model";
 import * as XLSX from "xlsx";
+import agenda from "../../util/agenda";
 
 export default class FeedbackInteractor {
 
@@ -13,6 +14,28 @@ export default class FeedbackInteractor {
 
     constructor(notificationManager: NotificationManager) {
         this.notificationManager = notificationManager;
+    }
+
+    async sendReportAbusiveFeedback(orgId: string, feedbackId: string) {
+        return FeedbackDataController.getDataSetForAbusiveReport(orgId, feedbackId)
+            .then(async (result) => {
+                return result;
+            })
+            .then(async (result) => {
+                let HRUsers: any = await UserDataController.getHRUsers(orgId);
+
+                if (!HRUsers || HRUsers.length === 0) {
+                    throw new PlenuumError("HR user not found", ErrorType.NOT_FOUND);
+                }
+
+                await agenda.schedule(new Date(Date.now() + 2000), 'sendAbusiveReportEmailUser', result);
+
+                for (let i = 0; i < HRUsers.length; i++) {
+                    result.HRUser = HRUsers[i];
+                    await agenda.schedule(new Date(Date.now() + i * 2000), 'sendAbusiveReportEmailHR', result);
+                }
+                return { abusiveReport: "Sended" };
+            })
     }
 
     async getFeedbacks(orgId: string, userId: string) {

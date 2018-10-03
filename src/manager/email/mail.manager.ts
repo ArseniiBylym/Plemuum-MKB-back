@@ -2,6 +2,7 @@ import config from "../../../config/config";
 import { promisify } from "util";
 import * as sgMail from '@sendgrid/mail';
 
+
 const ejs = require('ejs');
 
 const USERNAME = config.plenuumBotEmail;
@@ -14,6 +15,8 @@ const SURVEY_RESULT = "surveyResult.ejs";
 const SURVEY_RESULT_FOR_MANAGER = "surveyResultForManager.ejs";
 const SURVEYNOTIFICATION_TEMPLATE = "surveyNotification.ejs";
 const RESET_PASSWORD_TEMPLATE = "resetpassword.ejs";
+const ABUSIVE_RIPORT_USER_TEMPLATE = "abusiveRiportUser.ejs";
+const ABUSIVE_RIPORT_HR_TEMPLATE = "abusiveRiportHR.ejs";
 
 export default class EmailManager {
 
@@ -37,6 +40,50 @@ export default class EmailManager {
             text: message,
             html: html
         };
+    };
+
+    public sendAbusiveRiportUser(email: string, firstName: string, lastName: string, senderFullName: string,createdAt:string,message:string, transporter?:any): Promise<any> {
+        const data = {
+            email: email,
+            firstName: firstName,
+            lastName: lastName,
+            senderFullName: senderFullName,
+            createdAt:createdAt,
+            message:message
+        };
+        return this.getHtmlFromEjs(ABUSIVE_RIPORT_USER_TEMPLATE, data)
+            .then((html) => {
+                EmailManager.getTransport(SENGRID_TOKEN);
+                const mailOptions = EmailManager.getMailOptions(email, html, "Sértő visszajelzés megjelölve");
+                return new Promise((resolve, reject) => {
+                    console.log("sending mail");
+                    sgMail.send(mailOptions)
+                        .then(result => resolve(result))
+                        .catch((err) => reject(err));
+                })
+            }).catch((err) => console.log("error sending abusive report mail: " + err));
+    };
+
+    public sendAbusiveRiportHR(email: string, firstName: string, lastName: string, senderFullName: string,createdAt:string,message:string, transporter?:any): Promise<any> {
+        const data = {
+            email: email,
+            firstName: firstName,
+            lastName: lastName,
+            senderFullName: senderFullName,
+            createdAt:createdAt,
+            message:message
+        };
+        return this.getHtmlFromEjs(ABUSIVE_RIPORT_HR_TEMPLATE, data)
+            .then((html) => {
+                EmailManager.getTransport(SENGRID_TOKEN);
+                const mailOptions = EmailManager.getMailOptions(email, html, "Sértő visszajelzés");
+                return new Promise((resolve, reject) => {
+                    console.log("sending mail");
+                    sgMail.send(mailOptions)
+                        .then(result => resolve(result))
+                        .catch((err) => reject(err));
+                })
+            }).catch((err) => console.log("error sending abusive report mail: " + err));
     };
 
 

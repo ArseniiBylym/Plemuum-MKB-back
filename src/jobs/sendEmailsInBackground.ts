@@ -9,6 +9,54 @@ import * as Raven from "raven";
 
 export default async function (agenda:any, transporter:any) {
 
+    agenda.define('sendAbusiveReportEmailUser', async function(job:any, done:any) {
+
+        let dataSet = job.attrs.data;
+        const {firstName, lastName, email} = dataSet.recipientId;
+        let senderFullName = (dataSet.privacy[1] && dataSet.privacy[1] === "ANONYMOUS") ? 
+            "Anonymous" :  dataSet.senderId.firstName + ' '+dataSet.senderId.lastName;
+        let dateOption = {hour: 'numeric', minute: 'numeric', second:"numeric"};
+        try {
+            const mailService = new EmailManager();
+            await mailService.sendAbusiveRiportUser(email, firstName,lastName, senderFullName, dataSet.createdAt.toLocaleDateString('hu-Hu',dateOption),dataSet.message, transporter);
+            await done();
+        } catch (error) {
+            getLogger().error({
+                type: "error",
+                request: {
+                    user: dataSet.respondentId
+                },
+                message: error,
+                timeStamp: new Date()
+            });
+        }
+
+    });
+
+    agenda.define('sendAbusiveReportEmailHR', async function(job:any, done:any) {
+
+        let dataSet = job.attrs.data;
+        const {firstName, lastName} = dataSet.recipientId;
+        const {email} = dataSet.HRUser;
+        let senderFullName = dataSet.senderId.firstName + ' '+dataSet.senderId.lastName;
+        let dateOption = {hour: 'numeric', minute: 'numeric', second:"numeric"};
+        try {
+            const mailService = new EmailManager();
+            await mailService.sendAbusiveRiportHR(email, firstName,lastName, senderFullName, dataSet.createdAt.toLocaleDateString('hu-Hu',dateOption),dataSet.message, transporter);
+            await done();
+        } catch (error) {
+            getLogger().error({
+                type: "error",
+                request: {
+                    user: dataSet.respondentId
+                },
+                message: error,
+                timeStamp: new Date()
+            });
+        }
+
+    });
+
     agenda.define('sendWelcomeEmailsInBackground', async function(job:any, done:any) {
 
         let user = job.attrs.data;
