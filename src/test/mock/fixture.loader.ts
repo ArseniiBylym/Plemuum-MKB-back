@@ -17,6 +17,7 @@ import { SurveyCollection } from "../../data/database/schema/organization/survey
 import { QuestionCollection } from "../../data/database/schema/organization/survey/question.schema";
 import { SurveyTodoCollection } from "../../data/database/schema/organization/survey/surveyTodo.schema";
 import { AnswerCollection } from "../../data/database/schema/organization/survey/answer.schema";
+import { EmailTemplateCollection } from "../../data/database/schema/common/emailTemplate.schema";
 
 const testUser = {
     "firstName": "sheryl",
@@ -44,6 +45,7 @@ function fixtureLoader(): Promise<any> {
         {model: QuestionCollection('hipteam'), mockFile: "questions"},
         {model: SurveyTodoCollection('hipteam'), mockFile: "surveytodos"},
         {model: AnswerCollection('hipteam'), mockFile: "answers"},
+        {model: EmailTemplateCollection(), mockFile: "emailTemplates"}
     ];
 
     /* Clear each collection */

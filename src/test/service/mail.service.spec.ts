@@ -13,6 +13,10 @@ suite("Mail service tests", () => {
     const organization: any = sinon.mock();
     let emailManager: EmailManager;
     const resultInfo = {info: "Info"};
+    const mockHtml = "mock html";
+    const mockSubject = "mock subject";
+    const mockMessage = "mock message";
+                
 
     suite("sendSurveyNotificationEmail", () => {
 
@@ -60,22 +64,22 @@ suite("Mail service tests", () => {
                 };
                 const getTransportStub = sinon.stub(EmailManager, "getTransport").returns(mockTransport);
                 const getMailOptions = sinon.spy(EmailManager, "getMailOptions");
-                const getHtmlFromEjsSpy = sinon.spy(emailManager, "getHtmlFromEjs");
+                const getHtmlFromDBSpy = sinon.spy(emailManager, "getHtmlFromDB");
                 try {
                     emailManager.sendSurveyNotificationEmail(email, firstName, link, organization, mockTransport);
                     getTransportStub.restore();
                     getMailOptions.restore();
-                    getHtmlFromEjsSpy.restore();
-                    sinon.assert.calledWith(getHtmlFromEjsSpy, "surveyNotification.ejs", {
+                    getHtmlFromDBSpy.restore();
+                    sinon.assert.calledWith(getHtmlFromDBSpy,  {
                         firstName: firstName,
                         company: organization,
                         email: email,
                         link: link
-                    });
+                    },  organization, 'surveyNotification', email);
+                    sinon.assert.calledWith(getMailOptions, email, mockHtml, mockSubject, mockMessage);
                 } catch (e) {
                     console.log('cannot sent survey notification email');
                 }
-                // sinon.assert.calledWith(getMailOptions, email);
             });
         });
 
@@ -143,19 +147,20 @@ suite("Mail service tests", () => {
                 };
                 const getTransportStub = sinon.stub(EmailManager, "getTransport").returns(mockTransport);
                 const getMailOptions = sinon.spy(EmailManager, "getMailOptions");
-                const getHtmlFromEjsSpy = sinon.spy(emailManager, "getHtmlFromEjs");
+                const getHtmlFromDBSpy = sinon.spy(emailManager, "getHtmlFromDB");
+                
                 emailManager.sendWelcomeEmail(email, firstName, link, organization, mockTransport);
                 getTransportStub.restore();
                 getMailOptions.restore();
-                getHtmlFromEjsSpy.restore();
-                sinon.assert.calledWith(getHtmlFromEjsSpy, "welcome.ejs", {
-                    firstName: firstName,
-                    company: organization,
-                    email: email,
-                    link: link,
-                    privacyLink: `${config.webappDomain}/privacy`
-                });
-                // sinon.assert.calledWith(getMailOptions, email);
+                getHtmlFromDBSpy.restore();
+                sinon.assert.calledWith(getHtmlFromDBSpy,  
+                    {
+                        firstName: firstName,
+                        company: organization,
+                        email: email,
+                        link: link,
+                        privacyLink: `${config.webappDomain}/privacy`
+                    },  organization, 'welcome', email);
             });
         });
 
@@ -203,15 +208,21 @@ suite("Mail service tests", () => {
                 const mockTransport = {
                     send: sinon.mock().callsFake((options, callback) => callback(null, resultInfo))
                 };
-
                 const getTransportStub = sinon.stub(EmailManager, "getTransport").returns(mockTransport);
-                const getHtmlFromEjsSpy = sinon.spy(emailManager, "getHtmlFromEjs");
                 const getMailOptions = sinon.spy(EmailManager, "getMailOptions");
-                emailManager.sendResetEmail(email, link, firstName);
-                getHtmlFromEjsSpy.restore();
+                const getHtmlFromDBSpy = sinon.spy(emailManager, "getHtmlFromDB");
+                try{
+                emailManager.sendResetEmail(email, link, organization, firstName);
                 getTransportStub.restore();
-                sinon.assert.calledWith(getHtmlFromEjsSpy, "resetpassword.ejs", {link: link, firstName:firstName});
-                // sinon.assert.calledWith(getMailOptions, email);
+                getHtmlFromDBSpy.restore();
+                getMailOptions.restore();
+                sinon.assert.calledWith(getHtmlFromDBSpy,  
+                     {link: link, firstName: firstName},  organization, 'resetPassword', email);
+                sinon.assert.calledWith(getMailOptions, email, mockHtml, mockSubject, mockMessage);
+                }
+                catch(e){
+                    console.log('cannot sent reset password email');
+                }
             });
         });
 

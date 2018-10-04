@@ -10,4 +10,5 @@ export interface User {
     orgId: string;
     notificationToken: string[];
     roles?: string[];
+    lang?: string;
 }

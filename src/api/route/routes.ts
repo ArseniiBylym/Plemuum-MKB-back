@@ -10,6 +10,7 @@ import CompassRoute from './compass.route';
 import SurveyRoute from './survey.route';
 import NotificationRoute from './notification.route';
 import LogRoute from './log.route';
+import EmailTemplateRoute from './emailTemplate.route';
 import * as ControllerFactory from '../../factory/controller.factory'
 import LogController from "../controller/log.controller";
 
@@ -28,4 +29,5 @@ export default (express: Express) => {
     CompassRoute(express, ControllerFactory.getCompassController());
     SurveyRoute(express, ControllerFactory.getSurveyController());
     LogRoute(express, new LogController());
+    EmailTemplateRoute(express, ControllerFactory.getEmailTemplateController());
 }

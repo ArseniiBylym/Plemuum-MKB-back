@@ -11,13 +11,15 @@ let UserSchema = new Schema({
     lastName: {required: true, type: String, index: true},
     email: {required: true, type: String, index: {unique: true}},
     pictureUrl: {required: false, type: String},
+    //orgId test err
     orgId: {type: String, required: true, select: false},
     admin: {required: true, type: Boolean, select: false, default: false},
     password: {type: String, required: true, bcrypt: true, select: false},
     passwordUpdatedAt: {required: true, type: Date, select: false, default: Date.now},
     lastActive: {required: false, type: Date},
     notificationToken: {required: false, type: [String], select: false},
-    roles: {required: false, type: Array, index: true}
+    roles: {required: false, type: Array, index: true},
+    lang: {required:false, type:String, select:true, default: "hu"}
 
 }, {versionKey: false, collection: USER_COLLECTION});
 

@@ -2,6 +2,7 @@ import { tagDataController } from "../data/datacontroller/tag.datacontroller";
 import { getOrganizationDataController } from "../data/datacontroller/organization.datacontroller";
 import { requestDataController } from "../data/datacontroller/request.datacontroller";
 import { getGroupDataController } from "../data/datacontroller/group.datacontroller";
+import EmailTemplateDataController from "../data/datacontroller/emailTemplate.datacontroller";
 import FirebaseNotification from "../manager/notification/firebase.notification";
 import config from "../../config/config";
 import UserDataController from "../data/datacontroller/user.datacontroller";
@@ -19,6 +20,8 @@ import FeedbackManager from "../api/interactor/feedback.interactor";
 import StatisticsManager from "../api/interactor/statistics.interactor";
 import EmailManager from "../manager/email/mail.manager";
 import SurveyManager from "../api/interactor/survey.interactor";
+import EmailTemplateManager from "../api/interactor/emailTemplate.interactor";
+import EmailTemplateController from "../api/controller/emailTemplate.controller";
 
 let surveyManager: SurveyManager;
 let compassManager: CompassManager;
@@ -35,6 +38,7 @@ let statisticsManager: StatisticsManager;
 let firebaseNotification = new FirebaseNotification(
     require(`../../config/firebase/${config.firebaseConfig.keyFileName}`),
     config.firebaseConfig.databaseUrl);
+let emailTemplateManager: EmailTemplateManager;
 
 const getSurveyManager = (): SurveyManager =>
     getManager(surveyManager, SurveyManager, getNotificationManager(),getGroupDataController());
@@ -72,6 +76,9 @@ const getFeedbackManager = (): FeedbackManager =>
 const getStatisticsManager = (): StatisticsManager =>
     getManager(statisticsManager, StatisticsManager, getNotificationManager());
 
+const getEmailTemplateManager = (): EmailTemplateManager =>
+    getManager(emailTemplateManager, EmailTemplateManager);
+
 const getManager = (instance: any, manager: any, ...dependencies: any[]) => {
     if (!instance) {
         instance = new manager(...dependencies);
@@ -82,5 +89,5 @@ const getManager = (instance: any, manager: any, ...dependencies: any[]) => {
 
 export {
     getUserManager, getGroupManager, getOrganizationManager, getRequestManager, getSessionManager, getTagManager,
-    getFirebaseStorageManager, getNotificationManager, getFeedbackManager, getCompassManager, getStatisticsManager, getSurveyManager
+    getFirebaseStorageManager, getNotificationManager, getFeedbackManager, getCompassManager, getStatisticsManager, getSurveyManager,getEmailTemplateManager
 }

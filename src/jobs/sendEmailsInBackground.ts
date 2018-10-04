@@ -42,12 +42,12 @@ export default async function (agenda:any, transporter:any) {
         let user = job.attrs.data;
 
         const origin = config.webappDomain;
-        const {email, firstName, _id, orgName} = user;
+        const {email, firstName, _id, orgId} = user;
 
         try {
             let link = `${origin}/api/organizations/${user.orgId}/surveys/${user.surveyId}`;
             const mailService = new EmailManager();
-            await mailService.sendSurveyNotificationEmail(email, firstName, link, orgName, transporter);
+            await mailService.sendSurveyNotificationEmail(email, firstName, link, orgId, transporter);
             await done();
         } catch (error) {
             getLogger().error({
