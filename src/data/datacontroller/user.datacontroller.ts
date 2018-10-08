@@ -12,6 +12,12 @@ const UserDataController = {
                 .lean()
                 .exec() as Promise<UserModel[]>;
     },
+    getHRUsers: function (orgId: string): Promise<UserModel> {
+        return UserCollection()
+            .find({roles : "HR"},{email:1, firstName:1, lastName:1})
+            .lean()
+            .exec() as Promise<UserModel>;
+    },
 
     saveUser: function (user: User): Promise<UserModel> {
         return new (UserCollection())(user).save()

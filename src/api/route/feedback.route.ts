@@ -18,6 +18,37 @@ import * as passport from 'passport';
 export default (app: Express, feedbackController: FeedbackController) => {
 
     /**
+     * @api {GET} /api/organizations/:orgId/users/me/feedbacks/:feedbackId/reportAbusive Send feedback abusive report email
+     * @apiVersion 2.0.0
+     * @apiName sendFeedbackAbusiveReport
+     * @apiGroup Feedback
+     * @apiHeader {String} Authorization Bearer token
+     * @apiParam (URL){String} orgId Organization id
+     * @apiParam (URL){String} feedbackId Feedback id
+     * @apiDescription Send notification email for riporter and each HR user. Riportet not see in email the Anonimous feedback sender name.
+     *
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     *
+     *   {
+     *      "abusiveReport": "Sended"
+     *   }
+     * 
+     * @apiError 404 Not Found.
+     * 
+     * @apiErrorExample Error-Response:
+     *     HTTP/1.1 404 Not Found
+     *     {
+     *       "error": "HR user not found"
+     *     }
+     *
+     */
+
+    app.route("/api/organizations/:orgId/users/me/feedbacks/:feedbackId/reportAbusive")
+        .get(passport.authenticate('jwt', {session: false}), feedbackController.sendReportAbusiveFeedback.bind(feedbackController));
+
+    /**
      * @api {POST} /api/organizations/:orgId/feedbacks Send feedback
      * @apiVersion 2.0.0
      * @apiName createFeedback
