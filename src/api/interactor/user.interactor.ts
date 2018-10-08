@@ -7,8 +7,12 @@ import FileManager from "../../manager/file/file.manager";
 import EmailManager from "../../manager/email/mail.manager";
 import * as crypto from 'crypto';
 import { OrganizationDataController } from "../../data/datacontroller/organization.datacontroller";
+import FeedbackDataController from "../../data/datacontroller/feedback.datacontroller";
+import StatisticDataController from "../../data/datacontroller/statistics.datacontroller";
 import agenda from "../../util/agenda";
 import * as Raven from 'raven';
+import * as XLSX from "xlsx";
+import * as moment from "moment";
 
 export default class UserInteractor {
 
@@ -32,6 +36,81 @@ export default class UserInteractor {
         }
         return updatedUser;
     }  
+    async getUserFeedbacksExcel(orgId:string, userId:string) {
+        //get user feedbacks
+        let feedbacks = await FeedbackDataController.getIncomingFeedbacksReportForExcelFile(orgId, userId);
+        feedbacks = feedbacks.filter((feedback:any)=> (feedback.privacy[0] !== 'PRIVATE'));
+        let formatedFeedbacks = await feedbacks.map((feedback:any)=>{
+            if (feedback.type === "CONTINUE") feedback.type = "Folytasd"
+            else if (feedback.type === "CONSIDER")  feedback.type = "Fontold meg";
+            let sender;
+
+            if (feedback.privacy[1] === "ANONYMOUS") sender = "Névtelen"
+            else sender = feedback.senderId.lastName+' '+feedback.senderId.firstName; 
+            return {
+            ['Visszajelzés szövege']: feedback.message,
+            ['Visszajelzés típusa']: feedback.type,
+            ['Küldő']: sender,
+            ['Dátum']: moment(feedback.updatedAt).format('YYYY-MM-DD'),
+            ['Időpont']: moment(feedback.updatedAt).format('HH:MM'),
+        }})
+        //result export to xlsx
+        const ws = await XLSX.utils.json_to_sheet(formatedFeedbacks);
+        const wb = await XLSX.utils.book_new();
+        await XLSX.utils.book_append_sheet(wb, ws, "user_feedbacks");
+        /* generate an XLSX file */
+        let user = await UserDataController.getUserById(userId);
+        let date = moment().format('YYYY-MM-DD');
+        let filename = `feedbacks_${user.lastName}_${user.firstName}_${date}.xlsx`
+        let path = `./media/${filename}`;
+        await XLSX.writeFile(wb, path);
+        return [path, filename];
+    }
+
+    async getUserSkillScoresExcel(orgId:string, userId:string) {
+        //get user skill scores
+        let result = await StatisticDataController.getStatisticsByUserIdForExcelFile(orgId, userId);
+        let skillScores = result.skillScores; 
+        let formatedSkillScores = [];
+        //formated skill scores
+        for (let i = 0; i < skillScores.length; i++) {
+            for (let j = 0; j < skillScores[i].sentenceScores.length; j++) {
+                let {sentenceScores} = skillScores[i];
+                let skillInpercent = (sentenceScores[j].numberOfAgree && sentenceScores[j].numberOfDisagree) ?
+                    Math.round((sentenceScores[j].numberOfAgree * 100) / (sentenceScores[j].numberOfAgree + sentenceScores[j].numberOfDisagree)*10)/10
+                    : '';
+                let item = {
+                    ['Készség']: skillScores[i].skill.name,
+                    ['Mondat']: sentenceScores[j].sentence.message ? sentenceScores[j].sentence.message : '',
+                    ['Egyetért']: sentenceScores[j].numberOfAgree ? sentenceScores[j].numberOfAgree : '',
+                    ['Nem ért egyet']: sentenceScores[j].numberOfDisagree ? sentenceScores[j].numberOfDisagree : '',
+                    ['Pontszám']: skillInpercent
+                }
+                formatedSkillScores.push(item);
+            }
+        }
+        //sort
+        formatedSkillScores = await formatedSkillScores.sort((a: any, b: any) => {
+            if (a['Készség'] === b['Készség']) {
+                let x = a['Mondat'].toLowerCase(), y = b['Mondat'].toLowerCase();
+                return x < y ? -1 : x > y ? 1 : 0;
+            }
+                let x = a['Készség'].toLowerCase(), y = b['Készség'].toLowerCase();
+                return x < y ? -1 : x > y ? 1 : 0;
+        });
+        //result export to xlsx
+        const ws = await XLSX.utils.json_to_sheet(formatedSkillScores);
+        const wb = await XLSX.utils.book_new();
+        await XLSX.utils.book_append_sheet(wb, ws, "user_skillScores");
+        /* generate an XLSX file */
+        let user = await UserDataController.getUserById(userId);
+        let date = moment().format('YYYY-MM-DD');
+        let filename = `skills_${user.lastName}_${user.firstName}_${date}.xlsx`
+        let path = `./media/${filename}`;
+        await XLSX.writeFile(wb, path);
+        return [path, filename];
+    }
+
 
     async updateUser(user: UserModel) {
         const id = user._id;
