@@ -73,6 +73,12 @@ const UserDataController = {
             .exec() as Promise<UserModel>;
     },
 
+    updateUserManagerId: function (userId: string, managerId: any): Promise<UserModel> {
+        return UserCollection().findByIdAndUpdate({_id : userId}, {managerId: managerId}, {new: true})
+            .lean()
+            .exec() as Promise<UserModel>;
+    },
+
     getUserByIdWithoutOrgId: function (userId: string, showOrgIds: boolean = false): Promise<UserModel> {
         const queryCmd = UserCollection().findById(userId);
         if (showOrgIds) {

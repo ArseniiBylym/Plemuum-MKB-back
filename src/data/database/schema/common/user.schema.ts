@@ -17,7 +17,8 @@ let UserSchema = new Schema({
     passwordUpdatedAt: {required: true, type: Date, select: false, default: Date.now},
     lastActive: {required: false, type: Date},
     notificationToken: {required: false, type: [String], select: false},
-    roles: {required: false, type: Array, index: true}
+    roles: {required: false, type: Array, index: true},
+    managerId: {required: false, type: String, index: true}
 
 }, {versionKey: false, collection: USER_COLLECTION});
 
