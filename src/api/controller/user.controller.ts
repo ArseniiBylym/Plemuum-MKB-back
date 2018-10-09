@@ -90,7 +90,7 @@ export default class UserController extends BaseController {
                     })
                 })
             })
-    
+        }
 
     async registerUser(req: any, res: Response) {
         req.checkBody('firstName', 'Missing firstName').notEmpty();
