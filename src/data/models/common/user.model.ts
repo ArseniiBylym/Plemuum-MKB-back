@@ -10,5 +10,9 @@ export interface User {
     orgId: string;
     notificationToken: string[];
     roles?: string[];
+<<<<<<< HEAD
     managerId?: string;
+=======
+    lang?: string;
+>>>>>>> emailTemplatesGoToDB
 }

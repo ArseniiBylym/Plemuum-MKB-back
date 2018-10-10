@@ -10,6 +10,7 @@ import * as ManagerFactory from "./manager.factory";
 import { getCompassManager } from "./manager.factory";
 import CompassController from "../api/controller/compass.controller";
 import SurveyController from "../api/controller/survey.controller";
+import EmailTemplateController from "../api/controller/emailTemplate.controller";
 
 let userController: UserController;
 let feedbackController: FeedbackController;
@@ -21,6 +22,7 @@ let groupController: GroupController;
 let notificationController: NotificationController;
 let compassController: CompassController;
 let surveyController: SurveyController;
+let emailTemplateController: EmailTemplateController;
 
 /* #########################     PUBLIC      ########################## */
 
@@ -52,6 +54,10 @@ const getCompassController = (): CompassController => getController(compassContr
 
 const getSurveyController = (): SurveyController => getController(surveyController, SurveyController, ManagerFactory.getSurveyManager());
 
+const getEmailTemplateController = (): EmailTemplateController =>
+    getController(emailTemplateController, EmailTemplateController, ManagerFactory.getEmailTemplateManager());
+
+
 /* #########################     PRIVATE      ########################## */
 
 function getController(instance: any, controller: any, ...dependencies: any[]) {
@@ -63,5 +69,5 @@ function getController(instance: any, controller: any, ...dependencies: any[]) {
 
 export {
     getUserController, getFeedbackController, getTagController, getOrganizationController,
-    getRequestController, getSessionController, getGroupController, getNotificationController, getCompassController, getSurveyController
+    getRequestController, getSessionController, getGroupController, getNotificationController, getCompassController, getSurveyController, getEmailTemplateController
 }

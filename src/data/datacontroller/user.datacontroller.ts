@@ -100,7 +100,7 @@ const UserDataController = {
     },
 
     getUserByEmail: function (email: string, showNotificationTokens: boolean = false): Promise<UserModel> {
-        const queryCmd = UserCollection().findOne({email: email});
+        const queryCmd = UserCollection().findOne({email: email},{email:1, firstName:1, lastName:1, orgId:1, lastActive:1});
         if (showNotificationTokens) {
             queryCmd.select('+notificationToken')
         }
@@ -196,6 +196,27 @@ const UserDataController = {
                 user.notificationToken.find((elem: string) => {
                     return elem === token
                 }))
+    },
+    getUserAndOrgLang: function (email: string): any {
+        return UserCollection().aggregate(
+            [{
+                $match: { email: email }
+            }, {
+                $lookup: {
+                    from: 'organizations',
+                    localField: 'orgId',
+                    foreignField: 'dbName',
+                    as: 'organization'
+                }
+            }, {
+                $project: {
+                    'lang': 1,
+                    'organization.lang': 1,
+                    '_id': 0
+                }
+            }]
+        ).exec()
+        .then((result:any) => {return result[0]});
     }
 };
 
