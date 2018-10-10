@@ -1,37 +1,37 @@
 import config from "../../../config/config";
-import { promisify } from "util";
 import * as sgMail from '@sendgrid/mail';
 import EmailTemplateDataController from '../../data/datacontroller/emailTemplate.datacontroller';
 import UserDataController from '../../data/datacontroller/user.datacontroller';
 
-
-
 const ejs = require('ejs');
+const SENGRID_TOKEN = config.plenuumSengridToken;
+
+//import { promisify } from "util";
 
 // const USERNAME = config.plenuumBotEmail;
 // const SECRET = config.plenuumBotPass;
-const SENGRID_TOKEN = config.plenuumSengridToken;
 
-const MAIL_TEMPLATE_DIR = __dirname + "/content/";
-const WELCOME_TEMPLATE = "welcome.ejs";
-const SURVEY_RESULT = "surveyResult.ejs";
-const SURVEY_RESULT_FOR_MANAGER = "surveyResultForManager.ejs";
-const SURVEYNOTIFICATION_TEMPLATE = "surveyNotification.ejs";
-const RESET_PASSWORD_TEMPLATE = "resetpassword.ejs";
-const ABUSIVE_RIPORT_USER_TEMPLATE = "abusiveRiportUser.ejs";
-const ABUSIVE_RIPORT_HR_TEMPLATE = "abusiveRiportHR.ejs";
+// const MAIL_TEMPLATE_DIR = __dirname + "/content/";
+// const WELCOME_TEMPLATE = "welcome.ejs";
+// const SURVEY_RESULT = "surveyResult.ejs";
+// const SURVEY_RESULT_FOR_MANAGER = "surveyResultForManager.ejs";
+// const SURVEYNOTIFICATION_TEMPLATE = "surveyNotification.ejs";
+// const RESET_PASSWORD_TEMPLATE = "resetpassword.ejs";
+// const ABUSIVE_RIPORT_USER_TEMPLATE = "abusiveRiportUser.ejs";
+// const ABUSIVE_RIPORT_HR_TEMPLATE = "abusiveRiportHR.ejs";
 
 export default class EmailManager {
 
     // renderFile = promisify(ejs.renderFile);
+    // getHtmlFromEjs(template: string, data: any): Promise<any> {
+    //     return this.renderFile(MAIL_TEMPLATE_DIR + template, data);
+    // }
 
     static getTransport(key: string) {
         sgMail.setApiKey(key);
     };
 
-    // getHtmlFromEjs(template: string, data: any): Promise<any> {
-    //     return this.renderFile(MAIL_TEMPLATE_DIR + template, data);
-    // }
+   
 
     getUserAndOrgLang(email: string) {
         return UserDataController.getUserAndOrgLang(email)
@@ -67,10 +67,10 @@ export default class EmailManager {
             createdAt:createdAt,
             message:message
         };
-        return this.getHtmlFromDB(data, organization, "abusiveRiportHR", email)
+        return this.getHtmlFromDB(data, organization, "abusiveRiportUser", email)
             .then((emailTemplate) => {
                 EmailManager.getTransport(SENGRID_TOKEN);
-                const mailOptions = EmailManager.getMailOptions(email, emailTemplate.html, "Sértő visszajelzés megjelölve");
+                const mailOptions = EmailManager.getMailOptions(email, emailTemplate.html, emailTemplate.subject);
                 return new Promise((resolve, reject) => {
                     console.log("sending mail");
                     sgMail.send(mailOptions)
@@ -92,7 +92,7 @@ export default class EmailManager {
         return this.getHtmlFromDB(data, organization, "abusiveRiportHR", email)
             .then((emailTemplate) => {
                 EmailManager.getTransport(SENGRID_TOKEN);
-                const mailOptions = EmailManager.getMailOptions(email, emailTemplate.html, "Sértő visszajelzés");
+                const mailOptions = EmailManager.getMailOptions(email, emailTemplate.html, emailTemplate.subject);
                 return new Promise((resolve, reject) => {
                     console.log("sending mail");
                     sgMail.send(mailOptions)

@@ -11,7 +11,6 @@ let UserSchema = new Schema({
     lastName: {required: true, type: String, index: true},
     email: {required: true, type: String, index: {unique: true}},
     pictureUrl: {required: false, type: String},
-    //orgId test err
     orgId: {type: String, required: true, select: false},
     admin: {required: true, type: Boolean, select: false, default: false},
     password: {type: String, required: true, bcrypt: true, select: false},
@@ -19,11 +18,8 @@ let UserSchema = new Schema({
     lastActive: {required: false, type: Date},
     notificationToken: {required: false, type: [String], select: false},
     roles: {required: false, type: Array, index: true},
-<<<<<<< HEAD
-    managerId: {required: false, type: String, index: true}
-=======
+    managerId: {required: false, type: String, index: true},
     lang: {required:false, type:String, select:true, default: "hu"}
->>>>>>> emailTemplatesGoToDB
 
 }, {versionKey: false, collection: USER_COLLECTION});
 
