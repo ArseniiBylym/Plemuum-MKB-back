@@ -104,7 +104,7 @@ export default class SurveyInteractor {
     }
     //surveyTemplate interactor
     async getAllSurveyTemplatesByUserId(orgId: string, userId: string, roles: String []) {
-        if (roles.indexOf('HR') === -1){
+        if (roles && roles.indexOf('HR') === -1){
         return SurveyDataController.getDefaultSurveyTemplate(orgId);
         }
         else 

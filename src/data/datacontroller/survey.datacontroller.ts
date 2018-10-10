@@ -42,6 +42,9 @@ const SurveyDataController = {
             .cursor({ async: true })
             .then(async (result:any)=>{
                 const resultArr = await result.toArray();
+                if (resultArr[0].length<1) {
+                    throw new Error ('The survey has not yet been answered');
+                }
                 let formatingArr:any = [];
                 let questionTextArr = ['Kérdés sorszáma'];
                 questionTextArr = questionTextArr.concat(resultArr[0].questions.map((x:any) => 
