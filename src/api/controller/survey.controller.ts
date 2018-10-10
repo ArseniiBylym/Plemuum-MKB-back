@@ -28,7 +28,6 @@ export default class SurveyController extends BaseController {
     async createSurveyDynamic(req: any, res: any) {
 
         req.checkBody('title', 'Missing title').notEmpty();
-        req.checkBody('description', 'Missing description').notEmpty();
         req.checkBody('expiritDate', 'Missing expiritDate').notEmpty();
         
         if (!await validate(req, res)) {
