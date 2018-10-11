@@ -2,61 +2,61 @@ import NotificationInterface from "./notification.interface";
 export const TEMPLATE = {
     SURVEY: () => ({
         data: {
-            body: 'You received a survey',
-            title: `New survey`,
+            body: 'Új kérdőved érkezett',
+            title: `Új kérdőív`,
             type: "SURVEY"
         },
         notification: {
-            body: 'You received a survey',
-            title: `New survey`,
+            body: 'Új kérdőved érkezett',
+            title: `Új kérdőív`,
             type: "SURVEY"
         }
     }),
     FEEDBACK: (name?: string) => ({
         data: {
-            body: name ? `You received a feedback from ${name}` : 'You received an anonymous feedback',
-            title: `New feedback`,
+            body: name ? `Új visszajelzésed érkezett tőle: ${name}` : 'Új, név nélküli visszajelzésed érkezett',
+            title: `Új visszajelzés`,
             type: "FEEDBACK"
         },
         notification: {
-            body: name ? `You received a feedback from ${name}` : 'You received an anonymous feedback',
-            title: `New feedback`,
+            body: name ? `Új visszajelzésed érkezett tőle: ${name}` : 'Új, név nélküli visszajelzésed érkezett',
+            title: `Új visszajelzés`,
             type: "FEEDBACK"
         }
     }),
     REQUEST: (name: string) => ({
         data: {
-            body: `${name} needs your feedback`,
-            title: `New feedback request`,
+            body: `${name} a visszajelzésedet kéri`,
+            title: `Új visszajelzés kérés`,
             type: "REQUEST"
         },
         notification: {
-            body: `${name} needs your feedback`,
-            title: `New feedback request`,
+            body: `${name} a visszajelzésedet kéri`,
+            title: `Új visszajelzés kérés`,
             type: "REQUEST"
         }
     }),
     COMPASS: (name: string) => ({
         data: {
-            body: `Would you like to help ${name} to improve?`,
-            title: `New todo`,
+            body: `Szeretnél segíteni ${name} fejlődésében?`,
+            title: `Új teendő`,
             type: "COMPASS"
         },
         notification: {
-            body: `Would you like to help ${name} to improve?`,
-            title: `New todo`,
+            body: `Szeretnél segíteni ${name} fejlődésében?`,
+            title: `Új teendő`,
             type: "COMPASS"
         }
     }),
     STATISTICS: () => ({
         data: {
-            body: `Tap to see updated skill scores.`,
-            title: `Skill scores updated`,
+            body: `Koppints a frissített pontszámok megtekintéséhez`,
+            title: `Készség pontszámok frissültek`,
             type: "STATISTICS"
         },
         notification: {
-            body: `Tap to see updated skill scores.`,
-            title: `Skill scores updated`,
+            body: `Koppints a frissített pontszámok megtekintéséhez`,
+            title: `Készség pontszámok frissültek`,
             type: "STATISTICS"
         }
     }),
