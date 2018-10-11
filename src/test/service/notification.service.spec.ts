@@ -20,13 +20,13 @@ suite("Notification tests", () => {
             const template = TEMPLATE.FEEDBACK(testUser.firstName);
             const expected = {
                 data: {
-                    body: `You received a feedback from ${testUser.firstName}`,
-                    title: `New feedback`,
+                    body: `Új visszajelzésed érkezett tőle: ${testUser.firstName}`,
+                    title: `Új visszajelzés`,
                     type: "FEEDBACK"
                 },
                 notification: {
-                    body: `You received a feedback from ${testUser.firstName}`,
-                    title: `New feedback`,
+                    body: `Új visszajelzésed érkezett tőle: ${testUser.firstName}`,
+                    title: `Új visszajelzés`,
                     type: "FEEDBACK"
                 }
             };
@@ -37,13 +37,13 @@ suite("Notification tests", () => {
             const template = TEMPLATE.REQUEST(testUser.firstName);
             const expected = {
                 data: {
-                    body: `${testUser.firstName} needs your feedback`,
-                    title: `New feedback request`,
+                    body: `${testUser.firstName} a visszajelzésedet kéri`,
+                    title: `Új visszajelzés kérés`,
                     type: "REQUEST"
                 },
                 notification: {
-                    body: `${testUser.firstName} needs your feedback`,
-                    title: `New feedback request`,
+                    body: `${testUser.firstName} a visszajelzésedet kéri`,
+                    title: `Új visszajelzés kérés`,
                     type: "REQUEST"
                 }
             };
@@ -54,13 +54,13 @@ suite("Notification tests", () => {
             const template = TEMPLATE.COMPASS(testUser.firstName);
             const expected = {
                 data: {
-                    body: `Would you like to help ${testUser.firstName} to improve?`,
-                    title: `New todo`,
+                    body: `Szeretnél segíteni ${testUser.firstName} fejlődésében?`,
+                    title: `Új teendő`,
                     type: "COMPASS"
                 },
                 notification: {
-                    body: `Would you like to help ${testUser.firstName} to improve?`,
-                    title: `New todo`,
+                    body: `Szeretnél segíteni ${testUser.firstName} fejlődésében?`,
+                    title: `Új teendő`,
                     type: "COMPASS"
                 },
             };
@@ -71,13 +71,13 @@ suite("Notification tests", () => {
             const template = TEMPLATE.SURVEY();
             const expected = {
                 data: {
-                    body: 'You received a survey',
-                    title: `New survey`,
+                    body: 'Új kérdőved érkezett',
+                    title: `Új kérdőív`,
                     type: "SURVEY"
                 },
                 notification: {
-                    body: 'You received a survey',
-                    title: `New survey`,
+                    body: 'Új kérdőved érkezett',
+                    title: `Új kérdőív`,
                     type: "SURVEY"
                 }
             };
