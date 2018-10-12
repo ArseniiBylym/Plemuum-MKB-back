@@ -36,8 +36,8 @@ export default class SurveyInteractor {
         else { 
             survey.questions.forEach((question:any)=> 
                 {
-                    if (question.type === 'yes-no' && question.answerValues.length === 0) question.answerValues = yesNo
-                    else if (question.type === '1-6' && question.answerValues.length === 0) question.answerValues = scala
+                    if (question.type === 'yes-no' && !question.answerValues) question.answerValues = yesNo
+                    else if (question.type === '1-6' && !question.answerValues) question.answerValues = scala
                 }
              )
         return SurveyDataController.createSurveyDynamic(orgId, survey)
