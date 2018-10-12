@@ -17,6 +17,36 @@ import checkAdmin from '../../middleware/admin.checker';
  */
 export default (app: Express, userController: UserController) => {
 
+    /**
+     * @api {POST} /api/sendEmail/:orgId Send email from admin
+     * @apiVersion 2.0.0
+     * @apiName register
+     * @apiGroup Admin
+     * @apiPermission admin
+     *
+     * @apiHeader {String} Authorization Bearer token
+     *
+     *  @apiParam (URL){String}              orgId                  Organization name
+     *  @apiParam (Body){String[]}           respondents            Three option: [orgName], [group1Id, group2Id,..], [user1Id, user2Id,...]
+     *  @apiParam (Body){String}             html                   email template ejs code
+     *  @apiParam (Body){String}             subject                email subject
+     * 
+     * @apiParamExample {json} Request-Example:
+     *    {
+     *       "respondents" : ["5984342227cd340363dc84aa"],
+	 *       "html":"<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'><html><head><\/head><body>    <p>Szia <%= firstName %>,<\/p>    <p>Meghívást kaptál a Plenuum használatára a(z) <span style='font-weight: bold'><\/body><\/html>",
+     *       "subject": "test subject" 
+     *     }
+     * 
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     *    Email sending in progress     
+    */
+
+    app.route("/api/sendEmail/:orgId")
+    .post(passport.authenticate('jwt', {session: false}), checkAdmin(), userController.sendEmailForUsers.bind(userController))
+
      /**
      * @api {GET} /api/organizations/:orgId/myTeam/users  Get my team users. If HR user get all user in org else use managerId field in user data.
      * @apiVersion 2.0.0

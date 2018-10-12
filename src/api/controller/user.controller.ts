@@ -27,6 +27,16 @@ export default class UserController extends BaseController {
         this.userManager = userManager;
     }
 
+    async sendEmailForUsers(req: any, res: any) {
+        req.checkBody('respondents', 'Missing respondents id').notEmpty();
+        req.checkBody('html', 'Missing email template html code').notEmpty();
+        req.checkBody('subject', 'Missing email template html code').notEmpty();
+
+        return this.userManager.sendEmailForUsers(req.params.orgId,req.body.respondents, req.body.html, req.body.subject)
+            .then((result) => this.respond(StatusCodes.OK, req, res, result))
+            .catch((err) => this.handleError(err, req, res));
+        }
+
     async updateUserManager(req: any, res: any) {
         req.checkBody('managerId', 'Missing managerId').notEmpty();
         

@@ -47,6 +47,10 @@ export default class EmailManager {
         return { html: ejs.render(emailTempalte.html, data), subject: emailTempalte.subject };
     }
 
+    async renderHTML (data: any, html: string) {
+        return ejs.render(html, data);
+    }
+
     static getMailOptions(email: string, html: string, subject: string,
         message: string = "This is an automated answer, there is no need to reply!") {
         return {
@@ -56,6 +60,26 @@ export default class EmailManager {
             text: message,
             html: html
         };
+    };
+
+    public sendEmailFromAdminInterface(email:string, firstName:string,lastName:string,organization:string,subject:string ,html:string, transporter?:any): Promise<any> {
+        const data = {
+            email: email,
+            firstName: firstName,
+            lastName: lastName,
+            organization:organization
+        };
+        return this.renderHTML(data, html)
+            .then((emailTemplate:string) => {
+                EmailManager.getTransport(SENGRID_TOKEN);
+                const mailOptions = EmailManager.getMailOptions(email, emailTemplate, subject);
+                return new Promise((resolve, reject) => {
+                    console.log("sending mail");
+                    sgMail.send(mailOptions)
+                        .then(result => resolve(result))
+                        .catch((err) => reject(err));
+                })
+            }).catch((err:any) => console.log("error sending abusive report mail: " + err));
     };
 
     public sendAbusiveRiportUser(email: string, firstName: string, lastName: string, senderFullName: string,createdAt:string,message:string, organization:string, transporter?:any): Promise<any> {
