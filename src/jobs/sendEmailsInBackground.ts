@@ -9,6 +9,93 @@ import * as Raven from "raven";
 
 export default async function (agenda:any, transporter:any) {
 
+    agenda.define('sendEmailNotificationAboutRequest', async function(job:any, done:any) {
+
+        let {user, sender} = job.attrs.data;
+        let {email, firstName, orgId} = user;
+    
+        try {
+            const mailService = new EmailManager();
+            await mailService.sendEmailNotificationAboutRequest(email,firstName,orgId, sender,transporter);
+            await done();
+        } catch (error) {
+            getLogger().error({
+                type: "error",
+                request: {
+                    user: user
+                },
+                message: error,
+                timeStamp: new Date()
+            });
+        }
+
+    });
+
+    agenda.define('sendEmailNotificationTodo', async function(job:any, done:any) {
+
+        let {email, firstName} = job.attrs.data.user;
+        let {orgId} =  job.attrs.data;
+    
+        try {
+            const mailService = new EmailManager();
+            await mailService.sendEmailNotificationTodo(email,firstName,orgId, transporter);
+            await done();
+        } catch (error) {
+            getLogger().error({
+                type: "error",
+                request: {
+                    user: job.attrs.data
+                },
+                message: error,
+                timeStamp: new Date()
+            });
+        }
+
+    });
+
+    agenda.define('sendEmailNotificationAboutSkillScores', async function(job:any, done:any) {
+
+        let {email, firstName, orgId} = job.attrs.data;
+    
+        try {
+            const mailService = new EmailManager();
+            await mailService.sendEmailNotificationAboutSkillScores(email,firstName,orgId, transporter);
+            await done();
+        } catch (error) {
+            getLogger().error({
+                type: "error",
+                request: {
+                    user: job.attrs.data
+                },
+                message: error,
+                timeStamp: new Date()
+            });
+        }
+
+    });
+
+    agenda.define('sendEmailNotificationAboutFeedback', async function(job:any, done:any) {
+
+        let {senderName, user} = job.attrs.data;
+        let {email, firstName, orgId} = user;
+    
+        try {
+            const mailService = new EmailManager();
+            await mailService.sendEmailNotificationAboutFeedback(email,firstName,orgId,senderName, transporter);
+            await done();
+        } catch (error) {
+            getLogger().error({
+                type: "error",
+                request: {
+                    user: user
+                },
+                message: error,
+                timeStamp: new Date()
+            });
+        }
+
+    });
+
     agenda.define('sendAbusiveReportEmailUser', async function(job:any, done:any) {
 
         let dataSet = job.attrs.data;

@@ -58,6 +58,78 @@ export default class EmailManager {
         };
     };
 
+    public async sendEmailNotificationAboutRequest(email:string, firstName:string,organization:string,sender:string, transporter?: any): Promise<any> {
+        const data = {
+            firstName: firstName,
+            recipientFirstName: sender
+        };
+        return this.getHtmlFromDB(data, organization, "feedbackRequestNotification", email)
+            .then((emailTemplate: any) => {
+                EmailManager.getTransport(SENGRID_TOKEN);
+                const mailOptions = EmailManager.getMailOptions(email, emailTemplate.html, sender+' '+emailTemplate.subject);
+                return new Promise((resolve, reject) => {
+                    console.log("sending mail");
+                    sgMail.send(mailOptions)
+                        .then(result => resolve(result))
+                        .catch((err) => reject(err));
+                })
+            }).catch((err) => console.log("error sending request notification mail: " + err));
+    };
+
+    public async sendEmailNotificationTodo(email:string, firstName:string,organization:string, transporter?: any): Promise<any> {
+        const data = {
+            firstName: firstName
+        };
+        return this.getHtmlFromDB(data, organization, "todoNotification", email)
+            .then((emailTemplate: any) => {
+                EmailManager.getTransport(SENGRID_TOKEN);
+                const mailOptions = EmailManager.getMailOptions(email, emailTemplate.html, emailTemplate.subject);
+                return new Promise((resolve, reject) => {
+                    console.log("sending mail "+email);
+                    sgMail.send(mailOptions)
+                        .then(result => resolve(result))
+                        .catch((err) => reject(err));
+                })
+            }).catch((err) => console.log("error sending todo notification mail: " + err));
+    };
+
+    public async sendEmailNotificationAboutSkillScores(email:string, firstName:string,organization:string, transporter?: any): Promise<any> {
+        const data = {
+            firstName: firstName
+        };
+        return this.getHtmlFromDB(data, organization, "skillScoresNotification", email)
+            .then((emailTemplate: any) => {
+                EmailManager.getTransport(SENGRID_TOKEN);
+                const mailOptions = EmailManager.getMailOptions(email, emailTemplate.html, emailTemplate.subject);
+                return new Promise((resolve, reject) => {
+                    console.log("sending mail");
+                    sgMail.send(mailOptions)
+                        .then(result => resolve(result))
+                        .catch((err) => reject(err));
+                })
+            }).catch((err) => console.log("error sending skill scores notification mail: " + err));
+    };
+
+    public async sendEmailNotificationAboutFeedback(email:string, firstName:string,organization:string,senderName:any, transporter?: any): Promise<any> {
+        const data = {
+            firstName: firstName,
+            senderFirstName: senderName
+        };
+        let emailTemplateType = senderName ? "feedbackNotificationNamed": "feedbackNotificationAnonymous";
+        return this.getHtmlFromDB(data, organization, emailTemplateType, email)
+            .then((emailTemplate: any) => {
+                EmailManager.getTransport(SENGRID_TOKEN);
+                let subject = senderName ? `${senderName} ${emailTemplate.subject}`: emailTemplate.subject;
+                const mailOptions = EmailManager.getMailOptions(email, emailTemplate.html, subject);
+                return new Promise((resolve, reject) => {
+                    console.log("sending mail");
+                    sgMail.send(mailOptions)
+                        .then(result => resolve(result))
+                        .catch((err) => reject(err));
+                })
+            }).catch((err) => console.log("error sending feedback notification mail: " + err));
+    };
+
     public sendAbusiveRiportUser(email: string, firstName: string, lastName: string, senderFullName: string,createdAt:string,message:string, organization:string, transporter?:any): Promise<any> {
         const data = {
             email: email,

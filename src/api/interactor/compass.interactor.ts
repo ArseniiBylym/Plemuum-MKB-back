@@ -23,6 +23,7 @@ import NotificationManager from "./notification.interactor";
 import StatisticsManager from "./statistics.interactor";
 import { TEMPLATE } from "../../manager/notification/notification.manager";
 import SurveyManager from "../interactor/survey.interactor";
+import agenda from "../../util/agenda";
 
 const parser = require('cron-parser');
 
@@ -197,9 +198,10 @@ export default class CompassInteractor {
                     const todo = CompassInteractor.buildUpNewTodoResponse(user._id, org.todoSentenceNumber, randomAboutUserId, skills);
                     // Save built object
                     await CompassDataController.saveCompassTodo(dbName, todo);
-                    // Send notification
+                    // Send notification and email
                     UserDataController.getUserById(randomAboutUserId)
                         .then((aboutUser) => this.notificationManager.sendNotificationById(user._id, TEMPLATE.COMPASS(aboutUser.firstName)))
+                        .then((result)=> agenda.schedule(new Date(Date.now() + 2000), 'sendEmailNotificationTodo', {user:user, orgId: org.name}))
                         .catch(console.error);
 
                     return todo;
