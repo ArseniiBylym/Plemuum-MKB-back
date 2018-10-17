@@ -33,6 +33,13 @@ export default class UserController extends BaseController {
             .then((result) => this.respond(StatusCodes.OK, req, res, result))
             .catch((err) => this.handleError(err, req, res));
         }
+    async unsetUserManager(req: any, res: any) {
+    
+        return UserDataController.unsetUserManager(req.user._id.toString())
+            .then((result) => this.respond(StatusCodes.OK, req, res, result))
+            .catch((err) => this.handleError(err, req, res));
+        }
+        
     async getUserNumberOfPublicFeedbacksAndSkillScores(req: any, res: Response) {
         return FeedbackDataController.getIncomingFeedbacks(req.params.orgId, req.params.userId)
             .then(async(result) => {

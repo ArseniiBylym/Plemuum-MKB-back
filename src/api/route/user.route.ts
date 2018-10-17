@@ -144,9 +144,34 @@ export default (app: Express, userController: UserController) => {
      *       "error": "Manager not found."
      *     }
     **/
+   /**
+     * @api {DELETE} /api/users/updateUserManager Unset user's manager
+     * @apiVersion 2.0.0
+     * @apiName updateUserManager
+     * @apiGroup User
+     * @apiPermission user
+     * 
+     * 
+     * @apiSuccess (Success 200) {User} - Unset user object
+     * 
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     * {
+     *  "_id": "5984342227cd340363dc84c7",
+     *   "firstName": "peter",
+     *   "lastName": "szabo",
+     *   "email": "peter.szabo@hipteam.io",
+     *   "lastActive": "2018-09-26T13:08:52.105Z",
+     *   "pictureUrl": "",
+     *   "roles": [""],  
+     *   "managerId": "",
+     * }
+     * 
+     **/
 
     app.route("/api/users/updateUserManager")
-        .patch(passport.authenticate('jwt', {session: false}),userController.updateUserManager.bind(userController));
+        .patch(passport.authenticate('jwt', {session: false}),userController.updateUserManager.bind(userController))
+        .delete(passport.authenticate('jwt', {session: false}),userController.unsetUserManager.bind(userController));
 
 
     /**
