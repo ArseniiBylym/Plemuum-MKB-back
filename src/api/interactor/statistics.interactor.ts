@@ -6,6 +6,8 @@ import CompassTodo from "../../data/models/organization/compass/compasstodo.mode
 import { Group } from "../../data/models/organization/group.model";
 import NotificationManager from "./notification.interactor";
 import { TEMPLATE } from "../../manager/notification/notification.manager";
+import agenda from "../../util/agenda";
+import UserDataController from "../../data/datacontroller/user.datacontroller";
 
 export default class StatisticsInteractor {
 
@@ -30,9 +32,11 @@ export default class StatisticsInteractor {
             : this.createStatistics(answer, todo);
 
         // Send notification
-        this.notificationManager.sendNotificationById(savedStatistics.user, TEMPLATE.STATISTICS())
+        await this.notificationManager.sendNotificationById(savedStatistics.user, TEMPLATE.STATISTICS())
             .catch(console.error);
-
+        //send email
+        let user = await UserDataController.getUserById(savedStatistics.user, true);
+        await agenda.schedule(new Date(Date.now() + 2000), 'sendEmailNotificationAboutSkillScores', user);
         return savedStatistics;
     }
 

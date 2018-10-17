@@ -4,6 +4,7 @@ import { ErrorType, PlenuumError } from "../../util/errorhandler";
 import { UserModel } from "../../data/database/schema/common/user.schema";
 import NotificationManager from "./notification.interactor";
 import { TEMPLATE } from "../../manager/notification/notification.manager";
+import agenda from "../../util/agenda";
 
 export default class RequestInteractor {
 
@@ -41,10 +42,8 @@ export default class RequestInteractor {
         const savedRequest = await this.requestDataController.saveNewRequest(orgId, request);
 
         recipients.forEach((r: UserModel) => {
-            this.notificationManager
-                .sendNotificationById(
-                    r._id,
-                    TEMPLATE.REQUEST(sender.firstName))
+            this.notificationManager.sendNotificationById(r._id,TEMPLATE.REQUEST(sender.firstName))
+            .then((result) => agenda.schedule(new Date(Date.now() + 2000), 'sendEmailNotificationAboutRequest', {user:r, sender:sender.firstName}))
                 .catch(console.error)
         });
         return savedRequest;

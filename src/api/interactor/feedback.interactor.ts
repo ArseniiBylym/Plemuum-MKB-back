@@ -101,8 +101,10 @@ export default class FeedbackInteractor {
         }
         const savedFeedback = await FeedbackDataController.saveFeedback(orgId, feedback);
         try {
-            await this.notificationManager.sendNotificationById(feedback.recipientId,
-                TEMPLATE.FEEDBACK((feedback.privacy && feedback.privacy.indexOf(PRIVACY.ANONYMOUS) !== -1) ? undefined : sender.firstName));
+            let senderName = (feedback.privacy && feedback.privacy.indexOf(PRIVACY.ANONYMOUS) !== -1) ? undefined : sender.firstName;
+            
+            await this.notificationManager.sendNotificationById(feedback.recipientId,TEMPLATE.FEEDBACK(senderName));
+            await agenda.schedule(new Date(Date.now() + 2000), 'sendEmailNotificationAboutFeedback', {senderName:senderName, user:recipient}); 
         } catch (error) {
             console.error(error);
         }
