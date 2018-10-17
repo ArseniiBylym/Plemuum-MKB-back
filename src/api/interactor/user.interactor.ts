@@ -13,18 +13,32 @@ import agenda from "../../util/agenda";
 import * as Raven from 'raven';
 import * as XLSX from "xlsx";
 import * as moment from "moment";
+import SurveyManager from "../interactor/survey.interactor";
+
+
 
 export default class UserInteractor {
 
     private emailManager: EmailManager;
     private fileManager: FileManager;
     private organizationDataController: OrganizationDataController;
+    private surveyManager: SurveyManager;
 
-    constructor(emailService: EmailManager, fileManager: FileManager, organizationDataController: OrganizationDataController) {
+    constructor(emailService: EmailManager, fileManager: FileManager, organizationDataController: OrganizationDataController, surveyManager: SurveyManager) {
         this.emailManager = emailService;
         this.fileManager = fileManager;
         this.organizationDataController = organizationDataController;
+        this.surveyManager = surveyManager;
     }
+
+    async sendEmailForUsers(orgId:string, respodents:string[], html:string, subject:string) {
+       
+        let respondentUsers:any = await this.surveyManager.analysisRespondentsId(orgId ,respodents);
+        for (let i = 0; i < respondentUsers.length; i++) {
+              agenda.schedule(new Date(Date.now() + (i + 1)*1000),'sendEmailFromAdminInterface', {user:respondentUsers[i], html:html, subject:subject, orgId:orgId});
+        }
+        return "Email sending in progress";
+    } 
 
     async updateUserManager(userId:string, managerId:string) {
        

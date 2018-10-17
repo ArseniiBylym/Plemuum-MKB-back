@@ -9,6 +9,29 @@ import * as Raven from "raven";
 
 export default async function (agenda:any, transporter:any) {
 
+    agenda.define('sendEmailFromAdminInterface', async function(job:any, done:any) {
+
+        let emailData = job.attrs.data;
+        const {firstName, lastName, email} = emailData.user;
+        try {
+            const mailService = new EmailManager();
+            await mailService.sendEmailFromAdminInterface(email, firstName,lastName,emailData.orgId,emailData.subject ,emailData.html, transporter );
+            await done();
+        } catch (error) {
+            getLogger().error({
+                type: "error",
+                request: {
+                    user: emailData.user
+                },
+                message: error,
+                timeStamp: new Date()
+            });
+        }
+        
+
+    });
+
+
     agenda.define('sendEmailNotificationAboutRequest', async function(job:any, done:any) {
 
         let {user, sender} = job.attrs.data;
@@ -93,7 +116,6 @@ export default async function (agenda:any, transporter:any) {
                 timeStamp: new Date()
             });
         }
-
     });
 
     agenda.define('sendAbusiveReportEmailUser', async function(job:any, done:any) {
