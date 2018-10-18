@@ -3,64 +3,33 @@
         "_id":"5b557a9d82b9a800d4e29950",
         "createdAt":"2018-07-25 11:05:05.927Z",
         "updatedAt":"2018-07-25 11:05:05.927Z",
-        "survey":"5b531d15617b0c1fb0c73658",
-        "respondent":"5984342227cd340363dc84ac",
-        "isCompleted":false,
-        "manager":"5984342227cd340363dc84c7"
+        "survey":"5bc74b228401444bf3c8e32d",
+        "respondent":"5984342227cd340363dc84a9",
+        "isCompleted":true
     },
     {
         "_id":"5b557a9d82b9a800d4e29951",
         "createdAt":"2018-07-25 11:05:05.927Z",
         "updatedAt":"2018-07-25 11:05:05.927Z",
-        "survey":"5b531d15617b0c1fb0c73658",
-        "respondent":"5984342227cd340363dc84ad",
-        "isCompleted":false,
-        "manager":"5984342227cd340363dc84c7"
+        "survey":"5bc74b958401444bf3c8e334",
+        "respondent":"5984342227cd340363dc84a9",
+        "isCompleted":false
     },
     {
         "_id":"5b557a9d82b9a800d4e29952",
         "createdAt":"2018-07-25 11:05:05.927Z",
         "updatedAt":"2018-07-25 11:05:05.927Z",
-        "survey":"5b531d15617b0c1fb0c73658",
-        "respondent":"5984342227cd340363dc84ae",
-        "isCompleted":false,
-        "manager":"5984342227cd340363dc84c7"
+        "survey":"5bc74b228401444bf3c8e32d",
+        "respondent":"5984342227cd340363dc84c7",
+        "isCompleted":false
     },
 
     {
         "_id":"5b557a9d82b9a800d4e29953",
         "createdAt":"2018-07-25 11:15:05.927Z",
         "updatedAt":"2018-07-25 11:15:05.927Z",
-        "survey":"5b531d15617b0c1fb0c73659",
-        "respondent":"5984342227cd340363dc84ad",
-        "isCompleted":false,
-        "manager":"5984342227cd340363dc84c7"
-    },
-    {
-        "_id":"5b557a9d82b9a800d4e29954",
-        "createdAt":"2018-07-25 11:15:05.927Z",
-        "updatedAt":"2018-07-25 11:15:05.927Z",
-        "survey":"5b531d15617b0c1fb0c73659",
-        "respondent":"5984342227cd340363dc84ae",
-        "isCompleted":false,
-        "manager":"5984342227cd340363dc84c7"
-    },
-    {
-        "_id":"5b557a9d82b9a800d4e29955",
-        "createdAt":"2018-07-25 11:15:05.927Z",
-        "updatedAt":"2018-07-25 11:15:05.927Z",
-        "survey":"5b531d15617b0c1fb0c73659",
+        "survey":"5bc74b958401444bf3c8e334",
         "respondent":"5984342227cd340363dc84af",
-        "isCompleted":false,
-        "manager":"5984342227cd340363dc84c7"
-    },
-    {
-        "_id":"5b557a9d82b9a800d4e29956",
-        "createdAt":"2018-07-25 11:15:05.927Z",
-        "updatedAt":"2018-07-25 11:15:05.927Z",
-        "survey":"5b531d15617b0c1fb0c73659",
-        "respondent":"5984342227cd340363dc84b0",
-        "isCompleted":false,
-        "manager":"5984342227cd340363dc84c7"
+        "isCompleted":true
     }
 ]

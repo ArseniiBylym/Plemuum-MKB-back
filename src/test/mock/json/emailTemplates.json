@@ -1,26 +1,82 @@
 [
     {
-        "_id":"5bb6213cc075d535822bc00e",
-        "orgId":"hipteam",
+        "_id": "5bbddfd4c6155e1fe989ba5c",
+        "subject": "Üdv a Plenuum rendszerben",
+        "html": "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'><html><head></head><body>    <p>Szia <%= firstName %>,</p>    <p>Meghívást kaptál a Plenuum használatára a(z) <span style='font-weight: bold'><%= company %></span> szervezetben.</p>    <p>A Plenuum egy valós idejű visszajelzéseket segítő rendszer. Célja, hogy gyorsan és egyszerűen tudj visszajelzéseket adni és kérni a szervezeten belül. Az alkalmazás használata segíti minden munkatárs szakmai fejlődését és hogy közösen egy olyan munkakörnyezetet alakítsatok ki, ahol a lehető legjobb dolgozni.</p>    <p><span style='font-weight:bold'>Kérlek, első lépésként erősítsd meg a regisztrációt és állítsd be a jelszavad:</span></p>    <div>        <ul>            <li style='margin-bottom: 6px'>A felhasználó neved: <%= email %></li>            <li style='margin-bottom: 6px'><a style='color: #1155CC' href='<%= link %>'>A jelszavad erre a linkre kattintva állíthatod be.</a></li>        </ul>    </div><p style = 'font-weight: bold'>Ezután a Plenuum-ot böngészőből vagy okostelefonodról alkalmazásként is elérheted itt:</p>     <ul>        <li style='margin-bottom: 6px'>Böngészőből - <a style='color: #1155CC' href='https://app.plenuum.com'>Plenuum Web</a></li>        <li style='margin-bottom: 6px'>iOS készülékeken - <a style='color: #1155CC' href='https://itunes.apple.com/hu/app/plenuum-earlybird/id1180931406'>Plenuum iOS</a> app az App Storeban</li>        <li style='margin-bottom: 6px'>Android készülékeken - <a style='color: #1155CC' href='https://play.google.com/store/apps/details?id=io.hipteam.plenuum'>Plenuum Android</a> app a Google Play Áruházban</li>    </ul>    <p>Ha problémába ütköznél a Plenuum használata során vagy észrevételed lenne, írj nekünk a <a style='color: #1155CC' href = 'mailto:support@plenuum.com'>support@plenuum.com</a> címre!</p>     <p>Üdvözlettel, <br> A Plenuum Csapata</p>    <p>A regisztráció megerősítésével elfogadod, hogy a Plenuum rendszer használatához szükséges adataidat a munkáltatód, mint adatkezelő, a fent leírt célból felhasználja, illetőleg adataidat az alkalmazás üzemeltetője, a Hipteam Korlátolt Felelősségű Társaság, mint adatfeldolgozó kezelje. Részletes adatvédelmi tájékoztatást a <a style='color: #1155CC' href = 'https://s3.eu-central-1.amazonaws.com/plenuum-landing/privacy/index.html'>Plenuum Adatkezelési Útmutatóban</a> találsz, kérjük ezeket figyelmesen olvasd el a regisztráció megerősítése előtt.</p></body></html>",
+        "orgId": "hipteam",
         "type": "welcome",
-        "lang":"hu",
-        "subject": "Welcome to Plenuum",
-        "html": "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'><html><head><\/head><body>    <p>Szia <%= firstName %>,<\/p>    <p>Meghívást kaptál a Plenuum használatára a(z) <span style='font-weight: bold'><%= company %><\/span> szervezetben.<\/p>    <p>A Plenuum egy valós idejű visszajelzéseket segítő rendszer. Célja, hogy gyorsan és egyszerűen tudj visszajelzéseket adni és kérni a szervezeten belül. Az alkalmazás használata segíti minden munkatárs szakmai fejlődését és hogy közösen egy olyan munkakörnyezetet alakítsatok ki, ahol a lehető legjobb dolgozni.<\/p>    <p><span style='font-weight:bold'>Kérlek, első lépésként erősítsd meg a regisztrációt és állítsd be a jelszavad:<\/span><\/p>    <div>        <ul>            <li style='margin-bottom: 6px'>A felhasználó neved: <%= email %><\/li>            <li style='margin-bottom: 6px'><a style='color: #1155CC' href='<%= link %>'>A jelszavad erre a linkre kattintva állíthatod be.<\/a><\/li>        <\/ul>    <\/div><p style = 'font-weight: bold'>Ezután a Plenuum-ot böngészőből vagy okostelefonodról alkalmazásként is elérheted itt:<\/p>     <ul>        <li style='margin-bottom: 6px'>Böngészőből - <a style='color: #1155CC' href='https://app.plenuum.com'>Plenuum Web<\/a><\/li>        <li style='margin-bottom: 6px'>iOS készülékeken - <a style='color: #1155CC' href='https://itunes.apple.com/hu/app/plenuum-earlybird/id1180931406'>Plenuum iOS<\/a> app az App Storeban<\/li>        <li style='margin-bottom: 6px'>Android készülékeken - <a style='color: #1155CC' href='https://play.google.com/store/apps/details?id=io.hipteam.plenuum'>Plenuum Android<\/a> app a Google Play Áruházban<\/li>    <\/ul>    <p>Ha problémába ütköznél a Plenuum használata során vagy észrevételed lenne, írj nekünk a <a style='color: #1155CC' href = 'mailto:support@plenuum.com'>support@plenuum.com<\/a> címre!<\/p>     <p>Üdvözlettel, <br> A Plenuum Csapata<\/p>    <p>A regisztráció megerősítésével elfogadod, hogy a Plenuum rendszer használatához szükséges adataidat a munkáltatód, mint adatkezelő, a fent leírt célból felhasználja, illetőleg adataidat az alkalmazás üzemeltetője, a Hipteam Korlátolt Felelősségű Társaság, mint adatfeldolgozó kezelje. Részletes adatvédelmi tájékoztatást a <a style='color: #1155CC' href = 'https://s3.eu-central-1.amazonaws.com/plenuum-landing/privacy/index.html'>Plenuum Adatkezelési Útmutatóban<\/a> találsz, kérjük ezeket figyelmesen olvasd el a regisztráció megerősítése előtt.<\/p><\/body><\/html>"
+        "lang": "hu"
     },
     {
-        "_id":"5bbb1d9c05c5301fa5b956c6",
-        "orgId":"hipteam",
-        "type": "resetPassword",
-        "lang":"hu",
-        "subject": "Plenuum password reset",
-        "html":"<!DOCTYPE html PUBLIC '-\/\/W3C\/\/DTD XHTML 1.0 Strict\/\/EN' 'http:\/\/www.w3.org\/TR\/xhtml1\/DTD\/xhtml1-strict.dtd'>    <html xmlns='http:\/\/www.w3.org\/1999\/xhtml'>  <head><\/head>        <body>        <style><\/style>       <p>Szia <%= firstName %>,<\/p>        <p>Kérésednek megfelelően alább küldünk egy linket, amelyre kattintva beállíthatsz egy új jelszót a korábbi helyett:<\/p>        <div>            <ul>                <li style='margin-bottom: 6px'><a style='color: #1155CC' href='<%= link %>'>Új jelszó beállítása<\/a><\/li>            <\/ul>        <\/div>        <p>Ha nem kértél jelszó újrabeállítást, akkor kérlek hagyd figyelmen kívül ezt a levelet.<\/p>      <p>Üdvözlettel, <br> A Plenuum Csapata<\/p>        <\/body>        <\/html>"
-    },
-    {
-        "_id":"5bbb3e7a871dc4224a1148f9",
-        "orgId":"hipteam",
+        "_id": "5bbde0d5c6155e1fe989ba5d",
+        "subject": "Új kérdőíved érkezett a Plenuumban",
+        "html": "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'><html><head></head><body>    <p>Szia <%= firstName %>,</p>    <p>Új kérdőved érkezett a Plenuumban.</p>    <p>A kérdőív megtekintéséhez lépj be a Plenuumba, vagy kattints a linkre:</p>    <p><a style='color: #1155CC' href='https://app.plenuum.com/interact'>Kérdőív megtekintése</a></p>    <p>Ha problémába ütköznél a Plenuum használata során vagy észrevételed lenne, írj nekünk a <a style='color: #1155CC' href = 'mailto:support@plenuum.com'>support@plenuum.com</a> címre!</p>    <p>Üdvözlettel, <br> A Plenuum Csapata</p></body></html>",
+        "orgId": "hipteam",
         "type": "surveyNotification",
-        "lang":"hu",
-        "subject": "Plenuum password reset",
-        "html":"<!DOCTYPE html PUBLIC '-\/\/W3C\/\/DTD XHTML 1.0 Strict\/\/EN' 'http:\/\/www.w3.org\/TR\/xhtml1\/DTD\/xhtml1-strict.dtd'>        <html>        <head><\/head>        <body>                <p>Szia <%= firstName %>,<\/p>                <p>Új TÉR kérdőív érkezett a Plenuum fiókodba!<\/p>                <p>A Plenuum megnyitásához, illetve a TÉR kérdőív kitöltéséhez kérjük, hogy kattints az alábbi linkre vagy jelentkezz be a Plenuum alkalmazásba a telefonodon:<\/p>                <div>                    <ul>                        <li style='margin-bottom: 6px'><a style='color: #1155CC' href='https:\/\/app.plenuum.com'>Plenuum Web<\/a> Alkalmazás<\/li>                    <\/ul>         <\/div>                <p>Amennyiben még nem használtad a Plenuum-ot, alább találod az elérhetőségeit:                <\/p>                <ul>                    <li style='margin-bottom: 6px'>Böngészőből elérhető <a style='color: #1155CC' href='https:\/\/app.plenuum.com'>Plenuum Web<\/a> Alkalmazás<\/li>                    <li style='margin-bottom: 6px'><a style='color: #1155CC' href='https:\/\/itunes.apple.com\/hu\/app\/plenuum-earlybird\/id1180931406'>Plenuum iOS<\/a> Alkalmazás (<a style='color: #1155CC' href='https:\/\/docs.google.com\/presentation\/d\/e\/2PACX-1vRjUbdRiY340hJf5TV-AoanMj4lj8cWAfJDybcoNgB2nUmMtMqcgnFRcFP2Bb-msHk9AqA_‌bqpbkxu2\/pub?start=true&loop=false&delayms=60000&slide=id.g4013d599d5_0_244'>iOS telepítési útmutató<\/a>)<\/li>         <li style='margin-bottom: 6px'><a style='color: #1155CC' href='https:\/\/play.google.com\/store\/apps\/details?id=io.hipteam.plenuum'>Plenuum Android<\/a> Alkalmazás (<a style='color: #1155CC' href=' https:\/\/docs.google.com\/presentation\/d\/e\/2PACX-1vTfsw_dLAYTVcxQ6BM7n12weVRKBKFf93daJ4WXyn-sfNMS8ELCJMpED0v_MizGp3gLztzoBcltDmAc\/pub?start=true&loop=false&delayms=60000&slide=id.p'>Android telepítési útmutató<\/a>)<\/li>           <\/ul>          <p>Amennyiben bármilyen kérdésed vagy észrevételed volna a Plenuum-mal kapcsolatban, kérlek küldd el emailben az <a style='color: #1155CC' href='mailto:mkb@plenuum.com'>mkb@plenuum.com<\/a>-ra. Ha valaki, akkor mi igazán fontosnak tartjuk a visszajelzéseket :)<\/p>      <p>Üdvözlettel, <br> A Plenuum Csapata<\/p>      <\/body>      <\/html>"
+        "lang": "hu"
+    },
+    {
+        "_id": "5bbde159c6155e1fe989ba5e",
+        "subject": "Plenuum jelszó visszaállítás",
+        "html": "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'><html xmlns='http://www.w3.org/1999/xhtml'><head></head><body><style></style><p>Szia <%= firstName %>,</p><p>Kérésednek megfelelően alább küldünk egy linket, amelyre kattintva beállíthatsz egy új jelszót a korábbi helyett:</p><div>    <ul>        <li style='margin-bottom: 6px'><a style='color: #1155CC' href='<%= link %>'>Új jelszó beállítása</a></li>    </ul></div><p>Ha nem kértél jelszó újrabeállítást, akkor kérlek hagyd figyelmen kívül ezt a levelet.</p><p>Üdvözlettel, <br> A Plenuum Csapata</p></body></html>",
+        "orgId": "hipteam",
+        "type": "resetPassword",
+        "lang": "hu"
+    },
+    {
+        "_id": "5bbde74277d08222daf67215",
+        "subject": "Sértő visszajelzés",
+        "html": "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'><html xmlns='http://www.w3.org/1999/xhtml'><head></head><body><p>Egy felhasználó sértőként jelölt meg egy visszajelzést.</p><br><p>Az alábbi visszajelzést sértő tartalom miatt jelentette <%= firstName %> <%= lastName%>:</p><p><strong>Küldő: </strong><%= senderFullName%></p><p><strong>Címzett: </strong><%= firstName %> <%= lastName%>  </p><p><strong>Küldés ideje: </strong><%= createdAt%></p><p><strong>Visszajelzés szövege: </strong><%= message%> </p><br> <br><p>Üdv,</p><p>Plenuum bot</p></body></html>",
+        "orgId": "hipteam",
+        "type": "abusiveRiportHR",
+        "lang": "hu"
+    },
+    {
+        "_id": "5bbde7c077d08222daf67216",
+        "subject": "Sértő visszajelzés megjelölve",
+        "html": "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'><html xmlns='http://www.w3.org/1999/xhtml'><head></head><body><p>Szia <%= firstName %>!</p><p>Az alábbi visszajelzést sértő tartalom miatt eljutattuk a HR-hez:</p><p><strong>Küldő: </strong><%= senderFullName%></p><p><strong>Címzett: </strong><%= firstName %> <%= lastName%>  </p><p><strong>Küldés ideje: </strong><%= createdAt%></p><p><strong>Visszajelzés szövege: </strong><%= message%> </p><br> <p>A visszejelzés megjelöléséről csak téged és a HR-t értesítettük.</p><br><p>Üdv,</p><p>Plenuum bot</p></body></html>",
+        "orgId": "hipteam",
+        "type": "abusiveRiportUser",
+        "lang": "hu"
+    },
+    {
+        "_id": "5bc5aac185a77622756cda5c",
+        "subject": "Új visszajelzésed érkezett a Plenuumban",
+        "html": "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'><html><head></head><body>    <p>Szia <%= firstName %>,</p>    <p>Új visszajelzésed érkezett a Plenuumban.</p>    <p>A visszajelzés megtekintéséhez lépj be a Plenuumba, vagy kattints a linkre:</p>    <p><a style='color: #1155CC' href='https://app.plenuum.com/feedback/incoming'>Visszajelzés megtekintése</a></p>    <p>Ha problémába ütköznél a Plenuum használata során vagy észrevételed lenne, írj nekünk a <a style='color: #1155CC' href = 'mailto:support@plenuum.com'>support@plenuum.com</a> címre!</p>    <p>Üdvözlettel, <br> A Plenuum Csapata</p></body></html>",
+        "orgId": "hipteam",
+        "type": "feedbackNotificationAnonymous",
+        "lang": "hu"
+    },
+    {
+        "_id": "5bc5abc185a77622756cda5d",
+        "subject": " visszajelzést küldött neked a Plenuumban",
+        "html": "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'><html><head></head><body>    <p>Szia <%= firstName %>,</p>    <p><%= senderFirstName %> visszajelzést küldött neked a Plenuumban.</p>    <p>A visszajelzés megtekintéséhez lépj be a Plenuumba, vagy kattints a linkre:</p>    <p><a style='color: #1155CC' href='https://app.plenuum.com/feedback/incoming'>Visszajelzés megtekintése</a></p>    <p>Ha problémába ütköznél a Plenuum használata során vagy észrevételed lenne, írj nekünk a <a style='color: #1155CC' href = 'mailto:support@plenuum.com'>support@plenuum.com</a> címre!</p>    <p>Üdvözlettel, <br> A Plenuum Csapata</p></body></html>",
+        "orgId": "hipteam",
+        "type": "feedbackNotificationNamed",
+        "lang": "hu"
+    },
+    {
+        "_id": "5bc5ac7785a77622756cda5e",
+        "subject": " a visszajelzésedet kéri a Plenuumban",
+        "html": "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'><html><head></head><body>    <p>Szia <%= firstName %>,</p>    <p><%= recipientFirstName %> a visszajelzésedet kéri a Plenuumban.</p>    <p>A visszajelzés kérés megtekintéséhez lépj be a Plenuumba, vagy kattints a linkre:</p>    <p><a style='color: #1155CC' href='https://app.plenuum.com/interact'>Visszajelzés kérés megtekintése</a></p>    <p>Ha problémába ütköznél a Plenuum használata során vagy észrevételed lenne, írj nekünk a <a style='color: #1155CC' href = 'mailto:support@plenuum.com'>support@plenuum.com</a> címre!</p>    <p>Üdvözlettel, <br> A Plenuum Csapata</p></body></html>",
+        "orgId": "hipteam",
+        "type": "feedbackRequestNotification",
+        "lang": "hu"
+    },
+    {
+        "_id": "5bc5afc985a77622756cda5f",
+        "subject": "A készség pontszámaid frissültek a Plenuumban",
+        "html": "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'><html><head></head><body>    <p>Szia <%= firstName %>,</p>    <p>A készség pontszámaid frissültek a Plenuumban.</p>    <p>A frissített pontszámok megtekintéséhez lépj be a Plenuumba, vagy kattints a linkre:</p>    <p><a style='color: #1155CC' href='https://app.plenuum.com/interact'>Frissített pontszámok megtekintése</a></p>    <p>Ha problémába ütköznél a Plenuum használata során vagy észrevételed lenne, írj nekünk a <a style='color: #1155CC' href = 'mailto:support@plenuum.com'>support@plenuum.com</a> címre!</p>    <p>Üdvözlettel, <br> A Plenuum Csapata</p></body></html>",
+        "orgId": "hipteam",
+        "type": "skillScoresNotification",
+        "lang": "hu"
+    },
+    {
+        "_id": "5bc5bb0b85a77622756cda60",
+        "subject": "Új teendőd érkezett a Plenuumban",
+        "html": "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'><html><head></head><body>    <p>Szia <%= firstName %>,</p>    <p>Új teendőd érkezett a Plenuumban.</p>    <p>A teendő megtekintéséhez lépj be a Plenuumba, vagy kattints a linkre:</p>    <p><a style='color: #1155CC' href='https://app.plenuum.com/interact'>Teendő megtekintése</a></p>    <p>Ha problémába ütköznél a Plenuum használata során vagy észrevételed lenne, írj nekünk a <a style='color: #1155CC' href = 'mailto:support@plenuum.com'>support@plenuum.com</a> címre!</p>    <p>Üdvözlettel, <br> A Plenuum Csapata</p></body></html>",
+        "orgId": "hipteam",
+        "type": "todoNotification",
+        "lang": "hu"
     }
 ]

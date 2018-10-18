@@ -27,12 +27,12 @@ suite("Survey datacontroller", () => {
 
     suite("getAllSurveysTodo", () => {
         test("Should get an array of survey to do objects", async () => {
-            const userID = "5984342227cd340363dc84ad";
+            const userID = "5984342227cd340363dc84c7";
 
             const surveysTodo = await SurveyDataController.getAllSurveysTodo(orgID, userID);
 
             chai.should().exist(surveysTodo);
-            chai.expect(surveysTodo).length(2);
+            chai.expect(surveysTodo).length(1);
         })
     });
 
@@ -43,7 +43,7 @@ suite("Survey datacontroller", () => {
             const surveys = await SurveyDataController.getSurveysAfterDate(orgID, date);
 
             chai.should().exist(surveys);
-            chai.expect(surveys).length(1);
+            chai.expect(surveys).length(2);
         })
     });
 
@@ -86,8 +86,8 @@ suite("Survey datacontroller", () => {
 
     suite("getSurveyTodo", () => {
         test("Should be able to get a survey to do by its ID", (done) => {
-            const id = "5b557a9d82b9a800d4e29954";
-            const userID = "5984342227cd340363dc84ae";
+            const id = "5b557a9d82b9a800d4e29952";
+            const userID = "5984342227cd340363dc84c7";
 
             SurveyDataController.getSurveyTodo(orgID, id, userID)
                 .then((surveyTodo: any) => {

@@ -1,51 +1,50 @@
 [
     {
-        "_id": "5b5081c3aa357227f44fa503",
-        "survey": "5b531d15617b0c1fb0c73658",
-        "text":"Survey 1 Question 1",
-        "required":true,
-        "min":10,
-        "max":250
+        "_id": "5bc74b228401444bf3c8e32e",
+        "updatedAt": "2018-10-17T14:45:54.608Z",
+        "createdAt": "2018-10-17T14:45:54.608Z",
+        "type": "text",
+        "text": "Survey 1 Question 1",
+        "survey": "5bc74b228401444bf3c8e32d",
+        "max": 500,
+        "min": 10,
+        "required": true,
+        "answerValues": []
     },
     {
-        "_id": "5b5081c3aa357227f44fa504",
-        "survey": "5b531d15617b0c1fb0c73658",
-        "text":"Survey 1 Question 2",
-        "required":true,
-        "min":null,
-        "max":75
+        "_id": "5bc74b228401444bf3c8e32f",
+        "updatedAt": "2018-10-17T14:45:54.608Z",
+        "createdAt": "2018-10-17T14:45:54.608Z",
+        "type": "1-6",
+        "text": "Survey 1 Question 2",
+        "survey": "5bc74b228401444bf3c8e32d",
+        "max": 500,
+        "min": 1,
+        "required": false,
+        "answerValues": []
     },
     {
-        "_id": "5b5081c3aa357227f44fa505",
-        "survey": "5b531d15617b0c1fb0c73658",
-        "text":"Survey 1 Question 3",
-        "required":false,
-        "min":5,
-        "max":null
-    },
-
-    {
-        "_id": "5b5081c3aa357227f44fa506",
-        "survey": "5b531d15617b0c1fb0c73659",
-        "text":"Survey 2 Question 1",
-        "required":false,
-        "min":null,
-        "max":null
+        "_id": "5bc74b958401444bf3c8e335",
+        "updatedAt": "2018-10-17T14:47:49.811Z",
+        "createdAt": "2018-10-17T14:47:49.811Z",
+        "type": "yes-no",
+        "text": "Survey 2 Question 2",
+        "survey": "5bc74b958401444bf3c8e334",
+        "max": 500,
+        "min": 1,
+        "required": true,
+        "answerValues": ["igen", "nem"]
     },
     {
-        "_id": "5b5081c3aa357227f44fa507",
-        "survey": "5b54d82b69b8932a78f3ab15",
-        "text":"Survey 2 Question 2",
-        "required":true,
-        "min":5,
-        "max":75
-    },
-    {
-        "_id": "5b5081c3aa357227f44fa508",
-        "survey": "5b54d82b69b8932a78f3ab15",
-        "text":"Survey 2 Question 3",
-        "required":false,
-        "min":null,
-        "max":null
+        "_id": "5bc74b958401444bf3c8e336",
+        "updatedAt": "2018-10-17T14:47:49.812Z",
+        "createdAt": "2018-10-17T14:47:49.811Z",
+        "type": "1-6",
+        "text": "Survey 2 Question 2",
+        "survey": "5bc74b958401444bf3c8e334",
+        "max": 100,
+        "min": 1,
+        "required": false,
+        "answerValues": []
     }
 ]

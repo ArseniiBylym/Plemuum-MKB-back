@@ -1,16 +1,30 @@
 [
     {
-        "_id": "5b531d15617b0c1fb0c73658",
-        "createdAt": "2018-07-25 10:46:29.433",
-        "updatedAt": "2018-07-25 10:46:29.433",
-        "title":"Survey 1",
-        "owner": "5984342227cd340363dc84af"
-    },
+        "updatedAt": "2018-10-17T14:45:54.585Z",
+        "createdAt": "2018-10-17T14:45:54.585Z",
+        "title": "Survey 1",
+        "description": "This is description of survey",
+        "expiritDate": "2020-11-20T16:51:41.696Z",
+        "owner": "5984342227cd340363dc84c7",
+        "type": 2,
+        "_id": "5bc74b228401444bf3c8e32d",
+        "respondents": [
+            "5984342227cd340363dc84a9",
+            "5984342227cd340363dc84c7"
+        ]
+    }, 
     {
-        "_id": "5b531d15617b0c1fb0c73659",
-        "createdAt": "2018-07-25 10:50:24.123",
-        "updatedAt": "2018-07-25 10:50:24.123",
-        "title":"Survey 2",
-        "owner": "5984342227cd340363dc84af"
+        "updatedAt": "2018-10-17T14:47:49.801Z",
+        "createdAt": "2018-10-17T14:47:49.801Z",
+        "title": "Survey 2",
+        "description": "This is description of survey",
+        "expiritDate": "2018-11-20T16:51:41.696Z",
+        "owner": "5984342227cd340363dc84c7",
+        "type": 2,
+        "_id": "5bc74b958401444bf3c8e334",
+        "respondents": [
+            "5984342227cd340363dc84a9",
+            "5984342227cd340363dc84c7"
+        ]
     }
 ]

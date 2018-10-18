@@ -32,7 +32,7 @@ suite("Survey request test", () => {
     });
 
     suite("getSurveyTodo", () => {
-        const id ="5b557a9d82b9a800d4e29955";
+        const id ="5b557a9d82b9a800d4e29953";
         const badId = "5b557a9d82b9a800d4e29959";
         const url = `/api/organizations/${orgId}/surveysTodo/${id}`;
         const badUrl = `/api/organizations/${orgId}/surveysTodo/${badId}`;
@@ -61,16 +61,15 @@ suite("Survey request test", () => {
     });
 
     suite("saveSurveyTodo", () => {
-        const id ="5b557a9d82b9a800d4e29955";
+        const id ="5b557a9d82b9a800d4e29953";
         const url = `/api/organizations/${orgId}/surveysTodo/${id}`;
 
         test("Should be able to complete survey to do by Id", async () => {
             let surveyTodo : any = {
                 _id: id,
-                manager: "5984342227cd340363dc84c7",
                 isCompleted: true,
                 answers: [{
-                    "question":"5b5081c3aa357227f44fa507",
+                    "question":"5bc74b228401444bf3c8e32e",
                     "questionText":"Survey 2 Question 2",
                     "answerText":"Answer 2 by sheryl.grant@hipteam.io",
                     "required":true,
