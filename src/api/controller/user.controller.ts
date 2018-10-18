@@ -84,7 +84,8 @@ export default class UserController extends BaseController {
     }
 
     async getUserFeedbacksExcel(req: any, res: Response) {
-       
+        let numberOfFeedbacks = await FeedbackDataController.getIncomingFeedbacks(req.params.orgId, req.params.userId)
+        if (numberOfFeedbacks && numberOfFeedbacks.length === 0) return res.status(422).send(formError(new Error("User not have any incoming feedback")));
         return this.userManager.getUserFeedbacksExcel(req.params.orgId, req.params.userId)
             .then((result) => {
                 res.download(path.join(__dirname + '../../../../' + result[0]), result[1], () => {
@@ -97,7 +98,8 @@ export default class UserController extends BaseController {
     }
 
     async getUserSkillScoresExcel(req: any, res: Response) {
-
+        let numberOfSkills = await StatisticDataController.getStatisticsByUserIdForExcelFile(req.params.orgId, req.params.userId);
+        if (!numberOfSkills) return res.status(422).send(formError(new Error("User not have any skill scores"))); 
         return this.userManager.getUserSkillScoresExcel(req.params.orgId, req.params.userId)
             .then((result) => {
                 res.download(path.join(__dirname + '../../../../' + result[0]), result[1], () => {
