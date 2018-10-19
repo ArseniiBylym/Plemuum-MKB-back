@@ -118,7 +118,7 @@ export default class CompassInteractor {
 
     async answerCompass(orgId: string, answer: CompassAnswer): Promise<CompassAnswer> {
         const compassTodo = await CompassDataController.getTodoById(orgId, answer.compassTodo);
-        if (!compassTodo) {
+        if (!compassTodo || compassTodo.answered) {
             throw new PlenuumError("COMPASS Todo not found", ErrorType.NOT_FOUND);
         }
         compassTodo.answered = true;

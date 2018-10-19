@@ -9,6 +9,14 @@ import SurveyController from "../../api/controller/survey.controller";
 import { PlenuumError, ErrorType } from "../../util/errorhandler";
 
 const SurveyDataController = {
+
+    updateSurveyTodoIsComplet: (orgId: string, surveyId: any): Promise<SurveyTodoModel | null> => {
+        return SurveyTodoCollection(orgId).update({survey: new ObjectId(surveyId), isCompleted : false},  { $set:{isCompleted : true}}, {"multi": true}).exec()
+        .then((result) => {
+            return result;
+        });
+    },
+
 //survey2 datacontroller
     getAllAnswersSurveyById: (orgId: string, surveyId:string): Promise<SurveyModel[]> => {
         return SurveyTodoCollection(orgId).aggregate(

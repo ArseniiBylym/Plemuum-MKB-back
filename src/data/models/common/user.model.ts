@@ -12,4 +12,5 @@ export interface User {
     roles?: string[];
     managerId?: string;
     lang?: string;
+    isActive?:boolean;
 }

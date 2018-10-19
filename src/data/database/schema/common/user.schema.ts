@@ -19,7 +19,8 @@ let UserSchema = new Schema({
     notificationToken: {required: false, type: [String], select: false},
     roles: {required: false, type: Array, index: true},
     managerId: {required: false, type: String, index: true},
-    lang: {required:false, type:String, select:true, default: "hu"}
+    lang: {required:false, type:String, select:true, default: "hu"},
+    isActive: {required: false, type: Boolean, select: true, default: true}
 
 }, {versionKey: false, collection: USER_COLLECTION});
 

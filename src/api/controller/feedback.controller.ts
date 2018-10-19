@@ -3,6 +3,7 @@ import { formError } from "../../util/errorhandler";
 import * as StatusCodes from 'http-status-codes';
 import { validate } from "../../util/input.validator";
 import FeedbackManager from "../interactor/feedback.interactor";
+import UserDataController from "../../data/datacontroller/user.datacontroller";
 
 export default class FeedbackController extends BaseController {
 
@@ -64,6 +65,11 @@ export default class FeedbackController extends BaseController {
 
         if (!await validate(req, res)) {
             return;
+        }
+        let {isActive} = await UserDataController.checkActiveUserById(req.body.recipientId);
+
+        if (!isActive){
+            res.status(422).send(formError(new Error ("The user has been deleted from the Plenuum")))
         }
 
         req.body.senderId = req.user._id;

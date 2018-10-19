@@ -30,7 +30,7 @@ export default class RequestInteractor {
                 // https://docs.mongodb.com/manual/reference/operator/query/in/
                 const user = await UserDataController.getUserByIdFromOrg(orgId, id);
                 
-                if (!user) {
+                if (!user || !user.isActive) {
                     throw new PlenuumError("Recipient user not found", ErrorType.NOT_FOUND);
                 }
                 

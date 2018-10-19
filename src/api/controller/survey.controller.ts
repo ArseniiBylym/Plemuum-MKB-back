@@ -9,6 +9,8 @@ import { SurveyTemplateModel } from '../../data/database/schema/organization/sur
 import { QuestionModel } from '../../data/database/schema/organization/survey/question.schema';
 import * as path from 'path';
 import * as fs from 'fs';
+import SurveyDataController from "../../data/datacontroller/survey.datacontroller";
+
 
 export default class SurveyController extends BaseController {
     surveyManager: SurveyManager;
@@ -170,6 +172,11 @@ export default class SurveyController extends BaseController {
         let surveyTodo : SurveyTodoModel = req.body;
         surveyTodo._id = req.params.surveyTodoId;
         surveyTodo.respondent = req.user._id;
+        let checkSurveyTodo = await SurveyDataController.getSurveyTodo(req.params.orgId, surveyTodo._id, surveyTodo.respondent.toString());
+        if (checkSurveyTodo.surveyTodo.isCompleted) {
+            return res.status(422).send(formError(new Error("The survey's owner user was deleted")));
+        }
+        
         return this.surveyManager.saveSurveyTodo(req.params.orgId, surveyTodo)
             .then(result => this.respond(StatusCodes.OK, req, res, result))
             .catch((err) => res.status(this.getErrorStatus(err)).send(formError(err)));

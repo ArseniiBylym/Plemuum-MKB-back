@@ -9,9 +9,14 @@ interface RequestDataController {
     getRecipientRequests: (organizationId: string, userId: string) => Promise<any>
     getSpecificRequestForUser: (organizationId: string, userId: string, requestId: string) => Promise<any>
     getRecipientUsersFromRequest: (organizationId: string, userId: string, requestId: string) => Promise<any>
+    deleteRequestsByUserId: (organizationId: string, userId: string) => Promise<any>
 }
 
 const requestDataController: RequestDataController = {
+
+    deleteRequestsByUserId: function (organizationId: string, userId: string): Promise<any> {
+        return RequestCollection(organizationId).deleteMany({senderId: userId}).lean().exec();
+    },
 
     saveNewRequest(organizationId: string, request: Object): Promise<any> {
         return new (RequestCollection(organizationId))(request).save();

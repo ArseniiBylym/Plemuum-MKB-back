@@ -10,7 +10,8 @@
     "orgId": "hipteam",
     "roles": [],
     "managerId": "",
-    "lang": "hu"
+    "lang": "hu",
+    "isActive": true
   },
   {
     "firstName": "peter",
@@ -22,9 +23,12 @@
     "_id": "5984342227cd340363dc84c7",
     "tokens": [],
     "orgId": "hipteam",
-    "roles": ["HR"],
+    "roles": [
+      "HR"
+    ],
     "managerId": "",
     "lang": "hu",
+    "isActive": true,
     "admin": true
   },
   {
@@ -39,7 +43,8 @@
     "orgId": "hipteam",
     "roles": [],
     "managerId": "5984342227cd340363dc84a9",
-    "lang": "hu"
+    "lang": "hu",
+    "isActive": true
   },
   {
     "firstName": "samantha",
@@ -51,9 +56,12 @@
     "_id": "5984342227cd340363dc84ab",
     "tokens": [],
     "orgId": "hipteam",
-    "roles": ["HR"],
+    "roles": [
+      "HR"
+    ],
     "managerId": "5984342227cd340363dc84a9",
-    "lang": "hu"
+    "lang": "hu",
+    "isActive": true
   },
   {
     "firstName": "liam",
@@ -67,7 +75,8 @@
     "orgId": "hipteam",
     "roles": [],
     "managerId": "5984342227cd340363dc84a9",
-    "lang": "hu"
+    "lang": "hu",
+    "isActive": true
   },
   {
     "firstName": "aaron",
@@ -81,7 +90,8 @@
     "orgId": "hipteam",
     "roles": [],
     "managerId": "5984342227cd340363dc84ac",
-    "lang": "hu"
+    "lang": "hu",
+    "isActive": true
   },
   {
     "firstName": "sergio",
@@ -95,7 +105,8 @@
     "orgId": "hipteam",
     "roles": [],
     "managerId": "5984342227cd340363dc84ac",
-    "lang": "hu"
+    "lang": "hu",
+    "isActive": true
   },
   {
     "firstName": "sheryl",
@@ -109,7 +120,8 @@
     "orgId": "hipteam",
     "roles": [],
     "managerId": "5984342227cd340363dc84ac",
-    "lang": "hu"
+    "lang": "hu",
+    "isActive": true
   },
   {
     "firstName": "benjamin",
@@ -123,7 +135,8 @@
     "orgId": "hipteam",
     "roles": [],
     "managerId": "5984342227cd340363dc84ac",
-    "lang": "hu"
+    "lang": "hu",
+    "isActive": true
   },
   {
     "firstName": "darrell",
@@ -137,7 +150,8 @@
     "orgId": "hipteam",
     "roles": [],
     "managerId": "",
-    "lang": "hu"
+    "lang": "hu",
+    "isActive": true
   },
   {
     "firstName": "wyatt",
@@ -151,7 +165,8 @@
     "orgId": "hipteam",
     "roles": [],
     "managerId": "",
-    "lang": "hu"
+    "lang": "hu",
+    "isActive": true
   },
   {
     "firstName": "frank",
@@ -165,7 +180,8 @@
     "orgId": "hipteam",
     "roles": [],
     "managerId": "",
-    "lang": "hu"
+    "lang": "hu",
+    "isActive": true
   },
   {
     "firstName": "amber",
@@ -179,7 +195,8 @@
     "orgId": "hipteam",
     "roles": [],
     "managerId": "",
-    "lang": "hu"
+    "lang": "hu",
+    "isActive": true
   },
   {
     "firstName": "ted",
@@ -193,7 +210,8 @@
     "orgId": "hipteam",
     "roles": [],
     "managerId": "",
-    "lang": "hu"
+    "lang": "hu",
+    "isActive": true
   },
   {
     "firstName": "rose",
@@ -207,7 +225,8 @@
     "orgId": "hipteam",
     "roles": [],
     "managerId": "",
-    "lang": "hu"
+    "lang": "hu",
+    "isActive": true
   },
   {
     "firstName": "abbie",
@@ -221,7 +240,8 @@
     "orgId": "hipteam",
     "roles": [],
     "managerId": "",
-    "lang": "hu"
+    "lang": "hu",
+    "isActive": true
   },
   {
     "firstName": "kim",
@@ -235,7 +255,8 @@
     "orgId": "hipteam",
     "roles": [],
     "managerId": "",
-    "lang": "hu"
+    "lang": "hu",
+    "isActive": true
   },
   {
     "firstName": "tracy",
@@ -249,7 +270,8 @@
     "orgId": "hipteam",
     "roles": [],
     "managerId": "",
-    "lang": "hu"
+    "lang": "hu",
+    "isActive": true
   },
   {
     "firstName": "julie",
@@ -263,7 +285,8 @@
     "orgId": "hipteam",
     "roles": [],
     "managerId": "",
-    "lang": "hu"
+    "lang": "hu",
+    "isActive": true
   },
   {
     "firstName": "amanda",
@@ -277,7 +300,8 @@
     "orgId": "hipteam",
     "roles": [],
     "managerId": "",
-    "lang": "hu"
+    "lang": "hu",
+    "isActive": true
   },
   {
     "firstName": "rosalyn",
@@ -291,7 +315,8 @@
     "orgId": "hipteam",
     "roles": [],
     "managerId": "",
-    "lang": "hu"
+    "lang": "hu",
+    "isActive": true
   },
   {
     "firstName": "leah",
@@ -305,7 +330,8 @@
     "orgId": "hipteam",
     "roles": [],
     "managerId": "",
-    "lang": "hu"
+    "lang": "hu",
+    "isActive": true
   },
   {
     "firstName": "erin",
@@ -319,7 +345,8 @@
     "orgId": "hipteam",
     "roles": [],
     "managerId": "",
-    "lang": "hu"
+    "lang": "hu",
+    "isActive": true
   },
   {
     "firstName": "billy",
@@ -333,7 +360,8 @@
     "orgId": "hipteam",
     "roles": [],
     "managerId": "",
-    "lang": "hu"
+    "lang": "hu",
+    "isActive": true
   },
   {
     "firstName": "danielle",
@@ -347,7 +375,8 @@
     "orgId": "hipteam",
     "roles": [],
     "managerId": "",
-    "lang": "hu"
+    "lang": "hu",
+    "isActive": true
   },
   {
     "firstName": "seth",
@@ -361,7 +390,8 @@
     "orgId": "hipteam",
     "roles": [],
     "managerId": "",
-    "lang": "hu"
+    "lang": "hu",
+    "isActive": true
   },
   {
     "firstName": "lauren",
@@ -375,7 +405,8 @@
     "orgId": "hipteam",
     "roles": [],
     "managerId": "",
-    "lang": "hu"
+    "lang": "hu",
+    "isActive": true
   },
   {
     "firstName": "joey",
@@ -389,7 +420,8 @@
     "orgId": "hipteam",
     "roles": [],
     "managerId": "",
-    "lang": "hu"
+    "lang": "hu",
+    "isActive": true
   },
   {
     "firstName": "scott",
@@ -403,7 +435,8 @@
     "orgId": "hipteam",
     "roles": [],
     "managerId": "",
-    "lang": "hu"
+    "lang": "hu",
+    "isActive": true
   },
   {
     "firstName": "catherine",
@@ -417,7 +450,8 @@
     "orgId": "hipteam",
     "roles": [],
     "managerId": "",
-    "lang": "hu"
+    "lang": "hu",
+    "isActive": true
   },
   {
     "firstName": "sebastian",
@@ -431,6 +465,7 @@
     "orgId": "hipteam",
     "roles": [],
     "managerId": "",
-    "lang": "hu"
+    "lang": "hu",
+    "isActive": true
   }
 ]

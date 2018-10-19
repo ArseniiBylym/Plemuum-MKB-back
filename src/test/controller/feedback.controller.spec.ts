@@ -128,7 +128,7 @@ suite("FeedbackController unit tests", () => {
                 postFeedback: sinon.stub().resolves(mockResult)
             };
 
-            mockRequest.body = {data: "data"};
+            mockRequest.body = {data:"data",recipientId: "5984342227cd340363dc84aa"};
 
             const mockResponse: any = {
                 send: sinon.stub(),

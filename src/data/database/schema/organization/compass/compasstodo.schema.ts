@@ -9,7 +9,7 @@ interface CompassTodoModel extends CompassTodo, Document {
 export let CompassTodoSchema = new Schema({
     about: {required: true, type: String, index: true},
     owner: {required: true, type: String, index: false},
-    answered: {required: true, type: Boolean, select: false},
+    answered: {required: true, type: Boolean},
     questions: [
         {
             sentence: {required: true, type: SentenceSchema, index: false},

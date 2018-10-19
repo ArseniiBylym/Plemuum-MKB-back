@@ -199,21 +199,28 @@ suite("SurveyController unit tests", () => {
 
     suite("saveSurveyTodo", () => {
         test("Should return 200, saved survey to do and call SurveyInteractor", async () => {
-            req.params.userId = testUser._id;
-            req.params.surveyTodoId = "surveyTodoId";
-            let surveyTodo = "surveyTodo";
+            
+            let surveyTodo = { respondent: "5984342227cd340363dc84af"};
+            req.user._id = "5984342227cd340363dc84af";
+            req.params.surveyTodoId = "5b557a9d82b9a800d4e29953";
+            req.params.orgId = "hipteam";
+            req.body = surveyTodo; 
             surveyManager.saveSurveyTodo = sinon.stub().resolves(surveyTodo);
 
             const surveyController = new SurveyController(surveyManager);
             await surveyController.saveSurveyTodo(req, res);
 
-            sinon.assert.calledWith(surveyManager.saveSurveyTodo, orgId, { _id: "surveyTodoId", respondent: testUser._id });
+            sinon.assert.calledWith(surveyManager.saveSurveyTodo, "hipteam", surveyTodo);
             sinon.assert.calledWith(res.status, 200);
             sinon.assert.calledWith(res.send, surveyTodo);
         });
 
         test("If SurveyInteractor throws a internal error, should send 500 and the error", async () => {
             surveyManager.saveSurveyTodo = sinon.stub().rejects(new Error("Internal server error"));
+            req.user._id = "5984342227cd340363dc84af";
+            req.params.surveyTodoId = "5b557a9d82b9a800d4e29953";
+            req.params.orgId = "hipteam";
+
             await surveyController.saveSurveyTodo(req, res);
 
             sinon.assert.calledWith(res.status, 500);

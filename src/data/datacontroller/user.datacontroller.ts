@@ -3,18 +3,31 @@ import { User } from "../models/common/user.model";
 import { UserCollection, UserModel } from "../database/schema/common/user.schema";
 import { ResetPasswordCollection, ResetPasswordModel } from "../database/schema/common/resetpassword.schema";
 import { ErrorType, PlenuumError } from "../../util/errorhandler";
+import { ObjectId } from 'bson';
 
 
 const UserDataController = {
 
+    inactiveUsersDeleteFromManagerId: function (userId: string): Promise<UserModel> {
+        return UserCollection().update({ managerId: userId }, { $set: { managerId: "" } }, { "multi": true })
+        .lean()
+        .exec() as Promise<UserModel>;
+    },
+
+    checkActiveUserById: function (userId:string):Promise <any>{
+        return UserCollection().findOne({_id: new ObjectId (userId)}, {isActive:1})
+        .lean()
+        .exec() as Promise<any>;
+    },
+
     getLineManagerEmployees: function (orgId: string, userId: string): Promise<UserModel[]> {
-        return UserCollection().find({orgId: orgId, managerId: userId}).sort({firstName:1, lastName:1})
+        return UserCollection().find({orgId: orgId, managerId: userId, isActive: true}).sort({firstName:1, lastName:1})
                 .lean()
                 .exec() as Promise<UserModel[]>;
     },
     getHRUsers: function (orgId: string): Promise<UserModel> {
         return UserCollection()
-            .find({roles : "HR"},{email:1, firstName:1, lastName:1})
+            .find({roles : "HR"},{email:1, firstName:1, lastName:1, isActive: true})
             .lean()
             .exec() as Promise<UserModel>;
     },
@@ -25,6 +38,19 @@ const UserDataController = {
     },
 
     getOrganizationUsers: function (orgId: string, query?: any): Promise<UserModel[]> {
+        let sort = {};
+        if (query && query.sort === 'firstNameLastName'){
+            sort = {firstName:1, lastName:1};
+        }
+        else if (query && query.sort === 'lastNameFirstName') {
+            sort = {lastName:1,firstName:1};
+        }
+        return UserCollection().find({orgId: {$eq: orgId}, isActive: true}).sort(sort)
+                .lean()
+                .exec() as Promise<UserModel[]>;
+    },
+
+    getOrganizationUsersWithInactive: function (orgId: string, query?: any): Promise<UserModel[]> {
         let sort = {};
         if (query && query.sort === 'firstNameLastName'){
             sort = {firstName:1, lastName:1};
@@ -74,13 +100,19 @@ const UserDataController = {
     },
 
     getUsersByIds: function (orgId: string, userIds: string[]): Promise<UserModel[]> {
-        return UserCollection().find({_id: {$in: userIds}})
+        return UserCollection().find({_id: {$in: userIds}, isActive:true})
             .lean()
             .exec() as Promise<UserModel[]>;
     },
 
     updateUser: function (userId: string, user: UserModel): Promise<UserModel> {
         return UserCollection().findOneAndUpdate({_id: userId}, user, {new: true})
+            .lean()
+            .exec() as Promise<UserModel>;
+    },
+
+    inactiveUser: function (userId: string): Promise<UserModel> {
+        return UserCollection().findOneAndUpdate({_id: userId}, {isActive: false}, {new: true}).select('+orgId')
             .lean()
             .exec() as Promise<UserModel>;
     },

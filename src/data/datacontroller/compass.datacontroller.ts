@@ -6,6 +6,13 @@ import Skill from "../models/organization/compass/skill.model";
 
 const CompassDataController = {
 
+    answeredCompassTodos: (orgId: string, userId: string): Promise<any> => {
+        return CompassTodoCollection(orgId).update({about: userId, answered : false},  { $set:{answered : true}}, {"multi": true}).exec()
+        .then((result) => {
+            return result;
+        });
+    },
+
     getAllSkills: (orgId: string): Promise<SkillModel[]> => {
         return SkillCollection(orgId).find({}).lean().exec() as Promise<SkillModel[]>;
     },

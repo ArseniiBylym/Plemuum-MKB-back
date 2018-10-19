@@ -76,7 +76,7 @@ function jwtAuth() {
 }
 
 function validateUser(user: UserModel, createdAt: any) {
-    return user && new Date(createdAt) >= user.passwordUpdatedAt;
+    return user && user.isActive && new Date(createdAt) >= user.passwordUpdatedAt;
 }
 
 export default passportInit

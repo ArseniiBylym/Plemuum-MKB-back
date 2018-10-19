@@ -45,7 +45,7 @@ export default (app: Express, userController: UserController) => {
     */
 
     app.route("/api/sendEmail/:orgId")
-    .post(passport.authenticate('jwt', {session: false}), checkAdmin(), userController.sendEmailForUsers.bind(userController))
+        .post(passport.authenticate('jwt', {session: false}), checkAdmin(), userController.sendEmailForUsers.bind(userController))
 
      /**
      * @api {GET} /api/organizations/:orgId/myTeam/users  Get my team users. If HR user get all user in org else use managerId field in user data.
@@ -255,9 +255,39 @@ export default (app: Express, userController: UserController) => {
      *     "email": "john.doe@hipteam.io",
      * }
      */
+    /**
+     * @api {DELETE} /api/users User - Inactivating users
+     * @apiVersion 2.0.0
+     * @apiName InactiveUsers
+     * @apiGroup Admin
+     * @apiPermission admin
+     *
+     * @apiHeader {String} Authorization Bearer token
+     *
+     * @apiParam (Body){String[]} usersId array id of deleted users
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     * [
+     *      {
+     *           "_id": "5984342227cd340363dc84aa",
+     *           "firstName": "bill",
+     *           "lastName": "cox",
+     *           "email": "bill.cox@example.com",
+     *           "lastActive": "2018-10-22T14:18:20.422Z",
+     *           "pictureUrl": "https://randomuser.me/api/portraits/men/1.jpg",
+     *           "orgId": "hipteam",
+     *           "managerId": "5984342227cd340363dc84c7",
+     *           "isActive": false,
+     *           "lang": "hu",
+     *           "roles": []
+     *       }
+     * ]
+     */
     app.route("/api/users")
         .post(passport.authenticate('jwt', {session: false}), checkAdmin(), userController.registerUser.bind(userController))
-        .patch(passport.authenticate('jwt', {session: false}), checkAdmin(), userController.modifyUser.bind(userController));
+        .patch(passport.authenticate('jwt', {session: false}), checkAdmin(), userController.modifyUser.bind(userController))
+        .delete(passport.authenticate('jwt', {session: false}), checkAdmin(), userController.inactiveUsers.bind(userController));
 
     /**
      * @api {GET} /api/organizations/:orgId/users?query  Get organization users, query parameter ("firstNameLastName", "lastNameFirstName") sorted the result
@@ -293,7 +323,41 @@ export default (app: Express, userController: UserController) => {
     app.route("/api/organizations/:orgId/users")
         .get(passport.authenticate('jwt', {session: false}), userController.getOrganizationUsers.bind(userController))
         .post(passport.authenticate('jwt', {session: false}), checkAdmin(), userController.registerUsersFromCSV.bind(userController));
-
+    
+    /**
+     * @api {GET} /api/organizations/:orgId/usersWithInactive?query  Get organization users, query parameter ("firstNameLastName", "lastNameFirstName") sorted the result
+     * @apiVersion 2.0.0
+     * @apiName getAllOrgUsersWithInactive
+     * @apiGroup User
+     * @apiHeader {String} Authorization Bearer token
+     *
+     * @apiParam (URL){String} orgId Organization id
+     *
+     * @apiSuccess (Success 200) {User[]} - Array of users
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     * [
+     *     {
+     *         "_id": "5984342227cd340363dc84a9",
+     *         "firstName": "christina",
+     *         "lastName": "jacobs",
+     *         "email": "christina.jacobs@example.com",
+     *         "pictureUrl": "https://randomuser.me/api/portraits/women/74.jpg",
+     *     },
+     *     {
+     *         "_id": "5984342227cd340363dc84aa",
+     *         "firstName": "bill",
+     *         "lastName": "cox",
+     *         "email": "bill.cox@example.com",
+     *         "pictureUrl": "https://randomuser.me/api/portraits/men/1.jpg",
+     *     },
+     *      ...
+     * ]
+     */
+    app.route("/api/organizations/:orgId/usersWithInactive")
+        .get(passport.authenticate('jwt', {session: false}), userController.getOrganizationUsersWithInactive.bind(userController))
+        
     /**
      * @api {GET} /api/organizations/:orgId/users/:userId Get a specific user from an organization
      * @apiVersion 2.0.0

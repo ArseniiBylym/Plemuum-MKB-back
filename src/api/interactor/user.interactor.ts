@@ -1,4 +1,9 @@
 import UserDataController from "../../data/datacontroller/user.datacontroller";
+import SurveyDataController from "../../data/datacontroller/survey.datacontroller";
+import ComapassDataController from "../../data/datacontroller/compass.datacontroller";
+import {requestDataController, RequestDataController} from "../../data/datacontroller/request.datacontroller";
+
+
 import { resetPasswordDataController } from "../../data/datacontroller/resetpassword.datacontroller";
 import { generateNewTokensForResetPassword } from "../../manager/auth/token.manager";
 import { ErrorType, PlenuumError } from "../../util/errorhandler";
@@ -135,6 +140,35 @@ export default class UserInteractor {
         }
         return updatedUser;
     }
+
+    async inactiveUsers(usersId: string[]) {
+        let inactiveUsers = [];
+        for (let i = 0; i < usersId.length; i++) {
+            let surveys: any;
+            //set isActive false
+            inactiveUsers.push(await UserDataController.inactiveUser(usersId[i]));
+            
+            // get inactive users surveys and each surveys surveyTodo change to isComplited: true
+            surveys = await SurveyDataController.getAllSurveysByUserId(inactiveUsers[i].orgId, inactiveUsers[i]._id)
+            for (let j = 0; j < surveys.length; j++) {
+                await SurveyDataController.updateSurveyTodoIsComplet(inactiveUsers[i].orgId, surveys[j]._id.toString())
+            }
+            //answered compassTodos about inactive users
+            await ComapassDataController.answeredCompassTodos(inactiveUsers[i].orgId, inactiveUsers[i]._id.toString());
+            //delete requests
+            await requestDataController.deleteRequestsByUserId(inactiveUsers[i].orgId, inactiveUsers[i]._id.toString());
+            // delete inactive users from managerId
+            await UserDataController.inactiveUsersDeleteFromManagerId(inactiveUsers[i]._id.toString());
+        }
+
+        if (usersId.length !== inactiveUsers.length) {
+            throw new PlenuumError("Something went wrong", ErrorType.NOT_FOUND);
+        }
+
+        return inactiveUsers;
+    }
+
+
 
     async setPassword(token: string, newPassword: string) {
         const resetedPassword: any = await resetPasswordDataController.getResetPasswordByToken(token);

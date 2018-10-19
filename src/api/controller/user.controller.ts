@@ -152,8 +152,24 @@ export default class UserController extends BaseController {
             .catch((err) => this.handleError(err, req, res));
     }
 
+    async inactiveUsers(req: any, res: Response) {
+        req.checkBody('usersId', 'Missing users id').notEmpty();
+
+        return this.userManager.inactiveUsers(req.body.usersId)
+            .then((result) => {
+                this.respond(StatusCodes.OK, req, res, result)
+            })
+            .catch((err) => this.handleError(err, req, res))
+    }
+
     async getOrganizationUsers(req: any, res: Response) {
         return UserDataController.getOrganizationUsers(req.params.orgId, req.query)
+            .then((result) => this.respond(StatusCodes.OK, req, res, result))
+            .catch((err) => this.handleError(err, req, res));
+    }
+
+    async getOrganizationUsersWithInactive(req: any, res: Response) {
+        return UserDataController.getOrganizationUsersWithInactive(req.params.orgId, req.query)
             .then((result) => this.respond(StatusCodes.OK, req, res, result))
             .catch((err) => this.handleError(err, req, res));
     }
