@@ -50,15 +50,21 @@ const SurveyDataController = {
             .cursor({ async: true })
             .then(async (result:any)=>{
                 const resultArr = await result.toArray();
-                if (resultArr[0].length<1) {
-                    throw new Error ('The survey has not yet been answered');
-                }
-                let formatingArr:any = [];
                 let questionTextArr = ['Kérdés sorszáma'];
+                let formatingArr:any = [];
+                
+                if (resultArr.length < 1) {
+                   let {questions} = await SurveyDataController.getSurvey(orgId, surveyId);
+                   questionTextArr = questionTextArr.concat(questions.map((x:any) => 
+                   {return `${x.text} ( ${x.type} )`+ ((x.required) ? '*': '')}));
+                   console.log(questionTextArr)
+                   return [questionTextArr];
+                }
+
                 questionTextArr = questionTextArr.concat(resultArr[0].questions.map((x:any) => 
                     {return `${x.text} ( ${x.type} )`+ ((x.required) ? '*': '')}));
                 formatingArr.push(questionTextArr);
-
+    
                 for (let i = 0; resultArr.length > i; i++) {
                     let answersArr = [i+1];
                     for (let j = 0; resultArr[i].answers.length > j; j++){
