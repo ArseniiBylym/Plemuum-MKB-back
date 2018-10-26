@@ -385,7 +385,7 @@ const SurveyDataController = {
 
     getAllSurveysTodo: (orgId: string, userId:string): Promise<SurveyTodoModel[]> => {
         return SurveyTodoCollection(orgId).find({respondent:userId,isCompleted:false })
-        .populate({ path: 'survey', model: SurveyCollection(orgId) , select:'_id title type expiritDate owner',})
+        .populate({ path: 'survey', model: SurveyCollection(orgId) , select:'_id title type expiritDate owner description',})
         .sort({createdAt:-1})
         .lean()
         .exec() as Promise<SurveyTodoModel[]>;
