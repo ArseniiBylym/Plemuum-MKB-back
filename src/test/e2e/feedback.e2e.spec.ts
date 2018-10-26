@@ -21,6 +21,24 @@ suite("Feedback request test", () => {
 
     after(async () => await getDatabaseManager().closeConnection());
 
+    suite("Send abusive report about feedback", () => {
+        const url = `/api/organizations/${orgId}/users/me/feedbacks/59843630e7e093038ed33170/reportAbusive`;
+
+        test("response should be an object and return 200", done => {
+            authenticate(testUser)
+                .then(token => {
+                    request(createApp())
+                        .get(url)
+                        .set(bearerAuthHeader(token))
+                        .expect(200)
+                        .then(response => {
+                            expect(response.body).to.haveOwnProperty('abusiveReport')
+                        })
+                        .then(done, done);
+                    });
+        });
+    });
+
     suite("Fetch feedbacks", () => {
         const url = `/api/organizations/${orgId}/users/me/feedbacks`;
 

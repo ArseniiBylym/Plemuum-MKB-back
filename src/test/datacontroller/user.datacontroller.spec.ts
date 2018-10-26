@@ -8,6 +8,7 @@ import UserDataController from "../../data/datacontroller/user.datacontroller";
 import { User } from "../../data/models/common/user.model";
 import { UserCollection } from "../../data/database/schema/common/user.schema";
 
+
 suite("UserDataController tests", () => {
 
     const databaseManager: DatabaseManager = DatabaseFactory.getDatabaseManager();
@@ -19,6 +20,55 @@ suite("UserDataController tests", () => {
                 console.error(error);
                 done();
             })
+    });
+
+
+    
+    test("Delete user", done => {
+        let deletedUser = TestObjectFactory.getTestUserWithOrganizations("John", "Doe", 'hipteam');
+        UserDataController.saveUser(deletedUser)
+        .then((user:any)=> UserDataController.inactiveUser(user._id.toString()))
+        .then((user: any) => {
+                should().exist(user);
+                expect(user.isActive).to.be.equal(false);
+            })
+        .then(done, done);
+    });
+
+    test("Get my team users", done => {
+        UserDataController.getLineManagerEmployees("hipteam", "5984342227cd340363dc84a9")
+            .then((myTeamUsers: any) => {
+                should().exist(myTeamUsers);
+                expect(myTeamUsers).length(3);
+            })
+            .then(done, done);
+    });
+
+    test("Check active user by id", done => {
+        UserDataController.checkActiveUserById("5984342227cd340363dc84a9")
+            .then((user: any) => {
+                should().exist(user);
+                expect(user.isActive).to.be.equal(true);
+            })
+            .then(done, done);
+    });
+
+    test("Get organization HR users", done => {
+        UserDataController.getHRUsers("hipteam")
+            .then((HRUser: any) => {
+                should().exist(HRUser)
+                expect(HRUser).length(2)
+            })
+            .then(done, done);
+    });
+
+    test("Unset user's managerId", done => {
+        UserDataController.unsetUserManager("5984342227cd340363dc84ae")
+            .then((user: any) => {
+                should().exist(user)
+                expect(user.managerId).to.be.equal("")
+            })
+            .then(done, done);
     });
 
     test("New user should be in DB", done => {

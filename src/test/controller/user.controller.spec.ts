@@ -10,6 +10,54 @@ suite("UserController", () => {
 
     const mockUser: User = TestObjectFactory.getJohnDoe();
 
+    
+
+    suite("Upadte user's manager", () => {
+
+        test("Should return 200. Set user's managerId", async () => {
+            const mockRequest: any = getRequestObject(true);
+            mockRequest.body.managerId = "5984342227cd340363dc84c7";
+            mockRequest.user = mockUser;
+
+            const mockResponse: any = {
+                send: sinon.stub(),
+                status: sinon.stub().callsFake(() => mockResponse)
+            };
+
+            const mockuserManager: any = {
+                updateUserManager: sinon.stub().resolves(mockUser)
+            };
+
+            const userController = new UserController(mockuserManager);
+            await userController.updateUserManager(mockRequest, mockResponse);
+
+            sinon.assert.calledWith(mockResponse.status, 200);
+            sinon.assert.calledWith(mockResponse.send, mockUser)
+        });
+
+        test("Should return 500. Set user's managerId", async () => {
+            const mockRequest: any = getRequestObject(true);
+          
+            mockRequest.user = mockUser;
+
+            const mockResponse: any = {
+                send: sinon.stub(),
+                status: sinon.stub().callsFake(() => mockResponse)
+            };
+
+            const mockuserManager: any = {
+                updateUserManager: sinon.stub().rejects(new PlenuumError("Mock error", ErrorType.NOT_IMPLEMENTED))
+            };
+
+            const userController = new UserController(mockuserManager);
+            await userController.updateUserManager(mockRequest, mockResponse);
+
+            sinon.assert.calledWith(mockResponse.status, 501);
+            sinon.assert.calledWith(mockResponse.send, {error: "Mock error"})
+        });
+
+    });
+
     suite("registerUser", () => {
 
         test("Happy case: should call response send", async () => {

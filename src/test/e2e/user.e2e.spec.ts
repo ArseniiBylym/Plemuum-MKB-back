@@ -26,6 +26,63 @@ suite("User request tests", () => {
             .catch(() => done());
     });
 
+    suite('Get my team users', () => {
+        const orgId = "hipteam";
+        const url = `/api/organizations/${orgId}/myTeam/users`;
+
+        test("GET: Correct request response should contain a users and return 200", done => {
+            authenticate(testUser)
+            .then(token => {
+                request(createApp())
+                    .get(url)
+                    .set(bearerAuthHeader(token))
+                    .expect(200)
+                    .then(response => {
+                        expect(response.body).to.be.an.instanceOf(Array);
+                        assert(response.body.length >= 1, "Check if there's at least one element in the response array");
+                        done();
+                    });
+            });
+        });
+    });
+
+    suite("Get user's feedbacks in excel file", () => {
+        
+        test("GET: Should return 422 with error message 'Unprocessable Entity' ", done => {
+            authenticate(testUser)
+            .then(token => {
+                request(createApp())
+                    .get("/api/organizations/hipteam/wrongUserId/feedbacks/excel")
+                    .set(bearerAuthHeader(token))
+                    .expect(422)
+                    .end(function (err, res){
+                        if (err) done(err);
+                    })
+                    done();
+            });
+        });
+    });
+
+    suite("Get user's number of feedbacks and skillscores", () => {
+        const orgId = "hipteam";
+        const url = `/api/organizations/${orgId}/${testUser._id}/numberOfPublicFeedbacksAndSkillScores`;
+
+        test('Response should return an object and status 200', done => {
+            authenticate(testUser)
+                .then(token => {
+                    request(createApp())
+                        .get(url)
+                        .set(bearerAuthHeader(token))
+                        .expect(200)
+                        .then(response => {
+                            expect(response.body).to.haveOwnProperty('numberOfpublicFeedback');
+                            expect(response.body).to.haveOwnProperty('numberOfSkillScores');
+                        })
+                        .then(done,done);
+                });
+        })
+    });
+
     suite('Create new user', () => {
         const url = `/api/users`;
 
