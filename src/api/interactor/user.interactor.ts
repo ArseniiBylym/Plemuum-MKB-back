@@ -58,20 +58,20 @@ export default class UserInteractor {
     async getUserFeedbacksExcel(orgId:string, userId:string) {
         //get user feedbacks
         let feedbacks = await FeedbackDataController.getIncomingFeedbacksReportForExcelFile(orgId, userId);
-        feedbacks = feedbacks.filter((feedback:any)=> (feedback.privacy[0] !== 'PRIVATE'));
+        feedbacks = feedbacks.filter((feedback:any)=> (!feedback.privacy.includes('PRIVATE')));
         let formatedFeedbacks = await feedbacks.map((feedback:any)=>{
             if (feedback.type === "CONTINUE") feedback.type = "Folytasd"
             else if (feedback.type === "CONSIDER")  feedback.type = "Fontold meg";
             let sender;
 
-            if (feedback.privacy[1] === "ANONYMOUS") sender = "Névtelen"
+            if (feedback.privacy.includes("ANONYMOUS")) sender = "Névtelen"
             else sender = feedback.senderId.lastName+' '+feedback.senderId.firstName; 
             return {
             ['Visszajelzés szövege']: feedback.message,
             ['Visszajelzés típusa']: feedback.type,
             ['Küldő']: sender,
             ['Dátum']: moment(feedback.updatedAt).format('YYYY-MM-DD'),
-            ['Időpont']: moment(feedback.updatedAt).format('HH:MM'),
+            ['Időpont']: moment(feedback.updatedAt).format('HH:mm'),
         }})
         //result export to xlsx
         const ws = await XLSX.utils.json_to_sheet(formatedFeedbacks);
