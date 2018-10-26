@@ -50,19 +50,18 @@ const SurveyDataController = {
             .cursor({ async: true })
             .then(async (result:any)=>{
                 const resultArr = await result.toArray();
-                let questionTextArr = ['Kérdés sorszáma'];
+                let questionTextArr = ['Válasz sorszáma'];
                 let formatingArr:any = [];
                 
                 if (resultArr.length < 1) {
                    let {questions} = await SurveyDataController.getSurvey(orgId, surveyId);
                    questionTextArr = questionTextArr.concat(questions.map((x:any) => 
-                   {return `${x.text} ( ${x.type} )`+ ((x.required) ? '*': '')}));
-                   console.log(questionTextArr)
+                   {return `${x.text}`+ ((x.required) ? '*': '')}));
                    return [questionTextArr];
                 }
 
                 questionTextArr = questionTextArr.concat(resultArr[0].questions.map((x:any) => 
-                    {return `${x.text} ( ${x.type} )`+ ((x.required) ? '*': '')}));
+                    {return `${x.text}`+ ((x.required) ? '*': '')}));
                 formatingArr.push(questionTextArr);
     
                 for (let i = 0; resultArr.length > i; i++) {
