@@ -95,7 +95,7 @@ export default class UserInteractor {
         for (let i = 0; i < skillScores.length; i++) {
             for (let j = 0; j < skillScores[i].sentenceScores.length; j++) {
                 let {sentenceScores} = skillScores[i];
-                let skillInpercent = (sentenceScores[j].numberOfAgree && sentenceScores[j].numberOfDisagree) ?
+                let skillInpercent = (sentenceScores[j].numberOfAgree || sentenceScores[j].numberOfDisagree) ?
                     Math.round((sentenceScores[j].numberOfAgree * 100) / (sentenceScores[j].numberOfAgree + sentenceScores[j].numberOfDisagree)*10)/10
                     : '';
                 let item = {
