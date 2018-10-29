@@ -16,6 +16,16 @@ function getTestUser(firstName: string, lastName: string): any {
     };
 }
 
+function getTestSurvey(): any {
+    return {
+        title: "Test survey title",
+        description: "test description",
+        "respondents": ["5984342227cd340363dc84c7"],
+        "expiritDate": "2020-10-20 18:51:41.696",
+        "questions":[{"type":"text", "text":"2+2?","required":true,"min":10,"max":0},{"type":"1-6" ,"text":"4+4?","required":false}]
+    };
+}
+
 function getRegisterTestUser(firstName: string, lastName: string) {
     return {
         firstName: firstName,
@@ -130,5 +140,6 @@ export {
     getTestGroup,
     getTestNotificationToken,
     getTestAllSurveysTodo,
-    getTestSurveysAfterDate
+    getTestSurveysAfterDate,
+    getTestSurvey
 }
