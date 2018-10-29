@@ -1,0 +1,127 @@
+[
+    {
+        "_id": "5bd325aa3d6e9346e757e6d9",
+        "updatedAt": "2018-10-26T14:33:14.905Z",
+        "createdAt": "2018-10-26T14:33:14.905Z",
+        "templateTitle": "Képzés utáni visszajelzés",
+        "title": "[ KÉPZÉS CÍME ]",
+        "description": "[ KÉPZÉS IDŐPONTJA ]",
+        "expiritDate": "2019-10-22T15:51:41.696Z",
+        "owner": "5984342227cd340363dc84c7",
+        "questions": [
+            {
+                "required": true,
+                "text": "A képzés tartalma világos és könnyen érthető volt.",
+                "type": "1-6"
+            },
+            {
+                "required": true,
+                "text": "A gyakorlati példák segítették a megértést.",
+                "type": "1-6"
+            },
+            {
+                "required": true,
+                "text": "A képzés gyakorlatai és példái relevánsak voltak a munkám szempontjából.",
+                "type": "1-6"
+            },
+            {
+                "required": true,
+                "text": "A képzés új tudást és képességet adott nekem.",
+                "type": "1-6"
+            },
+            {
+                "required": true,
+                "text": "Az interaktivitás mértéke és a gyakorlatok segítették fenntartani az érdeklődésem a képzés során.",
+                "type": "1-6"
+            },
+            {
+                "required": true,
+                "text": "A kapott ismeretek és képességek használhatóak lesznek a munkám során.",
+                "type": "1-6"
+            },
+            {
+                "required": true,
+                "text": "A képzés segíti elérni a szervezeti célokat.",
+                "type": "1-6"
+            },
+            {
+                "required": true,
+                "text": "[ TRÉNER NEVE ] A tréning során meggyőződtem arról, hogy a tréner kellő szakértelemmel és tapasztalattal rendelkezik a témában",
+                "type": "1-6"
+            },
+            {
+                "required": true,
+                "text": "[ TRÉNER NEVE ] A tréner energiája és lelkesedése fenntartotta a résztvevők érdeklődését és aktivitását.",
+                "type": "1-6"
+            },
+            {
+                "required": true,
+                "text": "A tréning anyagai (prezentáció, munkafüzet, stb.) érthetőek és jól használhatóak.",
+                "type": "1-6"
+            },
+            {
+                "required": true,
+                "text": "A képzést ajánlani fogom munkatársaimnak.",
+                "type": "1-6"
+            },
+            {
+                "required": true,
+                "text": "A képzés jó befektetés volt karrierem szempontjából.",
+                "type": "1-6"
+            },
+            {
+                "required": false,
+                "text": "Mi volt a leghasznosabb a kurzusban?",
+                "type": "text"
+            },
+            {
+                "required": false,
+                "text": "Milyen fejlesztéseket tenne, hogy a képzés még hatékonyabban segítsen munkájában?",
+                "type": "text"
+            }
+        ],
+        "respondents": [],
+        "visible": [
+            "all"
+        ]
+    },
+    {
+        "_id": "5bc720b2bdc6c33189d0a0b4",
+        "updatedAt": "2018-10-17T11:44:50.756Z",
+        "createdAt": "2018-10-17T11:44:50.756Z",
+        "templateTitle": "This is the template title",
+        "title": "Survey tilte",
+        "description": "This is description of survey",
+        "expiritDate": "2019-10-22T15:51:41.696Z",
+        "owner": "5984342227cd340363dc84c7",
+        "questions": [
+            {
+                "max": 0,
+                "min": 10,
+                "required": true,
+                "text": "2+2",
+                "type": "text"
+            },
+            {
+                "min": null,
+                "required": false,
+                "text": "4+4",
+                "type": "text"
+            },
+            {
+                "required": false,
+                "text": "How you feel self?",
+                "type": "1-6"
+            },
+            {
+                "required": true,
+                "text": "Do you like the beer?",
+                "type": "yes-no"
+            }
+        ],
+        "respondents": [],
+        "visible": [
+            "HR"
+        ]
+    }
+]
