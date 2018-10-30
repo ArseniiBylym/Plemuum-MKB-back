@@ -162,6 +162,7 @@ suite("Survey request test", () => {
                 answers: [{
                     "question":"5bc74b228401444bf3c8e32e",
                     "questionText":"Survey 2 Question 2",
+                    "questionType": "text",
                     "answerText":"Answer 2 by sheryl.grant@hipteam.io",
                     "required":true,
                     "min":5,
