@@ -27,7 +27,7 @@ export default class SurveyInteractor {
     async createSurveyDynamic(orgId: string, survey: SurveyModel, HR:boolean) {
         let newSurvey : SurveyModel;
         let respondentsArr = await this.analysisRespondentsId(orgId, survey.respondents); 
-        let yesNo = [{text: "igen", value:"igen"}, {text: "nem", value:"nem"}];
+        let yesNo = [{text: "igen", value:"1"}, {text: "nem", value:"0"}];
         let scala = [{text: "1 (Teljesen egyet értek)", value: "1"}, {text:"2", value: "2"}, {text:"3", value: "3" },{text:"4", value: "4" }, {text:"5", value: "5" } ,{text:"6 (Egyáltalán nem értek egyet)", value: "6" }];
 
         if (respondentsArr.length > 20 && !HR || respondentsArr.length == 0){
