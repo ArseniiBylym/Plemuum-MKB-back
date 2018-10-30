@@ -34,7 +34,7 @@
         "question":"5bc74b958401444bf3c8e335",
         "questionText":"Survey 2 Question 1",
         "questionType":"yes-no",
-        "answerText":"nem",
+        "answerText":"0",
         "required":true,
         "min":null,
         "max":null

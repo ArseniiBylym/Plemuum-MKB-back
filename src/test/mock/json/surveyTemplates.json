@@ -130,7 +130,7 @@
                 "required": true,
                 "text": "Do you like the beer?",
                 "type": "yes-no",
-                "answerValues": [{"text": "igen", "value":"igen"}, {"text": "nem", "value":"nem"}]
+                "answerValues": [{"text": "igen", "value":"1"}, {"text": "nem", "value":"0"}]
             }
         ],
         "respondents": [],
