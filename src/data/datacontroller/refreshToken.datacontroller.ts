@@ -18,8 +18,8 @@ const refreshTokenDataController: RefreshTokenDataController = {
         return RefreshTokenCollection().findOne({refreshToken: token}).lean().exec();
     },
 
-    deleteRefreshToken(id: string): Promise<any> {
-        return RefreshTokenCollection().findByIdAndRemove(id).lean().exec();
+    deleteRefreshToken(token: string): Promise<any> {
+        return RefreshTokenCollection().findOneAndRemove({refreshToken: token}).lean().exec();
     },
 
     deleteAllOutdated(): Promise<any> {

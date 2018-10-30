@@ -32,10 +32,15 @@ export default class SessionController extends BaseController {
 
         return this.sessionManager.login(req.user._id)
             .then((result: any) => {
-                res.cookie('token', result.token, {expires: tokenManager.getExpiryAsDate(7), httpOnly: true});
-                res.cookie('refreshToken', result.refreshToken, {expires: tokenManager.getExpiryAsDate(7), httpOnly: true});
-                this.respond(StatusCodes.OK, req, res, result);
-            })
+                    res.cookie('token', result.token, {expires: tokenManager.getExpiryAsDate(7), httpOnly: true});
+                    res.cookie('refreshToken', result.refreshToken, {
+                        expires: tokenManager.getExpiryAsDate(7),
+                        httpOnly: true
+                    });
+                    this.respond(StatusCodes.OK, req, res, result);
+                    tokenManager.deleteRefreshToken(req.cookies.refreshToken).catch((err: any) => this.handleError(err, req, res));
+                }
+            )
             .catch((err: any) => this.handleError(err, req, res));
     }
 

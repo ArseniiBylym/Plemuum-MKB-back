@@ -62,8 +62,12 @@ function getAccessTokenExpiryInSeconds() {
     return config.accessTokenExpiryInMins * 60;
 }
 
+function deleteRefreshToken(token: string) {
+    return refreshTokenDataController.deleteRefreshToken(token);
+}
+
 function getRefreshTokenExpiryInSeconds() {
     return getExpiryInSeconds(config.refreshTokenExpiryInDays);
 }
 
-export { generateNewToken, generateNewTokensForResetPassword, getExpiryAsDate, generateAndSaveNewRefreshToken, checkRefreshToken }
+export { generateNewToken, generateNewTokensForResetPassword, getExpiryAsDate, generateAndSaveNewRefreshToken, checkRefreshToken, deleteRefreshToken }
