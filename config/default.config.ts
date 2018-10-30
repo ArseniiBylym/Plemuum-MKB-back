@@ -44,6 +44,12 @@ const defaultConfig: Config = {
     },
     get SentryDSN() {
         return <string> process.env.SENTRY_DSN;
+    },
+    get accessTokenExpiryInMins() {
+        return <number> 15;
+    },
+    get refreshTokenExpiryInDays() {
+        return <number> 7;
     }
 };
 

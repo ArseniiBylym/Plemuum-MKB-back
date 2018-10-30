@@ -17,6 +17,23 @@ export default class SessionController extends BaseController {
         return this.sessionManager.login(req.user._id)
             .then((result: any) => {
                 res.cookie('token', result.token, {expires: tokenManager.getExpiryAsDate(7), httpOnly: true});
+                res.cookie('refreshToken', result.refreshToken, {expires: tokenManager.getExpiryAsDate(7), httpOnly: true});
+                this.respond(StatusCodes.OK, req, res, result);
+            })
+            .catch((err: any) => this.handleError(err, req, res));
+    }
+
+    async refreshAccessToken(req: any, res: any) {
+
+        if (!await tokenManager.checkRefreshToken(req.user._id, req.cookies.token, req.cookies.refreshToken)) {
+            res.status(StatusCodes.UNAUTHORIZED).send("Unauthorized");
+            return;
+        }
+
+        return this.sessionManager.login(req.user._id)
+            .then((result: any) => {
+                res.cookie('token', result.token, {expires: tokenManager.getExpiryAsDate(7), httpOnly: true});
+                res.cookie('refreshToken', result.refreshToken, {expires: tokenManager.getExpiryAsDate(7), httpOnly: true});
                 this.respond(StatusCodes.OK, req, res, result);
             })
             .catch((err: any) => this.handleError(err, req, res));
@@ -32,6 +49,7 @@ export default class SessionController extends BaseController {
         return this.sessionManager.loginAsAdmin()
             .then((result: any) => {
                 res.cookie('token', result.token, {httpOnly: true});
+                res.cookie('refreshToken', result.refreshToken, {httpOnly: true});
                 this.respond(StatusCodes.OK, req, res, result);
             })
             .catch((err: any) => this.handleError(err, req, res));
@@ -41,6 +59,7 @@ export default class SessionController extends BaseController {
         const expiryDate = new Date();
         expiryDate.setMonth(expiryDate.getMonth() - 1);
         res.cookie('token', "deleted", {expires: expiryDate, httpOnly: true});
+        res.cookie('refreshToken', "deleted", {expires: expiryDate, httpOnly: true});
         this.respond(StatusCodes.OK, req, res);
     }
 

@@ -8,8 +8,9 @@ import { UserCollection, UserModel } from "../../data/database/schema/common/use
 
 function passportInit() {
     passport.use(basicAuth());
-    passport.use(jwtAuth());
+    passport.use('jwt', jwtAuth());
     passport.use(localAuth());
+    passport.use('jwtWithoutExpiryCheck', jwtWithoutExpiryCheckAuth());
 
     passport.serializeUser((user: UserModel, done: Function) => done(null, user._id));
     passport.deserializeUser((id: string, done: Function) => {
@@ -17,6 +18,9 @@ function passportInit() {
                 .then((user) => done(null, user))
                 .catch((err) => done(err, null))
         }
+    )
+    passport.serializeUser((user: UserModel, done: Function) => {});
+    passport.deserializeUser((id: string, done: Function) => {}
     )
 }
 
@@ -28,7 +32,7 @@ function localAuth() {
         if (email === "admin") {
             return password === config.adminPwd ? done(null, true) : done(null, false)
         } else {
-            UserCollection().findOne({email: email}, {password: 1})
+            UserCollection().findOne({email: email, isActive : true}, {password: 1})
                 .then((user: UserModel | null) => {
                     return !user
                         ? done(null, false)
@@ -50,6 +54,35 @@ function basicAuth() {
 
 function jwtAuth() {
     return new JwtStrategy(jwtOptions, async (payload, next) => {
+        if (payload.id === "admin") {
+            const admin = {
+                _id: "admin",
+                firstName: "admin",
+                lastName: "admin",
+                email: "admin",
+                admin: true
+            };
+            next(null, admin);
+        } else {
+            const user: UserModel = await UserDataController.getUserById(payload.id, true, false, true);
+
+            if (!validateUser(user, payload.createdAt)) {
+                next(null, false);
+                return;
+            }
+
+            user.lastActive = new Date();
+            user.admin = payload.admin;
+            await UserDataController.updateUser(payload.id, user);
+            next(null, user);
+        }
+    });
+}
+
+function jwtWithoutExpiryCheckAuth() {
+    let jwtWithoutExpiryTimeCheckOptions = Object.assign({}, jwtOptions);
+    jwtWithoutExpiryTimeCheckOptions.ignoreExpiration = true;
+    return new JwtStrategy(jwtWithoutExpiryTimeCheckOptions, async (payload, next) => {
         if (payload.id === "admin") {
             const admin = {
                 _id: "admin",

@@ -5,11 +5,17 @@ import { ErrorType, PlenuumError } from "../../util/errorhandler";
 export default class SessionInteractor {
 
     async login(userId: string) {
-        return {token: tokenManager.generateNewToken(userId, new Date()),}
+        const currentDate = new Date();
+        const accessToken = tokenManager.generateNewToken(userId, currentDate);
+        const refreshToken = tokenManager.generateAndSaveNewRefreshToken(userId, accessToken, currentDate);
+        return {token: accessToken, refreshToken: refreshToken}
     }
 
     async loginAsAdmin() {
-        return {token: tokenManager.generateNewToken("admin", new Date(), true)}
+        const currentDate = new Date();
+        const accessToken = tokenManager.generateNewToken("admin", currentDate, true);
+        const refreshToken = tokenManager.generateAndSaveNewRefreshToken("admin", accessToken, currentDate);
+        return {token: accessToken, refreshToken: refreshToken}
     }
 
     async checkToken(token: any) {

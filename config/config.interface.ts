@@ -15,4 +15,6 @@ export interface Config {
     tokenHash: string;
     plenuumSengridToken: string;
     SentryDSN: string;
+    accessTokenExpiryInMins: number;
+    refreshTokenExpiryInDays: number;
 }

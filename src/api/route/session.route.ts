@@ -38,6 +38,24 @@ export default (app: Express, sessionController: SessionController, userControll
         .post(passport.authenticate('local', {session: false}), sessionController.login.bind(sessionController))
         .delete(sessionController.logout.bind(sessionController));
 
+    /** @api {GET} /api/session/refresh-token Refresh Token
+     * @apiVersion 2.1.0
+     * @apiName refresh-token
+     * @apiGroup Session
+     * @apiDescription Refreshing token. New token will be generated and sent back to client.
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *           "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViYzhhMjJmMDk4MDA1NjUyM2RjMzhhNCIsImFkbWluIjpmYWxzZSwiY3JlYXRlZEF0IjoiMjAxOC0xMC0yOVQxMzozMDo1My4xMzhaIiwiZXhwaXJ5RGF0ZSI6NjA0ODAwLCJpYXQiOjE1NDA4MTk4NTMsImV4cCI6MTU0MTQyNDY1M30.YitQeej7WP4FTNVxAP1lXVC4aOi9cnLc_SFS-tlNgn0",
+     *           "refreshToken": "8j8pqGQPZJ2P6LToqPIg6IaRjAqnYHsFkhLyy5gol0oSAZhEEW6W8zRQNMDdV8jYfxKZyz2BZ0grI9h61UVNnw0NQ43zvGlIEIvDjl88uYMUnPdWN4ZltXwudBT4WetRH5JkEuWcCHOxSLTQQCYU22EDOpAEJQbW2NL6dNRwhDfpIGF7qOdYbyIuwYNgVvlLyQG7Z2LWShUhGocYKFjJsgIJMjGFovD6Cv0yuoC0uXJRnIk4XNDSqBEGzNoXhzAt"
+     *     }
+     *
+     * @apiErrorExample {json} Error-Response:
+     *      HTTP/1.1 401 Unauthorized
+     */
+    app.route('/api/session/refresh-token')
+        .get(passport.authenticate('jwtWithoutExpiryCheck', {session: false}), sessionController.refreshAccessToken.bind(sessionController));
+
     /**
      * @api {POST} /api/session/admin Log-in as admin
      * @apiVersion 2.0.0

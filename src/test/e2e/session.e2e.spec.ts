@@ -1,9 +1,9 @@
-import { fixtureLoader, resetPassword, testUser } from "../mock/fixture.loader";
+import {fixtureLoader, resetPassword, testUser} from "../mock/fixture.loader";
 import * as request from "supertest";
-import { createApp } from "../../app";
+import {createApp} from "../../app";
 import * as responseValidator from "../../util/model.validator";
-import { expect } from 'chai';
-import { getDatabaseManager } from "../../factory/database.factory";
+import {expect} from 'chai';
+import {getDatabaseManager} from "../../factory/database.factory";
 import config from "../../../config/config";
 
 suite("Session request tests", () => {
@@ -37,6 +37,82 @@ suite("Session request tests", () => {
             await request(createApp())
                 .delete(url)
                 .expect(200);
+        });
+    });
+
+    suite("Token refresh tests", () => {
+        const loginUrl = "/api/session";
+        const refreshTokenUrl = "/api/session/refresh-token";
+
+        test('Successful token refresh', async () => {
+            const app = await createApp();
+            let accessToken: string;
+            let refreshToken: string;
+            await request(app)
+                .post(loginUrl)
+                .withCredentials()
+                .query({email: testUser.email, password: "asd1234"})
+                .expect(200)
+                .then((resp) => {
+                    const json = JSON.parse(resp.text);
+                    accessToken = json.token;
+                    refreshToken = json.refreshToken;
+                    request(app)
+                        .get(refreshTokenUrl)
+                        .set('cookies', "token=" + accessToken + ";refreshToken=" + refreshToken)
+                        .expect(200).then((resp) => {
+                        responseValidator.validateRefreshTokenResponse(resp);
+                    });
+                });
+
+
+        });
+
+        test("Call refresh token without access token and refresh token", async () => {
+            const app = await createApp();
+            await request(app)
+                .get(refreshTokenUrl)
+                .expect(401);
+        });
+
+        test('Call refresh token with invalid refresh token', async () => {
+            const app = await createApp();
+            let accessToken: string;
+            let refreshToken: string;
+            await request(app)
+                .post(loginUrl)
+                .withCredentials()
+                .query({email: testUser.email, password: "asd1234"})
+                .expect(200)
+                .then((resp) => {
+                    const json = JSON.parse(resp.text);
+                    accessToken = json.token;
+                    refreshToken = json.refreshToken;
+                    request(app)
+                        .get(refreshTokenUrl)
+                        .set('cookies', "token=" + accessToken + ";refreshToken=invalid")
+                        .expect(401);
+                });
+        });
+
+        test('Call refresh token with invalid access token', async () => {
+            const app = await createApp();
+            let accessToken: string;
+            let refreshToken: string;
+            await request(app)
+                .post(loginUrl)
+                .withCredentials()
+                .query({email: testUser.email, password: "asd1234"})
+                .expect(200)
+                .then((resp) => {
+                    const json = JSON.parse(resp.text);
+                    accessToken = json.token;
+                    refreshToken = json.refreshToken;
+                    request(app)
+                        .get(refreshTokenUrl)
+                        .set('cookies', "token=invalid" + ";refreshToken=" + refreshToken)
+                        .expect(401);
+                });
         });
     });
 

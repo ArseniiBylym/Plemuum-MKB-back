@@ -119,6 +119,17 @@ function getTestSurveysAfterDate() {
     ]
 }
 
+function getRefreshToken() {
+    return {
+        "updatedAt" : new Date("2018-10-26T15:20:34.087Z"),
+        "createdAt" : new Date("2018-10-26T15:20:34.087Z"),
+        "userId" : "5984342227cd340363dc84a9",
+        "accessToken" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViYzhhMjJmMDk4MDA1NjUyM2RjMzhhNCIsImFkbWluIjpmYWxzZSwiY3JlYXRlZEF0IjoiMjAxOC0xMC0yNlQxNToyMDozNC4wNzBaIiwiZXhwaXJ5RGF0ZSI6NjA0ODAwLCJpYXQiOjE1NDA1NjcyMzQsImV4cCI6MTU0MTE3MjAzNH0.UyMJ2LyZeAiorPbQeKImM016t1uJmWW8CI2DH4VH0Gs",
+        "refreshToken" : "Xzu4pWlN5KkHWBqHoprMVVE8CHdUU4oB14tWhNU0pSkNOYuKSHui7Z9yDdqxrR0BsIUPqKUt1AK48nBkxPcMhGE1rzOLTYZypoNuZmTSWbUAXv6yDW5DmsLrud6pQ8ckzUoom5j8niv6AGF3aIYPLaLJE4IKYKBtOPAzmBGLJOLOx4UBKTB5HOetpR62GWJyxuH22oSsZoMXWOFX9XLkYjK4p4KaIdg217vL8X9DRz2xoSf9UOLA9rjtXkL3LntL",
+        "expiryDate": new Date("2018-11-02T15:20:34.070Z")
+    }
+}
+
 export {
     getTestUser,
     getJohnDoe,
@@ -130,5 +141,6 @@ export {
     getTestGroup,
     getTestNotificationToken,
     getTestAllSurveysTodo,
-    getTestSurveysAfterDate
+    getTestSurveysAfterDate,
+    getRefreshToken
 }

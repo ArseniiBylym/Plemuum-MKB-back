@@ -19,6 +19,7 @@ import { SurveyTodoCollection } from "../../data/database/schema/organization/su
 import { AnswerCollection } from "../../data/database/schema/organization/survey/answer.schema";
 import { EmailTemplateCollection } from "../../data/database/schema/common/emailTemplate.schema";
 import { SurveyTemplateCollection } from "../../data/database/schema/organization/survey/surveyTemplate.schema";
+import {RefreshTokenCollection} from "../../data/database/schema/common/refreshToken.schema";
 
 
 const testUser = {
@@ -48,7 +49,8 @@ function fixtureLoader(): Promise<any> {
         {model: SurveyTodoCollection('hipteam'), mockFile: "surveytodos"},
         {model: AnswerCollection('hipteam'), mockFile: "answers"},
         {model: EmailTemplateCollection(), mockFile: "emailTemplates"},
-        {model: SurveyTemplateCollection('hipteam'), mockFile: "surveyTemplates"}
+        {model: SurveyTemplateCollection('hipteam'), mockFile: "surveyTemplates"},
+        {model: RefreshTokenCollection(), mockFile: "refreshTokens"}
     ];
 
     /* Clear each collection */

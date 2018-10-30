@@ -44,6 +44,12 @@ const devConfig: Config = {
     },
     get SentryDSN() {
         return <string> '';
+    },
+    get accessTokenExpiryInMins() {
+        return <number> 1;
+    },
+    get refreshTokenExpiryInDays() {
+        return <number> 1;
     }
 };
 

@@ -33,6 +33,7 @@ function validateRequest(request: any) {
 
 function validateLoginResponse(loginResponse: any) {
     expect(loginResponse).have.property("token");
+    expect(loginResponse).have.property("refreshToken");
 }
 
 function validateTagResponse(tagResponse: any) {
@@ -92,6 +93,11 @@ function validateNotificationTokenResponse(result: any, property: string){
     expect(result).to.haveOwnProperty(property);
 }
 
+function validateRefreshTokenResponse(refreshToken: any) {
+    expect(refreshToken).to.haveOwnProperty("token");
+    expect(refreshToken).to.haveOwnProperty("refreshToken");
+}
+
 export {
     validateUser,
     validateFeedback,
@@ -102,5 +108,6 @@ export {
     validateOrganization,
     validateGroup,
     validateCompassTodo,
-    validateNotificationTokenResponse
+    validateNotificationTokenResponse,
+    validateRefreshTokenResponse
 }

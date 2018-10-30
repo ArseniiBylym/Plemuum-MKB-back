@@ -2,6 +2,7 @@ const Agenda = require('agenda');
 const backgroundScripts = 'src/jobs';
 const fs = require('fs');
 import sendEmailsInBackground from '../jobs/sendEmailsInBackground';
+import deleteOutdatedRefreshTokens from '../jobs/deleteOutdatedRefreshTokens';
 import * as sgMail from '@sendgrid/mail';
 
 //for transporter
@@ -26,11 +27,13 @@ fs.readdirSync(backgroundScripts).forEach((file:any) => {
     jobTypes.push(file);
 });
 
-
 sendEmailsInBackground(agenda, transporter);
+deleteOutdatedRefreshTokens(agenda);
+
 
 if(jobTypes.length) {
     agenda.on('ready', function() {
+        agenda.every('1 day','deleteOutdatedRefreshTokens');
         agenda.start();
     });
 }
