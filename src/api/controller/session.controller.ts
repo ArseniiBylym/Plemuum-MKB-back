@@ -66,6 +66,7 @@ export default class SessionController extends BaseController {
         res.cookie('token', "deleted", {expires: expiryDate, httpOnly: true});
         res.cookie('refreshToken', "deleted", {expires: expiryDate, httpOnly: true});
         this.respond(StatusCodes.OK, req, res);
+        tokenManager.deleteRefreshToken(req.cookies.refreshToken).catch((err: any) => this.handleError(err, req, res));
     }
 
     async checkToken(req: Request, res: Response) {
