@@ -152,4 +152,5 @@ export {
     getTestNotificationToken,
     getTestAllSurveysTodo,
     getTestSurveysAfterDate,
-    getRefreshToken    getTestSurvey}
+    getRefreshToken,
+    getTestSurvey}

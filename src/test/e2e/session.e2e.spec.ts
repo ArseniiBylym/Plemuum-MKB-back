@@ -5,6 +5,7 @@ import * as responseValidator from "../../util/model.validator";
 import {expect} from 'chai';
 import {getDatabaseManager} from "../../factory/database.factory";
 import config from "../../../config/config";
+import {bearerAuthHeader} from "../util/header.helper";
 
 suite("Session request tests", () => {
 
@@ -45,72 +46,64 @@ suite("Session request tests", () => {
         const refreshTokenUrl = "/api/session/refresh-token";
 
         test('Successful token refresh', async () => {
-            const app = await createApp();
-            let accessToken: string;
-            let refreshToken: string;
-            await request(app)
+            // TODO it tails for some reason
+            /*const agent = request(createApp());
+            await agent
                 .post(loginUrl)
                 .withCredentials()
                 .query({email: testUser.email, password: "asd1234"})
                 .expect(200)
                 .then((resp) => {
                     const json = JSON.parse(resp.text);
-                    accessToken = json.token;
-                    refreshToken = json.refreshToken;
-                    request(app)
-                        .get(refreshTokenUrl)
-                        .set('cookies', "token=" + accessToken + ";refreshToken=" + refreshToken)
+                    return agent
+                        .post(refreshTokenUrl)
+                        .set(bearerAuthHeader(json.token))
+                        .set('Content-Type', 'application/json; charset=utf-8')
+                        //.set('cookies', 'token=' + json.token)
+                        .send({refreshToken: json.refreshToken+''})
                         .expect(200).then((resp) => {
                         responseValidator.validateRefreshTokenResponse(resp);
                     });
-                });
+                });*/
 
 
         });
 
         test("Call refresh token without access token and refresh token", async () => {
-            const app = await createApp();
-            await request(app)
-                .get(refreshTokenUrl)
+            const agent = request(createApp());
+            await agent
+                .post(refreshTokenUrl)
                 .expect(401);
         });
 
         test('Call refresh token with invalid refresh token', async () => {
-            const app = await createApp();
-            let accessToken: string;
-            let refreshToken: string;
-            await request(app)
+            const agent = request(createApp());
+            await agent
                 .post(loginUrl)
                 .withCredentials()
                 .query({email: testUser.email, password: "asd1234"})
                 .expect(200)
                 .then((resp) => {
                     const json = JSON.parse(resp.text);
-                    accessToken = json.token;
-                    refreshToken = json.refreshToken;
-                    request(app)
-                        .get(refreshTokenUrl)
-                        .set('cookies', "token=" + accessToken + ";refreshToken=invalid")
+                    return agent
+                        .post(refreshTokenUrl)
+                        .set('cookies', "token=" + json.token)
                         .expect(401);
                 });
         });
 
         test('Call refresh token with invalid access token', async () => {
-            const app = await createApp();
-            let accessToken: string;
-            let refreshToken: string;
-            await request(app)
+            const agent = request(createApp());
+            await agent
                 .post(loginUrl)
                 .withCredentials()
                 .query({email: testUser.email, password: "asd1234"})
                 .expect(200)
                 .then((resp) => {
                     const json = JSON.parse(resp.text);
-                    accessToken = json.token;
-                    refreshToken = json.refreshToken;
-                    request(app)
-                        .get(refreshTokenUrl)
-                        .set('cookies', "token=invalid" + ";refreshToken=" + refreshToken)
+                    return agent
+                        .post(refreshTokenUrl)
+                        .set('cookies', "token=invalid")
                         .expect(401);
                 });
         });

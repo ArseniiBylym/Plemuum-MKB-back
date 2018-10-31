@@ -4,7 +4,7 @@ import { RefreshTokenCollection } from "../../data/database/schema/common/refres
 import { fixtureLoader, testUser } from "../mock/fixture.loader";
 import { expect, should } from 'chai';
 import { fail } from "assert";
-import {validateRefreshToken} from "../../util/model.validator";
+import {validateRefreshTokenResponse} from "../../util/model.validator";
 import { refreshTokenDataController, RefreshTokenDataController } from "../../data/datacontroller/refreshToken.datacontroller";
 import {getRefreshToken} from "../../util/testobject.factory";
 import RefreshToken from "../../data/models/common/refreshToken.model";
@@ -44,7 +44,7 @@ suite("Refresh token datacontroller", () => {
                 .then(() => RefreshTokenCollection().findOne({"refreshToken": refreshTkn.refreshToken}).lean().exec())
                 .then((refreshToken: any) => {
                     should().exist(refreshToken);
-                    validateRefreshToken(refreshToken);
+                    validateRefreshTokenResponse(refreshToken);
                     insertedTokenId = refreshToken._id;
                     done();
                 })
@@ -71,7 +71,7 @@ suite("Refresh token datacontroller", () => {
             refTokenDataController.getRefreshTokenByToken(refreshTkn.refreshToken)
                 .then((refreshToken: any) => {
                     should().exist(refreshToken);
-                    validateRefreshToken(refreshToken);
+                    validateRefreshTokenResponse(refreshToken);
                     expect(refreshToken.refreshToken.toString()).to.be.equal(refreshTkn.refreshToken);
                     expect(refreshToken.accessToken.toString()).to.be.equal(refreshTkn.accessToken);
                     done();
@@ -89,7 +89,7 @@ suite("Refresh token datacontroller", () => {
                 .then(() => RefreshTokenCollection().findOne({"refreshToken": refreshTkn.refreshToken}).lean().exec())
                 .then((refreshToken: any) => {
                     should().exist(refreshToken);
-                    validateRefreshToken(refreshToken);
+                    validateRefreshTokenResponse(refreshToken);
                     refreshTokenId = refreshToken._id;
                     done();
                 })
