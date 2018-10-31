@@ -28,7 +28,7 @@ export default class SurveyInteractor {
         let newSurvey : SurveyModel;
         let respondentsArr = await this.analysisRespondentsId(orgId, survey.respondents); 
         let yesNo = [{text: "igen", value:"1"}, {text: "nem", value:"0"}];
-        let scala = [{text: "1 (Teljesen egyet értek)", value: "1"}, {text:"2", value: "2"}, {text:"3", value: "3" },{text:"4", value: "4" }, {text:"5", value: "5" } ,{text:"6 (Egyáltalán nem értek egyet)", value: "6" }];
+        let scala = [{text: "1 (Egyáltalán nem értek egyet)", value: "1"}, {text:"2", value: "2"}, {text:"3", value: "3" },{text:"4", value: "4" }, {text:"5", value: "5" } ,{text:"6 (Teljesen egyetértek)", value: "6" }];
 
         if (respondentsArr.length > 20 && !HR || respondentsArr.length == 0){
             throw new Error('To many respondents or invalid Id of respondent');
