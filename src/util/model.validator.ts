@@ -94,7 +94,7 @@ function validateNotificationTokenResponse(result: any, property: string){
 }
 
 function validateRefreshTokenResponse(refreshToken: any) {
-    expect(refreshToken).to.haveOwnProperty("token");
+    expect(refreshToken).to.haveOwnProperty("accessToken");
     expect(refreshToken).to.haveOwnProperty("refreshToken");
 }
 
