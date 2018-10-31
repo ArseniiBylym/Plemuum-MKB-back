@@ -74,9 +74,15 @@ export default class SurveyController extends BaseController {
         if (!await validate(req, res)) {
             return;
         }
-        
+        let yesNo = [{text: "igen", value:"1"}, {text: "nem", value:"0"}];
+        let scala = [{text: "1 (Teljesen egyet értek)", value: "1"}, {text:"2", value: "2"}, {text:"3", value: "3" },{text:"4", value: "4" }, {text:"5", value: "5" } ,{text:"6 (Egyáltalán nem értek egyet)", value: "6" }];
         req.body.owner = req.user._id;
 
+        req.body.questions = req.body.questions.map((question:any) => {
+            if (question.type === 'yes-no' && !question.answerValues) question.answerValues = yesNo
+            else if (question.type === '1-6' && !question.answerValues) question.answerValues = scala
+            return question;
+        }); 
         let surveyTemplate: SurveyTemplateModel = req.body;
 
         return this.surveyManager.createSurveyTemplate(req.params.orgId, surveyTemplate)

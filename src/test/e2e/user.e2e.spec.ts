@@ -46,22 +46,7 @@ suite("User request tests", () => {
         });
     });
 
-    suite("Get user's feedbacks in excel file", () => {
-        
-        test("GET: Should return 422 with error message 'Unprocessable Entity' ", done => {
-            authenticate(testUser)
-            .then(token => {
-                request(createApp())
-                    .get("/api/organizations/hipteam/wrongUserId/feedbacks/excel")
-                    .set(bearerAuthHeader(token))
-                    .expect(422)
-                    .end(function (err, res){
-                        if (err) done(err);
-                    })
-                    done();
-            });
-        });
-    });
+ 
 
     suite("Get user's number of feedbacks and skillscores", () => {
         const orgId = "hipteam";

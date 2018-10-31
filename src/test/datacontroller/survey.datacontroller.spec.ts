@@ -152,6 +152,7 @@ suite("Survey datacontroller", () => {
                 answers: [{
                     question:"5b5081c3aa357227f44fa503",
                     questionText:"Survey 1 Question 1",
+                    questionType: "text",
                     answerText:"Answer 1 by liam.harris@example.com",
                     required:true,
                     min:10,
@@ -160,6 +161,7 @@ suite("Survey datacontroller", () => {
                 {
                     question:"5b5081c3aa357227f44fa504",
                     questionText:"Survey 1 Question 2",
+                    questionType: "text",
                     answerText:"Answer 2 by liam.harris@example.com",
                     required:true,
                     min:null,
@@ -168,6 +170,7 @@ suite("Survey datacontroller", () => {
                 {
                     question:"5b5081c3aa357227f44fa505",
                     questionText:"Survey 1 Question 3",
+                    questionType: "text",
                     answerText:"Answer 3 by liam.harris@example.com",
                     required:false,
                     min:5,

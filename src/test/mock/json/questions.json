@@ -21,19 +21,19 @@
         "max": 500,
         "min": 1,
         "required": false,
-        "answerValues": []
+        "answerValues": [{"text": "1 (Teljesen egyet értek)", "value": "1"}, {"text":"2", "value": "2"}, {"text":"3", "value": "3" },{"text":"4", "value": "4" }, {"text":"5", "value": "5" } ,{"text":"6 (Egyáltalán nem értek egyet)", "value": "6" }]
     },
     {
         "_id": "5bc74b958401444bf3c8e335",
         "updatedAt": "2018-10-17T14:47:49.811Z",
         "createdAt": "2018-10-17T14:47:49.811Z",
         "type": "yes-no",
-        "text": "Survey 2 Question 2",
+        "text": "Survey 2 Question 1",
         "survey": "5bc74b958401444bf3c8e334",
         "max": 500,
         "min": 1,
         "required": true,
-        "answerValues": ["igen", "nem"]
+        "answerValues": [{"text": "igen", "value":"1"}, {"text": "nem", "value":"0"}]
     },
     {
         "_id": "5bc74b958401444bf3c8e336",
@@ -45,6 +45,6 @@
         "max": 100,
         "min": 1,
         "required": false,
-        "answerValues": []
+        "answerValues": [{"text": "1 (Teljesen egyet értek)", "value": "1"}, {"text":"2", "value": "2"}, {"text":"3", "value": "3" },{"text":"4", "value": "4" }, {"text":"5", "value": "5" } ,{"text":"6 (Egyáltalán nem értek egyet)", "value": "6" }]
     }
 ]

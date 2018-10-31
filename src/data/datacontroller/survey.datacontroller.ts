@@ -67,6 +67,9 @@ const SurveyDataController = {
                 for (let i = 0; resultArr.length > i; i++) {
                     let answersArr = [i+1];
                     for (let j = 0; resultArr[i].answers.length > j; j++){
+                        if (resultArr[0].questions[j].type === 'yes-no'){
+                            resultArr[i].answers[j].answerText = (resultArr[i].answers[j].answerText === "1") ? "igen" : "nem"; 
+                        }
                     answersArr.push(resultArr[i].answers[j].answerText)
                     }
                     formatingArr.push(answersArr)

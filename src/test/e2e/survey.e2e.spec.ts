@@ -5,8 +5,10 @@ import { getDatabaseManager } from "../../factory/database.factory";
 import config from "../../../config/config";
 import { bearerAuthHeader } from "../util/header.helper";
 import * as chai from 'chai';
+import * as TestObjectFactory from "../../util/testobject.factory"
 
 const orgId = "hipteam";
+const surveyType = "2";
 const userId = testUser._id;
 
 suite("Survey request test", () => {
@@ -17,6 +19,96 @@ suite("Survey request test", () => {
 
     after(async () => await getDatabaseManager().closeConnection());
 
+    suite("CreateSurvey", () => {
+        const url = `/api/organizations/${orgId}/surveys/${surveyType}`;
+
+        test("Create survey current user", async () => {
+            const token = await authenticate(testUser);
+            const response = await request(createApp())
+                .post(url)
+                .set(bearerAuthHeader(token))
+                .send(TestObjectFactory.getTestSurvey())
+                .expect(200)
+                chai.expect(response.body).to.haveOwnProperty('_id');
+        });
+    });
+
+    suite("CreateSurveyError", () => {
+        const url = `/api/organizations/${orgId}/surveys/${surveyType}`;
+
+        test("Create survey without title", async () => {
+            const token = await authenticate(testUser);
+            const survey = TestObjectFactory.getTestSurvey();
+            survey.title = null;
+            const response = await request(createApp())
+                .post(url)
+                .set(bearerAuthHeader(token))
+                .send(survey)
+                .expect(400)
+        });
+    });
+
+    suite("getSurveyDetail", () => {
+        const url = `/api/organizations/${orgId}/survey/${surveyType}/5bc74b228401444bf3c8e32d/detail`;
+
+        test("Should be able to get survey detail", async () => {
+            const token = await authenticate(testUser);
+            const response = await request(createApp())
+                .get(url)
+                .set(bearerAuthHeader(token))
+                .expect(200)
+                chai.expect(response.body.complitedSurveyTodos).to.be.equal(1);
+                chai.expect(response.body.respondents).to.be.an.instanceOf(Array);
+        });
+    });
+
+    suite("getSurveyTemplates", () => {
+        const url = `/api/organizations/${orgId}/surveys/surveyTemplate/${surveyType}`;
+
+        test("Get survey temlates", async () => {
+            const token = await authenticate(testUser);
+            const response = await request(createApp())
+                .get(url)
+                .set(bearerAuthHeader(token))
+                .expect(200)
+                chai.expect(response.body).to.be.an.instanceOf(Array);
+                chai.assert(response.body.length >= 1, "Check if there's at least one element in the response array")
+        });
+    });
+
+    suite("CreateSurveyTemplate", () => {
+        const url = `/api/organizations/${orgId}/surveys/surveyTemplate/${surveyType}`;
+
+        test("Create new survey template", async () => {
+            const token = await authenticate(testUser);
+            const survey = TestObjectFactory.getTestSurvey();
+            const surveyTemplate = survey;
+            surveyTemplate.templateTitle = "Survey template title";
+            surveyTemplate.visible = ["all"];
+            survey.respondents = null;
+            const response = await request(createApp())
+                .post(url)
+                .set(bearerAuthHeader(token))
+                .send(surveyTemplate)
+                .expect(200)
+
+        });
+    });
+
+    suite("DeleteSurveyTemplate", () => {
+        const url = `/api/organizations/${orgId}/surveys/surveyTemplate/${surveyType}`;
+
+        test("Delete survey template", async () => {
+            const token = await authenticate(testUser);
+            const surveyTemplateId = {surveyTemplateId: "5bd72f2155303f4efd2c98b6"};
+            const response = await request(createApp())
+                .delete(url)
+                .set(bearerAuthHeader(token))
+                .send(surveyTemplateId)
+                .expect(200)
+        });
+    });
+
     suite("getAllSurveysTodo", () => {
         const url = `/api/organizations/${orgId}/surveysTodo`;
 
@@ -26,8 +118,7 @@ suite("Survey request test", () => {
                 .get(url)
                 .set(bearerAuthHeader(token))
                 .expect(200);
-
-            chai.expect(response.body).to.be.an.instanceOf(Array);
+                chai.expect(response.body[0]).haveOwnProperty("_id");
         });
     });
 
@@ -71,6 +162,7 @@ suite("Survey request test", () => {
                 answers: [{
                     "question":"5bc74b228401444bf3c8e32e",
                     "questionText":"Survey 2 Question 2",
+                    "questionType": "text",
                     "answerText":"Answer 2 by sheryl.grant@hipteam.io",
                     "required":true,
                     "min":5,
