@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import * as StatusCodes from 'http-status-codes';
 import * as tokenManager from "../../manager/auth/token.manager";
 import SessionManager from "../interactor/session.interactor";
+import {validate} from "../../util/input.validator";
 
 export default class SessionController extends BaseController {
 
@@ -24,8 +25,13 @@ export default class SessionController extends BaseController {
     }
 
     async refreshAccessToken(req: any, res: any) {
+        req.checkBody('refreshToken', 'Missing refresh token').notEmpty();
 
-        if (!await tokenManager.checkRefreshToken(req.user._id, req.cookies.token, req.cookies.refreshToken)) {
+        if (!await validate(req, res)) {
+            return;
+        }
+
+        if (!await tokenManager.checkRefreshToken(req.user._id, req.cookies.token, req.body.refreshToken)) {
             res.status(StatusCodes.UNAUTHORIZED).send("Unauthorized");
             return;
         }
@@ -38,7 +44,7 @@ export default class SessionController extends BaseController {
                         httpOnly: true
                     });
                     this.respond(StatusCodes.OK, req, res, result);
-                    tokenManager.deleteRefreshToken(req.cookies.refreshToken).catch((err: any) => this.handleError(err, req, res));
+                    tokenManager.deleteRefreshToken(req.body.refreshToken).catch((err: any) => this.handleError(err, req, res));
                 }
             )
             .catch((err: any) => this.handleError(err, req, res));

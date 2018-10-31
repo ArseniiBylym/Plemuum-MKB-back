@@ -18,10 +18,7 @@ function passportInit() {
                 .then((user) => done(null, user))
                 .catch((err) => done(err, null))
         }
-    )
-    passport.serializeUser((user: UserModel, done: Function) => {});
-    passport.deserializeUser((id: string, done: Function) => {}
-    )
+    );
 }
 
 function localAuth() {
@@ -36,7 +33,7 @@ function localAuth() {
                 .then((user: UserModel | null) => {
                     return !user
                         ? done(null, false)
-                        : !user.verifyPasswordSync(password)
+                        : !user.verifyPasswordSync(password) || !user.isActive
                             ? done(null, false)
                             : done(null, user);
                 })

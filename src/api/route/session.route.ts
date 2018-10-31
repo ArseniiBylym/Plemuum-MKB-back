@@ -6,24 +6,26 @@ import UserController from "../controller/user.controller";
 export default (app: Express, sessionController: SessionController, userController: UserController) => {
     /**
      * @api {POST} /api/session Log-in user
-     * @apiVersion 2.0.0
+     * @apiVersion 2.1.0
      * @apiName login
      * @apiGroup Session
-     * @apiDescription If the user is authenticated successfully, a Bearer token will be returned.
-     * This token can be used for future requests requiring authentication, as defined in RFC6750, e.g. it can be
+     * @apiDescription If the user is authenticated successfully, a Bearer token and a refresh token will be returned.
+     * This tokens can be used for future requests requiring authentication, as defined in RFC6750, e.g. it can be
      * placed in the Authorization header field with the following syntax: Bearer <token>
      *
      * @apiParam (Body){String} email       Email address
      * @apiParam (Body){String} password    Password
      *
      * @apiSuccess (Success 200) {String}       token Bearer    token
+     * @apiSuccess (Success 200) {String}       refreshToken Refresh    token
      *
      * @apiSampleRequest /api/session
      *
      * @apiSuccessExample {json} Success-Response:
      * HTTP/1.1 200 OK
      * {
-     *     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU5ODQzNDIyMjdjZDM0MDM2M2RjODRjNyIsImFkbWluIjp0cnVlLCJpYXQiOjE1MDc1ODAxNjcsImV4cCI6MTUwODE4NDk2N30.slOz1lxOSfmUBIdQtagBulXkvtNrplodDdTq_fjm2zA"
+     *     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU5ODQzNDIyMjdjZDM0MDM2M2RjODRjNyIsImFkbWluIjp0cnVlLCJpYXQiOjE1MDc1ODAxNjcsImV4cCI6MTUwODE4NDk2N30.slOz1lxOSfmUBIdQtagBulXkvtNrplodDdTq_fjm2zA",
+     *     "refreshToken": "8j8pqGQPZJ2P6LToqPIg6IaRjAqnYHsFkhLyy5gol0oSAZhEEW6W8zRQNMDdV8jYfxKZyz2BZ0grI9h61UVNnw0NQ43zvGlIEIvDjl88uYMUnPdWN4ZltXwudBT4WetRH5JkEuWcCHOxSLTQQCYU22EDOpAEJQbW2NL6dNRwhDfpIGF7qOdYbyIuwYNgVvlLyQG7Z2LWShUhGocYKFjJsgIJMjGFovD6Cv0yuoC0uXJRnIk4XNDSqBEGzNoXhzAt"
      * }
      */
 
@@ -38,11 +40,15 @@ export default (app: Express, sessionController: SessionController, userControll
         .post(passport.authenticate('local', {session: false}), sessionController.login.bind(sessionController))
         .delete(sessionController.logout.bind(sessionController));
 
-    /** @api {GET} /api/session/refresh-token Refresh Token
+    /** @api {POST} /api/session/refresh-token Refresh Token
      * @apiVersion 2.1.0
      * @apiName refresh-token
      * @apiGroup Session
-     * @apiDescription Refreshing token. New token will be generated and sent back to client.
+     * @apiHeader {String} Content-Type application/x-www-form-urlencoded
+     * @apiParam (Body){String} refreshToken    Refresh Token
+     * @apiDescription Refreshing token. New access token and it's refresh token will be generated and sent back to client.
+     * @apiSuccess (Success 200) {String}       token Bearer    token
+     * @apiSuccess (Success 200) {String}       refreshToken Refresh    token
      * @apiSuccessExample {json} Success-Response:
      *     HTTP/1.1 200 OK
      *     {
@@ -51,10 +57,11 @@ export default (app: Express, sessionController: SessionController, userControll
      *     }
      *
      * @apiErrorExample {json} Error-Response:
+     *      HTTP/1.1 400 Bad Request
      *      HTTP/1.1 401 Unauthorized
      */
     app.route('/api/session/refresh-token')
-        .get(passport.authenticate('jwtWithoutExpiryCheck', {session: false}), sessionController.refreshAccessToken.bind(sessionController));
+        .post(passport.authenticate('jwtWithoutExpiryCheck', {session: false}), sessionController.refreshAccessToken.bind(sessionController));
 
     /**
      * @api {POST} /api/session/admin Log-in as admin
