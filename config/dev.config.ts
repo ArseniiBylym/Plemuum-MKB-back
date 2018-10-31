@@ -46,10 +46,10 @@ const devConfig: Config = {
         return <string> '';
     },
     get accessTokenExpiryInMins() {
-        return <number> 1;
+        return <number> (process.env.ACCESS_TOKEN_EXPIRY_IN_MINS ? process.env.ACCESS_TOKEN_EXPIRY_IN_MINS : 10080);
     },
     get refreshTokenExpiryInDays() {
-        return <number> 1;
+        return <number> (process.env.REFRESH_TOKEN_EXPIRY_IN_DAYS ? process.env.REFRESH_TOKEN_EXPIRY_IN_DAYS : 7);
     }
 };
 

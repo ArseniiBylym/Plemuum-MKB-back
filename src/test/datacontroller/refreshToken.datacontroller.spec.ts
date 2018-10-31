@@ -60,16 +60,15 @@ suite("Refresh token datacontroller", () => {
 
     suite("deleteRefreshToken", () => {
 
-        test("Should be to delete a refresh token by it's ID", done => {
+        test.skip("Should be to delete a refresh token by it's ID", done => {
             // TODO test fails for some reason
-            /*const refreshTokenId = "5bd6eced48c33f051c302658";
+            const refreshTokenId = "5bd6eced48c33f051c302658";
             refTokenDataController.deleteRefreshToken(refreshTokenId).then( () =>
                 RefreshTokenCollection().findOne({_id: refreshTokenId}).lean().exec()
             ).then( (refreshToken: any) => {
                 expect(refreshToken).to.not.exist;
                 done();
-            })*/
-            done();
+            })
         })
     });
 });

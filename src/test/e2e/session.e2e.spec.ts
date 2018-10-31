@@ -45,9 +45,9 @@ suite("Session request tests", () => {
         const loginUrl = "/api/session";
         const refreshTokenUrl = "/api/session/refresh-token";
 
-        test('Successful token refresh', async () => {
+        test.skip('Successful token refresh', async () => {
             // TODO it tails for some reason
-            /*const agent = request(createApp());
+            const agent = request(createApp());
             await agent
                 .post(loginUrl)
                 .withCredentials()
@@ -64,7 +64,7 @@ suite("Session request tests", () => {
                         .expect(200).then((resp) => {
                         responseValidator.validateRefreshTokenResponse(resp);
                     });
-                });*/
+                });
 
 
         });

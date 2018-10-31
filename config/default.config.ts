@@ -46,10 +46,10 @@ const defaultConfig: Config = {
         return <string> process.env.SENTRY_DSN;
     },
     get accessTokenExpiryInMins() {
-        return <number> 15;
+        return <number> (process.env.ACCESS_TOKEN_EXPIRY_IN_MINS ? process.env.ACCESS_TOKEN_EXPIRY_IN_MINS : 10080);
     },
     get refreshTokenExpiryInDays() {
-        return <number> 7;
+        return <number> (process.env.REFRESH_TOKEN_EXPIRY_IN_DAYS ? process.env.REFRESH_TOKEN_EXPIRY_IN_DAYS : 7);
     }
 };
 
