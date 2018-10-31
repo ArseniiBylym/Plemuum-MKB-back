@@ -75,7 +75,7 @@ export default class SurveyController extends BaseController {
             return;
         }
         let yesNo = [{text: "igen", value:"1"}, {text: "nem", value:"0"}];
-        let scala = [{text: "1 (Teljesen egyet értek)", value: "1"}, {text:"2", value: "2"}, {text:"3", value: "3" },{text:"4", value: "4" }, {text:"5", value: "5" } ,{text:"6 (Egyáltalán nem értek egyet)", value: "6" }];
+        let scala = [{text: "1 (Egyáltalán nem értek egyet)", value: "1"}, {text:"2", value: "2"}, {text:"3", value: "3" },{text:"4", value: "4" }, {text:"5", value: "5" } ,{text:"6 ", value: "6 (Teljesen egyet értek)" }];
         req.body.owner = req.user._id;
 
         req.body.questions = req.body.questions.map((question:any) => {

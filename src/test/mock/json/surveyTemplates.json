@@ -13,74 +13,65 @@
                 "required": true,
                 "text": "A képzés tartalma világos és könnyen érthető volt.",
                 "type": "1-6",
-                "answerValues": [{"text": "1 (Teljesen egyet értek)", "value": "1"}, {"text":"2", "value": "2"}, {"text":"3", "value": "3" },{"text":"4", "value": "4" }, {"text":"5", "value": "5" } ,{"text":"6 (Egyáltalán nem értek egyet)", "value": "6" }]
+                "answerValues": [{"text": "1 (Egyáltalán nem értek egyet)", "value": "1"}, {"text":"2", "value": "2"}, {"text":"3", "value": "3" },{"text":"4", "value": "4" }, {"text":"5", "value": "5" } ,{"text":"6 (Teljesen egyet értek)", "value": "6" }]
             },
             {
                 "required": true,
                 "text": "A gyakorlati példák segítették a megértést.",
                 "type": "1-6",
-                "answerValues": [{"text": "1 (Teljesen egyet értek)", "value": "1"}, {"text":"2", "value": "2"}, {"text":"3", "value": "3" },{"text":"4", "value": "4" }, {"text":"5", "value": "5" } ,{"text":"6 (Egyáltalán nem értek egyet)", "value": "6" }]
+                "answerValues": [{"text": "1 (Egyáltalán nem értek egyet)", "value": "1"}, {"text":"2", "value": "2"}, {"text":"3", "value": "3" },{"text":"4", "value": "4" }, {"text":"5", "value": "5" } ,{"text":"6 (Teljesen egyet értek)", "value": "6" }]
             },
             {
                 "required": true,
                 "text": "A képzés gyakorlatai és példái relevánsak voltak a munkám szempontjából.",
                 "type": "1-6",
-                "answerValues": [{"text": "1 (Teljesen egyet értek)", "value": "1"}, {"text":"2", "value": "2"}, {"text":"3", "value": "3" },{"text":"4", "value": "4" }, {"text":"5", "value": "5" } ,{"text":"6 (Egyáltalán nem értek egyet)", "value": "6" }]
+                "answerValues": [{"text": "1 (Egyáltalán nem értek egyet)", "value": "1"}, {"text":"2", "value": "2"}, {"text":"3", "value": "3" },{"text":"4", "value": "4" }, {"text":"5", "value": "5" } ,{"text":"6 (Teljesen egyet értek)", "value": "6" }]
             },
             {
                 "required": true,
                 "text": "A képzés új tudást és képességet adott nekem.",
                 "type": "1-6",
-                "answerValues": [{"text": "1 (Teljesen egyet értek)", "value": "1"}, {"text":"2", "value": "2"}, {"text":"3", "value": "3" },{"text":"4", "value": "4" }, {"text":"5", "value": "5" } ,{"text":"6 (Egyáltalán nem értek egyet)", "value": "6" }]
-            },
+                "answerValues": [{"text": "1 (Egyáltalán nem értek egyet)", "value": "1"}, {"text":"2", "value": "2"}, {"text":"3", "value": "3" },{"text":"4", "value": "4" }, {"text":"5", "value": "5" } ,{"text":"6 (Teljesen egyet értek)", "value": "6" }]     },
             {
                 "required": true,
                 "text": "Az interaktivitás mértéke és a gyakorlatok segítették fenntartani az érdeklődésem a képzés során.",
                 "type": "1-6",
-                "answerValues": [{"text": "1 (Teljesen egyet értek)", "value": "1"}, {"text":"2", "value": "2"}, {"text":"3", "value": "3" },{"text":"4", "value": "4" }, {"text":"5", "value": "5" } ,{"text":"6 (Egyáltalán nem értek egyet)", "value": "6" }]
-            },
+                "answerValues": [{"text": "1 (Egyáltalán nem értek egyet)", "value": "1"}, {"text":"2", "value": "2"}, {"text":"3", "value": "3" },{"text":"4", "value": "4" }, {"text":"5", "value": "5" } ,{"text":"6 (Teljesen egyet értek)", "value": "6" }]   },
             {
                 "required": true,
                 "text": "A kapott ismeretek és képességek használhatóak lesznek a munkám során.",
                 "type": "1-6",
-                "answerValues": [{"text": "1 (Teljesen egyet értek)", "value": "1"}, {"text":"2", "value": "2"}, {"text":"3", "value": "3" },{"text":"4", "value": "4" }, {"text":"5", "value": "5" } ,{"text":"6 (Egyáltalán nem értek egyet)", "value": "6" }]
-            },
+                "answerValues": [{"text": "1 (Egyáltalán nem értek egyet)", "value": "1"}, {"text":"2", "value": "2"}, {"text":"3", "value": "3" },{"text":"4", "value": "4" }, {"text":"5", "value": "5" } ,{"text":"6 (Teljesen egyet értek)", "value": "6" }]            },
             {
                 "required": true,
                 "text": "A képzés segíti elérni a szervezeti célokat.",
                 "type": "1-6",
-                "answerValues": [{"text": "1 (Teljesen egyet értek)", "value": "1"}, {"text":"2", "value": "2"}, {"text":"3", "value": "3" },{"text":"4", "value": "4" }, {"text":"5", "value": "5" } ,{"text":"6 (Egyáltalán nem értek egyet)", "value": "6" }]
-            },
+                "answerValues": [{"text": "1 (Egyáltalán nem értek egyet)", "value": "1"}, {"text":"2", "value": "2"}, {"text":"3", "value": "3" },{"text":"4", "value": "4" }, {"text":"5", "value": "5" } ,{"text":"6 (Teljesen egyet értek)", "value": "6" }]    },
             {
                 "required": true,
                 "text": "[ TRÉNER NEVE ] A tréning során meggyőződtem arról, hogy a tréner kellő szakértelemmel és tapasztalattal rendelkezik a témában",
                 "type": "1-6",
-                "answerValues": [{"text": "1 (Teljesen egyet értek)", "value": "1"}, {"text":"2", "value": "2"}, {"text":"3", "value": "3" },{"text":"4", "value": "4" }, {"text":"5", "value": "5" } ,{"text":"6 (Egyáltalán nem értek egyet)", "value": "6" }]
-            },
+                "answerValues": [{"text": "1 (Egyáltalán nem értek egyet)", "value": "1"}, {"text":"2", "value": "2"}, {"text":"3", "value": "3" },{"text":"4", "value": "4" }, {"text":"5", "value": "5" } ,{"text":"6 (Teljesen egyet értek)", "value": "6" }]         },
             {
                 "required": true,
                 "text": "[ TRÉNER NEVE ] A tréner energiája és lelkesedése fenntartotta a résztvevők érdeklődését és aktivitását.",
                 "type": "1-6",
-                "answerValues": [{"text": "1 (Teljesen egyet értek)", "value": "1"}, {"text":"2", "value": "2"}, {"text":"3", "value": "3" },{"text":"4", "value": "4" }, {"text":"5", "value": "5" } ,{"text":"6 (Egyáltalán nem értek egyet)", "value": "6" }]
-            },
+                "answerValues": [{"text": "1 (Egyáltalán nem értek egyet)", "value": "1"}, {"text":"2", "value": "2"}, {"text":"3", "value": "3" },{"text":"4", "value": "4" }, {"text":"5", "value": "5" } ,{"text":"6 (Teljesen egyet értek)", "value": "6" }]           },
             {
                 "required": true,
                 "text": "A tréning anyagai (prezentáció, munkafüzet, stb.) érthetőek és jól használhatóak.",
                 "type": "1-6",
-                "answerValues": [{"text": "1 (Teljesen egyet értek)", "value": "1"}, {"text":"2", "value": "2"}, {"text":"3", "value": "3" },{"text":"4", "value": "4" }, {"text":"5", "value": "5" } ,{"text":"6 (Egyáltalán nem értek egyet)", "value": "6" }]
-            },
+                "answerValues": [{"text": "1 (Egyáltalán nem értek egyet)", "value": "1"}, {"text":"2", "value": "2"}, {"text":"3", "value": "3" },{"text":"4", "value": "4" }, {"text":"5", "value": "5" } ,{"text":"6 (Teljesen egyet értek)", "value": "6" }]    },
             {
                 "required": true,
                 "text": "A képzést ajánlani fogom munkatársaimnak.",
                 "type": "1-6",
-                "answerValues": [{"text": "1 (Teljesen egyet értek)", "value": "1"}, {"text":"2", "value": "2"}, {"text":"3", "value": "3" },{"text":"4", "value": "4" }, {"text":"5", "value": "5" } ,{"text":"6 (Egyáltalán nem értek egyet)", "value": "6" }]
-            },
+                "answerValues": [{"text": "1 (Egyáltalán nem értek egyet)", "value": "1"}, {"text":"2", "value": "2"}, {"text":"3", "value": "3" },{"text":"4", "value": "4" }, {"text":"5", "value": "5" } ,{"text":"6 (Teljesen egyet értek)", "value": "6" }]     },
             {
                 "required": true,
                 "text": "A képzés jó befektetés volt karrierem szempontjából.",
                 "type": "1-6",
-                "answerValues": [{"text": "1 (Teljesen egyet értek)", "value": "1"}, {"text":"2", "value": "2"}, {"text":"3", "value": "3" },{"text":"4", "value": "4" }, {"text":"5", "value": "5" } ,{"text":"6 (Egyáltalán nem értek egyet)", "value": "6" }]
-            },
+                "answerValues": [{"text": "1 (Egyáltalán nem értek egyet)", "value": "1"}, {"text":"2", "value": "2"}, {"text":"3", "value": "3" },{"text":"4", "value": "4" }, {"text":"5", "value": "5" } ,{"text":"6 (Teljesen egyet értek)", "value": "6" }]     },
             {
                 "required": false,
                 "text": "Mi volt a leghasznosabb a kurzusban?",
@@ -124,8 +115,7 @@
                 "required": false,
                 "text": "How you feel self?",
                 "type": "1-6",
-                "answerValues": [{"text": "1 (Teljesen egyet értek)", "value": "1"}, {"text":"2", "value": "2"}, {"text":"3", "value": "3" },{"text":"4", "value": "4" }, {"text":"5", "value": "5" } ,{"text":"6 (Egyáltalán nem értek egyet)", "value": "6" }]
-            },
+                "answerValues": [{"text": "1 (Egyáltalán nem értek egyet)", "value": "1"}, {"text":"2", "value": "2"}, {"text":"3", "value": "3" },{"text":"4", "value": "4" }, {"text":"5", "value": "5" } ,{"text":"6 (Teljesen egyet értek)", "value": "6" }]    },
             {
                 "required": true,
                 "text": "Do you like the beer?",
