@@ -10,7 +10,7 @@ import { ANSWER_TYPES } from "../../data/models/organization/compass/compassansw
 
 const orgId = 'hipteam';
 
-suite("Compass request test", () => {
+suite.skip("Compass request test", () => {
 
     before((done) => {
         getDatabaseManager(config.mongoUrl).openConnection()
@@ -32,7 +32,7 @@ suite("Compass request test", () => {
 
         const url = `/api/organizations/${orgId}/compass/todos`;
 
-        test.skip("Should be able to get a fresh todo", async () => {
+        test("Should be able to get a fresh todo", async () => {
             const token = await authenticate(testUser);
             const response = await request(createApp())
                 .post(url)
