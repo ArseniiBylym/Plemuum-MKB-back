@@ -3,7 +3,6 @@ import {refreshTokenDataController} from "../data/datacontroller/refreshToken.da
 
 export default async function (agenda: any) {
     agenda.define('deleteOutdatedRefreshTokens', async (job: any, done: any) => {
-        console.log('deleteOutdatedRefreshTokens started');
         await refreshTokenDataController.deleteAllOutdated()
             .then(() => done())
             .catch((error: any) => {
@@ -12,7 +11,8 @@ export default async function (agenda: any) {
                         message: error,
                         timeStamp: new Date()
                     });
+                    done();
                 }
-            );
+            )
     });
 }
