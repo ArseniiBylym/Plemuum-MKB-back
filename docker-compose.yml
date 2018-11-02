@@ -27,7 +27,7 @@ services:
     tty: true
     stdin_open: true
   mongo:
-    image: mongo:3.4.9
+    image: mongo:3.4.17
     command: mongod --port 28017
     expose:
           - "28017"

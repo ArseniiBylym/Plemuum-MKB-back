@@ -10,7 +10,7 @@ import { ANSWER_TYPES } from "../../data/models/organization/compass/compassansw
 
 const orgId = 'hipteam';
 
-suite.skip("Compass request test", () => {
+suite("Compass request test", () => {
 
     before((done) => {
         getDatabaseManager(config.mongoUrl).openConnection()

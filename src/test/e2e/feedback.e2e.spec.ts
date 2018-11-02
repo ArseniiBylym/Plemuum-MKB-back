@@ -12,7 +12,7 @@ import {bearerAuthHeader} from "../util/header.helper";
 const orgId = "hipteam";
 const userId = testUser._id;
 
-suite.skip("Feedback request test", () => {
+suite("Feedback request test", () => {
 
     before(async () => {
         await getDatabaseManager(config.mongoUrl).openConnection();
