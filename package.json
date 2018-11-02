@@ -9,10 +9,10 @@
     "start-dev": "NODE_ENV=dev node index.js",
     "start-dev-windows": "set NODE_ENV=dev&&node index.js",
     "start-staging": "NODE_ENV=staging node index.js",
-    "start-ci-test": "NODE_ENV=test nyc --reporter=html ./node_modules/.bin/mocha -u tdd -r ts-node/register src/test/**/**.spec.ts",
+    "start-ci-test": "NODE_ENV=test nyc --reporter=html ./node_modules/.bin/mocha --timeout 10000 -u tdd -r ts-node/register src/test/**/**.spec.ts",
     "generate-api-docs": "apidoc -i src -o docs/api",
-    "test": "NODE_ENV=dev nyc --reporter=html ./node_modules/.bin/mocha -u tdd -r ts-node/register src/test/**/**.spec.ts",
-    "test-windows": "set NODE_ENV=dev&&nyc --reporter=html ./node_modules/.bin/_mocha.cmd -u tdd -r ts-node/register src/test/**/**.spec.ts",
+    "test": "NODE_ENV=dev nyc --reporter=html ./node_modules/.bin/mocha --timeout 10000 -u tdd -r ts-node/register src/test/**/**.spec.ts",
+    "test-windows": "set NODE_ENV=dev&&nyc --reporter=html ./node_modules/.bin/_mocha.cmd --timeout 10000 -u tdd -r ts-node/register src/test/**/**.spec.ts",
     "start-aws": "node src/index.js"
   },
   "nyc": {
