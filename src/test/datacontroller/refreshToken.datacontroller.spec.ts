@@ -60,15 +60,15 @@ suite("Refresh token datacontroller", () => {
 
     suite("deleteRefreshToken", () => {
 
-        test.skip("Should be able to delete a refresh token by it's ID", done => {
-            // TODO test fails for some reason
+        test("Should be able to delete a refresh token by it's ID", done => {
             const refreshTokenId = "5bd6eced48c33f051c302658";
-            refTokenDataController.deleteRefreshToken(refreshTokenId).then( () =>
-                RefreshTokenCollection().findOne({_id: refreshTokenId}).lean().exec()
-            ).then( (refreshToken: any) => {
-                expect(refreshToken).to.not.exist;
-                done();
-            })
+            const refreshToken = "UM1p5EMooJJfmaSKpUUnfhp32e3C7Ctdu9ABUBYxRJSfHjBddMGPTtK6Km9FEI6SVP9il2dxCje7DycsmBPv49DgCml3OesCu8r6N0DMcd7g64ujjVztH8hSJp2CLJfDolOi85LjNX6J7IXFDIf5VONAIiSu6C6YZTQyo1e00zaC8AX8nhV5wbRzzInieXgQViAwBoP7pEq8KVHGmz0PJIsoRtaMYoVEtIfnhOvyfx8zrcbTxIME8g0wFXhvEzPq";
+            refTokenDataController.deleteRefreshToken(refreshToken).then(() => {
+                RefreshTokenCollection().findOne({_id: refreshTokenId}).lean().exec().then((refreshToken: any) => {
+                    expect(refreshToken).to.not.exist;
+                    done();
+                });
+            });
         })
     });
 });

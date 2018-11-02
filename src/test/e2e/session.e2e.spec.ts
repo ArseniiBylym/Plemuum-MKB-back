@@ -45,8 +45,7 @@ suite("Session request tests", () => {
         const loginUrl = "/api/session";
         const refreshTokenUrl = "/api/session/refresh-token";
 
-        test.skip('Successful token refresh', async () => {
-            // TODO it tails for some reason
+        test('Successful token refresh', async () => {
             const agent = request(createApp());
             await agent
                 .post(loginUrl)
@@ -58,11 +57,13 @@ suite("Session request tests", () => {
                     return agent
                         .post(refreshTokenUrl)
                         .set(bearerAuthHeader(json.token))
+                        .withCredentials()
                         .set('Content-Type', 'application/json; charset=utf-8')
-                        //.set('cookies', 'token=' + json.token)
-                        .send({refreshToken: json.refreshToken+''})
+                        .set('Cookie', 'token=' + json.token)
+                        .send({refreshToken: json.refreshToken})
                         .expect(200).then((resp) => {
-                        responseValidator.validateRefreshTokenResponse(resp);
+                            expect(resp.body).to.haveOwnProperty("token");
+                            expect(resp.body).to.haveOwnProperty("refreshToken");
                     });
                 });
 
